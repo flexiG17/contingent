@@ -1,0 +1,25 @@
+{
+  "name": "contingent",
+  "version": "1.0.0",
+  "description": "contingent app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "server": "nodemon index"
+  },
+  "author": "Senya Kozhevnikov",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "knex": "^2.0.0",
+    "mongoose": "^6.3.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
