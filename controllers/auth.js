@@ -1,5 +1,5 @@
 const db = require('../db');
-const User = require('../models/User')
+// const User = require('../models/User')
 
 // req - все данные, которые отправляет пользователь
 module.exports.login = function (req, res){
@@ -18,7 +18,7 @@ module.exports.register = function (req, res){
         password: req.body.password
     })
 
-    user.save().then(() => console.log('User Created'))
+//    user.save().then(() => console.log('User Created'))
 }
 
 // фигня, которая достает нужные штуки из бд
