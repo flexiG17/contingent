@@ -7,10 +7,8 @@ const morgan = require('morgan') // для более красивого лог�
 
 // регистрируем роуты
 const authRoutes = require('./routes/auth')
-const analyticsRoutes = require('./routes/analytics')
-const categoryRoutes = require('./routes/category')
-const orderRoutes = require('./routes/order')
-const positionRoutes = require('./routes/position')
+const studentRoutes = require('./routes/student')
+const notificationRoutes = require('./routes/notification')
 
 const app = express() // в app кладем наше приложение
 app.use(cors()) // app.use() - дает возможность добавлять плагины, роуты
@@ -20,9 +18,7 @@ app.use(bodyParser.json()) // помогает генерировать js об�
 
 // path - тот базовый url, который будет совмещаться с тем, который в роуте
 app.use('/api/auth', authRoutes)
-app.use('/api/analytics', analyticsRoutes)
-app.use('/api/category', categoryRoutes)
-app.use('/api/order', orderRoutes)
-app.use('/api/position', positionRoutes)
+app.use('/api/student', studentRoutes)
+app.use('/api/notification', notificationRoutes)
 
 module.exports = app
