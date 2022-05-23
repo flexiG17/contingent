@@ -13,7 +13,7 @@ router.post('/register', controller.register)
 router.patch('/change', controller.changeData)
 
 // get user data (name) for display on pages
-router.get('/:id', controller.getById)
+router.get('/getById', controller.getById)
 
 /*
 // localhost:5000/api/auth/getPerson

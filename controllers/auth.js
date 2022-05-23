@@ -33,17 +33,7 @@ module.exports.changeData = function (req, res){
 
 }
 
-module.exports.getById = function (req, res){
-
+module.exports.getById = async function (req, res){
+    const data = await db('users').where({email: 'senya@mail.ru'});
+    console.log(data)
 }
-
-/*
-// фигня, которая достает нужные штуки из бд
-module.exports.GetPerson = async function (body){
-
-    const currentUser = await db('test');
-    console.log(currentUser)
-
-    //var [currentUser] = await db('test').where({Email: 'sdasd'});
-}
-*/
