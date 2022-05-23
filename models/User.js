@@ -11,7 +11,6 @@ module.exports = class User {
     async save() {
         await db('users').insert([
             {
-                id: Math.floor(Math.random() * 10000000),
                 email: this.email,
                 password: this.password,
                 name: this.name
