@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/User')
+const database = require('../utils/database')
 
 // req - все данные, которые отправляет пользователь
 module.exports.login = function (req, res) {
@@ -26,19 +27,25 @@ module.exports.register = async function (req, res) {
         bcrypt.hashSync(userPassword, salt),
         userName)
 
-    user.isExist().then(userExistsInSystem => {
+    database.isExist('users', {email: user.email}).then(userExistsInSystem => {
         if (userExistsInSystem) {
             res.status(409).json({
-                message: `User ${user.name} exists in system. Try again`
+                message: `User \"${user.name}\" exists in system. Try again`
             })
 
-            console.log(`User ${user.name} exists in system`)
+            console.log(`User \"${user.name}\" exists in system`)
         } else {
-            user.save()
+            const paramToSave =
+                {
+                    email: user.email,
+                    password: user.password,
+                    name: user.name
+                }
+            database.save('users', paramToSave)
                 .catch()
                 .then(() => {
                     res.status(201).json(user)
-                    console.log(`It\`s a new user. Added to database ${user.name} with email ${user.email}`)
+                    console.log(`It\`s a new user. Added to database \"${user.name}\" with email \"${user.email}\"`)
                 })
         }
     })
