@@ -4,9 +4,11 @@ const router = express.Router()
 
 //localhost:5000/api/student/
 router.get('/', controller.getAll)
+router.get('/main', controller.getForMainPage)
 router.post('/create', controller.create)
 router.patch('/:id', controller.update)
-router.delete('/:id', controller.remove)
+// нужно не /remove, а удалять по опр. ключу /:passportNumber
+router.delete('/remove', controller.remove)
 router.get('/:id', controller.getById)
 router.get('/:russianName', controller.getByRussianName)
 router.get('/:englishName', controller.getByEnglishName)
