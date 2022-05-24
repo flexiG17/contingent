@@ -1,5 +1,3 @@
-const notifications = [];
-
 module.exports= class Notification{
 
     constructor(notification_id, type, student_name, date, status){
@@ -8,13 +6,5 @@ module.exports= class Notification{
         this.student_name = student_name;
         this.date = date;
         this.status = status;
-    }
-
-    save(){
-        notifications.push(this)
-    }
-
-    static getAll(){
-        return notifications
     }
 }
