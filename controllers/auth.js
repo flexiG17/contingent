@@ -2,6 +2,9 @@ const bcrypt = require('bcryptjs')
 
 const User = require('../models/User')
 const database = require('../utils/database')
+const errorHandler = require('../utils/errorHandler')
+
+const databaseName = 'users'
 
 // req - все данные, которые отправляет пользователь
 module.exports.login = function (req, res) {
@@ -27,28 +30,25 @@ module.exports.register = async function (req, res) {
         bcrypt.hashSync(userPassword, salt),
         userName)
 
-    database.isExist('users', {email: user.email}).then(userExistsInSystem => {
-        if (userExistsInSystem) {
-            res.status(409).json({
-                message: `User \"${user.name}\" exists in system. Try again`
-            })
-
-            console.log(`User \"${user.name}\" exists in system`)
-        } else {
-            const paramToSave =
-                {
-                    email: user.email,
-                    password: user.password,
-                    name: user.name
-                }
-            database.save('users', paramToSave)
-                .catch()
-                .then(() => {
-                    res.status(201).json(user)
-                    console.log(`It\`s a new user. Added to database \"${user.name}\" with email \"${user.email}\"`)
+    database.isExist(databaseName, {email: user.email})
+        .then(userExistsInSystem => {
+            if (userExistsInSystem) {
+                res.status(409).json({
+                    message: `User "${user.name}" exists in system. Try again`
                 })
-        }
-    })
+
+                console.log(`User \"${user.name}\" exists in system`)
+            } else {
+                const modelToSave = user.getModel()
+                database.save(databaseName, modelToSave)
+                    .then(() => {
+                        res.status(201).json(user)
+                        console.log(`It\`s a new user. Added to database \"${user.name}\" with email \"${user.email}\"`)
+                    })
+                    .catch(error => errorHandler(res, error))
+            }
+        })
+        .catch(error => errorHandler(res, error))
 }
 
 module.exports.changeData = function (req, res) {
