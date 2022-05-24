@@ -6,4 +6,4 @@ const opt = isProduction ? production : development;
 
 const db = knex(opt);
 
-module.exports = db;
+module.exports = db
