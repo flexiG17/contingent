@@ -22,3 +22,7 @@ module.exports.remove = async function(databaseName, condition){
 module.exports.getCurrentData = async function(databaseName, currentColumns){
     return db(databaseName).select(currentColumns)
 }
+
+module.exports.changeData = async function(databaseName, condition, changingData){
+    await db(databaseName).where(condition).update(changingData)
+}
