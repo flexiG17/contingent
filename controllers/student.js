@@ -64,6 +64,16 @@ module.exports.create = function (req, res) {
 
 module.exports.update = function (req, res) {
 
+    const student = new Student(req)
+
+    database.changeData(databaseName,{passport_number: student.passportNumber}, student.getModel())
+        .then(() => {
+            res.status(201).json({
+                message: "Student data successfully changing"
+            })
+            console.log(`Student data successfully changing`)
+        })
+        .catch(error => errorHandler(res, error))
 }
 
 module.exports.remove = function (req, res) {

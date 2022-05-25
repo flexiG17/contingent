@@ -6,9 +6,11 @@ const router = express.Router()
 router.get('/', controller.getAll)
 router.get('/main', controller.getForMainPage)
 router.post('/create', controller.create)
-router.patch('/:id', controller.update)
-// нужно не /remove, а удалять по опр. ключу /:passportNumber
+// нужно не /update, а удалять по опр. ключу (например, /:passportNumber)
+router.patch('/update', controller.update)
+// нужно не /remove, а удалять по опр. ключу (например, /:passportNumber)
 router.delete('/remove', controller.remove)
+
 router.get('/:id', controller.getById)
 router.get('/:russianName', controller.getByRussianName)
 router.get('/:englishName', controller.getByEnglishName)
