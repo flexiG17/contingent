@@ -1,59 +1,49 @@
 module.exports = class Student {
 
-    constructor(educationType, directionNumber, country, citizenship,
-                latinName, russianName, enrollment, enrollmentOrder,
-                expulsionOrder, contractNumber, gender, birthDate,
-                birthPlace, residencePlace, russianLocation, passportNumber,
-                passportIssued, passportIssueDate, passportExpiration,
-                levelEducation, nameEducationalInstitution, locationEducationalInstitution,
-                graduationYear, desiredEducationLevel, specialtyCode,
-                specialtyDirection, educationField, educationalOrganization,
-                formStudy, contactPhoneNumber, tutorName, agentName, agentPhoneNumber,
-                agentEmail, applicationSource, studentEmail, hoursNumber, entryDate,
-                visaValidity, documentPath, firstPayment, secondPayment, comments) {
-        this.educationType = educationType
-        this.directionNumber = directionNumber
-        this.country = country
-        this.citizenship = citizenship
-        this.latinName = latinName
-        this.russianName = russianName
-        this.enrollment = enrollment
-        this.enrollmentOrder = enrollmentOrder
-        this.expulsionOrder = expulsionOrder
-        this.contractNumber = contractNumber
-        this.gender = gender
-        this.birthDate = birthDate
-        this.birthPlace = birthPlace
-        this.residencePlace = residencePlace
-        this.russianLocation = russianLocation
-        this.passportNumber = passportNumber
-        this.passportIssued = passportIssued
-        this.passportIssueDate = passportIssueDate
-        this.passportExpiration = passportExpiration
-        this.levelEducation = levelEducation
-        this.nameEducationalInstitution = nameEducationalInstitution
-        this.locationEducationalInstitution = locationEducationalInstitution
-        this.graduationYear = graduationYear
-        this.desiredEducationLevel = desiredEducationLevel
-        this.specialtyCode = specialtyCode
-        this.specialtyDirection = specialtyDirection
-        this.educationField = educationField
-        this.educationalOrganization = educationalOrganization
-        this.formStudy = formStudy
-        this.contactPhoneNumber = contactPhoneNumber
-        this.tutorName = tutorName
-        this.agentName = agentName
-        this.agentPhoneNumber = agentPhoneNumber
-        this.agentEmail = agentEmail
-        this.applicationSource = applicationSource
-        this.studentEmail = studentEmail
-        this.hoursNumber = hoursNumber
-        this.entryDate = entryDate
-        this.visaValidity = visaValidity
-        this.documentPath = documentPath
-        this.firstPayment = firstPayment
-        this.secondPayment = secondPayment
-        this.comments = comments
+    constructor(req) {
+        this.educationType = req.body.educationType
+        this.directionNumber = req.body.directionNumber
+        this.country = req.body.country
+        this.citizenship = req.body.citizenship
+        this.latinName = req.body.latinName
+        this.russianName = req.body.russianName
+        this.enrollment = req.body.enrollment
+        this.enrollmentOrder = req.body.enrollmentOrder
+        this.expulsionOrder = req.body.expulsionOrder
+        this.contractNumber = req.body.contractNumber
+        this.gender = req.body.gender
+        this.birthDate = req.body.birthDate
+        this.birthPlace = req.body.birthPlace
+        this.residencePlace = req.body.residencePlace
+        this.russianLocation = req.body.russianLocation
+        this.passportNumber = req.body.passportNumber
+        this.passportIssued = req.body.passportIssued
+        this.passportIssueDate = req.body.passportIssueDate
+        this.passportExpiration = req.body.passportExpiration
+        this.levelEducation = req.body.levelEducation
+        this.nameEducationalInstitution = req.body.nameEducationalInstitution
+        this.locationEducationalInstitution = req.body.locationEducationalInstitution
+        this.graduationYear = req.body.graduationYear
+        this.desiredEducationLevel = req.body.desiredEducationLevel
+        this.specialtyCode = req.body.specialtyCode
+        this.specialtyDirection = req.body.specialtyDirection
+        this.educationField = req.body.educationField
+        this.educationalOrganization = req.body.educationalOrganization
+        this.formStudy = req.body.formStudy
+        this.contactPhoneNumber = req.body.contactPhoneNumber
+        this.tutorName = req.body.tutorName
+        this.agentName = req.body.agentName
+        this.agentPhoneNumber = req.body.agentPhoneNumber
+        this.agentEmail = req.body.agentEmail
+        this.applicationSource = req.body.applicationSource
+        this.studentEmail = req.body.studentEmail
+        this.hoursNumber = req.body.hoursNumber
+        this.entryDate = req.body.entryDate
+        this.visaValidity = req.body.visaValidity
+        this.documentPath = req.body.documentPath
+        this.firstPayment = req.body.firstPayment
+        this.secondPayment = req.body.secondPayment
+        this.comments = req.body.comments
     }
 
     getModel() {

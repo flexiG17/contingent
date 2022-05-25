@@ -37,51 +37,7 @@ module.exports.getForMainPage = function (req, res) {
 }
 
 module.exports.create = function (req, res) {
-    const student = new Student(
-        req.body.educationType,
-        req.body.directionNumber,
-        req.body.country,
-        req.body.citizenship,
-        req.body.latinName,
-        req.body.russianName,
-        req.body.enrollment,
-        req.body.enrollmentOrder,
-        req.body.expulsionOrder,
-        req.body.contractNumber,
-        req.body.gender,
-        req.body.birthDate,
-        req.body.birthPlace,
-        req.body.residencePlace,
-        req.body.russianLocation,
-        req.body.passportNumber,
-        req.body.passportIssued,
-        req.body.passportIssueDate,
-        req.body.passportExpiration,
-        req.body.levelEducation,
-        req.body.nameEducationalInstitution,
-        req.body.locationEducationalInstitution,
-        req.body.graduationYear,
-        req.body.desiredEducationLevel,
-        req.body.specialtyCode,
-        req.body.specialtyDirection,
-        req.body.educationField,
-        req.body.educationalOrganization,
-        req.body.formStudy,
-        req.body.contactPhoneNumber,
-        req.body.tutorName,
-        req.body.agentName,
-        req.body.agentPhoneNumber,
-        req.body.agentEmail,
-        req.body.applicationSource,
-        req.body.studentEmail,
-        req.body.hoursNumber,
-        req.body.entryDate,
-        req.body.visaValidity,
-        req.body.documentPath,
-        req.body.firstPayment,
-        req.body.secondPayment,
-        req.body.comments
-    )
+    const student = new Student(req)
 
     database.isExist(databaseName, {passport_number: student.passportNumber})
         .then(studentExistsInSystem => {
