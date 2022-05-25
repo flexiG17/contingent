@@ -3,31 +3,29 @@ const Student = require('../models/Student');
 const errorHandler = require('../utils/errorHandler')
 
 const databaseName = 'students'
+const columnsToDisplay = [
+    'education_type',
+    'country',
+    'latin_name',
+    'russian_name',
+    'enrollment',
+    'enrollment_order',
+    'expulsion_order',
+    'contract_number',
+    'gender',
+]
 
 module.exports.getAll = function (req, res) {
     database.getAllData(databaseName)
         .then(data => {
             console.log(data)
 
-            res.status(200).json({
-                message: `all data successfully received`
-            })
+            res.status(200).json({data})
         })
         .catch(error => errorHandler(res, error))
 }
 
 module.exports.getForMainPage = function (req, res) {
-    const columnsToDisplay = [
-        'education_type',
-        'country',
-        'latin_name',
-        'russian_name',
-        'enrollment',
-        'enrollment_order',
-        'expulsion_order',
-        'contract_number',
-        'gender',
-    ]
     database.getCurrentData(databaseName, columnsToDisplay)
         .then(result => {
             console.log(result)
@@ -104,12 +102,20 @@ module.exports.getById = function (req, res) {
 
 }
 
-module.exports.getByRussianName = function (req, res) {
-
+module.exports.getByRussianName = async function (req, res) {
+    database.getDataByParam(databaseName, {russian_name: req.params.russianName}, columnsToDisplay)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(error => {errorHandler(res, error)})
 }
 
-module.exports.getByEnglishName = function (req, res) {
-
+module.exports.getByEnglishName = async function (req, res) {
+    database.getDataByParam(databaseName, {latin_name: req.query.latinName}, columnsToDisplay)
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(error => {errorHandler(res, error)})
 }
 
 module.exports.getByBirthDate = function (req, res) {

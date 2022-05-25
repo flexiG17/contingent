@@ -2,7 +2,7 @@ const express = require('express')
 const controller = require('../controllers/student')
 const router = express.Router()
 
-//localhost:5000/api/student/
+//localhost:5000/api/student
 router.get('/', controller.getAll)
 router.get('/main', controller.getForMainPage)
 router.post('/create', controller.create)
@@ -11,9 +11,11 @@ router.patch('/update', controller.update)
 // нужно не /remove, а удалять по опр. ключу (например, /:passportNumber)
 router.delete('/remove', controller.remove)
 
+// я хз почему, но это должно стоять впереди..
+router.get('/filter', controller.getByEnglishName)
+
 router.get('/:id', controller.getById)
 router.get('/:russianName', controller.getByRussianName)
-router.get('/:englishName', controller.getByEnglishName)
 router.get('/:birthDate', controller.getByBirthDate)
 router.get('/:contract', controller.getByContract)
 router.get('/:country', controller.getByCountry)
