@@ -27,6 +27,7 @@ module.exports.register = async function (req, res) {
 
     const user = new User(
         userEmail,
+        //userPassword,
         bcrypt.hashSync(userPassword, salt),
         userName)
 
@@ -52,7 +53,18 @@ module.exports.register = async function (req, res) {
 }
 
 module.exports.changeData = function (req, res) {
-
+    const salt = bcrypt.genSaltSync(10)
+    const newPassword = req.body.password
+    database.changeData(databaseName,
+        {email: req.body.email},
+        {password: bcrypt.hashSync(newPassword, salt)})
+        .then(() => {
+            res.status(201).json({
+                message: "password successfully changing"
+            })
+            console.log(`user's password with email ${req.body.email} successfully changing`)
+        })
+        .catch(error => errorHandler(res, error))
 }
 
 module.exports.getById = async function (req, res) {
