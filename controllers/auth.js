@@ -27,8 +27,8 @@ module.exports.register = async function (req, res) {
 
     const user = new User(
         userEmail,
-        //userPassword,
-        bcrypt.hashSync(userPassword, salt),
+        userPassword,
+        //bcrypt.hashSync(userPassword, salt),
         userName)
 
     database.isExist(databaseName, {email: user.email})
@@ -67,6 +67,11 @@ module.exports.changeData = function (req, res) {
         .catch(error => errorHandler(res, error))
 }
 
-module.exports.getById = async function (req, res) {
-
+module.exports.getByEmail = async function (req, res) {
+    database.getDataByParam(databaseName, {email: req.params.email}, ['name', 'email'])
+        .then(data => {
+            console.log(data)
+            res.status(200).json(data)
+        })
+        .catch(error => {errorHandler(res, error)})
 }

@@ -12,6 +12,6 @@ router.post('/register', controller.register)
 router.patch('/change', controller.changeData)
 
 // get user data (name) for display on pages
-router.get('/:id', controller.getById)
+router.get('/:email', controller.getByEmail)
 
 module.exports = router
