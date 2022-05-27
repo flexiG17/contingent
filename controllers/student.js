@@ -28,7 +28,6 @@ module.exports.getAll = function (req, res) {
 module.exports.getForMainPage = function (req, res) {
     database.getCurrentData(databaseName, columnsToDisplay)
         .then(result => {
-            console.log(result)
             res.status(200).json(result)
         })
         .catch(error => errorHandler(res, error))
@@ -64,7 +63,7 @@ module.exports.update = function (req, res) {
 
     const student = new Student(req)
 
-    database.changeData(databaseName,{passport_number: student.passportNumber}, student.getModel())
+    database.changeData(databaseName, {passport_number: student.passportNumber}, student.getModel())
         .then(() => {
             res.status(201).json({
                 message: "Student data successfully changing"
@@ -107,16 +106,88 @@ module.exports.getByRussianName = async function (req, res) {
         .then(data => {
             res.status(200).json(data)
         })
-        .catch(error => {errorHandler(res, error)})
+        .catch(error => {
+            errorHandler(res, error)
+        })
 }
 
-module.exports.getByEnglishName = async function (req, res) {
-    database.getDataByParam(databaseName, {latin_name: req.query.latinName}, columnsToDisplay)
+module.exports.getByParam = async function (req, res) {
+    const dataToFilter = [
+        req.query.latinName,
+        req.query.russianName,
+        req.query.birthDate,
+        req.query.contract,
+        req.query.country,
+        req.query.passport,
+        req.query.agentName,
+        req.query.agentEmail,
+        req.query.agentPhone
+    ]
+    let resultFilter = []
+    let condition = []
+    let resultCondition = {}
+
+    for (let i = 0; i < dataToFilter.length; i += 1) {
+        if (dataToFilter[i] != null) {
+            resultFilter.push(dataToFilter[i])
+        }
+    }
+
+    for (let i = 0; i < resultFilter.length; i += 1) {
+        switch (resultFilter[i]) {
+            case req.query.latinName:
+                //condition.push({latin_name: resultFilter[i]})
+                resultCondition.latin_name = resultFilter[i]
+                //console.log(resultCondition)
+                break;
+            case req.query.russianName:
+                //condition.push({russian_name: resultFilter[i]})
+                resultCondition.russian_name = resultFilter[i]
+                break;
+            case req.query.birthDate:
+                //condition.push({birth_date: resultFilter[i]})
+                resultCondition.birth_date = resultFilter[i]
+                break;
+            case req.query.contract:
+                //condition.push({contract_number: resultFilter[i]})
+                resultCondition.contract_number = resultFilter[i]
+                break;
+            case req.query.country:
+                //condition.push({country: resultFilter[i]})
+                resultCondition.country = resultFilter[i]
+                //console.log(resultCondition)
+                break;
+            case req.query.passport:
+                //condition.push({passport_number: resultFilter[i]})
+                resultCondition.passport_number = resultFilter[i]
+                break;
+            case req.query.agentName:
+                //condition.push({agent_name: resultFilter[i]})
+                resultCondition.agent_name = resultFilter[i]
+                break;
+            case req.query.agentEmail:
+                //condition.push({agent_email: resultFilter[i]})
+                resultCondition.agent_email = resultFilter[i]
+                break;
+            case req.query.agentPhone:
+                //condition.push({agent_phone_number: resultFilter[i]})
+                resultCondition.agent_phone_number = resultFilter[i]
+                break;
+
+        }
+    }
+    console.log(`condition: ${resultCondition}`)
+    //res.status(200).json(resultCondition)
+
+    database.getDataByParam(databaseName, condition, columnsToDisplay)
         .then(data => {
             res.status(200).json(data)
         })
-        .catch(error => {errorHandler(res, error)})
+        .catch(error => {
+            errorHandler(res, error)
+        })
 }
+/*
 
 module.exports.getByBirthDate = function (req, res) {
 
@@ -138,10 +209,11 @@ module.exports.getByAgentName = function (req, res) {
 
 }
 
-module.exports.getByEmailName = function (req, res) {
+module.exports.getByAgentEmail = function (req, res) {
 
 }
 
-module.exports.getByPhoneName = function (req, res) {
+module.exports.getByAgentPhone = function (req, res) {
 
 }
+*/

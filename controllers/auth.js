@@ -35,7 +35,7 @@ module.exports.register = async function (req, res) {
         .then(userExistsInSystem => {
             if (userExistsInSystem) {
                 res.status(409).json({
-                    message: `User "${user.name}" exists in system. Try again`
+                    message: `User ${user.name} exists in system. Try again`
                 })
 
                 console.log(`User \"${user.name}\" exists in system`)

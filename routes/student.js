@@ -12,7 +12,9 @@ router.patch('/update', controller.update)
 router.delete('/remove', controller.remove)
 
 // я хз почему, но это должно стоять впереди..
-router.get('/filter', controller.getByEnglishName)
+router.get('/filter', controller.getByParam)
+/*
+router.get('/filter', controller.getByRussianName)
 
 router.get('/:id', controller.getById)
 router.get('/:russianName', controller.getByRussianName)
@@ -21,7 +23,7 @@ router.get('/:contract', controller.getByContract)
 router.get('/:country', controller.getByCountry)
 router.get('/:passport', controller.getByPassport)
 router.get('/:agentName', controller.getByAgentName)
-router.get('/:agentEmail', controller.getByEmailName)
-router.get('/:agentPhone', controller.getByPhoneName)
+router.get('/:agentEmail', controller.getByAgentEmail)
+router.get('/:agentPhone', controller.getByAgentPhone)*/
 
 module.exports = router
