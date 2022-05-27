@@ -1,0 +1,41 @@
+/*Позиционирование*/
+.nav{
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.serchbar_position{
+    padding-left: 20px;
+}
+
+
+/*Кнопка добавить студента*/
+
+
+.add_student_btn{
+    margin-left: auto;
+    margin-right: 0;
+    display: flex;
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+    padding: 8px 16px;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FA7A45;
+    width: 230px;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+}
+
+.add_student_btn:hover{
+    background-color: #FF4B00;
+}
+

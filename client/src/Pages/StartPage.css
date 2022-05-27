@@ -1,0 +1,65 @@
+.greeting_container{
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    align-items: center;
+}
+
+.LeftSide_greeting{
+    position: relative;
+    margin-top: 35%;
+    display: flex;
+    flex-direction: column;
+}
+
+.RightSide_greeting{
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 26%;
+}
+
+.Top_header{
+    color: #FA7A45;
+    font-size: 45px;
+    font-weight: 500;
+    margin: 0;
+
+}
+
+.Sub_header{
+    color: #FA7A45;
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.Start_Logo{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.Sub_sub_header{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    color: #FA7A45;
+}
+
+.button_start{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #FA7A45;
+    padding: 14px 100px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.button_start:hover{
+    background-color: #FF4B00;
+}

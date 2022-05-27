@@ -1,0 +1,34 @@
+.searchInput{
+    display: flex;
+}
+
+.search input{
+    background-color: #fff;
+    border: 1px solid #FA7A45;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    padding: 12px;
+    height: 14px;
+    width: 300px;
+}
+
+input:focus{
+    outline: none;
+}
+
+.searchIcon{
+    margin-left: 3px;
+    height: 40px;
+    width: 45px;
+    border-radius: 3px;
+    background-color: #FA7A45;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+}
+
+.searchIcon svg{
+    font-size: 25px;
+    color: #fff;
+}

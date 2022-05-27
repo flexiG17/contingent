@@ -1,0 +1,38 @@
+.container_AddStudent {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 100px;
+}
+
+.title_AddStudent {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    color: #FA7A45;
+    font-weight: 500;
+}
+
+.button_position_addStud {
+    display: flex;
+    justify-content: center;
+}
+
+.button_style_addStudent {
+    width: 200px;
+    height: 45px;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #fff;
+    border: 2px solid #FA7A45;
+    color: #FA7A45;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.button_style_addStudent:disabled {
+    background-color: #FA7A45;
+    border: none;
+    color: #fff;
+    cursor: auto;
+}
