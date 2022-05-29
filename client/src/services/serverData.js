@@ -7,9 +7,9 @@ export function setUser(item) {
     return fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify({item})
+        body: JSON.stringify(item)
     })
         .then(data => data.json())
 }
