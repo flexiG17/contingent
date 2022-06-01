@@ -43,6 +43,9 @@ module.exports = class Student {
         this.documentPath = req.body.documentPath
         this.firstPayment = req.body.firstPayment
         this.secondPayment = req.body.secondPayment
+        this.thirdPayment = req.body.thirdPayment
+        this.fourthPayment = req.body.fourthPayment
+        this.scholarship = req.body.scholarship
         this.comments = req.body.comments
     }
 
@@ -90,7 +93,10 @@ module.exports = class Student {
             document_path: this.documentPath,
             first_payment: this.firstPayment,
             second_payment: this.secondPayment,
-            comments: this.comments,
+            third_payment : this.thirdPayment,
+            fourth_payment : this.fourthPayment,
+            scholarship : this.scholarship,
+            comments: this.comments
         }
     }
 }
