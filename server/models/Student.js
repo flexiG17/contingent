@@ -1,6 +1,6 @@
 module.exports = class Student {
 
-    constructor(req) {
+    constructor(req, pathFile) {
         this.educationType = req.body.educationType
         this.directionNumber = req.body.directionNumber
         this.country = req.body.country
@@ -40,7 +40,7 @@ module.exports = class Student {
         this.hoursNumber = req.body.hoursNumber
         this.entryDate = req.body.entryDate
         this.visaValidity = req.body.visaValidity
-        this.documentPath = req.body.documentPath
+        this.documentPath = pathFile
         this.firstPayment = req.body.firstPayment
         this.secondPayment = req.body.secondPayment
         this.thirdPayment = req.body.thirdPayment

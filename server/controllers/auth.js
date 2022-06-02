@@ -20,7 +20,7 @@ module.exports.login =  function (req, res) {
                     const token = jwt.sign({
                         email: user.email,
                         userId: user.id
-                    }, keys.jwt, {expiresIn: 60 * 60 * 8})
+                    }, keys.jwt, {expiresIn: 60 * 60})
 
                     res.status(200).json({
                         token: `Bearer ${token}`
