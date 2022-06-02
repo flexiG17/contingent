@@ -33,8 +33,9 @@ module.exports.getForMainPage = function (req, res) {
         .catch(error => errorHandler(res, error))
 }
 
-module.exports.create = function (req, res) {
-    const student = new Student(req)
+module.exports.create = async function (req, res) {
+    const filePath = req.file ? req.file.path : ''
+    const student = new Student(req, filePath)
 
     database.isExist(databaseName, {passport_number: student.passportNumber})
         .then(studentExistsInSystem => {
@@ -61,7 +62,11 @@ module.exports.create = function (req, res) {
 
 module.exports.update = function (req, res) {
 
-    const student = new Student(req)
+    let filePath = ''
+    if (req.file) {
+        filePath = req.file
+    }
+    const student = new Student(req, filePath)
 
     database.changeData(databaseName, {passport_number: student.passportNumber}, student.getModel())
         .then(() => {
