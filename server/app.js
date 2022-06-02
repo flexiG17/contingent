@@ -16,6 +16,7 @@ app.use(passport.initialize())
 require('./middleware/passport')(passport)
 
 app.use(cors()) // app.use() - дает возможность добавлять плагины, роуты
+app.use('/uploads', express.static('uploads'))
 app.use(morgan('dev')) // dev - режим разработки
 app.use(bodyParser.urlencoded({extended: true})) // помогает декодировать Url
 app.use(bodyParser.json()) // помогает генерировать js объекты из json, который мы получаем
