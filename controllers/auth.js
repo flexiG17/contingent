@@ -1,22 +1,45 @@
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const User = require('../models/User')
 const database = require('../utils/database')
 const errorHandler = require('../utils/errorHandler')
+const keys = require('../config/keys')
 
 const databaseName = 'users'
 
-// req - все данные, которые отправляет пользователь
-module.exports.login = function (req, res) {
-    res.status(200).json({
-        login: {
-            email: req.body.email,
-            password: req.body.password
-        }
-    })
+module.exports.login =  function (req, res) {
+    database.isExist(databaseName, {email: req.body.email})
+        .then(async userExistInSystem => {
+            if (userExistInSystem) {
+                const [user] = await database.getDataByCondition(databaseName, {email: req.body.email})
+                const passwordResult = bcrypt.compareSync(req.body.password, user.password)
+
+                if (passwordResult){
+                    // генерация токена, пароли совпали
+                    const token = jwt.sign({
+                        email: user.email,
+                        userId: user.id
+                    }, keys.jwt, {expiresIn: 60 * 60 * 8})
+
+                    res.status(200).json({
+                        token: `Bearer ${token}`
+                    })
+                } else {
+                    // пароли не совпали
+                    res.status(401).json({
+                        message: 'Пароли не совпадают, попробуйте снова'
+                    })
+                }
+            } else {
+                res.status (404).json({
+                    message: `Пользователь с email: ${req.body.email} не найден в системе`
+                })
+            }
+        })
+        .catch(error => errorHandler(res, error))
 }
 
-//req.body.email or req.body.password - получать данные от пользователя
 module.exports.register = async function (req, res) {
 
     const userEmail = req.body.email
@@ -27,8 +50,8 @@ module.exports.register = async function (req, res) {
 
     const user = new User(
         userEmail,
-        userPassword,
-        //bcrypt.hashSync(userPassword, salt),
+        //userPassword,
+        bcrypt.hashSync(userPassword, salt),
         userName)
 
     database.isExist(databaseName, {email: user.email})
