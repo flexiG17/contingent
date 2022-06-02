@@ -6,6 +6,10 @@ module.exports.isExist = async (databaseName, condition) => {
     return database.length !== 0
 }
 
+module.exports.getOneField = (databaseName, condition) => {
+    return db(databaseName).where(condition)
+}
+
 module.exports.save = async (databaseName, param) => {
     await db(databaseName).insert([param])
 }
@@ -31,6 +35,6 @@ module.exports.getId = async (databaseName, condition) => {
     return parseInt(await db(databaseName).where(condition).pluck('id'))
 }
 
-module.exports.getDataByParam = async (databaseName, condition, columnsToDisplay) => {
+module.exports.getDataForDisplay = async (databaseName, condition, columnsToDisplay) => {
     return db(databaseName).where(condition).select(columnsToDisplay)
 }
