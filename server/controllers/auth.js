@@ -91,7 +91,7 @@ module.exports.changeData = function (req, res) {
 }
 
 module.exports.getByEmail = async function (req, res) {
-    database.getDataByParam(databaseName, {email: req.params.email}, ['name', 'email'])
+    database.getDataWithSelectedColumns(databaseName, {email: req.params.email}, ['name', 'email'])
         .then(data => {
             console.log(data)
             res.status(200).json(data)

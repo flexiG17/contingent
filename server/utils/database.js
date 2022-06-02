@@ -35,6 +35,6 @@ module.exports.getId = async (databaseName, condition) => {
     return parseInt(await db(databaseName).where(condition).pluck('id'))
 }
 
-module.exports.getDataForDisplay = async (databaseName, condition, columnsToDisplay) => {
+module.exports.getDataWithSelectedColumns = async (databaseName, condition, columnsToDisplay) => {
     return db(databaseName).where(condition).select(columnsToDisplay)
 }

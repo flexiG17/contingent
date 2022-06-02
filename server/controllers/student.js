@@ -102,7 +102,7 @@ module.exports.getById = function (req, res) {
 }
 
 module.exports.getByRussianName = async function (req, res) {
-    database.getDataForDisplay(databaseName, {russian_name: req.params.russianName}, columnsToDisplay)
+    database.getDataWithSelectedColumns(databaseName, {russian_name: req.params.russianName}, columnsToDisplay)
         .then(data => {
             res.status(200).json(data)
         })
