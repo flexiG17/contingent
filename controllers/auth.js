@@ -12,7 +12,7 @@ module.exports.login =  function (req, res) {
     database.isExist(databaseName, {email: req.body.email})
         .then(async userExistInSystem => {
             if (userExistInSystem) {
-                const [user] = await database.getDataByCondition(databaseName, {email: req.body.email})
+                const [user] = await database.getOneField(databaseName, {email: req.body.email})
                 const passwordResult = bcrypt.compareSync(req.body.password, user.password)
 
                 if (passwordResult){
