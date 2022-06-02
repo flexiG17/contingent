@@ -1,14 +1,16 @@
 const express = require('express')
-const controller = require('../controllers/student')
 const passport = require('passport')
+
+const controller = require('../controllers/student')
+const upload = require('../middleware/upload')
 const router = express.Router()
 
 //localhost:5000/api/student
 router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
 router.get('/main', passport.authenticate('jwt', {session: false}), controller.getForMainPage)
-router.post('/create', passport.authenticate('jwt', {session: false}), controller.create)
+router.post('/create', passport.authenticate('jwt', {session: false}), upload.single('documentPath'), controller.create)
 // нужно не /update, а удалять по опр. ключу (например, /:passportNumber)
-router.patch('/update', passport.authenticate('jwt', {session: false}), controller.update)
+router.patch('/update', passport.authenticate('jwt', {session: false}), upload.single('documentPath'), controller.update)
 // нужно не /remove, а удалять по опр. ключу (например, /:passportNumber)
 router.delete('/remove', passport.authenticate('jwt', {session: false}), controller.remove)
 
