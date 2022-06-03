@@ -40,7 +40,7 @@ function LoginPage() {
                         <label className="checkbox_style_login">
                             <input type="checkbox" placeholder="Запомните меня"/> Запомните меня
                         </label>
-                        <NavLink onSubmit={handleSubmit} to="/HomePage" className="button_style_login"> Войти </NavLink>
+
                         <button type="submit" className="button_style_login" > Войти</button>
                     </form>
                 </div>

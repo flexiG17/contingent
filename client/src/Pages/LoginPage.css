@@ -56,12 +56,15 @@
     font-weight: 500;
     color: #fff;
     border-radius: 5px;
-    width: 60px;
+    border:none;
+    width: 110px;
     padding: 12px;
     padding-left: 20px;
     padding-right: 20px;
     text-align: center;
     margin-top: 25px;
+    font-family: 'Montserrat', sans-serif;
+    cursor:pointer;
 }
 
 .button_style_login:hover{
