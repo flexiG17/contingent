@@ -18,8 +18,9 @@ module.exports.login =  function (req, res) {
                 if (passwordResult){
                     // генерация токена, пароли совпали
                     const token = jwt.sign({
+                        userId: user.id,
                         email: user.email,
-                        userId: user.id
+                        name: user.name
                     }, keys.jwt, {expiresIn: 60 * 60})
 
                     res.status(200).json({
@@ -50,7 +51,6 @@ module.exports.register = async function (req, res) {
 
     const user = new User(
         userEmail,
-        //userPassword,
         bcrypt.hashSync(userPassword, salt),
         userName)
 
@@ -66,7 +66,7 @@ module.exports.register = async function (req, res) {
                 const modelToSave = user.getModel()
                 database.save(databaseName, modelToSave)
                     .then(() => {
-                        res.status(201).json(user)
+                        res.status(201).json({message: `It\`s a new user. Added to database ${user.name} with email ${user.email}`})
                         console.log(`It\`s a new user. Added to database \"${user.name}\" with email \"${user.email}\"`)
                     })
                     .catch(error => errorHandler(res, error))

@@ -18,8 +18,6 @@ const columnsToDisplay = [
 module.exports.getAll = function (req, res) {
     database.getAllData(databaseName)
         .then(data => {
-            console.log(data)
-
             res.status(200).json({data})
         })
         .catch(error => errorHandler(res, error))

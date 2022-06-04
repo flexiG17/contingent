@@ -9,7 +9,7 @@ router.post('/create', passport.authenticate('jwt', {session: false}), controlle
 // change data notification
 router.patch('/change', passport.authenticate('jwt', {session: false}), controller.update)
 // get all notifications for display on pages for current user
-router.get('/:userId', passport.authenticate('jwt', {session: false}), controller.getByUserId)
+router.get('/', passport.authenticate('jwt', {session: false}), controller.getByUserId)
 // delete notification by id
 router.delete('/:id', passport.authenticate('jwt', {session: false}), controller.remove)
 
