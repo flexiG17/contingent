@@ -8,9 +8,9 @@ const router = express.Router()
 //localhost:5000/api/student
 router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
 router.get('/main', passport.authenticate('jwt', {session: false}), controller.getForMainPage)
-router.post('/create', passport.authenticate('jwt', {session: false}), upload.single('documentPath'), controller.create)
+router.post('/create', passport.authenticate('jwt', {session: false}), upload.any(), controller.create)
 // нужно не /update, а удалять по опр. ключу (например, /:passportNumber)
-router.patch('/update', passport.authenticate('jwt', {session: false}), upload.single('documentPath'), controller.update)
+router.patch('/update', passport.authenticate('jwt', {session: false}), upload.any(), controller.update)
 // нужно не /remove, а удалять по опр. ключу (например, /:passportNumber)
 router.delete('/remove', passport.authenticate('jwt', {session: false}), controller.remove)
 

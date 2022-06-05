@@ -18,7 +18,7 @@ const columnsToDisplay = [
 module.exports.getAll = function (req, res) {
     database.getAllData(databaseName)
         .then(data => {
-            res.status(200).json({data})
+            res.status(200).json(data)
         })
         .catch(error => errorHandler(res, error))
 }
@@ -32,7 +32,7 @@ module.exports.getForMainPage = function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-    const filePath = req.file ? req.file.path : ''
+    const filePath = req.files ? `uploads\\\\${req.body.passportNumber}` : ""
     const student = new Student(req, filePath)
 
     database.isExist(databaseName, {passport_number: student.passportNumber})
