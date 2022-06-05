@@ -40,8 +40,7 @@
 .button_position_contract_doc{
     display: flex;
     justify-content: center;
-    margin-top: 50px;
-    margin-bottom: 100px;
+    margin-top: 20px;
 }
 
 .button_style_contract_doc{
@@ -59,6 +58,11 @@
 
 .button_style_contract_doc:hover{
     background-color: #FF4B00;
+}
+.button_style_contract_doc:disabled:hover{
+    background-color: #D0BDB5;
+    cursor:no-drop;
+    
 }
 
 .Doc_list{
@@ -84,4 +88,17 @@
 
 .label_doc:hover{
     background-color: #FF4B00;
+}
+
+.info_and_education_quota{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #FF4B00;
+}
+
+.checkbox_style_contract{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+
 }
