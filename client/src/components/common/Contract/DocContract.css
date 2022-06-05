@@ -40,7 +40,7 @@
 .button_position_contract_doc{
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 100px;
 }
 
@@ -84,4 +84,17 @@
 
 .label_doc:hover{
     background-color: #FF4B00;
+}
+
+.info_and_education_contaner{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid #FF4B00;
+}
+
+.checkbox_style_contract{
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+
 }
