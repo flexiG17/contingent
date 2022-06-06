@@ -25,21 +25,16 @@ import {useEffect, useState} from "react";
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 
-import {getStudents} from '../../../services/serverData'
+import {getNotifications} from '../../../services/serverData'
 
-function createData(education_type, russian_name, latin_name, country, gender, contract_number, enrollment_order, enrollment) {
+function createData(type, student_name, date, status) {
     return {
-        education_type,
-        russian_name,
-        latin_name,
-        country,
-        gender,
-        contract_number,
-        enrollment_order,
-        enrollment
+        type,
+        student_name,
+        date,
+        status
     };
 }
-
 
 // let rows =  [
 //     createData('Name1', 'Surname1', 'India', 'Муж.', 124, 23, 'yes', 'tata'),
@@ -53,7 +48,7 @@ function createData(education_type, russian_name, latin_name, country, gender, c
 // ];
 
 
- let rows = []
+let rows = []
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -87,28 +82,28 @@ function stableSort(array, comparator) {
 
 const headCells = [
     {
-        id: 'education_type',
+        id: 'type',
         numeric: false,
         disablePadding: true,
         label: 'Тип уведомления',
     },
     {
-        id: 'russian_name',
+        id: 'student_name',
         numeric: false,
         disablePadding: true,
         label: 'ФИО студента',
     },
     {
-        id: 'Status',
-        numeric: false,
-        disablePadding: false,
-        label: 'Статус',
-    },
-    {
-        id: 'Date',
+        id: 'date',
         numeric: false,
         disablePadding: false,
         label: 'Дата',
+    },
+    {
+        id: 'status',
+        numeric: false,
+        disablePadding: false,
+        label: 'Статус',
     }
 ];
 
@@ -241,7 +236,7 @@ export default function Calls() {
     const [list, setList] = useState([]);
     useEffect(() => {
         let mounted = true;
-        getStudents()
+        getNotifications()
             .then(items => {
                 if (mounted) {
                     setList(items)
@@ -256,14 +251,10 @@ export default function Calls() {
         }
         const iData = list[i]
         const check = createData(
-            iData.education_type,
-            iData.russian_name,
-            iData.latin_name,
-            iData.country,
-            iData.gender,
-            iData.contract_number,
-            iData.enrollment_order,
-            iData.enrollment)
+            iData.type,
+            iData.student_name,
+            iData.date,
+            iData.status)
         rows.push(check)
     }
 
@@ -275,7 +266,7 @@ export default function Calls() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.name);
+            const newSelecteds = rows.map((n) => n.student_name);
             setSelected(newSelecteds);
             return;
         }
@@ -353,17 +344,17 @@ export default function Calls() {
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.name);
+                                    const isItemSelected = isSelected(row.student_name);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.name)}
+                                            onClick={(event) => handleClick(event, row.student_name)}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row.student_name}
                                             selected={isItemSelected}
                                         >
                                             <TableCell padding="checkbox">
@@ -382,15 +373,12 @@ export default function Calls() {
                                                 padding="none"
                                                 align="center"
                                             >
-                                                {row.education_type}
+                                                {row.type}
                                             </TableCell>
-                                            <TableCell align="center">{row.latin_name}</TableCell>
-                                            <TableCell align="center">{row.russian_name}</TableCell>
-                                            <TableCell align="center">{row.country}</TableCell>
+                                            <TableCell align="center">{row.student_name}</TableCell>
+                                            <TableCell align="center">{row.date}</TableCell>
+                                            <TableCell align="center">{row.status}</TableCell>
                                             <TableCell align="center">{row.gender}</TableCell>
-                                            <TableCell align="center">{row.contract_number}</TableCell>
-                                            <TableCell align="center">{row.enrollment_order}</TableCell>
-                                            <TableCell align="center">{row.enrollment}</TableCell>
                                         </TableRow>
                                     );
                                 })}
