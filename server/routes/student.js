@@ -6,8 +6,8 @@ const upload = require('../middleware/upload')
 const router = express.Router()
 
 //localhost:5000/api/student
-router.get('/', passport.authenticate('jwt', {session: false}), controller.getAll)
-router.get('/main', passport.authenticate('jwt', {session: false}), controller.getForMainPage)
+router.get('/', controller.getAll)
+router.get('/main', controller.getForMainPage)
 router.post('/create', passport.authenticate('jwt', {session: false}), upload.any(), controller.create)
 // нужно не /update, а удалять по опр. ключу (например, /:passportNumber)
 router.patch('/update', passport.authenticate('jwt', {session: false}), upload.any(), controller.update)

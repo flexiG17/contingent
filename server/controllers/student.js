@@ -5,14 +5,13 @@ const errorHandler = require('../utils/errorHandler')
 const databaseName = 'students'
 const columnsToDisplay = [
     'education_type',
-    'country',
     'latin_name',
     'russian_name',
-    'enrollment',
-    'enrollment_order',
-    'expulsion_order',
-    'contract_number',
+    'country',
     'gender',
+    'contract_number',
+    'enrollment_order',
+    'enrollment',
 ]
 
 module.exports.getAll = function (req, res) {
