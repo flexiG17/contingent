@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './LoginPage.css';
 import Logo from './logo.png';
 import {NavLink} from "react-router-dom";
@@ -7,6 +7,15 @@ import {loginUser} from '../services/serverData'
 function LoginPage() {
     const [inputEmail, setEmailItemInput] = useState('')
     const [inputPassword, setPasswordItemInput] = useState('')
+    const [alert, setAlert] = useState(false);
+
+    useEffect(() => {
+        if(alert) {
+            setTimeout(() => {
+                setAlert(false);
+            }, 3000)
+        }
+    }, [alert])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -15,6 +24,12 @@ function LoginPage() {
             password: inputPassword
         }
         loginUser(data)
+            .then(() => {
+                setEmailItemInput('');
+                setPasswordItemInput('');
+                setAlert(true);
+            })
+            .catch(() => setAlert(false))
     };
 
     return (
@@ -25,6 +40,8 @@ function LoginPage() {
 
 
                     <form className="form_style" onSubmit={handleSubmit}>
+
+                        {alert && <h4> Login Successful</h4>}
                         <label className="label_style" htmlFor="email">Email</label>
                         <input className="input_style" name="email" type="email" placeholder="Введите свой email"
                                onChange={event => setEmailItemInput(event.target.value)} value={inputEmail}/>
