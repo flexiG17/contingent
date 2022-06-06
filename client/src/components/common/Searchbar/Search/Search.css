@@ -28,6 +28,10 @@ input:focus{
     cursor: pointer;
 }
 
+.searchIcon:hover{
+    background-color: #FF4B00;
+}
+
 .searchIcon svg{
     font-size: 25px;
     color: #fff;

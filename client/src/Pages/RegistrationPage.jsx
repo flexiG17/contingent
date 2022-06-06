@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import './RegistrationPage.css';
 import Logo from './logo.png';
-import {NavLink} from "react-router-dom";
+// import {NavLink} from "react-router-dom";
 import {registerUser} from '../services/serverData'
 
 function RegisterPage() {

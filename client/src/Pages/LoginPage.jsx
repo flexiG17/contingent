@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import './LoginPage.css';
 import Logo from './logo.png';
-import {NavLink} from "react-router-dom";
-import {setUser} from '../services/serverData'
+// import {NavLink} from "react-router-dom";
+// import {setUser} from '../services/serverData'
 
 function LoginPage() {
     const [inputName, setNameItemInput] = useState('')
@@ -16,7 +16,7 @@ function LoginPage() {
             email: inputEmail,
             password: inputPassword
         }
-        setUser(data)
+        // setUser(data)
     };
 
     return (
