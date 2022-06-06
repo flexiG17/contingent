@@ -7,7 +7,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import PersonIcon from '@mui/icons-material/Person';
-import Logo from '../Navbar/no-avatar.png';
+
 
 
 
@@ -39,5 +39,3 @@ function Navbar () {
 export default Navbar;
 
 
-/*<NavLink to="/Massages" className="navbar__item"><EmailIcon sx={{ fontSize: 20 }} /> <div className="nav__pad"> Уведомления </div> </NavLink>
-<NavLink to="/" className="navbar__item"><ExitToAppIcon sx={{ fontSize: 20 }} /> <div className="nav__pad"> Выход </div> </NavLink >*/

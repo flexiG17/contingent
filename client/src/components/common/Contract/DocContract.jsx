@@ -17,12 +17,20 @@ function DocContract() {
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Личные данные</p>
-                        <input type="text" placeholder="Имя" className="input_style_contract"/>
-                        <input type="text" placeholder="Фамилия" className="input_style_contract"/>
+                        <input type="text" placeholder="Ф.И.О." className="input_style_contract"/>
                         <input type="text" placeholder="Name" className="input_style_contract"/>
                         <input type="text" placeholder="Secont name" className="input_style_contract"/>
+                        <input type="text" placeholder="Нахождение в РФ" className="input_style_contract"/>
                         <p className="tytle_contract_info"> Контактные данные</p>
                         <input type="text" placeholder="Контактный телефон" className="input_style_contract"/>
+                        <input type="text" placeholder="E-mail" className="input_style_contract"/>
+                        <p className="tytle_contract_info"> Контактные данные агента</p>
+                        <input type="text" placeholder="Ф.И.О." className="input_style_contract"/>
+                        <input type="text" placeholder="Телефон" className="input_style_contract"/>
+                        <input type="text" placeholder="E-mail" className="input_style_contract"/>
+                        <p className="tytle_contract_info"> Контактные данные представителя</p>
+                        <input type="text" placeholder="Ф.И.О." className="input_style_contract"/>
+                        <input type="text" placeholder="Телефон" className="input_style_contract"/>
                         <input type="text" placeholder="E-mail" className="input_style_contract"/>
                     </div>
                     <div className="column_style_contract">
@@ -47,16 +55,22 @@ function DocContract() {
                         <p className="tytle_contract_education"> Уровень образования</p>
                         <input type="text" placeholder="Уровень полученного образования" className="input_style_contract"/>
                         <input type="text" placeholder="Наименование учебного заведения" className="input_style_contract"/>
-                        <input type="text" placeholder="Адрес учебного заведения" className="input_style_contract"/>
-                        <input type="text" placeholder="Год окончания" className="input_style_contract"/>
                         <input type="text" placeholder="Область образования" className="input_style_contract"/>
-                        <input type="text" placeholder="Контактный телефон" className="input_style_contract"/>
+                        <p className="tytle_contract_education"> Нынешнее образование </p>
+                        <input type="text" placeholder="Форма обучения" className="input_style_contract"/>
                     </div>
                     <div className="column_style_contract">
-                        <p className="tytle_contract_education"> Нынешнее образование </p>
-                        <input type="text" placeholder="Уровень желаемого образования" className="input_style_contract"/>
-                        <input type="text" placeholder="Форма обучения" className="input_style_contract"/>
-                        <input type="text" placeholder="Образовательная организация" className="input_style_contract"/>
+                        <p className="tytle_contract_education"> Статус </p>
+                        <input type="text" placeholder="Статус зачисления" className="input_style_contract"/>
+                        <input type="text" placeholder="Номер приказа о зачислении" className="input_style_contract"/>
+                        <input type="text" placeholder="Номер приказа об отчислении" className="input_style_contract"/>
+                        <input type="text" placeholder="Номер договора" className="input_style_contract"/>
+                        <input type="text" placeholder="Куратор" className="input_style_contract"/>
+                        <input type="text" placeholder="Оплата 1" className="input_style_contract"/>
+                        <input type="text" placeholder="Оплата 2" className="input_style_contract"/>
+                        <input type="text" placeholder="Оплата 3" className="input_style_contract"/>
+                        <input type="text" placeholder="Оплата 4" className="input_style_contract"/>
+                        <input type="text" placeholder="Статус 1с" className="input_style_contract"/>
                     </div>
                 </div>
             </div>
