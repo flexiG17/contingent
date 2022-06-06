@@ -17,7 +17,10 @@ module.exports = passport => {
                 database.isExist('users', {id: payload.userId})
                     .then(userExistInSystem => {
                         if (userExistInSystem){
-                            const user = database.getDataWithSelectedColumns('users', {id: payload.userId}, ['email', 'id'])
+                            const user = database.getDataWithSelectedColumns(
+                                'users',
+                                {id: payload.userId},
+                                ['name', 'email', 'id'])
                             done(null, user)
                         } else {
                             done(null, false)

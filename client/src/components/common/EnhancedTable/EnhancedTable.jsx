@@ -27,31 +27,31 @@ import {visuallyHidden} from '@mui/utils';
 import {useEffect, useState} from "react";
 //import React, {useEffect, useState} from "react";
 
-import {getUser} from '../../../services/serverData'
+import {getStudents} from '../../../services/serverData'
 
-function createData(russian_name, latin_name, county, gender, contract_number, enrollment_order, expulsion_order, enrollment) {
+function createData(education_type, russian_name, latin_name, country, gender, contract_number, enrollment_order, enrollment) {
     return {
+        education_type,
         russian_name,
         latin_name,
-        county,
+        country,
         gender,
         contract_number,
         enrollment_order,
-        expulsion_order,
         enrollment
     };
 }
 
 /*
 let rows =  [
-    createData('Name1', 'Surname1', 'India', 'Муж.', 124, 23, 'yes'),
-    createData('Name2', 'Surname2', 'India', 'Жен.', 125, 24, 'yes'),
-    createData('Name3', 'Surname3', 'Pakistan', 'Муж.', 153, 30, 'no'),
-    createData('Name4', 'Surname4', 'China', 'Жен.', 113, 10, 'no'),
-    createData('Name5', 'Surname5', 'Pakistan', 'Муж.', 143, 40, 'yes'),
-    createData('Name6', 'Surname6', 'China', 'Жен.', 12, 20, 'yes'),
-    createData('Name7', 'Surname7', 'China', 'Муж.', 433, 30, 'no'),
-    createData('Name8', 'Surname8', 'Kazakhstan', 'Жен.', 163, 20, 'yes'),
+    createData('Name1', 'Surname1', 'India', 'Муж.', 124, 23, 'yes', 'tata'),
+    createData('Name2', 'Surname2', 'India', 'Жен.', 125, 24, 'yes', 'tata'),
+    createData('Name3', 'Surname3', 'Pakistan', 'Муж.', 153, 30, 'no', 'tata'),
+    createData('Name4', 'Surname4', 'China', 'Жен.', 113, 10, 'no', 'tata'),
+    createData('Name5', 'Surname5', 'Pakistan', 'Муж.', 143, 40, 'yes', 'tata'),
+    createData('Name6', 'Surname6', 'China', 'Жен.', 12, 20, 'yes', 'tata'),
+    createData('Name7', 'Surname7', 'China', 'Муж.', 433, 30, 'no', 'tata'),
+    createData('Name8', 'Surname8', 'Kazakhstan', 'Жен.', 163, 20, 'yes', 'tata'),
 ];
 */
 
@@ -89,6 +89,12 @@ function stableSort(array, comparator) {
 
 const headCells = [
     {
+        id: 'education_type',
+        numeric: false,
+        disablePadding: true,
+        label: 'Тип обучения',
+    },
+    {
         id: 'russian_name',
         numeric: false,
         disablePadding: true,
@@ -123,12 +129,6 @@ const headCells = [
         numeric: false,
         disablePadding: false,
         label: 'Номер приказа о зачислении',
-    },
-    {
-        id: 'expulsion_order',
-        numeric: false,
-        disablePadding: false,
-        label: 'Номер приказа об отчислении',
     },
     {
         id: 'enrollment',
@@ -262,12 +262,12 @@ export default function EnhancedTable() {
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const [list, setList] = useState([]);
     useEffect(() => {
         let mounted = true;
-        getUser()
+        getStudents()
             .then(items => {
                 if (mounted) {
                     setList(items)
@@ -276,20 +276,21 @@ export default function EnhancedTable() {
         return () => mounted = false
     }, [])
 
-    for (let i = list.length - 1; i > 0; i -= 1) {
-        if (rows.length === list.length){
+    for (let i = list.length - 1; i >= 0; i -= 1) {
+        if (rows.length === list.length) {
             break
         }
         const iData = list[i]
-        rows.push(createData(
+        const check = createData(
+            iData.education_type,
             iData.russian_name,
             iData.latin_name,
             iData.country,
             iData.gender,
             iData.contract_number,
             iData.enrollment_order,
-            iData.expulsion_order,
-            iData.enrollment))
+            iData.enrollment)
+        rows.push(check)
     }
 
     const handleRequestSort = (event, property) => {
@@ -407,14 +408,14 @@ export default function EnhancedTable() {
                                                 padding="none"
                                                 align="center"
                                             >
-                                                {row.russian_name}
+                                                {row.education_type}
                                             </TableCell>
                                             <TableCell align="center">{row.latin_name}</TableCell>
-                                            <TableCell align="center">{row.county}</TableCell>
+                                            <TableCell align="center">{row.russian_name}</TableCell>
+                                            <TableCell align="center">{row.country}</TableCell>
                                             <TableCell align="center">{row.gender}</TableCell>
                                             <TableCell align="center">{row.contract_number}</TableCell>
                                             <TableCell align="center">{row.enrollment_order}</TableCell>
-                                            <TableCell align="center">{row.expulsion_order}</TableCell>
                                             <TableCell align="center">{row.enrollment}</TableCell>
                                         </TableRow>
                                     );
@@ -432,7 +433,7 @@ export default function EnhancedTable() {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25, 50, 100]}
+                    rowsPerPageOptions={[10, 25, 50, 100]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}

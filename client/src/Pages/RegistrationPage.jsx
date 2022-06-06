@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import './LoginPage.css';
+import './RegistrationPage.css';
 import Logo from './logo.png';
 import {NavLink} from "react-router-dom";
-import {setUser} from '../services/serverData'
+import {registerUser} from '../services/serverData'
 
-function LoginPage() {
+function RegisterPage() {
     const [inputName, setNameItemInput] = useState('')
     const [inputEmail, setEmailItemInput] = useState('')
     const [inputPassword, setPasswordItemInput] = useState('')
@@ -16,32 +16,31 @@ function LoginPage() {
             email: inputEmail,
             password: inputPassword
         }
-        setUser(data)
+        registerUser(data)
     };
 
     return (
         <>
             <div className="form_container">
                 <div className="header_greeting">
-                    <div className="Login_Logo"><img src={Logo} width="250px" height="50px" alt=""/></div>
+                    <div className="Register_Logo"><img src={Logo} width="250px" height="50px" alt=""/></div>
 
 
                     <form className="form_style" onSubmit={handleSubmit}>
-                        <label className="label_style" htmlFor="email">Имя пользователя</label>
-                        <input className="input_style" name="email" type="text" placeholder="Введите своё имя"
+                        <label className="label_style" htmlFor="name">Имя сотрудника</label>
+                        <input className="input_style" name="name" type="text" placeholder="Введите имя сотрудника"
                                onChange={event => setNameItemInput(event.target.value)} value={inputName}/>
                         <label className="label_style" htmlFor="email">Email</label>
-                        <input className="input_style" name="email" type="email" placeholder="Введите свой email"
+                        <input className="input_style" name="email" type="email" placeholder="Введите email сотрудника"
                                onChange={event => setEmailItemInput(event.target.value)} value={inputEmail}/>
                         <label className="label_style" htmlFor="password">Пароль</label>
                         <input className="input_style" name="password" type="password"
-                               placeholder="Введите свой пароль"
+                               placeholder="Введите пароль сотрудника"
                                onChange={event => setPasswordItemInput(event.target.value)} value={inputPassword}/>
-                        <label className="checkbox_style_login">
+                        <label className="checkbox_style_register">
                             <input type="checkbox" placeholder="Запомните меня"/> Запомните меня
                         </label>
-
-                        <button type="submit" className="button_style_login" > Войти</button>
+                        <button type="submit" className="button_style_register">Зарегистрировать</button>
                     </form>
                 </div>
             </div>
@@ -49,4 +48,4 @@ function LoginPage() {
     )
 }
 
-export default LoginPage;
+export default RegisterPage;

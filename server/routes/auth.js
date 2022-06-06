@@ -7,7 +7,7 @@ const router = express.Router()
 router.post('/login', controller.login)
 
 // localhost:5000/api/auth/register
-router.post('/register', controller.register)
+router.post('/register', passport.authenticate('jwt', {session: false}), controller.register)
 
 // change password
 router.patch('/change', passport.authenticate('jwt', {session: false}), controller.changeData)
