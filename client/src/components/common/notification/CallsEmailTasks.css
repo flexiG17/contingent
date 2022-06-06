@@ -1,7 +1,28 @@
-.notification-position{
-    max-width: 1000px;
+.nav_calls{
+    max-width: 800px;
     display: flex;
     margin-left: auto;
     margin-right: auto;
+    padding-top: 80px;
+}
+.add_student_search_btn{
+    margin-left: auto;
+    margin-right: 0;
+    display: flex;
+    text-decoration: none;
+    font-size: 14px;
+    color: #fff;
+    padding: 8px 16px;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #FA7A45;
+    width: 260px;
+    border-radius: 2px;
+    align-items: center;
+    justify-content: space-between;
+    border: none;
+    cursor: pointer;
 }
 
+.add_student_search_btn:hover{
+    background-color: #FF4B00;
+}
