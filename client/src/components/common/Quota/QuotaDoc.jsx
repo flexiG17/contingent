@@ -18,13 +18,15 @@ function QuotaDoc() {
             <div className="columns_position">
                 <div className="column_style_contract">
                     <p className="tytle_contract_info"> Личные данные</p>
-                    <input type="text" placeholder="Имя" className="input_style_contract"/>
-                    <input type="text" placeholder="Фамилия" className="input_style_contract"/>
+                    <input type="text" placeholder="Ф.И.О." className="input_style_contract"/>
                     <input type="text" placeholder="Name" className="input_style_contract"/>
                     <input type="text" placeholder="Secont name" className="input_style_contract"/>
+                    <input type="text" placeholder="Нахождение в РФ" className="input_style_contract"/>
                     <p className="tytle_contract_info"> Контактные данные</p>
                     <input type="text" placeholder="Контактный телефон" className="input_style_contract"/>
                     <input type="text" placeholder="E-mail" className="input_style_contract"/>
+                    <p className="tytle_contract_info"> Примечание </p>
+                    <input type="text" placeholder="Введите примечание" className="input_style_contract"/>
                 </div>
                 <div className="column_style_contract">
                     <p className="tytle_contract_info"> Паспортные данные </p>
@@ -63,6 +65,10 @@ function QuotaDoc() {
                     <input type="text" placeholder="Необходимость подфака" className="input_style_contract"/>
                     <input type="text" placeholder="Образовательная организация подфака" className="input_style_contract"/>
                     <input type="text" placeholder="Количество часов" className="input_style_contract"/>
+                    <p className="tytle_contract_education"> Статус </p>
+                    <input type="text" placeholder="Статус зачисления" className="input_style_contract"/>
+                    <input type="text" placeholder="Куратор" className="input_style_contract"/>
+                    <input type="text" placeholder="Стипендия" className="input_style_contract"/>
                 </div>
             </div>
         </div>

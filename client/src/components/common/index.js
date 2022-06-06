@@ -4,6 +4,8 @@ import Searchbar from './Searchbar';
 import Quota from './Quota';
 import Contract from './Contract';
 import EnhancedTable from './EnhancedTable';
+import Notification from './notification';
+
 
 export {
     Header,
@@ -11,5 +13,6 @@ export {
     Searchbar,
     Quota,
     EnhancedTable,
-    Contract
+    Contract,
+    Notification
 }
