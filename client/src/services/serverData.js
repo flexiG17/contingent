@@ -1,5 +1,5 @@
 export function getStudents() {
-    return fetch('http://localhost:5000/api/student/main')
+    return fetch('http://localhost:5000/api/student/')
         .then(data => data.json())
 }
 
@@ -11,6 +11,17 @@ export function getNotifications() {
 export function registerUser(item) {
     return fetch('http://localhost:5000/api/auth/register', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(item)
+    })
+        .then(data => data.json())
+}
+
+export function changeStudentData(item, id) {
+    return fetch(`http://localhost:5000/api/student/update/${id}`, {
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
