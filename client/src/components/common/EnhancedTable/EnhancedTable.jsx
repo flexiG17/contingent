@@ -28,7 +28,7 @@ import {useEffect, useState} from "react"
 //import React, {useEffect, useState} from "react";
 
 import {getStudents} from '../../../services/serverData'
-import {NavLink} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import SearchIcon from "@mui/icons-material/Search";
@@ -203,7 +203,7 @@ EnhancedTableHead.propTypes = {
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
 
-    const [isActiveFilter,setIsActiveFilter] = useState (false)
+    const [isActiveFilter, setIsActiveFilter] = useState(false)
 
     return (
         <Toolbar
@@ -277,13 +277,13 @@ export default function EnhancedTable() {
         getStudents()
             .then(items => {
                 if (mounted) {
-                    setList(items)
+                    setList(items.reverse())
                 }
             })
         return () => mounted = false
     }, [])
 
-    rows = list.reverse()
+    rows = list
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -293,7 +293,7 @@ export default function EnhancedTable() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.contract_number);
+            const newSelecteds = rows.map((n) => n.id);
             setSelected(newSelecteds);
             return;
         }
@@ -397,21 +397,23 @@ export default function EnhancedTable() {
                                 {stableSort(filteredValues, getComparator(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {
-                                        const isItemSelected = isSelected(row.contract_number);
+                                        const isItemSelected = isSelected(row.id);
                                         const labelId = `enhanced-table-checkbox-${index}`;
 
                                         return (
                                             <TableRow
-                                                hover
-                                                onClick={(event) => handleClick(event, row.contract_number)}
+                                                hover={true}
                                                 role="checkbox"
                                                 aria-checked={isItemSelected}
                                                 tabIndex={-1}
-                                                key={row.contract_number}
+                                                key={row.id}
                                                 selected={isItemSelected}
                                             >
                                                 <TableCell padding="checkbox">
                                                     <Checkbox
+                                                        onClick={(event) => {
+                                                            handleClick(event, row.id)
+                                                        }}
                                                         color="primary"
                                                         checked={isItemSelected}
                                                         inputProps={{
@@ -429,7 +431,9 @@ export default function EnhancedTable() {
                                                     {row.education_type}
                                                 </TableCell>
                                                 <TableCell align="center">{row.latin_name}</TableCell>
-                                                <TableCell align="center">{row.russian_name}</TableCell>
+                                                <Link to='/PersonalCard' state={row} style={{textDecoration: 'none'}}>
+                                                    <TableCell align="center">{row.russian_name}</TableCell>
+                                                </Link>
                                                 <TableCell align="center">{row.country}</TableCell>
                                                 <TableCell align="center">{row.gender}</TableCell>
                                                 <TableCell align="center">{row.contract_number}</TableCell>
