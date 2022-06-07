@@ -6,7 +6,6 @@ function HomePage() {
     return (
         <div>
             <Header/>
-            <Searchbar/>
             <EnhancedTable/>
         </div>
     )
