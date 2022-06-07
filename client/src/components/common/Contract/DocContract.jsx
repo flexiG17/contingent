@@ -34,7 +34,7 @@ function DocContract() {
     const [level_education, setLevelEducation] = useState('')
     const [name_educational_institution, setEducationalInstitution] = useState('')
     const [education_field, setEducation_field] = useState('')
-    const [education_type, setEducationType] = useState('')
+    const [form_study, setFormStudy] = useState('')
     const [enrollment, setEnrollment] = useState('')
     const [enrollment_order, setEnrollmentOrder] = useState('')
     const [expulsion_order, setExpulsionOrder] = useState('')
@@ -47,12 +47,16 @@ function DocContract() {
     const [fourth_payment, setFourthPayment] = useState('')
     const [entry_date, setEntryDate] = useState('')
     const [visa_validity, setVisaValidity] = useState('')
+    const [transfer_to_international_service, setDateOfTransfer] = useState('')
+    const [transfer_to_MVD, setDateOfMvdTransfer] = useState('')
+    const [estimated_receipt_date, setDateOfReceiving] = useState('')
+    const [actual_receipt_date_invitation, setDateOfReceipt] = useState('')
     const [document_path, setDocumentPath] = useState('')
 
     const [alert, setAlert] = useState(false);
 
     useEffect(() => {
-        if(alert) {
+        if (alert) {
             setTimeout(() => {
                 setAlert(false);
             }, 3000)
@@ -83,7 +87,8 @@ function DocContract() {
             levelEducation: level_education,
             nameEducationalInstitution: name_educational_institution,
             educationField: education_field,
-            educationType: education_type,
+            educationType: "Контракт",
+            form_study: form_study,
             enrollment: enrollment,
             enrollmentOrder: enrollment_order,
             expulsionOrder: expulsion_order,
@@ -96,7 +101,11 @@ function DocContract() {
             fourthPayment: fourth_payment,
             entryDate: entry_date,
             visaValidity: visa_validity,
-            documentPath: document_path
+            documentPath: document_path,
+            transfer_to_international_service: transfer_to_international_service,
+            transfer_to_MVD: transfer_to_MVD,
+            estimated_receipt_date: estimated_receipt_date,
+            actual_receipt_date_invitation: actual_receipt_date_invitation
         }
         addStudent(data)
             .then(() => {
@@ -151,11 +160,13 @@ function DocContract() {
                         <input type="text" placeholder="Номер паспорта" className="input_style_contract"
                                onChange={event => setPassportNumber(event.target.value)} value={passport_number}/>
                         <input type="text" placeholder="Срок действия паспорта (дата)" className="input_style_contract"
-                               onChange={event => setPassportExpiration(event.target.value)} value={passport_expiration}/>
+                               onChange={event => setPassportExpiration(event.target.value)}
+                               value={passport_expiration}/>
                         <input type="text" placeholder="Кем выдан" className="input_style_contract"
                                onChange={event => setPassportIssued(event.target.value)} value={passport_issued}/>
                         <input type="text" placeholder="Дата выдачи" className="input_style_contract"
-                               onChange={event => setPassportIssueDate(event.target.value)} value={passport_issue_date}/>
+                               onChange={event => setPassportIssueDate(event.target.value)}
+                               value={passport_issue_date}/>
                     </div>
                 </div>
             </div>
@@ -174,8 +185,8 @@ function DocContract() {
                         <input type="text" placeholder="Область образования" className="input_style_contract"
                                onChange={event => setEducation_field(event.target.value)} value={education_field}/>
                         <p className="tytle_contract_education"> Нынешнее образование </p>
-                        <input type="text" placeholder="Тип обучения" className="input_style_contract"
-                               onChange={event => setEducationType(event.target.value)} value={education_type}/>
+                        <input type="text" placeholder="Форма обучения" className="input_style_contract"
+                               onChange={event => setFormStudy(event.target.value)} value={form_study}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Статус </p>
@@ -211,12 +222,16 @@ function DocContract() {
                         <input type="text" placeholder="Срок действия визы (дата)" className="input_style_contract"
                                onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                         <input type="text" placeholder="Дата передачи в международную службу"
-                               className="input_style_contract"/>
-                        <input type="text" placeholder="Дата передачи в МВД" className="input_style_contract"/>
+                               className="input_style_contract" onChange={event => setDateOfTransfer(event.target.value)}
+                               value={transfer_to_international_service}/>
+                        <input type="text" placeholder="Дата передачи в МВД" className="input_style_contract"
+                               onChange={event => setDateOfMvdTransfer(event.target.value)} value={transfer_to_MVD}/>
                         <input type="text" placeholder="Ориентировочная дата получения"
-                               className="input_style_contract"/>
+                               className="input_style_contract" onChange={event => setDateOfReceiving(event.target.value)}
+                               value={estimated_receipt_date}/>
                         <input type="text" placeholder="Фактическая дата получения приглашения"
-                               className="input_style_contract"/>
+                               className="input_style_contract" onChange={event => setDateOfReceipt(event.target.value)}
+                               value={actual_receipt_date_invitation}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
