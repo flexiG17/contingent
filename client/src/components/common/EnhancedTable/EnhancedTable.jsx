@@ -24,11 +24,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
-import {useEffect, useState} from "react";
+import {useEffect, useState} from "react"
 //import React, {useEffect, useState} from "react";
 
 import {getStudents} from '../../../services/serverData'
+import {NavLink} from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import '../Searchbar/Searchbar.css';
+import SearchIcon from "@mui/icons-material/Search";
 
+/*
 function createData(education_type, russian_name, latin_name, country, gender, contract_number, enrollment_order, enrollment) {
     return {
         education_type,
@@ -42,7 +47,7 @@ function createData(education_type, russian_name, latin_name, country, gender, c
     };
 }
 
-/*
+
 let rows =  [
     createData('Name1', 'Surname1', 'India', 'Муж.', 124, 23, 'yes', 'tata'),
     createData('Name2', 'Surname2', 'India', 'Жен.', 125, 24, 'yes', 'tata'),
@@ -198,6 +203,8 @@ EnhancedTableHead.propTypes = {
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
 
+    const [isActiveFilter,setIsActiveFilter] = useState (false)
+
     return (
         <Toolbar
             sx={{
@@ -243,7 +250,7 @@ const EnhancedTableToolbar = (props) => {
                 </>
             ) : (
                 <Tooltip title="Отфильтровать">
-                    <IconButton>
+                    <IconButton onClick={() => setIsActiveFilter(!isActiveFilter)}>
                         <FilterListIcon/>
                     </IconButton>
                 </Tooltip>
@@ -276,22 +283,7 @@ export default function EnhancedTable() {
         return () => mounted = false
     }, [])
 
-    for (let i = list.length - 1; i >= 0; i -= 1) {
-        if (rows.length === list.length) {
-            break
-        }
-        const iData = list[i]
-        const check = createData(
-            iData.education_type,
-            iData.russian_name,
-            iData.latin_name,
-            iData.country,
-            iData.gender,
-            iData.contract_number,
-            iData.enrollment_order,
-            iData.enrollment)
-        rows.push(check)
-    }
+    rows = list.reverse()
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -347,105 +339,133 @@ export default function EnhancedTable() {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
+    // выводятся только фильтрующиеся данные
+    const [searchingValue, setSearchingValue] = useState('')
+    const filteredValues = rows.filter(row => {
+        return row['gender'].toLowerCase().includes(searchingValue.toLowerCase())
+    })
+
     return (
-        <Box sx={{width: '1400px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
-            <Paper sx={{
-                width: '100%',
-                mb: 2,
-                boxShadow: 'none',
-                borderBottom: '1px solid #FA7A45',
-                borderRadius: '0px',
-                borderTop: '1px solid #FA7A45'
-            }}>
-                <EnhancedTableToolbar numSelected={selected.length}/>
-                <TableContainer>
-                    <Table
-                        sx={{minWidth: 750}}
-                        aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
-                    >
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
-                        />
-                        <TableBody>
-                            {/* if you don't need to support IE11, you can replace the `stableSort` call with:
+        <div>
+            {/* Перенёс сюда SearchBar.jsx */}
+            <div className="nav">
+                <NavLink className="add_student_btn" to="/AddStudent"> Добавить студента <AddIcon/></NavLink>
+                <div className="serchbar_position">
+                    {/* Перенёс сюда Search.jsx */}
+                    <div className="search">
+                        <div className="searchInput">
+                            <input
+                                type="text"
+                                placeholder={"Введите данные для поиска..."}
+                                onChange={(event => setSearchingValue(event.target.value))}
+                            />
+                            <div className="searchIcon"><SearchIcon/></div>
+                        </div>
+                        <div className="dataResult"></div>
+                    </div>
+                </div>
+
+            </div>
+            <Box sx={{width: '1400px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
+                <Paper sx={{
+                    width: '100%',
+                    mb: 2,
+                    boxShadow: 'none',
+                    borderBottom: '1px solid #FA7A45',
+                    borderRadius: '0px',
+                    borderTop: '1px solid #FA7A45'
+                }}>
+                    <EnhancedTableToolbar numSelected={selected.length}/>
+                    <TableContainer>
+                        <Table
+                            sx={{minWidth: 750}}
+                            aria-labelledby="tableTitle"
+                            size={dense ? 'small' : 'medium'}
+                        >
+                            <EnhancedTableHead
+                                numSelected={selected.length}
+                                order={order}
+                                orderBy={orderBy}
+                                onSelectAllClick={handleSelectAllClick}
+                                onRequestSort={handleRequestSort}
+                                rowCount={filteredValues.length}
+                            />
+                            <TableBody>
+                                {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                             {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                  rows.slice().sort(getComparator(order, orderBy)) */}
-                            {stableSort(rows, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                    const isItemSelected = isSelected(row.contract_number);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
+                                {stableSort(filteredValues, getComparator(order, orderBy))
+                                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    .map((row, index) => {
+                                        const isItemSelected = isSelected(row.contract_number);
+                                        const labelId = `enhanced-table-checkbox-${index}`;
 
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => handleClick(event, row.contract_number)}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={row.contract_number}
-                                            selected={isItemSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                                align="center"
+                                        return (
+                                            <TableRow
+                                                hover
+                                                onClick={(event) => handleClick(event, row.contract_number)}
+                                                role="checkbox"
+                                                aria-checked={isItemSelected}
+                                                tabIndex={-1}
+                                                key={row.contract_number}
+                                                selected={isItemSelected}
                                             >
-                                                {row.education_type}
-                                            </TableCell>
-                                            <TableCell align="center">{row.latin_name}</TableCell>
-                                            <TableCell align="center">{row.russian_name}</TableCell>
-                                            <TableCell align="center">{row.country}</TableCell>
-                                            <TableCell align="center">{row.gender}</TableCell>
-                                            <TableCell align="center">{row.contract_number}</TableCell>
-                                            <TableCell align="center">{row.enrollment_order}</TableCell>
-                                            <TableCell align="center">{row.enrollment}</TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: (dense ? 33 : 53) * emptyRows,
-                                    }}
-                                >
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 50, 100]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox
+                                                        color="primary"
+                                                        checked={isItemSelected}
+                                                        inputProps={{
+                                                            'aria-labelledby': labelId,
+                                                        }}
+                                                    />
+                                                </TableCell>
+                                                <TableCell
+                                                    component="th"
+                                                    id={labelId}
+                                                    scope="row"
+                                                    padding="none"
+                                                    align="center"
+                                                >
+                                                    {row.education_type}
+                                                </TableCell>
+                                                <TableCell align="center">{row.latin_name}</TableCell>
+                                                <TableCell align="center">{row.russian_name}</TableCell>
+                                                <TableCell align="center">{row.country}</TableCell>
+                                                <TableCell align="center">{row.gender}</TableCell>
+                                                <TableCell align="center">{row.contract_number}</TableCell>
+                                                <TableCell align="center">{row.enrollment_order}</TableCell>
+                                                <TableCell align="center">{row.enrollment}</TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
+                                {emptyRows > 0 && (
+                                    <TableRow
+                                        style={{
+                                            height: (dense ? 33 : 53) * emptyRows,
+                                        }}
+                                    >
+                                        <TableCell colSpan={6}/>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[10, 25, 50, 100]}
+                        component="div"
+                        count={filteredValues.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Paper>
+                <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense}/>}
+                    label="Убрать отступы"
                 />
-            </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                label="Убрать отступы"
-            />
-        </Box>
+            </Box>
+        </div>
+
     );
 }
