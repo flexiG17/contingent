@@ -51,6 +51,14 @@ module.exports.getByUserId = async function (req, res) {
         })
 }
 
+module.exports.getAll = async function (req, res) {
+
+    database.getAllData(databaseName)
+        .then(data => {
+            res.status(200).json(data)
+        })
+}
+
 module.exports.remove = function (req, res) {
 
 }
