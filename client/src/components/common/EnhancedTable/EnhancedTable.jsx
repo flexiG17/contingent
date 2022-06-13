@@ -429,7 +429,9 @@ export default function EnhancedTable() {
                                                     {row.education_type}
                                                 </TableCell>
                                                 <TableCell align="center">{row.latin_name}</TableCell>
-                                                <Link to='/PersonalCard' state={row} style={{textDecoration: 'none'}}>
+                                                <Link
+                                                    to={row.education_type === "Контракт" ? '/PersonalCardContract' : '/PersonalCardQuota'}
+                                                    state={row} style={{textDecoration: 'none'}}>
                                                     <TableCell align="center">{row.russian_name}</TableCell>
                                                 </Link>
                                                 <TableCell align="center">{row.country}</TableCell>
