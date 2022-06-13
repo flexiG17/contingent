@@ -5,7 +5,8 @@ import Quota from './Quota';
 import Contract from './Contract';
 import EnhancedTable from './EnhancedTable';
 import Notification from './notification';
-import PersonalCard from './PersonalCard'
+import PersonalCardContract from './PersonalCardContract';
+import PersonalCardQuota from './PersonalCardQuota'
 
 
 export {
@@ -16,5 +17,6 @@ export {
     EnhancedTable,
     Contract,
     Notification,
-    PersonalCard
+    PersonalCardContract,
+    PersonalCardQuota
 }
