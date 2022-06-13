@@ -1,6 +1,6 @@
 import React from "react";
 import './HomePage.css';
-import {Searchbar, Header, EnhancedTable} from "../components/common";
+import {Header, EnhancedTable} from "../components/common";
 
 function HomePage() {
     return (

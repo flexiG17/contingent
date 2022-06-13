@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './LoginPage.css';
 import Logo from './logo.png';
-import {NavLink} from "react-router-dom";
 import {loginUser} from '../services/serverData'
 
 function LoginPage() {

@@ -3,6 +3,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt
 
 const keys = require('../config/keys')
 const database = require('../utils/database')
+const errorHandler = require('../utils/errorHandler')
 
 
 const options = {
@@ -26,7 +27,7 @@ module.exports = passport => {
                             done(null, false)
                         }
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => errorHandler(error))
             }
         )
     )

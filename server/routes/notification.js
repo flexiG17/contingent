@@ -11,6 +11,9 @@ router.patch('/', passport.authenticate('jwt', {session: false}), controller.upd
 // get all notifications for display on pages for current user
 router.get('/getByUserId', passport.authenticate('jwt', {session: false}), controller.getByUserId)
 
+// временно
+router.get('/getAll', controller.getAll)
+
 // delete notification by id
 router.delete('/:id', passport.authenticate('jwt', {session: false}), controller.remove)
 
