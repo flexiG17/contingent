@@ -6,7 +6,8 @@ import RegistrationPage from './Pages/RegistrationPage'
 import StartPage from './Pages/StartPage';
 import LoginPage from './Pages/LoginPage';
 import AddStudent from './Pages/AddStudent';
-import PersonalCard from './Pages/PersonalCard'
+import PersonalCardContract from './Pages/PersonalCardContract'
+import PersonalCardQuota from './Pages/PersonalCardQuota'
 
 import {
     Route, Routes
@@ -17,7 +18,8 @@ function App() {
         <>
             <Routes>
                 <Route exact path="/" element={<StartPage/>}/>
-                <Route exact path="/PersonalCard" element={<PersonalCard/>}/>
+                <Route exact path="/PersonalCardContract" element={<PersonalCardContract/>}/>
+                <Route exact path="/PersonalCardQuota" element={<PersonalCardQuota/>}/>
                 <Route exact path="/Massages" element={<Massages/>}/>
                 <Route exact path="/RegistrationPage" element={<RegistrationPage/>}/>
                 <Route exact path="/LoginPage" element={<LoginPage/>}/>
