@@ -27,7 +27,7 @@ import {visuallyHidden} from '@mui/utils';
 import {useEffect, useState} from "react"
 //import React, {useEffect, useState} from "react";
 
-import {getStudents} from '../../../services/serverData'
+import {getStudents, getXlsx} from '../../../services/serverData'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
@@ -200,6 +200,8 @@ EnhancedTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
+let dataToDownload = null
+
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
 
@@ -217,27 +219,17 @@ const EnhancedTableToolbar = (props) => {
             }}
         >
             {numSelected > 0 ? (
-                <Typography
-                    sx={{flex: '1 1 100%'}}
-                    color="inherit"
-                    variant="subtitle1"
-                    component="div"
-                >
-                    {numSelected} selected
+                <Typography sx={{flex: '1 1 100%'}} color="inherit" variant="subtitle1" component="div">
+                    {numSelected} выбрано
                 </Typography>
             ) : (
-                <Typography
-                    sx={{flex: '1 1 100%'}}
-                    variant="h6"
-                    id="tableTitle"
-                    component="div"
-                >
+                <Typography sx={{flex: '1 1 100%'}} variant="h6" id="tableTitle" component="div">
                 </Typography>
             )}
 
             {numSelected > 0 ? (<>
                     <Tooltip title="Загрузить">
-                        <IconButton>
+                        <IconButton onClick={() => getXlsx(dataToDownload)}>
                             <FileDownloadIcon/>
                         </IconButton>
                     </Tooltip>
@@ -263,13 +255,16 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
+
 export default function EnhancedTable() {
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
-    const [selected, setSelected] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [order, setOrder] = useState('asc');
+    const [orderBy, setOrderBy] = useState('calories');
+    const [selectedForDownloading, setSelectedForDownloading] = useState([]);
+    dataToDownload = selectedForDownloading
+    const [selected, setSelected] = useState([]);
+    const [page, setPage] = useState(0);
+    const [dense, setDense] = useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const [list, setList] = useState([]);
     useEffect(() => {
@@ -293,8 +288,11 @@ export default function EnhancedTable() {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.id);
-            setSelected(newSelecteds);
+            const newSelects = filteredValues.map((n) => n.id);
+            setSelected(newSelects);
+
+            const newSelectsForDownloading = filteredValues.map((n) => n);
+            setSelectedForDownloading(newSelectsForDownloading)
             return;
         }
         setSelected([]);
@@ -342,7 +340,7 @@ export default function EnhancedTable() {
     // выводятся только фильтрующиеся данные
     const [searchingValue, setSearchingValue] = useState('')
     const filteredValues = rows.filter(row => {
-        return row['gender'].toLowerCase().includes(searchingValue.toLowerCase())
+        return row['russian_name'].toLowerCase().includes(searchingValue.toLowerCase())
     })
 
     return (
