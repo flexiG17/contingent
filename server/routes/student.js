@@ -7,12 +7,13 @@ const router = express.Router()
 
 //localhost:5000/api/student
 router.get('/', controller.getAll)
-router.get('/main', controller.getForMainPage)
-router.post('/create', passport.authenticate('jwt', {session: false}), upload.any(), controller.create)
+router.post('/create', upload.any(), controller.create)
 // нужно не /update, а удалять по опр. ключу (например, /:passportNumber)
-router.patch('/update', passport.authenticate('jwt', {session: false}), upload.any(), controller.update)
+router.patch('/update/:id', upload.any(), controller.update)
 // нужно не /remove, а удалять по опр. ключу (например, /:passportNumber)
-router.delete('/remove', passport.authenticate('jwt', {session: false}), controller.remove)
+router.delete('/remove/:id', passport.authenticate('jwt', {session: false}), controller.remove)
+
+router.post('/getXlsx',  controller.getXlsx)
 
 // я хз почему, но это должно стоять впереди..
 router.get('/filter', passport.authenticate('jwt', {session: false}), controller.getByParam)

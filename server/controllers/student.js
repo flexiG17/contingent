@@ -1,3 +1,5 @@
+const XLSX = require('xlsx');
+
 const database = require('../utils/database')
 const Student = require('../models/Student');
 const errorHandler = require('../utils/errorHandler')
@@ -18,14 +20,6 @@ module.exports.getAll = function (req, res) {
     database.getAllData(databaseName)
         .then(data => {
             res.status(200).json(data)
-        })
-        .catch(error => errorHandler(res, error))
-}
-
-module.exports.getForMainPage = function (req, res) {
-    database.getCurrentData(databaseName, columnsToDisplay)
-        .then(result => {
-            res.status(200).json(result)
         })
         .catch(error => errorHandler(res, error))
 }
@@ -65,7 +59,7 @@ module.exports.update = function (req, res) {
     }
     const student = new Student(req, filePath)
 
-    database.changeData(databaseName, {passport_number: student.passportNumber}, student.getModel())
+    database.changeData(databaseName, {id: req.params.id}, student.getModel())
         .then(() => {
             res.status(201).json({
                 message: "Student data successfully changing"
@@ -111,6 +105,20 @@ module.exports.getByRussianName = async function (req, res) {
         .catch(error => {
             errorHandler(res, error)
         })
+}
+
+module.exports.getXlsx = function (req, res){
+    const workSheet = XLSX.utils.json_to_sheet(req.body)
+    const workBook = XLSX.utils.book_new()
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, "students")
+    // Generate buffer
+    XLSX.write(workBook, {bookType: 'xlsx', type: "buffer"})
+
+    // Binary string
+    XLSX.write(workBook, {bookType: 'xlsx', type: "binary"})
+
+    XLSX.writeFile(workBook, "studentsByFilter.xlsx")
 }
 
 module.exports.getByParam = async function (req, res) {
