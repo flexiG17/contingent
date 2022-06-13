@@ -3,6 +3,17 @@ export function getStudents() {
         .then(data => data.json())
 }
 
+export function getXlsx(item) {
+    return fetch('http://localhost:5000/api/student/getXlsx', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(item)
+    })
+        .then(data => data.json())
+}
+
 export function getNotifications() {
     return fetch('http://localhost:5000/api/notification/getAll')
         .then(data => data.json())
