@@ -11,6 +11,7 @@ module.exports = class Student {
         this.enrollmentOrder = req.body.enrollmentOrder
         this.expulsionOrder = req.body.expulsionOrder
         this.contractNumber = req.body.contractNumber
+        this.status1C = req.body.status1C
         this.gender = req.body.gender
         this.birthDate = req.body.birthDate
         this.birthPlace = req.body.birthPlace
@@ -32,6 +33,9 @@ module.exports = class Student {
         this.formStudy = req.body.formStudy
         this.contactPhoneNumber = req.body.contactPhoneNumber
         this.tutorName = req.body.tutorName
+        this.representative_name = req.body.representative_name
+        this.representative_phone_number = req.body.representative_phone_number
+        this.representative_email = req.body.representative_email
         this.agentName = req.body.agentName
         this.agentPhoneNumber = req.body.agentPhoneNumber
         this.agentEmail = req.body.agentEmail
@@ -46,6 +50,10 @@ module.exports = class Student {
         this.thirdPayment = req.body.thirdPayment
         this.fourthPayment = req.body.fourthPayment
         this.scholarship = req.body.scholarship
+        this.transfer_to_international_service = req.body.transfer_to_international_service
+        this.transfer_to_MVD = req.body.transfer_to_MVD
+        this.estimated_receipt_date = req.body.estimated_receipt_date
+        this.actual_receipt_date_invitation = req.body.actual_receipt_date_invitation
         this.comments = req.body.comments
     }
 
@@ -61,6 +69,7 @@ module.exports = class Student {
             enrollment_order: this.enrollmentOrder,
             expulsion_order: this.expulsionOrder,
             contract_number: this.contractNumber,
+            status_1c: this.status1C,
             gender: this.gender,
             birth_date: this.birthDate,
             birth_place: this.birthPlace,
@@ -85,6 +94,9 @@ module.exports = class Student {
             agent_name: this.agentName,
             agent_phone_number: this.agentPhoneNumber,
             agent_email: this.agentEmail,
+            representative_name: this.representative_name,
+            representative_phone_number: this.representative_phone_number,
+            representative_email: this.representative_email,
             application_source: this.applicationSource,
             student_email: this.studentEmail,
             hours_number: this.hoursNumber,
@@ -96,6 +108,10 @@ module.exports = class Student {
             third_payment : this.thirdPayment,
             fourth_payment : this.fourthPayment,
             scholarship : this.scholarship,
+            transfer_to_international_service : this.transfer_to_international_service,
+            transfer_to_MVD : this.transfer_to_MVD,
+            estimated_receipt_date : this.estimated_receipt_date,
+            actual_receipt_date_invitation : this.actual_receipt_date_invitation,
             comments: this.comments
         }
     }
