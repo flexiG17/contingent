@@ -3,6 +3,16 @@ export function getStudents() {
         .then(data => data.json())
 }
 
+export function removeStudent(id) {
+    return fetch(`http://localhost:5000/api/student/remove/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+    })
+        .then(data => data.json())
+}
+
 export function getXlsx(item) {
     return fetch('http://localhost:5000/api/student/getXlsx', {
         method: 'POST',
@@ -49,7 +59,6 @@ export function loginUser(item) {
         },
         body: JSON.stringify(item)
     })
-        .then(data => data.json())
 }
 
 export function addStudent(item) {
