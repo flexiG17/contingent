@@ -5,9 +5,10 @@ const errorHandler = require('../utils/errorHandler')
 const databaseName = 'notifications'
 
 module.exports.create = async (req, res) => {
-    const [user] = await req.user
+    //const [user] = await req.user
 
-    const notification = new Notification(req, user)
+    //const notification = new Notification(req, user)
+    const notification = new Notification(req)
     database.save(databaseName, notification.getModel())
         .then(() => {
             res.status(200).json({message: "successfully"})

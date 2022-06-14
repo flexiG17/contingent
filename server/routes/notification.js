@@ -5,7 +5,7 @@ const router = express.Router() // для создания роутов испо
 
 
 // create new notification
-router.post('/create', passport.authenticate('jwt', {session: false}), controller.create)
+router.post('/create', controller.create)
 // change data notification
 router.patch('/', passport.authenticate('jwt', {session: false}), controller.update)
 // get all notifications for display on pages for current user
