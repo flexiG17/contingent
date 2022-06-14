@@ -70,7 +70,7 @@ module.exports.update = function (req, res) {
 }
 
 module.exports.remove = function (req, res) {
-    const condition = {passport_number: req.body.passportNumber}
+    const condition = {id: req.params.id}
 
     database.isExist(databaseName, condition)
         .then(studentExistsInSystem => {

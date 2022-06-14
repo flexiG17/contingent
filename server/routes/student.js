@@ -11,7 +11,7 @@ router.post('/create', upload.any(), controller.create)
 // нужно не /update, а удалять по опр. ключу (например, /:passportNumber)
 router.patch('/update/:id', upload.any(), controller.update)
 // нужно не /remove, а удалять по опр. ключу (например, /:passportNumber)
-router.delete('/remove/:id', passport.authenticate('jwt', {session: false}), controller.remove)
+router.delete('/remove/:id', controller.remove)
 
 router.post('/getXlsx',  controller.getXlsx)
 
