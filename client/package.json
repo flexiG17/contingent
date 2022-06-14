@@ -19,6 +19,8 @@
     "@types/react": "^18.0.12",
     "css-loader": "^6.7.1",
     "data-generator-retail": "^4.1.0",
+    "izitoast": "^1.4.0",
+    "izitoast-react": "^1.0.17",
     "postcss-loader": "^7.0.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
