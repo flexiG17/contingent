@@ -71,3 +71,14 @@ export function addStudent(item) {
     })
         .then(data => data.json())
 }
+
+export function createNotification(item) {
+    return fetch('http://localhost:5000/api/notification/create', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(item)
+    })
+        .then(data => data.json())
+}
