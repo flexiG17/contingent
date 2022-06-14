@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import {changeStudentData} from '../../../services/serverData'
-import {useEffect} from "react";
-import {useLocation} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
+import "./PersonalCardContract.css";
 
 function PersonalCardContract() {
     const [active, setActive] = useState(true);
@@ -54,7 +54,6 @@ function PersonalCardContract() {
     const [document_path, setDocumentPath] = useState(rows.document_path)
 
     const [alert, setAlert] = useState(false);
-    console.log(rows)
 
     useEffect(() => {
         if (alert) {
@@ -117,8 +116,11 @@ function PersonalCardContract() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <p className="title_AddStudent">Личная карточка {rows.russian_name}</p>
+            <p className="title_studentName">Личная карточка {rows.russian_name}</p>
             <div className="info_and_education_contaner">
+                <div className='notification_button_position'>
+                    <Link to='/AddNotification' state={rows} style={{textDecoration: 'none'}} className="notification_button">Создать уведомление</Link>
+                </div>
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Личные данные</p>
@@ -248,7 +250,7 @@ function PersonalCardContract() {
                         <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
                         <input type="file" id="actual-btn" onChange={event => setDocumentPath(event.target.value)}
                                value={document_path} hidden/>
-                        <label for="actual-btn" className="label_doc"> Выберите файлы <InsertDriveFileIcon
+                        <label htmlFor="actual-btn" className="label_doc"> Выберите файлы <InsertDriveFileIcon
                             sx={{fontSize: 20}}/></label>
                     </div>
                 </div>
