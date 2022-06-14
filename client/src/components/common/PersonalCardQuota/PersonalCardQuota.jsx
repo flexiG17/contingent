@@ -223,7 +223,7 @@ function PersonalCardQuota() {
                         <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
                         <input type="file" id="actual-btn" onChange={event => setDocumentPath(event.target.value)}
                                value={document_path} hidden/>
-                        <label for="actual-btn" className="label_doc"> Выберите файлы <InsertDriveFileIcon
+                        <label htmlFor="actual-btn" className="label_doc"> Выберите файлы <InsertDriveFileIcon
                             sx={{fontSize: 20}}/></label>
                     </div>
                 </div>
