@@ -2,19 +2,12 @@ import React, {useEffect, useState} from "react";
 import './LoginPage.css';
 import Logo from './logo.png';
 import {loginUser} from '../services/serverData'
+import "izitoast-react/dist/iziToast.css";
+import iziToast from "izitoast";
 
 function LoginPage() {
     const [inputEmail, setEmailItemInput] = useState('')
     const [inputPassword, setPasswordItemInput] = useState('')
-    const [alert, setAlert] = useState(false);
-
-    useEffect(() => {
-        if(alert) {
-            setTimeout(() => {
-                setAlert(false);
-            }, 3000)
-        }
-    }, [alert])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,11 +17,20 @@ function LoginPage() {
         }
         loginUser(data)
             .then(() => {
+                iziToast.success({
+                    title: 'OK',
+                    message: 'Успешная авторизация',
+                });
                 setEmailItemInput('');
                 setPasswordItemInput('');
-                setAlert(true);
             })
-            .catch(() => setAlert(false))
+            .catch((err) => {
+                iziToast.error({
+                    title: 'Error',
+                    message: `Error: ${err.message}`,
+                    position: 'topRight'
+                });
+            })
     };
 
     return (
@@ -40,7 +42,6 @@ function LoginPage() {
 
                     <form className="form_style" onSubmit={handleSubmit}>
 
-                        {alert && <h4> Login Successful</h4>}
                         <label className="label_style" htmlFor="email">Email</label>
                         <input className="input_style" name="email" type="email" placeholder="Введите свой email"
                                onChange={event => setEmailItemInput(event.target.value)} value={inputEmail}/>
