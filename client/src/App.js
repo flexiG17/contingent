@@ -8,6 +8,7 @@ import LoginPage from './Pages/LoginPage';
 import AddStudent from './Pages/AddStudent';
 import PersonalCardContract from './Pages/PersonalCardContract'
 import PersonalCardQuota from './Pages/PersonalCardQuota'
+import AddNotification from './Pages/AddNotification'
 
 import {
     Route, Routes
@@ -25,6 +26,7 @@ function App() {
                 <Route exact path="/LoginPage" element={<LoginPage/>}/>
                 <Route exact path="/HomePage" element={<HomePage/>}/>
                 <Route exact path="/AddStudent" element={<AddStudent/>}/>
+                <Route exact path="/AddNotification" element={<AddNotification/>}/>
             </Routes>
         </>
     );
