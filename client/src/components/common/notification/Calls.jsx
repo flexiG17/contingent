@@ -1,413 +1,192 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import {alpha} from '@mui/material/styles';
+import {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import {visuallyHidden} from '@mui/utils';
-import {useEffect, useState} from "react";
-import BorderColorIcon from '@mui/icons-material/BorderColor';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import {getNotifications, getStudents} from "../../../services/serverData";
+import {Link, NavLink} from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
+import './Calls.css'
 
+let notifications = []
+let students = []
 
-import {getNotifications} from '../../../services/serverData'
-
-function createData(type, student_name, date, status) {
-    return {
-        type,
-        student_name,
-        date,
-        status
-    };
-}
-
-// let rows =  [
-//     createData('Name1', 'Surname1', 'India', 'Муж.', 124, 23, 'yes', 'tata'),
-//     createData('Name2', 'Surname2', 'India', 'Жен.', 125, 24, 'yes', 'tata'),
-//     createData('Name3', 'Surname3', 'Pakistan', 'Муж.', 153, 30, 'no', 'tata'),
-//     createData('Name4', 'Surname4', 'China', 'Жен.', 113, 10, 'no', 'tata'),
-//     createData('Name5', 'Surname5', 'Pakistan', 'Муж.', 143, 40, 'yes', 'tata'),
-//     createData('Name6', 'Surname6', 'China', 'Жен.', 12, 20, 'yes', 'tata'),
-//     createData('Name7', 'Surname7', 'China', 'Муж.', 433, 30, 'no', 'tata'),
-//     createData('Name8', 'Surname8', 'Kazakhstan', 'Жен.', 163, 20, 'yes', 'tata'),
-// ];
-
-
-let rows = []
-
-function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}
-
-const headCells = [
-    {
-        id: 'type',
-        numeric: false,
-        disablePadding: true,
-        label: 'Тип уведомления',
-    },
-    {
-        id: 'student_name',
-        numeric: false,
-        disablePadding: true,
-        label: 'ФИО студента',
-    },
-    {
-        id: 'date',
-        numeric: false,
-        disablePadding: false,
-        label: 'Дата',
-    },
-    {
-        id: 'status',
-        numeric: false,
-        disablePadding: false,
-        label: 'Статус',
-    }
-];
-
-
-function EnhancedTableHead(props) {
-    const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} =
-        props;
-    const createSortHandler = (property) => (event) => {
-        onRequestSort(event, property);
-    };
+function Row(props) {
+    const {row, currentStudent} = props;
+    const [open, setOpen] = useState(false);
+    console.log(currentStudent)
 
     return (
-        <TableHead>
-            <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
-                </TableCell>
-                {headCells.map((headCell) => (
-                    <TableCell
-                        key={headCell.id}
-                        align={'center'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
-                        sortDirection={orderBy === headCell.id ? order : false}
+        <React.Fragment>
+            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                <TableCell>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => setOpen(!open)}
                     >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
+                        {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                    </IconButton>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                    {row.type}
+                </TableCell>
+                <TableCell align="right">{row.student_name}</TableCell>
+                <TableCell align="right">{row.date}</TableCell>
+                <TableCell align="right">{row.status}</TableCell>
+                <TableCell align="right">{row.comment}</TableCell>
             </TableRow>
-        </TableHead>
+            <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{margin: 1}}>
+                            <Table size="small" aria-label="purchases">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Тип обучения</TableCell>
+                                        <TableCell>Страна</TableCell>
+                                        <TableCell>Пол</TableCell>
+                                        <TableCell align="right">Номер договора</TableCell>
+                                        <TableCell align="right">Зачисление</TableCell>
+                                        <TableCell align="right">Личная карточка</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow key={row.id}>
+                                        <TableCell component="th"
+                                                   scope="row"> {currentStudent.education_type} </TableCell>
+                                        <TableCell>{currentStudent.country}</TableCell>
+                                        <TableCell>{currentStudent.gender}</TableCell>
+                                        <TableCell align="right">{currentStudent.contract_number}</TableCell>
+                                        <TableCell align="right">{currentStudent.enrollment}</TableCell>
+                                        <TableCell align="right">
+                                            <Link
+                                                to={currentStudent.education_type === "Контракт" ? '/PersonalCardContract' : '/PersonalCardQuota'}
+                                                state={currentStudent}
+                                                style={{textDecoration: 'none'}}>Ссылка
+                                            </Link>
+                                        </TableCell>
+
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </React.Fragment>
     );
 }
 
-EnhancedTableHead.propTypes = {
-    numSelected: PropTypes.number.isRequired,
-    onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
-    order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-    orderBy: PropTypes.string.isRequired,
-    rowCount: PropTypes.number.isRequired,
-};
+/*
+Row.propTypes = {
+    row: PropTypes.shape({
+        calories: PropTypes.number.isRequired,
+        carbs: PropTypes.number.isRequired,
+        fat: PropTypes.number.isRequired,
+        history: PropTypes.arrayOf(
+            PropTypes.shape({
+                amount: PropTypes.number.isRequired,
+                customerId: PropTypes.string.isRequired,
+                date: PropTypes.string.isRequired,
+            }),
+        ).isRequired,
+        name: PropTypes.string.isRequired,
+        price: PropTypes.number.isRequired,
+        protein: PropTypes.number.isRequired,
+    }).isRequired,
+}*/
 
-const EnhancedTableToolbar = (props) => {
-    const {numSelected} = props;
+function getStudentById(id) {
+    let result = []
 
-    return (
-        <Toolbar
-            sx={{
-                pl: {sm: 2},
-                pr: {xs: 1, sm: 1},
-                ...(numSelected > 0 && {
-                    bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                }),
-            }}
-        >
-            {numSelected > 0 ? (
-                <Typography
-                    sx={{flex: '1 1 100%'}}
-                    color="inherit"
-                    variant="subtitle1"
-                    component="div"
-                >
-                    {numSelected} selected
-                </Typography>
-            ) : (
-                <Typography
-                    sx={{flex: '1 1 100%'}}
-                    variant="h6"
-                    id="tableTitle"
-                    component="div"
-                >
-                </Typography>
-            )}
-
-            {numSelected > 0 ? (<>
-                    <Tooltip title="Редактировать">
-                        <IconButton>
-                            <BorderColorIcon/>
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Удалить">
-                        <IconButton>
-                            <DeleteIcon/>
-                        </IconButton>
-                    </Tooltip>
-
-                </>
-            ) : (
-                <Tooltip title="Отфильтровать">
-                    <IconButton>
-                        <FilterListIcon/>
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
-    );
-};
-
-EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired,
-};
-
-export default function Calls() {
-    const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
-    const [selected, setSelected] = React.useState([]);
-    const [page, setPage] = React.useState(0);
-    const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-    const [list, setList] = useState([]);
-    useEffect(() => {
-        let mounted = true;
-        getNotifications()
-            .then(items => {
-                if (mounted) {
-                    setList(items)
-                }
-            })
-        return () => mounted = false
-    }, [])
-
-    for (let i = list.length - 1; i >= 0; i -= 1) {
-        if (rows.length === list.length) {
+    for (let i = 0; i < students.length; i++) {
+        if (students[i].id === id) {
+            result = students[i]
             break
         }
-        const iData = list[i]
-        const check = createData(
-            iData.type,
-            iData.student_name,
-            iData.date,
-            iData.status)
-        rows.push(check)
     }
 
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-    };
+    return result
+}
 
-    const handleSelectAllClick = (event) => {
-        if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.student_name);
-            setSelected(newSelecteds);
-            return;
-        }
-        setSelected([]);
-    };
+export default function CollapsibleTable() {
+    const [notificationList, setNotificationList] = useState([]);
+    const [studentList, setStudentList] = useState([]);
+    // выводятся только фильтрующиеся данные
+    const [searchingValue, setSearchingValue] = useState('')
+    useEffect(() => {
+        getNotifications()
+            .then(items => setNotificationList(items.reverse()))
 
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected = [];
+        getStudents()
+            .then(items => {
+                setStudentList(items.reverse())
+            })
+    }, [])
 
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);
-    };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
-    };
-
-    const handleChangeDense = (event) => {
-        setDense(event.target.checked);
-    };
-
-    const isSelected = (name) => selected.indexOf(name) !== -1;
-
-    // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    notifications = notificationList
+    students = studentList
 
     return (
-        <Box sx={{width: '800px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
-            <Paper sx={{
-                width: '100%',
-                mb: 2,
-                boxShadow: 'none',
-                borderBottom: '1px solid #FA7A45',
-                borderRadius: '0px',
-                borderTop: '1px solid #FA7A45'
-            }}>
-                <EnhancedTableToolbar numSelected={selected.length}/>
-                <TableContainer>
-                    <Table
-                        sx={{minWidth: 750}}
-                        aria-labelledby="tableTitle"
-                        size={dense ? 'small' : 'medium'}
-                    >
-                        <EnhancedTableHead
-                            numSelected={selected.length}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
-                        />
-                        <TableBody>
-                            {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                            {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
-                            {stableSort(rows, getComparator(order, orderBy))
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                .map((row, index) => {
-                                    const isItemSelected = isSelected(row.student_name);
-                                    const labelId = `enhanced-table-checkbox-${index}`;
-
-                                    return (
-                                        <TableRow
-                                            hover
-                                            onClick={(event) => handleClick(event, row.student_name)}
-                                            role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={row.student_name}
-                                            selected={isItemSelected}
-                                        >
-                                            <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                                align="center"
-                                            >
-                                                {row.type}
-                                            </TableCell>
-                                            <TableCell align="center">{row.student_name}</TableCell>
-                                            <TableCell align="center">{row.date}</TableCell>
-                                            <TableCell align="center">{row.status}</TableCell>
-                                            <TableCell align="center">{row.gender}</TableCell>
-                                        </TableRow>
-                                    );
-                                })}
-                            {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: (dense ? 33 : 53) * emptyRows,
-                                    }}
-                                >
-                                    <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 50, 100]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Paper>
-            <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                label="Убрать отступы"
-            />
-        </Box>
+        <>
+            {/* Перенёс сюда SearchBar.jsx */}
+            <div className="notification_navbar">
+                <NavLink className="add_notification_button" to="/AddNotification"> Добавить уведомление <AddIcon/></NavLink>
+                <div className="serchbar_position">
+                    {/* Перенёс сюда Search.jsx */}
+                    <div className="search_notification_input">
+                        <div className="search_notification">
+                            <input
+                                type="text"
+                                placeholder={"Введите данные для поиска..."}
+                                onChange={(event => setSearchingValue(event.target.value))}
+                            />
+                            <div className="searchIcon"><SearchIcon/></div>
+                        </div>
+                        <div className="dataResult"></div>
+                    </div>
+                </div>
+            </div>
+            <TableContainer component={Paper}
+                            sx={{width: '950px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell/>
+                            <TableCell>Тип</TableCell>
+                            <TableCell align="right">Cтудент</TableCell>
+                            <TableCell align="right">Дата</TableCell>
+                            <TableCell align="right">Статус</TableCell>
+                            <TableCell align="right">Комментарий</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {notifications.map((row) => (
+                            <Row key={row.id} row={row} currentStudent={getStudentById(row.student_id)}/>
+                        ))}
+                    </TableBody>
+                </Table>
+                {/*<TablePagination
+                rowsPerPageOptions={[10, 25, 50, 100]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />*/}
+            </TableContainer>
+        </>
     );
 }
