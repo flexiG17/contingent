@@ -27,11 +27,12 @@ import {visuallyHidden} from '@mui/utils';
 import {useEffect, useState} from "react"
 //import React, {useEffect, useState} from "react";
 
-import {getStudents, getXlsx} from '../../../services/serverData'
+import {getStudents, getXlsx, removeStudent} from '../../../services/serverData'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import SearchIcon from "@mui/icons-material/Search";
+import {CircularProgress} from "@mui/material";
 
 /*
 function createData(education_type, russian_name, latin_name, country, gender, contract_number, enrollment_order, enrollment) {
@@ -100,19 +101,19 @@ const headCells = [
         label: 'Тип обучения',
     },
     {
-        id: 'russian_name',
-        numeric: false,
-        disablePadding: true,
-        label: 'ФИО (кир.)',
-    },
-    {
         id: 'latin_name',
         numeric: false,
         disablePadding: false,
         label: 'ФИО (лат.)',
     },
     {
-        id: 'county',
+        id: 'russian_name',
+        numeric: false,
+        disablePadding: true,
+        label: 'ФИО (кир.)',
+    },
+    {
+        id: 'country',
         numeric: false,
         disablePadding: false,
         label: 'Страна',
@@ -126,13 +127,13 @@ const headCells = [
     {
         id: 'contract_number',
         numeric: true,
-        disablePadding: false,
+        disablePadding: true,
         label: 'Номер договора',
     },
     {
         id: 'enrollment_order',
         numeric: false,
-        disablePadding: false,
+        disablePadding: true,
         label: 'Номер приказа о зачислении',
     },
     {
@@ -201,6 +202,7 @@ EnhancedTableHead.propTypes = {
 };
 
 let dataToDownload = null
+let selectToDelete = null
 
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
@@ -234,7 +236,7 @@ const EnhancedTableToolbar = (props) => {
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Удалить">
-                        <IconButton>
+                        <IconButton onClick={() => removeStudent(selectToDelete)}>
                             <DeleteIcon/>
                         </IconButton>
                     </Tooltip>
@@ -262,20 +264,17 @@ export default function EnhancedTable() {
     const [selectedForDownloading, setSelectedForDownloading] = useState([]);
     dataToDownload = selectedForDownloading
     const [selected, setSelected] = useState([]);
+    selectToDelete = selected
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [loading, setLoading] = useState(true);
 
     const [list, setList] = useState([]);
     useEffect(() => {
-        let mounted = true;
         getStudents()
-            .then(items => {
-                if (mounted) {
-                    setList(items.reverse())
-                }
-            })
-        return () => mounted = false
+            .then(items => setList(items.reverse()))
+            .finally(() => setLoading(false))
     }, [])
 
     rows = list
@@ -347,6 +346,7 @@ export default function EnhancedTable() {
         <div>
             {/* Перенёс сюда SearchBar.jsx */}
             <div className="nav">
+                {loading && <CircularProgress color="warning" sx={{}}/>}
                 <NavLink className="add_student_btn" to="/AddStudent"> Добавить студента <AddIcon/></NavLink>
                 <div className="serchbar_position">
                     {/* Перенёс сюда Search.jsx */}
@@ -362,7 +362,6 @@ export default function EnhancedTable() {
                         <div className="dataResult"></div>
                     </div>
                 </div>
-
             </div>
             <Box sx={{width: '1400px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
                 <Paper sx={{
@@ -388,6 +387,7 @@ export default function EnhancedTable() {
                                 onRequestSort={handleRequestSort}
                                 rowCount={filteredValues.length}
                             />
+
                             <TableBody>
                                 {/* if you don't need to support IE11, you can replace the `stableSort` call with:
                             {/* if you don't need to support IE11, you can replace the `stableSort` call with:
@@ -419,26 +419,24 @@ export default function EnhancedTable() {
                                                         }}
                                                     />
                                                 </TableCell>
-                                                <TableCell
-                                                    component="th"
-                                                    id={labelId}
-                                                    scope="row"
-                                                    padding="none"
-                                                    align="center"
-                                                >
+                                                <TableCell component="th" id={labelId} scope="row" padding="normal"
+                                                           align="left">
                                                     {row.education_type}
                                                 </TableCell>
-                                                <TableCell align="center">{row.latin_name}</TableCell>
-                                                <Link
-                                                    to={row.education_type === "Контракт" ? '/PersonalCardContract' : '/PersonalCardQuota'}
-                                                    state={row} style={{textDecoration: 'none'}}>
-                                                    <TableCell align="center">{row.russian_name}</TableCell>
-                                                </Link>
-                                                <TableCell align="center">{row.country}</TableCell>
-                                                <TableCell align="center">{row.gender}</TableCell>
-                                                <TableCell align="center">{row.contract_number}</TableCell>
+                                                <TableCell align="left">{row.latin_name}</TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? '/PersonalCardContract' : '/PersonalCardQuota'}
+                                                        state={row} style={{textDecoration: 'none'}}
+                                                    >
+                                                        {row.russian_name}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">{row.country}</TableCell>
+                                                <TableCell align="left">{row.gender}</TableCell>
+                                                <TableCell align="left">{row.contract_number}</TableCell>
                                                 <TableCell align="center">{row.enrollment_order}</TableCell>
-                                                <TableCell align="center">{row.enrollment}</TableCell>
+                                                <TableCell align="left">{row.enrollment}</TableCell>
                                             </TableRow>
                                         );
                                     })}
