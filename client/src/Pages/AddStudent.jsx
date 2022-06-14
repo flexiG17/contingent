@@ -24,19 +24,17 @@ function AddStudent() {
             <Header/>
             <div className="container_AddStudent">
                 <p className="title_AddStudent">Добавить студента</p>
-                <div className="selector_AddStudent">
-                    <div className="button_position_addStud">
-                        <button onClick={handleClickContract} type="button" disabled={isActiveQuota}
-                                className="button_style_addStudent">Контракт
-                        </button>
-                        <button onClick={handleClickQuota} type="button" disabled={isActiveContract}
-                                className="button_style_addStudent">Квота
-                        </button>
-                    </div>
-                    {
-                        isActiveContract ? <Quota/> : <Contract/>
-                    }
+                <div className="button_position_addStud">
+                    <button onClick={handleClickContract} type="button" disabled={isActiveQuota}
+                            className="button_style_addStudent">Контракт
+                    </button>
+                    <button onClick={handleClickQuota} type="button" disabled={isActiveContract}
+                            className="button_style_addStudent">Квота
+                    </button>
                 </div>
+                {
+                    isActiveContract ? <Quota/> : <Contract/>
+                }
             </div>
         </>
     )
