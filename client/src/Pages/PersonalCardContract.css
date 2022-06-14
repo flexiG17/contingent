@@ -5,14 +5,6 @@
     margin-top: 50px;
 }
 
-.title_AddStudent {
-    display: flex;
-    justify-content: center;
-    font-size: 25px;
-    color: #FA7A45;
-    font-weight: 500;
-}
-
 .button_position_addStud {
     display: flex;
     justify-content: center;
