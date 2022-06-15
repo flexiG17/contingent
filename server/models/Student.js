@@ -1,7 +1,7 @@
 module.exports = class Student {
 
     constructor(req, pathFile) {
-        this.educationType = req.body.educationType
+        this.educationType = req.body.education_type
         this.directionNumber = req.body.directionNumber
         this.country = req.body.country
         this.citizenship = req.body.citizenship

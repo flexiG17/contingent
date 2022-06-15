@@ -107,7 +107,7 @@ module.exports.getByRussianName = async function (req, res) {
         })
 }
 
-module.exports.getXlsx = function (req, res){
+module.exports.getXlsx = function (req, res) {
     const workSheet = XLSX.utils.json_to_sheet(req.body)
     const workBook = XLSX.utils.book_new()
 
@@ -119,6 +119,7 @@ module.exports.getXlsx = function (req, res){
     XLSX.write(workBook, {bookType: 'xlsx', type: "binary"})
 
     XLSX.writeFile(workBook, "studentsByFilter.xlsx")
+        .then(() => res.status(201))
 }
 
 module.exports.getByParam = async function (req, res) {
