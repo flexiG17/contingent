@@ -32,7 +32,16 @@ import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import SearchIcon from "@mui/icons-material/Search";
-import {CircularProgress} from "@mui/material";
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle
+} from "@mui/material";
+import iziToast from "izitoast";
 
 /*
 function createData(education_type, russian_name, latin_name, country, gender, contract_number, enrollment_order, enrollment) {
@@ -128,13 +137,13 @@ const headCells = [
         id: 'contract_number',
         numeric: true,
         disablePadding: true,
-        label: 'Номер договора',
+        label: '№ договора',
     },
     {
         id: 'enrollment_order',
         numeric: false,
         disablePadding: true,
-        label: 'Номер приказа о зачислении',
+        label: '№ приказа о зачислении',
     },
     {
         id: 'enrollment',
@@ -206,50 +215,110 @@ let selectToDelete = null
 
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
+    const [open, setOpen] = React.useState(false);
 
-    const [isActiveFilter, setIsActiveFilter] = useState(false)
+    const handleOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
-        <Toolbar
-            sx={{
-                pl: {sm: 2},
-                pr: {xs: 1, sm: 1},
-                ...(numSelected > 0 && {
-                    bgcolor: (theme) =>
-                        alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                }),
-            }}
-        >
-            {numSelected > 0 ? (
-                <Typography sx={{flex: '1 1 100%'}} color="inherit" variant="subtitle1" component="div">
-                    {numSelected} выбрано
-                </Typography>
-            ) : (
-                <Typography sx={{flex: '1 1 100%'}} variant="h6" id="tableTitle" component="div">
-                </Typography>
-            )}
+        <>
+            <Toolbar
+                sx={{
+                    pl: {sm: 2},
+                    pr: {xs: 1, sm: 1},
+                    ...(numSelected > 0 && {
+                        bgcolor: (theme) =>
+                            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+                    }),
+                }}
+            >
+                {numSelected > 0 ? (
+                    <Typography sx={{flex: '1 1 100%'}} color="inherit" variant="subtitle1" component="div">
+                        {numSelected} выбрано
+                    </Typography>
+                ) : (
+                    <Typography sx={{flex: '1 1 100%'}} variant="h6" id="tableTitle" component="div">
+                    </Typography>
+                )}
 
-            {numSelected > 0 ? (<>
-                    <Tooltip title="Загрузить">
-                        <IconButton onClick={() => getXlsx(dataToDownload)}>
-                            <FileDownloadIcon/>
+                {numSelected > 0 ? (<>
+                        <Tooltip title="Загрузить">
+                            <IconButton onClick={() => getXlsx(dataToDownload)}>
+                                <FileDownloadIcon/>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Удалить">
+                            <IconButton onClick={() => {
+                                handleOpen()
+                            }}>
+                                <DeleteIcon/>
+                            </IconButton>
+                        </Tooltip>
+
+                    </>
+                ) : (
+                    <Tooltip title="Отфильтровать">
+                        <IconButton>
+                            <FilterListIcon/>
                         </IconButton>
                     </Tooltip>
-                    <Tooltip title="Удалить">
-                        <IconButton onClick={() => removeStudent(selectToDelete)}>
-                            <DeleteIcon/>
-                        </IconButton>
-                    </Tooltip>
-
-                </>
-            ) : (
-                <Tooltip title="Отфильтровать">
-                    <IconButton onClick={() => setIsActiveFilter(!isActiveFilter)}>
-                        <FilterListIcon/>
-                    </IconButton>
-                </Tooltip>
-            )}
-        </Toolbar>
+                )}
+            </Toolbar>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Вы уверены, что хотите удалить данного студента?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        let timeOut = 3000
+                        removeStudent(selectToDelete)
+                            .then((res) => {
+                                switch (res.status) {
+                                    case 200: {
+                                        iziToast.success({
+                                            title: res.statusText,
+                                            message: 'Студент успешно удалён из базы. Обновляю страницу :)',
+                                            position: "topRight",
+                                            timeout: timeOut
+                                        });
+                                        setTimeout(() => {
+                                            window.location.reload()
+                                        }, timeOut  + 300)
+                                        break
+                                    }
+                                    default: {
+                                        iziToast.error({
+                                            title: res.statusText,
+                                            message: 'Ошибка. Попробуйте снова.',
+                                            position: "topRight",
+                                            color: "#FFF2ED"
+                                        });
+                                    }
+                                }
+                            })
+                        setOpen(false)
+                    }
+                    }>Да</Button>
+                    <Button onClick={() => {
+                        setOpen(false)
+                    }
+                    }>Нет</Button>
+                </DialogActions>
+            </Dialog>
+        </>
     );
 };
 
@@ -341,7 +410,6 @@ export default function EnhancedTable() {
     const filteredValues = rows.filter(row => {
         return row['russian_name'].toLowerCase().includes(searchingValue.toLowerCase())
     })
-
     return (
         <div>
             {/* Перенёс сюда SearchBar.jsx */}
@@ -427,7 +495,7 @@ export default function EnhancedTable() {
                                                 <TableCell align="left">
                                                     <Link
                                                         to={row.education_type === "Контракт" ? '/PersonalCardContract' : '/PersonalCardQuota'}
-                                                        state={row} style={{textDecoration: 'none'}}
+                                                        state={row} style={{textDecoration: 'none', color: 'black'}}
                                                     >
                                                         {row.russian_name}
                                                     </Link>
@@ -435,7 +503,7 @@ export default function EnhancedTable() {
                                                 <TableCell align="left">{row.country}</TableCell>
                                                 <TableCell align="left">{row.gender}</TableCell>
                                                 <TableCell align="left">{row.contract_number}</TableCell>
-                                                <TableCell align="center">{row.enrollment_order}</TableCell>
+                                                <TableCell align="left">{row.enrollment_order}</TableCell>
                                                 <TableCell align="left">{row.enrollment}</TableCell>
                                             </TableRow>
                                         );
@@ -467,6 +535,8 @@ export default function EnhancedTable() {
                     label="Убрать отступы"
                 />
             </Box>
+            <div>
+            </div>
         </div>
 
     );
