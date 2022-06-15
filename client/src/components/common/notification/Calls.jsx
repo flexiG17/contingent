@@ -17,6 +17,7 @@ import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import './Calls.css'
+import {CircularProgress} from "@mui/material";
 
 let notifications = []
 let students = []
@@ -24,7 +25,6 @@ let students = []
 function Row(props) {
     const {row, currentStudent} = props;
     const [open, setOpen] = useState(false);
-    console.log(currentStudent)
 
     return (
         <React.Fragment>
@@ -123,11 +123,13 @@ function getStudentById(id) {
 export default function CollapsibleTable() {
     const [notificationList, setNotificationList] = useState([]);
     const [studentList, setStudentList] = useState([]);
+    const [loading, setLoading] = useState(true);
     // выводятся только фильтрующиеся данные
     const [searchingValue, setSearchingValue] = useState('')
     useEffect(() => {
         getNotifications()
             .then(items => setNotificationList(items.reverse()))
+            .finally(() => setLoading(false))
 
         getStudents()
             .then(items => {
@@ -142,7 +144,9 @@ export default function CollapsibleTable() {
         <>
             {/* Перенёс сюда SearchBar.jsx */}
             <div className="notification_navbar">
-                <NavLink className="add_notification_button" to="/AddNotification"> Добавить уведомление <AddIcon/></NavLink>
+                {loading && <CircularProgress color="warning" sx={{ml: "490px"}}/>}
+                <NavLink className="add_notification_button" to="/AddNotification"> Добавить
+                    уведомление <AddIcon/></NavLink>
                 <div className="serchbar_position">
                     {/* Перенёс сюда Search.jsx */}
                     <div className="search_notification_input">
@@ -159,7 +163,7 @@ export default function CollapsibleTable() {
                 </div>
             </div>
             <TableContainer component={Paper}
-                            sx={{width: '950px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
+                            sx={{width: '1000px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
