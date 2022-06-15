@@ -10,7 +10,6 @@ export function removeStudent(id) {
             'Content-Type': 'application/json;charset=utf-8'
         },
     })
-        .then(data => data.json())
 }
 
 export function getXlsx(item) {
@@ -21,7 +20,6 @@ export function getXlsx(item) {
         },
         body: JSON.stringify(item)
     })
-        .then(data => data.json())
 }
 
 export function getNotifications() {
@@ -37,23 +35,21 @@ export function registerUser(item) {
         },
         body: JSON.stringify(item)
     })
-        .then(data => data.json())
-}
-
-export function changeStudentData(item, id) {
-    return fetch(`http://localhost:5000/api/student/update/${id}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json;charset=utf-8'
-        },
-        body: JSON.stringify(item)
-    })
-        .then(data => data.json())
 }
 
 export function loginUser(item) {
     return fetch('http://localhost:5000/api/auth/login', {
         method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(item)
+    })
+}
+
+export function changeStudentData(item, id) {
+    return fetch(`http://localhost:5000/api/student/update/${id}`, {
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
@@ -69,7 +65,6 @@ export function addStudent(item) {
         },
         body: JSON.stringify(item)
     })
-        .then(data => data.json())
 }
 
 export function createNotification(item) {
@@ -80,5 +75,4 @@ export function createNotification(item) {
         },
         body: JSON.stringify(item)
     })
-        .then(data => data.json())
 }
