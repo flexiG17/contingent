@@ -3,6 +3,7 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import {changeStudentData} from '../../../services/serverData'
 import {Link, useLocation} from 'react-router-dom';
 import "./PersonalCardContract.css";
+import iziToast from "izitoast";
 
 function PersonalCardContract() {
     const [active, setActive] = useState(true);
@@ -53,16 +54,6 @@ function PersonalCardContract() {
     const [actual_receipt_date_invitation, setDateOfReceipt] = useState(rows.actual_receipt_date_invitation)
     const [document_path, setDocumentPath] = useState(rows.document_path)
 
-    const [alert, setAlert] = useState(false);
-
-    useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                setAlert(false);
-            }, 3000)
-        }
-    }, [alert])
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -88,7 +79,6 @@ function PersonalCardContract() {
             levelEducation: level_education,
             nameEducationalInstitution: name_educational_institution,
             educationField: education_field,
-            educationType: "Контракт",
             form_study: form_study,
             enrollment: enrollment,
             enrollmentOrder: enrollment_order,
@@ -107,11 +97,28 @@ function PersonalCardContract() {
             estimated_receipt_date: estimated_receipt_date,
             actual_receipt_date_invitation: actual_receipt_date_invitation
         }
+        console.log(data.education_type)
         changeStudentData(data, rows.id)
-            .then(() => {
-                setAlert(true);
+            .then((res) => {
+                switch (res.status) {
+                    case 201: {
+                        iziToast.success({
+                            title: res.statusText,
+                            message: 'Данные студента успешно обновлены',
+                            position: "topRight"
+                        });
+                        break
+                    }
+                    default: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Попробуйте ещё раз',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                    }
+                }
             })
-            .catch(() => setAlert(false))
     };
 
     return (
@@ -258,7 +265,6 @@ function PersonalCardContract() {
             <label className="checkbox_style_contract">
                 <input type="checkbox" onClick={handleClickContract}/> Вы уверены, что хотите добавить студента?
             </label>
-            {alert && <h4> Данные успешно обновлены</h4>}
             <div className="button_position_contract_doc">
                 <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить</button>
             </div>

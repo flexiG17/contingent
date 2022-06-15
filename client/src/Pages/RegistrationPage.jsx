@@ -3,6 +3,7 @@ import './RegistrationPage.css';
 import Logo from './logo.png';
 // import {NavLink} from "react-router-dom";
 import {registerUser} from '../services/serverData'
+import iziToast from "izitoast";
 
 function RegisterPage() {
     const [inputName, setNameItemInput] = useState('')
@@ -17,6 +18,29 @@ function RegisterPage() {
             password: inputPassword
         }
         registerUser(data)
+            .then((res) => {
+                switch (res.status) {
+                    case 201: {
+                        iziToast.success({
+                            title: res.statusText,
+                            message: 'Сотрудник успешно зарегестрирован',
+                            position: "topRight"
+                        });
+                        setNameItemInput('');
+                        setEmailItemInput('');
+                        setPasswordItemInput('');
+                        break
+                    }
+                    default: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Такой пользователь уже есть в системе',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                    }
+                }
+            })
     };
 
     return (

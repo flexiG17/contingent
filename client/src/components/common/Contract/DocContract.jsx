@@ -4,6 +4,7 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import './EducationContract.css';
 import './InfoContacts.css';
 import {addStudent} from '../../../services/serverData'
+import iziToast from "izitoast";
 
 
 function DocContract() {
@@ -55,16 +56,6 @@ function DocContract() {
     const [document_path, setDocumentPath] = useState('')
     const [comments, setComments] = useState('')
 
-    const [alert, setAlert] = useState(false);
-
-    useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                setAlert(false);
-            }, 3000)
-        }
-    }, [alert])
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -113,10 +104,26 @@ function DocContract() {
             comments: comments
         }
         addStudent(data)
-            .then(() => {
-                setAlert(true);
+            .then((res) => {
+                switch (res.status) {
+                    case 201: {
+                        iziToast.success({
+                            title: res.statusText,
+                            message: 'Студент успешно добавлен в базу',
+                            position: "topRight"
+                        });
+                        break
+                    }
+                    default: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Студент с таким номером паспорта уже существует',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                    }
+                }
             })
-            .catch(() => setAlert(false))
     };
 
     return (
@@ -266,7 +273,6 @@ function DocContract() {
             <label className="checkbox_style_contract">
                 <input type="checkbox" onClick={handleClickContract}/> Вы уверены, что хотите добавить студента?
             </label>
-            {alert && <h4> Студент добавлен</h4>}
             <div className="button_position_contract_doc">
                 <button type="submit" className="button_style_contract_doc" disabled={active}>Добавить</button>
             </div>

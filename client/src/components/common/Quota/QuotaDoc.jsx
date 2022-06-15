@@ -1,9 +1,10 @@
-import React,{useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import "./QuotaDoc.css";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import './QuotaEducation.css'
 import './QuotaInfo.css'
 import {addStudent} from "../../../services/serverData";
+import iziToast from "izitoast";
 
 function QuotaDoc() {
     const [active, setActive] = useState(true);
@@ -46,16 +47,6 @@ function QuotaDoc() {
     const [document_path, setDocumentPath] = useState('')
     const [comments, setComments] = useState('')
 
-    const [alert, setAlert] = useState(false);
-
-    useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                setAlert(false);
-            }, 3000)
-        }
-    }, [alert])
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -96,10 +87,26 @@ function QuotaDoc() {
             comments: comments
         }
         addStudent(data)
-            .then(() => {
-                setAlert(true);
+            .then((res) => {
+                switch (res.status) {
+                    case 201: {
+                        iziToast.success({
+                            title: res.statusText,
+                            message: 'Студент успешно добавлен в базу',
+                            position: "topRight"
+                        });
+                        break
+                    }
+                    default: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Студент с таким номером паспорта уже существует',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                    }
+                }
             })
-            .catch(() => setAlert(false))
     };
 
     return (
@@ -120,20 +127,27 @@ function QuotaDoc() {
                         {/*<input type="email" placeholder="E-mail" className="input_style_contract"
                                onChange={event => setStudentEmail(event.target.value)} value={student_email}/>*/}
                         <p className="tytle_contract_info"> Учёба</p>
-                        <input type="text" placeholder="Местонахождение учебного заведения" className="input_style_contract"
-                               onChange={event => setLocationEducationalInstitution(event.target.value)} value={location_educational_institution}/>
+                        <input type="text" placeholder="Местонахождение учебного заведения"
+                               className="input_style_contract"
+                               onChange={event => setLocationEducationalInstitution(event.target.value)}
+                               value={location_educational_institution}/>
                         <input type="text" placeholder="Год окончания" className="input_style_contract"
                                onChange={event => setGraduationYear(event.target.value)} value={graduation_year}/>
                         <input type="text" placeholder="Уровень желаемого образования" className="input_style_contract"
-                               onChange={event => setDesiredEducationLevel(event.target.value)} value={desired_education_level}/>
-                        <input type="text" placeholder="Код направления подготовки (специальности)" className="input_style_contract"
+                               onChange={event => setDesiredEducationLevel(event.target.value)}
+                               value={desired_education_level}/>
+                        <input type="text" placeholder="Код направления подготовки (специальности)"
+                               className="input_style_contract"
                                onChange={event => setSpecialtyCode(event.target.value)} value={specialty_code}/>
-                        <input type="text" placeholder="Направление подготовки (специальность)" className="input_style_contract"
-                               onChange={event => setSpecialtyDirection(event.target.value)} value={specialty_direction}/>
+                        <input type="text" placeholder="Направление подготовки (специальность)"
+                               className="input_style_contract"
+                               onChange={event => setSpecialtyDirection(event.target.value)}
+                               value={specialty_direction}/>
                         <input type="text" placeholder="Область образования" className="input_style_contract"
                                onChange={event => setEducationField(event.target.value)} value={education_field}/>
                         <input type="text" placeholder="Образовательная организация" className="input_style_contract"
-                               onChange={event => setEducationalOrganization(event.target.value)} value={educational_organization}/>
+                               onChange={event => setEducationalOrganization(event.target.value)}
+                               value={educational_organization}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Паспортные данные </p>
@@ -224,7 +238,6 @@ function QuotaDoc() {
             <label className="checkbox_style_contract">
                 <input type="checkbox" onClick={handleClickContract}/> Вы уверены, что хотите добавить студента?
             </label>
-            {alert && <h4> Студент добавлен</h4>}
             <div className="button_position_contract_doc">
                 <button type="submit" className="button_style_contract_doc" disabled={active}>Добавить</button>
             </div>

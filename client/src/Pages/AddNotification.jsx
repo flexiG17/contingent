@@ -6,6 +6,7 @@ import TextField from '@mui/material/TextField';
 import {useState} from "react";
 import {useLocation} from "react-router-dom";
 import {createNotification} from "../services/serverData";
+import iziToast from "izitoast";
 
 
 function AddNotification() {
@@ -35,7 +36,26 @@ function AddNotification() {
         }
         console.log(data)
         createNotification(data)
-            .then(() => console.log("created"))
+            .then((res) => {
+                switch (res.status) {
+                    case 200: {
+                        iziToast.success({
+                            title: res.statusText,
+                            message: 'Уведомление успешно создано',
+                            position: "topRight"
+                        });
+                        break
+                    }
+                    default: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Попробуйте ещё раз',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                    }
+                }
+            })
     };
 
     return (

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import './LoginPage.css';
 import Logo from './logo.png';
 import {loginUser} from '../services/serverData'
-import "izitoast-react/dist/iziToast.css";
+import "izitoast/dist/css/iziToast.css";
 import iziToast from "izitoast";
 
 function LoginPage() {
@@ -16,20 +16,36 @@ function LoginPage() {
             password: inputPassword
         }
         loginUser(data)
-            .then(() => {
-                iziToast.success({
-                    title: 'OK',
-                    message: 'Успешная авторизация',
-                });
-                setEmailItemInput('');
-                setPasswordItemInput('');
-            })
-            .catch((err) => {
-                iziToast.error({
-                    title: 'Error',
-                    message: `Error: ${err.message}`,
-                    position: 'topRight'
-                });
+            .then((res) => {
+                switch (res.status) {
+                    case 200: {
+                        iziToast.success({
+                            title: res.statusText,
+                            message: 'Успешная авторизация',
+                            position: "topRight"
+                        });
+                        setEmailItemInput('');
+                        setPasswordItemInput('');
+                        break
+                    }
+                    case 401: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Пароли не совпадают. Попробуйте ещё раз',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                        break
+                    }
+                    default: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Такой пользователь не существует',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                    }
+                }
             })
     };
 

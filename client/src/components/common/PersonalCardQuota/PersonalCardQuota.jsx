@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import {changeStudentData} from '../../../services/serverData'
 import {useEffect} from "react";
-import {useLocation} from 'react-router-dom';
+import {Link, useLocation} from 'react-router-dom';
+import iziToast from "izitoast";
+import './PersonalCardQuota.css'
 
 function PersonalCardQuota() {
     const [active, setActive] = useState(true);
@@ -49,15 +51,6 @@ function PersonalCardQuota() {
     const [document_path, setDocumentPath] = useState(rows.document_path)
     const [comments, setComments] = useState(rows.comments)
 
-    const [alert, setAlert] = useState(false);
-
-    useEffect(() => {
-        if (alert) {
-            setTimeout(() => {
-                setAlert(false);
-            }, 3000)
-        }
-    }, [alert])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -89,7 +82,6 @@ function PersonalCardQuota() {
             passportExpiration: passport_expiration,
             levelEducation: level_education,
             nameEducationalInstitution: name_educational_institution,
-            educationType: "Квота",
             form_study: form_study,
             enrollment: enrollment,
             enrollmentOrder: enrollment_order,
@@ -100,16 +92,35 @@ function PersonalCardQuota() {
             comments: comments
         }
         changeStudentData(data, rows.id)
-            .then(() => {
-                setAlert(true);
+            .then((res) => {
+                switch (res.status) {
+                    case 201: {
+                        iziToast.success({
+                            title: res.statusText,
+                            message: 'Данные студента успешно обновлены',
+                            position: "topRight"
+                        });
+                        break
+                    }
+                    default: {
+                        iziToast.error({
+                            title: res.statusText,
+                            message: 'Попробуйте ещё раз',
+                            position: "topRight",
+                            color: "#FFF2ED"
+                        });
+                    }
+                }
             })
-            .catch(() => setAlert(false))
     };
 
     return (
         <form onSubmit={handleSubmit}>
-            <p className="tytle_contract_info">Личная карточка {rows.russian_name}</p>
+            <p className="title_quota_info">Личная карточка {rows.russian_name}</p>
             <div className="info_and_education_contaner">
+                <div className='notification_button_position'>
+                    <Link to='/AddNotification' state={rows} style={{textDecoration: 'none'}} className="notification_button">Создать уведомление</Link>
+                </div>
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Личные данные</p>
@@ -125,20 +136,27 @@ function PersonalCardQuota() {
                         {/*<input type="email" placeholder="E-mail" className="input_style_contract"
                                onChange={event => setStudentEmail(event.target.value)} value={student_email}/>*/}
                         <p className="tytle_contract_info"> Учёба</p>
-                        <input type="text" placeholder="Местонахождение учебного заведения" className="input_style_contract"
-                               onChange={event => setLocationEducationalInstitution(event.target.value)} value={location_educational_institution}/>
+                        <input type="text" placeholder="Местонахождение учебного заведения"
+                               className="input_style_contract"
+                               onChange={event => setLocationEducationalInstitution(event.target.value)}
+                               value={location_educational_institution}/>
                         <input type="text" placeholder="Год окончания" className="input_style_contract"
                                onChange={event => setGraduationYear(event.target.value)} value={graduation_year}/>
                         <input type="text" placeholder="Уровень желаемого образования" className="input_style_contract"
-                               onChange={event => setDesiredEducationLevel(event.target.value)} value={desired_education_level}/>
-                        <input type="text" placeholder="Код направления подготовки (специальности)" className="input_style_contract"
+                               onChange={event => setDesiredEducationLevel(event.target.value)}
+                               value={desired_education_level}/>
+                        <input type="text" placeholder="Код направления подготовки (специальности)"
+                               className="input_style_contract"
                                onChange={event => setSpecialtyCode(event.target.value)} value={specialty_code}/>
-                        <input type="text" placeholder="Направление подготовки (специальность)" className="input_style_contract"
-                               onChange={event => setSpecialtyDirection(event.target.value)} value={specialty_direction}/>
+                        <input type="text" placeholder="Направление подготовки (специальность)"
+                               className="input_style_contract"
+                               onChange={event => setSpecialtyDirection(event.target.value)}
+                               value={specialty_direction}/>
                         <input type="text" placeholder="Область образования" className="input_style_contract"
                                onChange={event => setEducationField(event.target.value)} value={education_field}/>
                         <input type="text" placeholder="Образовательная организация" className="input_style_contract"
-                               onChange={event => setEducationalOrganization(event.target.value)} value={educational_organization}/>
+                               onChange={event => setEducationalOrganization(event.target.value)}
+                               value={educational_organization}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Паспортные данные </p>
@@ -231,7 +249,6 @@ function PersonalCardQuota() {
             <label className="checkbox_style_contract">
                 <input type="checkbox" onClick={handleClickContract}/> Вы уверены, что хотите добавить студента?
             </label>
-            {alert && <h4> Студент добавлен</h4>}
             <div className="button_position_contract_doc">
                 <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить</button>
             </div>
