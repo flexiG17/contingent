@@ -18,6 +18,7 @@ import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import './Calls.css'
 import {CircularProgress} from "@mui/material";
+import moment from "moment";
 
 let notifications = []
 let students = []
@@ -138,7 +139,26 @@ export default function CollapsibleTable() {
     }, [])
 
     notifications = notificationList
+    notifications.map(item => {
+        item.date = moment(item.date).format("YYYY-MM-DD")
+    })
+
     students = studentList
+    students.map(item => {
+        item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
+        item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD")
+        item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD")
+        item.entry_date = moment(item.entry_date).format("YYYY-MM-DD")
+        item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD")
+        item.first_payment = moment(item.first_payment).format("YYYY-MM-DD")
+        item.second_payment = moment(item.second_payment).format("YYYY-MM-DD")
+        item.third_payment = moment(item.third_payment).format("YYYY-MM-DD")
+        item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD")
+        item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD")
+        item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD")
+        item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD")
+        item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD")
+    })
 
     return (
         <>

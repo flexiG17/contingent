@@ -10,7 +10,7 @@ function Header() {
         <section className="header">
             <section className="header-top">
                 <section className="header-top__logo">
-                    <a href="/HomePage" className="header-logo"><img src={Logo} width = "220px" height= "55px" alt=""/></a>
+                    <a href="/HomePage" className="header-logo"><img src={Logo} width = "150px" height= "108,7px" alt=""/></a>
                 </section>
                     <section className="header-top__navigation">
                             <Navbar />

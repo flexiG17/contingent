@@ -25,9 +25,12 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
 import {useEffect, useState} from "react"
+
+import axios from 'axios';
+import moment from 'moment'
 //import React, {useEffect, useState} from "react";
 
-import {getStudents, getXlsx, removeStudent} from '../../../services/serverData'
+import {getStudents, createXlsx, removeStudent, getXlsx, importXlsx} from '../../../services/serverData'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
@@ -216,6 +219,7 @@ let selectToDelete = null
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
     const [open, setOpen] = React.useState(false);
+    const [file, setFile] = React.useState(null);
 
     const handleOpen = () => {
         setOpen(true);
@@ -248,7 +252,21 @@ const EnhancedTableToolbar = (props) => {
 
                 {numSelected > 0 ? (<>
                         <Tooltip title="Загрузить">
-                            <IconButton onClick={() => getXlsx(dataToDownload)}>
+                            <IconButton onClick={() => {
+                                createXlsx(dataToDownload)
+                                setTimeout(() => {
+                                    getXlsx()
+                                        .then(response => {
+                                            response.blob().then(blob => {
+                                                let url = window.URL.createObjectURL(blob);
+                                                let a = document.createElement('a');
+                                                a.href = url;
+                                                a.download = 'studentsByFilter.xlsx';
+                                                a.click();
+                                            });
+                                        });
+                                }, 1000)
+                            }}>
                                 <FileDownloadIcon/>
                             </IconButton>
                         </Tooltip>
@@ -262,11 +280,21 @@ const EnhancedTableToolbar = (props) => {
 
                     </>
                 ) : (
-                    <Tooltip title="Отфильтровать">
-                        <IconButton>
-                            <FilterListIcon/>
-                        </IconButton>
-                    </Tooltip>
+                    <>
+                        <input type='file' onChange={e => setFile(e.target.files[0])}/>
+                        <Tooltip title="Загрузить">
+                            <IconButton onClick={() => {
+                                const data = new FormData()
+                                data.append('fileToImport', file)
+
+                                axios.post('http://localhost:5000/api/student/importXlsxFile', data, {
+                                    'content-type': 'multipart/form-data'
+                                })
+                            }}>
+                                <FilterListIcon/>
+                            </IconButton>
+                        </Tooltip>
+                    </>
                 )}
             </Toolbar>
             <Dialog
@@ -296,7 +324,7 @@ const EnhancedTableToolbar = (props) => {
                                         });
                                         setTimeout(() => {
                                             window.location.reload()
-                                        }, timeOut  + 300)
+                                        }, timeOut + 300)
                                         break
                                     }
                                     default: {
@@ -340,13 +368,29 @@ export default function EnhancedTable() {
     const [loading, setLoading] = useState(true);
 
     const [list, setList] = useState([]);
-    useEffect(() => {
-        getStudents()
-            .then(items => setList(items.reverse()))
-            .finally(() => setLoading(false))
-    }, [])
+        useEffect(() => {
+            getStudents()
+                .then(items => setList(items.reverse()))
+                .finally(() => setLoading(false))
+        }, [])
 
     rows = list
+    rows.map(item => {
+        item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
+        item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD")
+        item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD")
+        item.entry_date = moment(item.entry_date).format("YYYY-MM-DD")
+        item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD")
+        item.first_payment = moment(item.first_payment).format("YYYY-MM-DD")
+        item.second_payment = moment(item.second_payment).format("YYYY-MM-DD")
+        item.third_payment = moment(item.third_payment).format("YYYY-MM-DD")
+        item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD")
+        item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD")
+        item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD")
+        item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD")
+        item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD")
+    })
+    console.log(rows)
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';

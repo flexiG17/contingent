@@ -58,46 +58,45 @@ function PersonalCardContract() {
         e.preventDefault();
         const data = {
             education_type: education_type,
-            latinName: latin_name,
-            russianName: russian_name,
-            russianLocation: RF_location,
-            contactPhoneNumber: contact_phone_number,
-            studentEmail: student_email,
-            agentName: agent_name,
-            agentPhoneNumber: agent_phone_number,
-            agentEmail: agent_email,
+            latin_name: latin_name,
+            russian_name: russian_name,
+            RF_location: RF_location,
+            contact_phone_number: contact_phone_number,
+            student_email: student_email,
+            agent_name: agent_name,
+            agent_phone_number: agent_phone_number,
+            agent_email: agent_email,
             country: country,
-            birthPlace: birth_place,
-            birthDate: birth_date,
-            residencePlace: residence_place,
+            birth_place: birth_place,
+            birth_date: birth_date,
+            residence_place: residence_place,
             citizenship: citizenship,
             gender: gender,
-            passportNumber: passport_number,
-            passportExpiration: passport_expiration,
-            passportIssued: passport_issued,
-            passportIssueDate: passport_issue_date,
-            levelEducation: level_education,
-            nameEducationalInstitution: name_educational_institution,
-            educationField: education_field,
+            passport_number: passport_number,
+            passport_expiration: passport_expiration,
+            passport_issued: passport_issued,
+            passport_issue_date: passport_issue_date,
+            level_education: level_education,
+            name_educational_institution: name_educational_institution,
+            education_field: education_field,
             form_study: form_study,
             enrollment: enrollment,
-            enrollmentOrder: enrollment_order,
-            contractNumber: contract_number,
-            status1C: status_1C,
-            tutorName: tutor_name,
-            firstPayment: first_payment,
-            secondPayment: second_payment,
-            thirdPayment: third_payment,
-            fourthPayment: fourth_payment,
-            entryDate: entry_date,
-            visaValidity: visa_validity,
-            documentPath: document_path,
+            enrollment_order: enrollment_order,
+            contract_number: contract_number,
+            status_1C: status_1C,
+            tutor_name: tutor_name,
+            first_payment: first_payment,
+            second_payment: second_payment,
+            third_payment: third_payment,
+            fourth_payment: fourth_payment,
+            entry_date: entry_date,
+            visa_validity: visa_validity,
+            document_path: document_path,
             transfer_to_international_service: transfer_to_international_service,
             transfer_to_MVD: transfer_to_MVD,
             estimated_receipt_date: estimated_receipt_date,
             actual_receipt_date_invitation: actual_receipt_date_invitation
         }
-        console.log(data.education_type)
         changeStudentData(data, rows.id)
             .then((res) => {
                 switch (res.status) {
@@ -160,7 +159,7 @@ function PersonalCardContract() {
                                onChange={event => setCountry(event.target.value)} value={country}/>
                         <input type="text" placeholder="Место рождения" className="input_style_contract"
                                onChange={event => setBirthPlace(event.target.value)} value={birth_place}/>
-                        <input type="text" placeholder="Дата рождения" className="input_style_contract"
+                        <input type="date" placeholder="Дата рождения" className="input_style_contract"
                                onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
                         <input type="text" placeholder="Место проживания" className="input_style_contract"
                                onChange={event => setResidencePlace(event.target.value)} value={residence_place}/>
@@ -170,12 +169,12 @@ function PersonalCardContract() {
                                onChange={event => setGender(event.target.value)} value={gender}/>
                         <input type="text" placeholder="Номер паспорта" className="input_style_contract"
                                onChange={event => setPassportNumber(event.target.value)} value={passport_number}/>
-                        <input type="text" placeholder="Срок действия паспорта (дата)" className="input_style_contract"
+                        <input type="date" placeholder="Срок действия паспорта (дата)" className="input_style_contract"
                                onChange={event => setPassportExpiration(event.target.value)}
                                value={passport_expiration}/>
                         <input type="text" placeholder="Кем выдан" className="input_style_contract"
                                onChange={event => setPassportIssued(event.target.value)} value={passport_issued}/>
-                        <input type="text" placeholder="Дата выдачи" className="input_style_contract"
+                        <input type="date" placeholder="Дата выдачи" className="input_style_contract"
                                onChange={event => setPassportIssueDate(event.target.value)}
                                value={passport_issue_date}/>
                     </div>
@@ -213,13 +212,13 @@ function PersonalCardContract() {
                                onChange={event => set1CStatus(event.target.value)} value={status_1C}/>
                         <input type="text" placeholder="Куратор" className="input_style_contract"
                                onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
-                        <input type="text" placeholder="Платеж 1 (дата)" className="input_style_contract"
+                        <input type="date" placeholder="Платеж 1 (дата)" className="input_style_contract"
                                onChange={event => setFirstPayment(event.target.value)} value={first_payment}/>
-                        <input type="text" placeholder="Платеж 2 (дата)" className="input_style_contract"
+                        <input type="date" placeholder="Платеж 2 (дата)" className="input_style_contract"
                                onChange={event => setSecondPayment(event.target.value)} value={second_payment}/>
-                        <input type="text" placeholder="Платеж 3 (дата)" className="input_style_contract"
+                        <input type="date" placeholder="Платеж 3 (дата)" className="input_style_contract"
                                onChange={event => setThirdPayment(event.target.value)} value={third_payment}/>
-                        <input type="text" placeholder="Платеж 4 (дата)" className="input_style_contract"
+                        <input type="date" placeholder="Платеж 4 (дата)" className="input_style_contract"
                                onChange={event => setFourthPayment(event.target.value)} value={fourth_payment}/>
                     </div>
                 </div>
@@ -228,21 +227,21 @@ function PersonalCardContract() {
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_doc"> Уровень образования</p>
-                        <input type="text" placeholder="Дата въезда" className="input_style_contract"
+                        <input type="date" placeholder="Дата въезда" className="input_style_contract"
                                onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
-                        <input type="text" placeholder="Срок действия визы (дата)" className="input_style_contract"
+                        <input type="date" placeholder="Срок действия визы (дата)" className="input_style_contract"
                                onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
-                        <input type="text" placeholder="Дата передачи в международную службу"
+                        <input type="date" placeholder="Дата передачи в международную службу"
                                className="input_style_contract"
                                onChange={event => setDateOfTransfer(event.target.value)}
                                value={transfer_to_international_service}/>
-                        <input type="text" placeholder="Дата передачи в МВД" className="input_style_contract"
+                        <input type="date" placeholder="Дата передачи в МВД" className="input_style_contract"
                                onChange={event => setDateOfMvdTransfer(event.target.value)} value={transfer_to_MVD}/>
-                        <input type="text" placeholder="Ориентировочная дата получения"
+                        <input type="date" placeholder="Ориентировочная дата получения"
                                className="input_style_contract"
                                onChange={event => setDateOfReceiving(event.target.value)}
                                value={estimated_receipt_date}/>
-                        <input type="text" placeholder="Фактическая дата получения приглашения"
+                        <input type="date" placeholder="Фактическая дата получения приглашения"
                                className="input_style_contract" onChange={event => setDateOfReceipt(event.target.value)}
                                value={actual_receipt_date_invitation}/>
                     </div>

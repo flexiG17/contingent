@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import './LoginPage.css';
-import Logo from './logo.png';
+import Logo from './full_logo.png';
 import {loginUser} from '../services/serverData'
 import "izitoast/dist/css/iziToast.css";
 import iziToast from "izitoast";
@@ -53,8 +53,7 @@ function LoginPage() {
         <>
             <div className="form_container">
                 <div className="header_greeting">
-                    <div className="Login_Logo"><img src={Logo} width="250px" height="50px" alt=""/></div>
-
+                    <div className="Login_Logo"><img src={Logo} width="220px" height="160px" alt=""/></div>
 
                     <form className="form_style" onSubmit={handleSubmit}>
 

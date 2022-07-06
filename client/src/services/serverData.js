@@ -12,14 +12,25 @@ export function removeStudent(id) {
     })
 }
 
-export function getXlsx(item) {
-    return fetch('http://localhost:5000/api/student/getXlsx', {
+export function createXlsx(item) {
+    return fetch('http://localhost:5000/api/student/getXlsxToDownload', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify(item)
     })
+}
+
+export function importXlsx(item) {
+    return fetch('http://localhost:5000/api/student/importXlsxFile', {
+        method: 'POST',
+        body: JSON.stringify(item)
+    })
+}
+
+export function getXlsx() {
+    return fetch('http://localhost:5000/api/student/download/xlsx')
 }
 
 export function getNotifications() {

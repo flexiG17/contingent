@@ -1,6 +1,6 @@
 import React from "react";
 import './StartPage.css';
-import Logo from './logo1.png';
+import Logo from './full_logo.png';
 import {NavLink} from "react-router-dom";
 
 
@@ -15,8 +15,8 @@ function StartPage() {
                 </div>
 
                 <div className="RightSide_greeting">
-                    <div className="Start_Logo"><img src={Logo} width="320px" height="196.28px" alt=""/></div>
-                    <p className="Sub_sub_header">Вход DoubleApple</p>
+                    <div className="Start_Logo"><img src={Logo} width="250px" height="181px" alt=""/></div>
+                    <p className="Sub_sub_header">Вход ПОдИУ УрФУ</p>
                     <NavLink to="/LoginPage" className="button_start"> Войти </NavLink>
                 </div>
             </div>

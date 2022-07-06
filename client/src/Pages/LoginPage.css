@@ -13,7 +13,8 @@
 
 .Login_Logo{
     display: flex;
-    padding: 40px 120px;  
+    padding-left: 140px;
+    padding-bottom: 20px;
 }
 
 .form_style{

@@ -1,9 +1,10 @@
 import React, {useState} from "react";
 import './RegistrationPage.css';
-import Logo from './logo.png';
+// import Logo from './logo.png';
 // import {NavLink} from "react-router-dom";
 import {registerUser} from '../services/serverData'
 import iziToast from "izitoast";
+import Logo from "./full_logo.png";
 
 function RegisterPage() {
     const [inputName, setNameItemInput] = useState('')
@@ -47,8 +48,7 @@ function RegisterPage() {
         <>
             <div className="form_container">
                 <div className="header_greeting">
-                    <div className="Register_Logo"><img src={Logo} width="250px" height="50px" alt=""/></div>
-
+                    <div className="Login_Logo"><img src={Logo} width="220px" height="160px" alt=""/></div>
 
                     <form className="form_style" onSubmit={handleSubmit}>
                         <label className="label_style" htmlFor="name">Имя сотрудника</label>

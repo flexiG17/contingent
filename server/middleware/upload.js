@@ -4,9 +4,9 @@ const fs = require("fs-extra");
 
 const storage = multer.diskStorage({
     async destination(req, file, cb){
-        const param = await req.body.passportNumber
-        const path = `uploads/${param}`
-        fs.mkdirsSync(path)
+        //const param = await req.body.passportNumber
+        //const path = `uploads/${param}`
+        const path = `uploads/`
         cb(null, path)
     },
     filename(req, file, cb){

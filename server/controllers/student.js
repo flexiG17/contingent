@@ -25,25 +25,25 @@ module.exports.getAll = function (req, res) {
 }
 
 module.exports.create = async function (req, res) {
-    const filePath = req.files ? `uploads\\\\${req.body.passportNumber}` : ""
+    const filePath = req.files ? `uploads\\\\${req.body.passport_number}` : ""
     const student = new Student(req, filePath)
 
-    database.isExist(databaseName, {passport_number: student.passportNumber})
+    database.isExist(databaseName, {passport_number: student.passport_number})
         .then(studentExistsInSystem => {
             if (studentExistsInSystem) {
                 res.status(409).json({
-                    message: `User ${student.russianName} exists in system. Try again`
+                    message: `User ${student.russian_name} exists in system. Try again`
                 })
 
-                console.log(`User \"${student.russianName}\" exists in system`)
+                console.log(`User \"${student.russian_name}\" exists in system`)
             } else {
                 const modelToSave = student.getModel()
                 database.save(databaseName, modelToSave)
                     .then(() => {
                         res.status(201).json({
-                            message: `Added to database ${student.russianName}`
+                            message: `Added to database ${student.russian_name}`
                         })
-                        console.log(`It\`s a new user. Added to database \"${student.russianName}\"`)
+                        console.log(`It\`s a new user. Added to database \"${student.russian_name}\"`)
                     })
                     .catch(error => errorHandler(res, error))
             }
@@ -78,16 +78,16 @@ module.exports.remove = function (req, res) {
                 database.remove(databaseName, condition)
                     .then(() => {
                         res.status(200).json({
-                            message: `${req.body.russianName} successfully deleted from ${databaseName} database`
+                            message: `${req.body.russian_name} successfully deleted from ${databaseName} database`
                         })
-                        console.log(`Student \"${req.body.russianName}\" successfully deleted from \"${databaseName}\" database`)
+                        console.log(`Student \"${req.body.russian_name}\" successfully deleted from \"${databaseName}\" database`)
                     })
                     .catch(error => errorHandler(res, error))
             } else {
                 res.status(201).json({
-                    message: `You can't remove student ${req.body.russianName}, because he doesn't exist in the system. Check the correctness of the entered data`
+                    message: `You can't remove student ${req.body.russian_name}, because he doesn't exist in the system. Check the correctness of the entered data`
                 })
-                console.log(`Student \"${req.body.russianName}\" doesn't exist in the system. Try again`)
+                console.log(`Student \"${req.body.russian_name}\" doesn't exist in the system. Try again`)
             }
         })
         .catch(error => errorHandler(res, error))
@@ -97,17 +97,22 @@ module.exports.getById = function (req, res) {
 
 }
 
-module.exports.getByRussianName = async function (req, res) {
-    database.getDataWithSelectedColumns(databaseName, {russian_name: req.params.russianName}, columnsToDisplay)
-        .then(data => {
-            res.status(200).json(data)
+module.exports.importXlsxData = (req, res) => {
+    if (req.file) {
+        const workbook = XLSX.readFile("./uploads/studentsToImport.xlsx");
+        const sheet_name_list = workbook.SheetNames;
+        const dataToSave =  XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
+        dataToSave.map(student => {
+            database.save(databaseName, student)
+                .then(() => {
+                    res.status(201)
+                })
+                .catch(e => errorHandler(res, e))
         })
-        .catch(error => {
-            errorHandler(res, error)
-        })
+    }
 }
 
-module.exports.getXlsx = function (req, res) {
+module.exports.createXlsx = function (req, res) {
     const workSheet = XLSX.utils.json_to_sheet(req.body)
     const workBook = XLSX.utils.book_new()
 
@@ -118,113 +123,10 @@ module.exports.getXlsx = function (req, res) {
     // Binary string
     XLSX.write(workBook, {bookType: 'xlsx', type: "binary"})
 
-    XLSX.writeFile(workBook, "studentsByFilter.xlsx")
-        .then(() => res.status(201))
+    XLSX.writeFile(workBook, "./uploads/xlsxToDownload/studentsByFilter.xlsx")
 }
 
-module.exports.getByParam = async function (req, res) {
-    const dataToFilter = [
-        req.query.latinName,
-        req.query.russianName,
-        req.query.birthDate,
-        req.query.contract,
-        req.query.country,
-        req.query.passport,
-        req.query.agentName,
-        req.query.agentEmail,
-        req.query.agentPhone
-    ]
-    let resultFilter = []
-    let condition = []
-    let resultCondition = {}
-
-    for (let i = 0; i < dataToFilter.length; i += 1) {
-        if (dataToFilter[i] != null) {
-            resultFilter.push(dataToFilter[i])
-        }
-    }
-
-    for (let i = 0; i < resultFilter.length; i += 1) {
-        switch (resultFilter[i]) {
-            case req.query.latinName:
-                //condition.push({latin_name: resultFilter[i]})
-                resultCondition.latin_name = resultFilter[i]
-                //console.log(resultCondition)
-                break;
-            case req.query.russianName:
-                //condition.push({russian_name: resultFilter[i]})
-                resultCondition.russian_name = resultFilter[i]
-                break;
-            case req.query.birthDate:
-                //condition.push({birth_date: resultFilter[i]})
-                resultCondition.birth_date = resultFilter[i]
-                break;
-            case req.query.contract:
-                //condition.push({contract_number: resultFilter[i]})
-                resultCondition.contract_number = resultFilter[i]
-                break;
-            case req.query.country:
-                //condition.push({country: resultFilter[i]})
-                resultCondition.country = resultFilter[i]
-                //console.log(resultCondition)
-                break;
-            case req.query.passport:
-                //condition.push({passport_number: resultFilter[i]})
-                resultCondition.passport_number = resultFilter[i]
-                break;
-            case req.query.agentName:
-                //condition.push({agent_name: resultFilter[i]})
-                resultCondition.agent_name = resultFilter[i]
-                break;
-            case req.query.agentEmail:
-                //condition.push({agent_email: resultFilter[i]})
-                resultCondition.agent_email = resultFilter[i]
-                break;
-            case req.query.agentPhone:
-                //condition.push({agent_phone_number: resultFilter[i]})
-                resultCondition.agent_phone_number = resultFilter[i]
-                break;
-
-        }
-    }
-    console.log(`condition: ${resultCondition}`)
-    //res.status(200).json(resultCondition)
-
-    database.getDataByParam(databaseName, condition, columnsToDisplay)
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch(error => {
-            errorHandler(res, error)
-        })
+module.exports.downloadXlsx = function (req, res) {
+    const file = './uploads/xlsxToDownload/studentsByFilter.xlsx'
+    res.download(file)
 }
-/*
-
-module.exports.getByBirthDate = function (req, res) {
-
-}
-
-module.exports.getByContract = function (req, res) {
-
-}
-
-module.exports.getByCountry = function (req, res) {
-
-}
-
-module.exports.getByPassport = function (req, res) {
-
-}
-
-module.exports.getByAgentName = function (req, res) {
-
-}
-
-module.exports.getByAgentEmail = function (req, res) {
-
-}
-
-module.exports.getByAgentPhone = function (req, res) {
-
-}
-*/
