@@ -1,9 +1,9 @@
 .navbar {
     display: flex;
     flex-direction: row;
-  }
+}
 
-  .navbar__item {
+.navbar__item {
     font-size: 16px;
     display: flex;
     justify-content: space-between;
@@ -12,126 +12,131 @@
     color: #FA7A45;
     text-decoration: none;
     position: relative;
-  }
+}
 
-  .navbar__item::before {
-      content:'';
-      bottom: -6px;
-      left: 0;
-      position: absolute;
-      width: 0%;
-      height: 2px;
-      background-color: #FA7A45;
-      transition: 0.7s;
-  }
+.navbar__item::before {
+    content: '';
+    bottom: -6px;
+    left: 0;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #FA7A45;
+    transition: 0.7s;
+}
 
-  .navbar__item:hover:before {
+.navbar__item:hover:before {
     width: 103%;
 }
 
-.nav__pad{
-  padding-left: 5px;
+.nav__pad {
+    padding-left: 5px;
 }
 
-.account{
-  margin: 0 auto;
-  position: relative;
-  padding-left: 40px;
+.account {
+    margin: 0 auto;
+    position: relative;
+    padding-left: 40px;
 }
 
-.account .dropdown_btn_account{
-  color: #FA7A45;
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  cursor: pointer;
+.account .dropdown_btn_account {
+    color: #FA7A45;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
 }
 
-.account .dropdown_content_account{
-  position: absolute;
-  top: 150%;
-  padding:15px;
-  background-color: #fff;
-  border: 1px solid #FFE2D7;
-  border-radius: 5px;
-  box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+.account .dropdown_content_account {
+    z-index: 100;
+    position: absolute;
+    top: 150%;
+    padding: 15px 15px 5px;
+    background-color: #fff;
+    border: 1px solid #FFE2D7;
+    border-radius: 5px;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
 }
 
-.account .dropdown_content_account .mail_button_account{
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  color: #FA7A45;
-  text-decoration: none;
-  position: relative;
-  padding-bottom: 20px;
-  padding-top: 10px;
-  padding-right: 20px;
-  }
-
-.account .dropdown_content_account .mail_button_account::before{
-      content:'';
-      bottom: 14px;
-      left: 0;
-      position: absolute;
-      width: 0%;
-      height: 2px;
-      background-color: #FA7A45;
-      transition: 0.7s;
+.account .dropdown_content_account .mail_button_account {
+    font-size: 15px;
+    /*font-weight: 450;*/
+    display: flex;
+    align-items: center;
+    color: #FA7A45;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 20px;
+    padding-right: 20px;
 }
 
-.account .dropdown_content_account .mail_button_account:hover:before{
-  width: 90%;
+.account .dropdown_content_account .mail_button_account::before {
+    content: '';
+    bottom: 14px;
+    left: 0;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #FA7A45;
+    transition: 0.7s;
+}
+
+.account .dropdown_content_account .mail_button_account:hover:before {
+    width: 90%;
+}
+
+.account .dropdown_content_account .exit_button_account {
+    padding-left: 0;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    color: #FF6347;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 20px;
+    background-color: transparent;
+    border:none;
+    cursor:pointer;
+}
+
+.account .dropdown_content_account .exit_button_account ::before {
+    content: '';
+    bottom: 14px;
+    left: 0;
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: #FA7A45;
+    transition: 0.7s;
+}
+
+.account .dropdown_content_account .exit_button_account :hover:before {
+    width: 90%;
+}
+
+.user_account {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: black;
+    font-size: 15px;
+    padding-top: 10px;
+    padding-bottom: 20px;
 }
 
 
-.account .dropdown_content_account .exit_button_account{
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  color: red;
-  text-decoration: none;
-  position: relative;
-  padding-bottom:20px;
+.user_name_account {
+    background-color: #fff;
+    padding-bottom: 2px;
+    font-weight: 500;
+    border-bottom: 1px solid #FA7A45;
+    font-size: 15px;
 }
 
-.account .dropdown_content_account .exit_button_account::before{
-      content:'';
-      bottom: 14px;
-      left: 0;
-      position: absolute;
-      width: 0%;
-      height: 2px;
-      background-color: red;
-      transition: 0.7s;
-}
-
-.account .dropdown_content_account .exit_button_account:hover:before{
-  width: 55%;
-}
-
-.user_account{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  color: black;
-  font-size: 15px;
-  padding-top: 10px;
-  padding-bottom: 5px;
-}
-
-
-.user_name_accoutn{
-  background-color: #fff;
-  padding-bottom: 2px;
-  font-weight: 500;
-  border-bottom: 1px solid #FA7A45;
-}
-
-.user_avatar{
-  width: 30px;
-  height: 30px;
-  border-radius: 50px;
-  border: 1px solid #FA7A45;
+.user_avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    border: 1px solid #FA7A45;
 }

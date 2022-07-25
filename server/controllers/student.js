@@ -52,7 +52,7 @@ module.exports.create = async function (req, res) {
 }
 
 module.exports.update = function (req, res) {
-
+    console.log(req.body.document_path)
     let filePath = ''
     if (req.file) {
         filePath = req.file
@@ -61,7 +61,7 @@ module.exports.update = function (req, res) {
 
     database.changeData(databaseName, {id: req.params.id}, student.getModel())
         .then(() => {
-            res.status(201).json({
+            res.status(200).json({
                 message: "Student data successfully changing"
             })
             console.log(`Student data successfully changing`)
@@ -97,21 +97,6 @@ module.exports.getById = function (req, res) {
 
 }
 
-module.exports.importXlsxData = (req, res) => {
-    if (req.file) {
-        const workbook = XLSX.readFile("./uploads/studentsToImport.xlsx");
-        const sheet_name_list = workbook.SheetNames;
-        const dataToSave =  XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
-        dataToSave.map(student => {
-            database.save(databaseName, student)
-                .then(() => {
-                    res.status(201)
-                })
-                .catch(e => errorHandler(res, e))
-        })
-    }
-}
-
 module.exports.createXlsx = function (req, res) {
     const workSheet = XLSX.utils.json_to_sheet(req.body)
     const workBook = XLSX.utils.book_new()
@@ -126,7 +111,36 @@ module.exports.createXlsx = function (req, res) {
     XLSX.writeFile(workBook, "./uploads/xlsxToDownload/studentsByFilter.xlsx")
 }
 
+module.exports.importXlsxData = (req, res) => {
+    if (req.file) {
+        const workbook = XLSX.readFile(`./uploads/studentsToImport/${req.file.originalname}`);
+        const sheet_name_list = workbook.SheetNames;
+        const dataToSave = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
+        database.save(databaseName, dataToSave)
+            .then(() => {
+                res.status(201).json({message: "haha"})
+            })
+            .catch(e => errorHandler(res, e))
+    }
+}
+
 module.exports.downloadXlsx = function (req, res) {
     const file = './uploads/xlsxToDownload/studentsByFilter.xlsx'
     res.download(file)
+}
+
+module.exports.removeArrayStudents = (req, res) => {
+    database.removeArray(databaseName, req.body, 'id')
+        .then(() => res.status(200).json("Successfully"))
+}
+
+module.exports.checkFiles = (req, res) => {
+    const file = req.files
+    console.log(file)
+    /*file.originalname = Buffer.from(req.files[1].originalname, 'latin1').toString('utf8')
+    file.filename = Buffer.from(req.files[1].filename, 'latin1').toString('utf8')*/
+
+    if (file){
+        res.sendStatus(200)
+    } else res.sendStatus(400)
 }

@@ -13,7 +13,7 @@ module.exports = class Student {
         this.enrollment_order = req.body.enrollment_order
         this.expulsion_order = req.body.expulsion_order
         this.contract_number = req.body.contract_number
-        this.status_1c = req.body.status_1c
+        this.status_1C = req.body.status_1C
         this.gender = req.body.gender
         this.birth_date = req.body.birth_date
         this.birth_place = req.body.birth_place
@@ -71,7 +71,7 @@ module.exports = class Student {
             enrollment_order: this.enrollment_order,
             expulsion_order: this.expulsion_order,
             contract_number: this.contract_number,
-            status_1c: this.status_1c,
+            status_1C: this.status_1C,
             gender: this.gender,
             birth_date: this.birth_date,
             birth_place: this.birth_place,

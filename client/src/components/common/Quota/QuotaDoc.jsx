@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from "react";
-import "./QuotaDoc.css";
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import './QuotaEducation.css'
-import './QuotaInfo.css'
 import {addStudent} from "../../../services/serverData";
 import iziToast from "izitoast";
+import {HOME_ROUTE} from "../../../utils/consts";
+import {Link, useNavigate} from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import {MenuItem} from "@mui/material";
+import "./QuotaDoc.css";
+import './QuotaEducation.css'
+import './QuotaInfo.css'
 
 function QuotaDoc() {
     const [active, setActive] = useState(true);
@@ -25,7 +29,7 @@ function QuotaDoc() {
     const [russian_name, setRussianName] = useState('')
     const [RF_location, setLocation] = useState('')
     const [contact_phone_number, setPhoneNumber] = useState('')
-    //const [student_email, setStudentEmail] = useState('')
+    const [student_email, setStudentEmail] = useState('')
     const [country, setCountry] = useState('')
     const [birth_place, setBirthPlace] = useState('')
     const [birth_date, setBirthDate] = useState('')
@@ -41,15 +45,18 @@ function QuotaDoc() {
     const [form_study, setFormStudy] = useState('')
     const [enrollment, setEnrollment] = useState('')
     const [enrollment_order, setEnrollmentOrder] = useState('')
+    const [expulsion_order, setExpulsionOrder] = useState('')
     const [tutor_name, setTutorName] = useState('')
     const [entry_date, setEntryDate] = useState('')
     const [visa_validity, setVisaValidity] = useState('')
     const [document_path, setDocumentPath] = useState('')
     const [comments, setComments] = useState('')
 
+    const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
+            direction_number: direction_number,
             location_educational_institution: location_educational_institution,
             graduation_year: graduation_year,
             desired_education_level: desired_education_level,
@@ -60,10 +67,9 @@ function QuotaDoc() {
             scholarship: scholarship,
             latin_name: latin_name,
             russian_name: russian_name,
-            direction_number: direction_number,
             RF_location: RF_location,
             contact_phone_number: contact_phone_number,
-            /*studentEmail: student_email,*/
+            studentEmail: student_email,
             country: country,
             birth_place: birth_place,
             birth_date: birth_date,
@@ -80,6 +86,7 @@ function QuotaDoc() {
             form_study: form_study,
             enrollment: enrollment,
             enrollment_order: enrollment_order,
+            expulsion_order: expulsion_order,
             tutor_name: tutor_name,
             entry_date: entry_date,
             visa_validity: visa_validity,
@@ -95,6 +102,9 @@ function QuotaDoc() {
                             message: 'Студент успешно добавлен в базу',
                             position: "topRight"
                         });
+                        setTimeout(() => {
+                            navigate(HOME_ROUTE)
+                        }, 2000)
                         break
                     }
                     default: {
@@ -111,113 +121,661 @@ function QuotaDoc() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="info_and_education_contaner">
+            <div className="info_and_education_container">
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Личные данные</p>
-                        <input type="text" placeholder="Ф.И.О. (лат.)" className="input_style_contract"
-                               onChange={event => setLatinName(event.target.value)} value={latin_name}/>
-                        <input type="text" placeholder="Ф.И.О. (кир.)" className="input_style_contract"
-                               onChange={event => setRussianName(event.target.value)} value={russian_name}/>
-                        <input type="text" placeholder="Нахождение в РФ" className="input_style_contract"
-                               onChange={event => setLocation(event.target.value)} value={RF_location}/>
+                        <TextField label="Ф.И.О. (лат.)" variant="outlined" color="warning" type="text" margin='normal'
+                                   required size="small" sx={{width:"325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setLatinName(event.target.value)} value={latin_name}/>
+                        <TextField label="Ф.И.О. (кир.)" variant="outlined" color="warning" type="text" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setRussianName(event.target.value)} value={russian_name}/>
+
+                        <TextField label="Нахождение в РФ" type="text" variant="outlined" color="warning"
+                                   margin='normal' required select size="small"
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setLocation(event.target.value)} value={RF_location}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}} value="Да">
+                                <span
+                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Да</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Нет">
+                                <span
+                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
+                            </MenuItem>
+                        </TextField>
                         <p className="tytle_contract_info"> Контактные данные</p>
-                        <input type="tel" placeholder="Контактный телефон" className="input_style_contract"
-                               onChange={event => setPhoneNumber(event.target.value)} value={contact_phone_number}/>
-                        {/*<input type="email" placeholder="E-mail" className="input_style_contract"
-                               onChange={event => setStudentEmail(event.target.value)} value={student_email}/>*/}
+                        <TextField label="Контактный телефон студента" variant="outlined" color="warning" type="tel"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setPhoneNumber(event.target.value)} value={contact_phone_number}/>
+                        <TextField label="E-mail студента" variant="outlined" color="warning" type="email" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
                         <p className="tytle_contract_info"> Учёба</p>
-                        <input type="text" placeholder="Местонахождение учебного заведения"
-                               className="input_style_contract"
-                               onChange={event => setLocationEducationalInstitution(event.target.value)}
-                               value={location_educational_institution}/>
-                        <input type="text" placeholder="Год окончания" className="input_style_contract"
-                               onChange={event => setGraduationYear(event.target.value)} value={graduation_year}/>
-                        <input type="text" placeholder="Уровень желаемого образования" className="input_style_contract"
-                               onChange={event => setDesiredEducationLevel(event.target.value)}
-                               value={desired_education_level}/>
-                        <input type="text" placeholder="Код направления подготовки (специальности)"
-                               className="input_style_contract"
-                               onChange={event => setSpecialtyCode(event.target.value)} value={specialty_code}/>
-                        <input type="text" placeholder="Направление подготовки (специальность)"
-                               className="input_style_contract"
-                               onChange={event => setSpecialtyDirection(event.target.value)}
-                               value={specialty_direction}/>
-                        <input type="text" placeholder="Область образования" className="input_style_contract"
-                               onChange={event => setEducationField(event.target.value)} value={education_field}/>
-                        <input type="text" placeholder="Образовательная организация" className="input_style_contract"
-                               onChange={event => setEducationalOrganization(event.target.value)}
-                               value={educational_organization}/>
+                        <TextField label="Местонахождение учебного заведения" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setLocationEducationalInstitution(event.target.value)} value={location_educational_institution}/>
+                        <TextField label="Год окончания" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setGraduationYear(event.target.value)} value={graduation_year}/>
+                        <TextField label="Уровень желаемого образования" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setDesiredEducationLevel(event.target.value)} value={desired_education_level}/>
+                        <TextField label="Код направления подготовки (специальности)" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setSpecialtyCode(event.target.value)} value={specialty_code}/>
+                        <TextField label="Направление подготовки (специальность)" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setSpecialtyDirection(event.target.value)} value={specialty_direction}/>
+                        <TextField label="Область образования" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setEducationField(event.target.value)} value={education_field}/>
+                        <TextField label="Образовательная организация" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setEducationalOrganization(event.target.value)} value={educational_organization}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Паспортные данные </p>
-                        <input type="text" placeholder="Страна" className="input_style_contract"
-                               onChange={event => setCountry(event.target.value)} value={country}/>
-                        <input type="text" placeholder="Место рождения" className="input_style_contract"
-                               onChange={event => setBirthPlace(event.target.value)} value={birth_place}/>
-                        <input type="date" placeholder="Дата рождения" className="input_style_contract"
-                               onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
-                        <input type="text" placeholder="Место проживания" className="input_style_contract"
-                               onChange={event => setResidencePlace(event.target.value)} value={residence_place}/>
-                        <input type="text" placeholder="Гражданство" className="input_style_contract"
-                               onChange={event => setCitizenship(event.target.value)} value={citizenship}/>
-                        <input type="text" placeholder="Пол" className="input_style_contract"
-                               onChange={event => setGender(event.target.value)} value={gender}/>
-                        <input type="text" placeholder="Номер паспорта" className="input_style_contract"
-                               onChange={event => setPassportNumber(event.target.value)} value={passport_number}/>
-                        <input type="date" placeholder="Срок действия паспорта (дата)" className="input_style_contract"
-                               onChange={event => setPassportExpiration(event.target.value)}
-                               value={passport_expiration}/>
-                        <input type="text" placeholder="Кем выдан" className="input_style_contract"
-                               onChange={event => setPassportIssued(event.target.value)} value={passport_issued}/>
-                        <input type="date" placeholder="Дата выдачи" className="input_style_contract"
-                               onChange={event => setPassportIssueDate(event.target.value)}
-                               value={passport_issue_date}/>
+                        <TextField label="Страна" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setCountry(event.target.value)} value={country}/>
+                        <TextField label="Место рождения" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setBirthPlace(event.target.value)} value={birth_place}/>
+                        <TextField label="Дата рождения" type="date" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}
+                                   onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
+                        <TextField label="Место проживания" type="text" variant="outlined" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setResidencePlace(event.target.value)} value={residence_place}/>
+                        <TextField label="Гражданство" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setCitizenship(event.target.value)} value={citizenship}/>
+                        <TextField label="Пол" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small" select
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setGender(event.target.value)} value={gender}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Мужской">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Мужской</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Женский">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Женский</span>
+                            </MenuItem>
+                        </TextField>
+                        <TextField label="Номер паспорта" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setPassportNumber(event.target.value)} value={passport_number}/>
+                        <TextField label="Срок действия паспорта" type="date" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}
+                                   onChange={event => setPassportExpiration(event.target.value)}
+                                   value={passport_expiration}/>
+                        <TextField label="Кем выдан" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setPassportIssued(event.target.value)} value={passport_issued}/>
+                        <TextField label="Дата выдачи" type="date" color="warning" margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}
+                                   onChange={event => setPassportIssueDate(event.target.value)}
+                                   value={passport_issue_date}/>
                     </div>
                 </div>
             </div>
 
-            <div className="info_and_education_contaner">
+            <div className="info_and_education_container">
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Уровень образования</p>
-                        <input type="text" placeholder="Уровень полученного образования"
-                               className="input_style_contract"
-                               onChange={event => setLevelEducation(event.target.value)} value={level_education}/>
-                        <input type="text" placeholder="Наименование учебного заведения"
-                               className="input_style_contract"
-                               onChange={event => setEducationalInstitution(event.target.value)}
-                               value={name_educational_institution}/>
+                        <TextField label="Уровень полученного образования" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setLevelEducation(event.target.value)} value={level_education}/>
+                        <TextField label="Наименование учебного заведения" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setEducationalInstitution(event.target.value)} value={name_educational_institution}/>
                         <p className="tytle_contract_education"> Нынешнее образование </p>
-                        <input type="text" placeholder="Рег. номер направления" className="input_style_contract"
-                               onChange={event => setDirectionNumber(event.target.value)} value={direction_number}/>
-                        <input type="text" placeholder="Форма обучения" className="input_style_contract"
-                               onChange={event => setFormStudy(event.target.value)} value={form_study}/>
+                        <TextField label="Рег. номер направления" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setDirectionNumber(event.target.value)} value={direction_number}/>
+                        <TextField label="Форма обучения" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small" select
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setFormStudy(event.target.value)} value={form_study}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Очная">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Очная</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Гибрид">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Гибрид</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Онлайн">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Онлайн</span>
+                            </MenuItem>
+                        </TextField>
                         <p className="tytle_contract_education"> Дополнительно </p>
-                        <input type="text" placeholder="Стипендия" className="input_style_contract"
-                               onChange={event => setScholarship(event.target.value)} value={scholarship}/>
-                        <input type="text" placeholder="Примечания" className="input_style_contract"
-                               onChange={event => setComments(event.target.value)} value={comments}/>
+                        <TextField label="Стипендия" type="text" variant="outlined" color="warning"
+                                   margin='normal' required select size="small"
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setScholarship(event.target.value)} value={scholarship}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}} value="Да">
+                                <span
+                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Да</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Нет">
+                                <span
+                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
+                            </MenuItem>
+                        </TextField>
+                        <TextField label="Примечания" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small" multiline rows={3}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setComments(event.target.value)} value={comments}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Статус </p>
-                        <input type="text" placeholder="Статус зачисления" className="input_style_contract"
-                               onChange={event => setEnrollment(event.target.value)} value={enrollment}/>
-                        <input type="text" placeholder="Номер приказа о зачислении" className="input_style_contract"
-                               onChange={event => setEnrollmentOrder(event.target.value)} value={enrollment_order}/>
-                        <input type="text" placeholder="Куратор" className="input_style_contract"
-                               onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
+                        <TextField label="Статус зачисления" type="text" variant="outlined" color="warning"
+                                   margin='normal' required size="small" select sx={{width: "325px"}}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setEnrollment(event.target.value)} value={enrollment}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Зачислен">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Зачислен</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Не зачислен">
+                                <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Не зачислен</span>
+                            </MenuItem>
+                        </TextField>
+                        <TextField label="Номер приказа о зачислении" type="text" variant="outlined" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setEnrollmentOrder(event.target.value)} value={enrollment_order}/>
+                        <TextField label="Номер приказа об отчислении" type="text" variant="outlined" color="warning"
+                                   margin='normal' size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setExpulsionOrder(event.target.value)} value={expulsion_order}/>
+                        <TextField label="Куратор" type="text" variant="outlined" color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
                     </div>
                 </div>
             </div>
-            <div className="info_and_education_contaner">
+            <div className="info_and_education_container">
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_doc"> Уровень образования</p>
-                        <input type="date" placeholder="Дата въезда" className="input_style_contract"
-                               onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
-                        <input type="date" placeholder="Срок действия визы (дата)" className="input_style_contract"
-                               onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
+                        <TextField label="Дата въезда" type="date" color="warning"
+                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}
+                                   onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
+                        <TextField label="Срок действия визы" type="date" color="warning"
+                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}
+                                   onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
@@ -230,7 +788,7 @@ function QuotaDoc() {
                         <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
                         <input type="file" id="actual-btn" onChange={event => setDocumentPath(event.target.value)}
                                value={document_path} hidden/>
-                        <label for="actual-btn" className="label_doc"> Выберите файлы <InsertDriveFileIcon
+                        <label className="label_doc"> Выберите файлы <InsertDriveFileIcon
                             sx={{fontSize: 20}}/></label>
                     </div>
                 </div>

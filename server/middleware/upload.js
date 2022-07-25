@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     async destination(req, file, cb){
         //const param = await req.body.passportNumber
         //const path = `uploads/${param}`
-        const path = `uploads/`
+        const path = `uploads/studentsToImport`
         cb(null, path)
     },
     filename(req, file, cb){
@@ -16,11 +16,11 @@ const storage = multer.diskStorage({
     }
 })
 
-const limits = {
+/*const limits = {
     fileSize: 1024 * 1024 * 5
-}
+}*/
 
 module.exports = multer({
-    storage: storage,
-    limits: limits
+    storage: storage
+    //limits: limits
 })

@@ -5,17 +5,15 @@ const router = express.Router() // для создания роутов испо
 
 
 // create new notification
-router.post('/create', controller.create)
+router.post('/create', passport.authenticate('jwt', {session: false}), controller.create)
 // change data notification
-router.patch('/', passport.authenticate('jwt', {session: false}), controller.update)
+router.patch('/update/:id', passport.authenticate('jwt', {session: false}), controller.update)
 // get all notifications for display on pages for current user
-router.get('/getByUserId', passport.authenticate('jwt', {session: false}), controller.getByUserId)
-
-// временно
-router.get('/getAll', controller.getAll)
-
+router.get('/getByUser/:id', passport.authenticate('jwt', {session: false}), controller.getByUserId)
 // delete notification by id
-router.delete('/:id', passport.authenticate('jwt', {session: false}), controller.remove)
+router.delete('/remove/:id', passport.authenticate('jwt', {session: false}), controller.remove)
+// get count
+router.get('/count/:id', passport.authenticate('jwt', {session: false}), controller.getCount)
 
 
 module.exports = router

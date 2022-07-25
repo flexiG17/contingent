@@ -16,6 +16,47 @@
 
 }
 
+.button_style_contract{
+    width: 120px;
+    height: 45px;
+    background-color: #FA7A45;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button_style_contract:hover{
+    background-color: #FF4B00;
+}
+
+.button_style_contract{
+    width: 120px;
+    height: 45px;
+    background-color: #FA7A45;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.button_style_contract:hover{
+    background-color: #FF4B00;
+}
+
+.button_position_contract{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 100px;
+}
+
 .title_studentName {
     display: flex;
     justify-content: center;
@@ -78,8 +119,8 @@
     margin: 0;
     padding-top: 5px;
 }
-.label_doc{
-  width: 150px;
+.file_label_doc{
+  width: 200px;
   background-color: #FA7A45;
   color: white;
   padding: 10px 20px;
@@ -98,7 +139,7 @@
     background-color: #FF4B00;
 }
 
-.info_and_education_contaner{
+.info_and_education_container{
     padding-top: 30px;
     padding-bottom: 50px;
     border-bottom: 1px solid #FF4B00;

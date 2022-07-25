@@ -3,7 +3,7 @@ module.exports= class Notification{
     //constructor(req, user){
     constructor(req){
         this.type = req.body.type;
-        this.student_name = req.body.student_name;
+        this.russian_name = req.body.russian_name;
         this.student_id = req.body.student_id;
         this.date = req.body.date;
         this.comment = req.body.comment;
@@ -14,7 +14,7 @@ module.exports= class Notification{
     getModel(){
         return{
             type: this.type,
-            student_name: this.student_name,
+            russian_name: this.russian_name,
             student_id: this.student_id,
             date: this.date,
             comment: this.comment,

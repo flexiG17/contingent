@@ -21,9 +21,11 @@ module.exports.login =  function (req, res) {
                         userId: user.id,
                         email: user.email,
                         name: user.name
-                    }, keys.jwt, {expiresIn: 60 * 60})
+                    }, keys.jwt, {})
+                    //{expiresIn: 60}
 
                     res.status(200).json({
+                        message: 'Сотрудник успешно авторизован',
                         token: `Bearer ${token}`
                     })
                 } else {
@@ -33,8 +35,8 @@ module.exports.login =  function (req, res) {
                     })
                 }
             } else {
-                res.status (404).json({
-                    message: `Пользователь с email: ${req.body.email} не найден в системе`
+                res.status(404).json({
+                    message: `Такой пользователь не найден в системе`
                 })
             }
         })
@@ -43,10 +45,7 @@ module.exports.login =  function (req, res) {
 
 module.exports.register = async function (req, res) {
 
-    const userEmail = req.body.email
-    const userPassword = req.body.password
-    const userName = req.body.name
-
+    const {userName, userEmail, userPassword} = req.body
     const salt = bcrypt.genSaltSync(10)
 
     const user = new User(
@@ -58,7 +57,7 @@ module.exports.register = async function (req, res) {
         .then(userExistsInSystem => {
             if (userExistsInSystem) {
                 res.status(409).json({
-                    message: `User ${user.name} exists in system. Try again`
+                    message: `Пользователь ${user.name} уже зарегистрирован в системе.`
                 })
 
                 console.log(`User \"${user.name}\" exists in system`)
@@ -66,7 +65,7 @@ module.exports.register = async function (req, res) {
                 const modelToSave = user.getModel()
                 database.save(databaseName, modelToSave)
                     .then(() => {
-                        res.status(201).json({message: `It\`s a new user. Added to database ${user.name} with email ${user.email}`})
+                        res.status(201).json({message: `Пользователь успешно добавлен в систему.`})
                         console.log(`It\`s a new user. Added to database \"${user.name}\" with email \"${user.email}\"`)
                     })
                     .catch(error => errorHandler(res, error))

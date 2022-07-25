@@ -17,6 +17,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
+import UploadIcon from '@mui/icons-material/Upload';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
@@ -25,12 +26,14 @@ import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
 import {useEffect, useState} from "react"
-
-import axios from 'axios';
 import moment from 'moment'
-//import React, {useEffect, useState} from "react";
-
-import {getStudents, createXlsx, removeStudent, getXlsx, importXlsx} from '../../../services/serverData'
+import {
+    getStudents,
+    createXlsx,
+    getXlsx,
+    importXlsx,
+    removeArrayOfStudents
+} from '../../../services/serverData'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
@@ -42,36 +45,11 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle
+    DialogTitle, Pagination
 } from "@mui/material";
 import iziToast from "izitoast";
+import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
 
-/*
-function createData(education_type, russian_name, latin_name, country, gender, contract_number, enrollment_order, enrollment) {
-    return {
-        education_type,
-        russian_name,
-        latin_name,
-        country,
-        gender,
-        contract_number,
-        enrollment_order,
-        enrollment
-    };
-}
-
-
-let rows =  [
-    createData('Name1', 'Surname1', 'India', 'Муж.', 124, 23, 'yes', 'tata'),
-    createData('Name2', 'Surname2', 'India', 'Жен.', 125, 24, 'yes', 'tata'),
-    createData('Name3', 'Surname3', 'Pakistan', 'Муж.', 153, 30, 'no', 'tata'),
-    createData('Name4', 'Surname4', 'China', 'Жен.', 113, 10, 'no', 'tata'),
-    createData('Name5', 'Surname5', 'Pakistan', 'Муж.', 143, 40, 'yes', 'tata'),
-    createData('Name6', 'Surname6', 'China', 'Жен.', 12, 20, 'yes', 'tata'),
-    createData('Name7', 'Surname7', 'China', 'Муж.', 433, 30, 'no', 'tata'),
-    createData('Name8', 'Surname8', 'Kazakhstan', 'Жен.', 163, 20, 'yes', 'tata'),
-];
-*/
 
 let rows = []
 
@@ -111,6 +89,12 @@ const headCells = [
         numeric: false,
         disablePadding: true,
         label: 'Тип обучения',
+    },
+    {
+        id: 'hours_number',
+        numeric: false,
+        disablePadding: true,
+        label: 'Кол-во часов',
     },
     {
         id: 'latin_name',
@@ -218,9 +202,9 @@ let selectToDelete = null
 
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
-    const [open, setOpen] = React.useState(false);
     const [file, setFile] = React.useState(null);
 
+    const [open, setOpen] = React.useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -281,18 +265,39 @@ const EnhancedTableToolbar = (props) => {
                     </>
                 ) : (
                     <>
-                        <input type='file' onChange={e => setFile(e.target.files[0])}/>
-                        <Tooltip title="Загрузить">
-                            <IconButton onClick={() => {
+                        <input type='file' multiple='multiple' onChange={e => setFile(e.target.files[0])}/>
+                        <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
+                            <UploadIcon fontSize='medium' onClick={() => {
                                 const data = new FormData()
                                 data.append('fileToImport', file)
 
-                                axios.post('http://localhost:5000/api/student/importXlsxFile', data, {
-                                    'content-type': 'multipart/form-data'
-                                })
+                                importXlsx(data)
+                                    .then(res => {
+                                        switch (res.status) {
+                                            case 201: {
+                                                iziToast.success({
+                                                    title: res.statusText,
+                                                    message: 'Студенты успешно импортированы в базу. Обновляю страницу :)',
+                                                    position: "topRight"
+                                                });
+                                                setTimeout(() => {
+                                                    window.location.reload()
+                                                }, 2000)
+                                                break
+                                            }
+                                            default: {
+                                                iziToast.error({
+                                                    title: res.statusText,
+                                                    message: 'Ошибка. Попробуйте снова.',
+                                                    position: "topRight",
+                                                    color: "#FFF2ED"
+                                                });
+                                            }
+                                        }
+                                    })
                             }}>
                                 <FilterListIcon/>
-                            </IconButton>
+                            </UploadIcon>
                         </Tooltip>
                     </>
                 )}
@@ -306,25 +311,23 @@ const EnhancedTableToolbar = (props) => {
                 <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Вы уверены, что хотите удалить данного студента?
+                        Вы уверены, что хотите удалить выбранных студентов?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        let timeOut = 3000
-                        removeStudent(selectToDelete)
+                        removeArrayOfStudents(selectToDelete)
                             .then((res) => {
                                 switch (res.status) {
                                     case 200: {
                                         iziToast.success({
                                             title: res.statusText,
-                                            message: 'Студент успешно удалён из базы. Обновляю страницу :)',
-                                            position: "topRight",
-                                            timeout: timeOut
+                                            message: 'Студенты успешно удалены из базы. Обновляю страницу :)',
+                                            position: "topRight"
                                         });
                                         setTimeout(() => {
                                             window.location.reload()
-                                        }, timeOut + 300)
+                                        }, 2000)
                                         break
                                     }
                                     default: {
@@ -358,21 +361,24 @@ EnhancedTableToolbar.propTypes = {
 export default function EnhancedTable() {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
+
     const [selectedForDownloading, setSelectedForDownloading] = useState([]);
     dataToDownload = selectedForDownloading
+
     const [selected, setSelected] = useState([]);
     selectToDelete = selected
+
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
 
     const [list, setList] = useState([]);
-        useEffect(() => {
-            getStudents()
-                .then(items => setList(items.reverse()))
-                .finally(() => setLoading(false))
-        }, [])
+    useEffect(() => {
+        getStudents()
+            .then(items => setList(items.reverse()))
+            .finally(() => setLoading(false))
+    }, [])
 
     rows = list
     rows.map(item => {
@@ -390,7 +396,6 @@ export default function EnhancedTable() {
         item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD")
         item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD")
     })
-    console.log(rows)
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -458,8 +463,8 @@ export default function EnhancedTable() {
         <div>
             {/* Перенёс сюда SearchBar.jsx */}
             <div className="nav">
-                {loading && <CircularProgress color="warning" sx={{}}/>}
-                <NavLink className="add_student_btn" to="/AddStudent"> Добавить студента <AddIcon/></NavLink>
+                {loading && <CircularProgress color="warning"/>}
+                <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить студента <AddIcon/></NavLink>
                 <div className="serchbar_position">
                     {/* Перенёс сюда Search.jsx */}
                     <div className="search">
@@ -475,7 +480,7 @@ export default function EnhancedTable() {
                     </div>
                 </div>
             </div>
-            <Box sx={{width: '1400px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
+            <Box sx={{width: '1500px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
                 <Paper sx={{
                     width: '100%',
                     mb: 2,
@@ -535,10 +540,11 @@ export default function EnhancedTable() {
                                                            align="left">
                                                     {row.education_type}
                                                 </TableCell>
+                                                <TableCell align="left">{row.hours_number}</TableCell>
                                                 <TableCell align="left">{row.latin_name}</TableCell>
                                                 <TableCell align="left">
                                                     <Link
-                                                        to={row.education_type === "Контракт" ? '/PersonalCardContract' : '/PersonalCardQuota'}
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
                                                         state={row} style={{textDecoration: 'none', color: 'black'}}
                                                     >
                                                         {row.russian_name}
@@ -565,13 +571,14 @@ export default function EnhancedTable() {
                         </Table>
                     </TableContainer>
                     <TablePagination
+                        count={filteredValues.length}
+                        onPageChange={handleChangePage}
+                        page={page}
                         rowsPerPageOptions={[10, 25, 50, 100]}
                         component="div"
-                        count={filteredValues.length}
                         rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
+                        labelRowsPerPage="Строк на страницу:"
                     />
                 </Paper>
                 <FormControlLabel
@@ -582,6 +589,5 @@ export default function EnhancedTable() {
             <div>
             </div>
         </div>
-
     );
 }

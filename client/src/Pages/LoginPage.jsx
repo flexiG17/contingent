@@ -4,51 +4,23 @@ import Logo from './full_logo.png';
 import {loginUser} from '../services/serverData'
 import "izitoast/dist/css/iziToast.css";
 import iziToast from "izitoast";
+import {useNavigate} from "react-router-dom";
+import {HOME_ROUTE} from "../utils/consts";
+import {Alert} from "@mui/material";
+import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
+import {Login, login} from "../actions/user";
+import {useDispatch} from "react-redux";
 
 function LoginPage() {
     const [inputEmail, setEmailItemInput] = useState('')
     const [inputPassword, setPasswordItemInput] = useState('')
 
+    const navigate = useNavigate()
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
-            email: inputEmail,
-            password: inputPassword
-        }
-        loginUser(data)
-            .then((res) => {
-                switch (res.status) {
-                    case 200: {
-                        iziToast.success({
-                            title: res.statusText,
-                            message: 'Успешная авторизация',
-                            position: "topRight"
-                        });
-                        setEmailItemInput('');
-                        setPasswordItemInput('');
-                        break
-                    }
-                    case 401: {
-                        iziToast.error({
-                            title: res.statusText,
-                            message: 'Пароли не совпадают. Попробуйте ещё раз',
-                            position: "topRight",
-                            color: "#FFF2ED"
-                        });
-                        break
-                    }
-                    default: {
-                        iziToast.error({
-                            title: res.statusText,
-                            message: 'Такой пользователь не существует',
-                            position: "topRight",
-                            color: "#FFF2ED"
-                        });
-                    }
-                }
-            })
+        Login(inputEmail, inputPassword, navigate)
     };
-
     return (
         <>
             <div className="form_container">
@@ -63,10 +35,17 @@ function LoginPage() {
                         <label className="label_style" htmlFor="password">Пароль</label>
                         <input className="input_style" name="password" type="password"
                                placeholder="Введите свой пароль"
-                               onChange={event => setPasswordItemInput(event.target.value)} value={inputPassword}/>
+                               onChange={event => setPasswordItemInput(event.target.value)}
+                               value={inputPassword}/>
                         <label className="checkbox_style_login">
-                            <input type="checkbox" placeholder="Запомните меня"/> Запомните меня
+                            <Alert
+                                sx={{height: '50px', width: "275px", paddingTop: '0px'}}
+                                severity="warning"
+                                color='warning'
+                                variant='outlined'
+                            ><span className='checkbox_style_login'>Нет аккаунта? Запросите регистрацию у администратора.</span></Alert>
                         </label>
+
                         <button type="submit" className="button_style_login"> Войти</button>
                     </form>
                 </div>

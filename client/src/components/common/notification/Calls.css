@@ -2,10 +2,13 @@
     margin-left: 700px;
 }
 
+.searchbar_position{
+     padding-left: 20px;
+ }
+
 .notification_navbar{
-    max-width: 14300px;
     margin-left: auto;
-    margin-right: 485px;
+    margin-right: 460px;
     padding-top: 50px;
     display: flex;
     justify-content: space-between;

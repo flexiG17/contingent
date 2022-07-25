@@ -22,8 +22,8 @@ module.exports.update = async function (req, res) {
     const [user] = await req.user
     const notification = new Notification(req, user)
 
-    const condition = {id: req.query.id}
-    if (req.body.status === "Сделано") {
+    const condition = {id: req.params.id}
+    if (req.body.status === "Выполнено") {
         database.remove(databaseName, condition)
             .then(() => {
                 res.status(200).send(`Так как выставлен статус ${req.body.status}, то уведомление удалено`)
@@ -34,16 +34,14 @@ module.exports.update = async function (req, res) {
     } else {
         database.changeData(databaseName, condition, notification.getModel())
             .then(() => {
-                res.status(200).send(`Изменения уведомления с id ${req.query.id} успешно внесены`)
+                res.status(200).json({message: `Изменения успешно внесены`})
             })
             .catch(e => errorHandler(res, e))
     }
 }
 
 module.exports.getByUserId = async function (req, res) {
-    const [user] = await req.user
-
-    database.getOneField(databaseName, {user_id: user.id})
+    database.getOneField(databaseName, {user_id: req.params.id})
         .then(data => {
             res.status(200).send(data)
         })
@@ -52,14 +50,22 @@ module.exports.getByUserId = async function (req, res) {
         })
 }
 
-module.exports.getAll = async function (req, res) {
-
-    database.getAllData(databaseName)
-        .then(data => {
-            res.status(200).json(data)
+module.exports.remove = function (req, res) {
+    database.remove(databaseName, {id: req.params.id})
+        .then(() => {
+            res.status(200).json("Напоминение успешно удалено")
+        })
+        .catch(e => {
+            errorHandler(res, e)
         })
 }
 
-module.exports.remove = function (req, res) {
-
+module.exports.getCount = async (req, res) => {
+    database.getOneField(databaseName, {user_id: req.params.id})
+        .then((data) => {
+            res.status(200).json(data.length)
+        })
+        .catch(e => {
+            errorHandler(res, e)
+        })
 }

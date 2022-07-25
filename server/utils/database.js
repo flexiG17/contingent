@@ -11,7 +11,7 @@ module.exports.getOneField = (databaseName, condition) => {
 }
 
 module.exports.save = async (databaseName, param) => {
-    await db(databaseName).insert([param])
+    await db(databaseName).insert(param)
 }
 
 module.exports.getAllData = async (databaseName) => {
@@ -37,4 +37,8 @@ module.exports.getId = async (databaseName, condition) => {
 
 module.exports.getDataWithSelectedColumns = async (databaseName, condition, columnsToDisplay) => {
     return db(databaseName).where(condition).select(columnsToDisplay)
+}
+
+module.exports.removeArray = async (databaseName, arrayConditionsToDelete, conditionColumn) => {
+    await db(databaseName).whereIn(conditionColumn, arrayConditionsToDelete).del()
 }

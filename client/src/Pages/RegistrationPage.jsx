@@ -1,47 +1,18 @@
 import React, {useState} from "react";
 import './RegistrationPage.css';
-// import Logo from './logo.png';
-// import {NavLink} from "react-router-dom";
-import {registerUser} from '../services/serverData'
-import iziToast from "izitoast";
 import Logo from "./full_logo.png";
+import {Registration} from "../actions/user";
+import {useNavigate} from "react-router-dom";
 
 function RegisterPage() {
     const [inputName, setNameItemInput] = useState('')
     const [inputEmail, setEmailItemInput] = useState('')
     const [inputPassword, setPasswordItemInput] = useState('')
+    const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
-            name: inputName,
-            email: inputEmail,
-            password: inputPassword
-        }
-        registerUser(data)
-            .then((res) => {
-                switch (res.status) {
-                    case 201: {
-                        iziToast.success({
-                            title: res.statusText,
-                            message: 'Сотрудник успешно зарегестрирован',
-                            position: "topRight"
-                        });
-                        setNameItemInput('');
-                        setEmailItemInput('');
-                        setPasswordItemInput('');
-                        break
-                    }
-                    default: {
-                        iziToast.error({
-                            title: res.statusText,
-                            message: 'Такой пользователь уже есть в системе',
-                            position: "topRight",
-                            color: "#FFF2ED"
-                        });
-                    }
-                }
-            })
+        Registration(inputName, inputEmail, inputPassword, navigate)
     };
 
     return (

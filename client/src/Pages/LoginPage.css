@@ -36,9 +36,8 @@
 
 .input_style{
     display: block;
-    width: 100%;
-    padding: 5px;
-    padding-left: 20px;
+    width: 280px;
+    padding: 5px 5px 5px 20px;
     font-family: 'Montserrat', sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -59,9 +58,7 @@
     border-radius: 5px;
     border:none;
     width: 110px;
-    padding: 12px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 12px 20px;
     text-align: center;
     margin-top: 25px;
     font-family: 'Montserrat', sans-serif;
@@ -73,11 +70,10 @@
 }
 
 .checkbox_style_login{
-    display: flex;
-    padding-top: 17px;
+    padding-top: 30px;
     font-size: 13px;
     font-weight: 500;
-    align-items: center;
+    font-family: 'Montserrat', sans-serif
 }
 
 
