@@ -35,6 +35,7 @@ let navigate = ''
 
 function TurnOnSpeedDial() {
 
+    // при нажатии на кнопку открывается диалоговое окно с подтверждением удаления
     const actions = [
         {
             icon: <DeleteOutlineIcon/>,

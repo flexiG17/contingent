@@ -51,6 +51,11 @@ import iziToast from "izitoast";
 import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
 
 
+/*
+Самый больной файл по моему мнению
+Это код главной страницы с таблицей
+*/
+
 let rows = []
 
 function descendingComparator(a, b, orderBy) {
@@ -69,8 +74,6 @@ function getComparator(order, orderBy) {
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
 function stableSort(array, comparator) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
@@ -83,6 +86,7 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
+// название "шапки" таблицы
 const headCells = [
     {
         id: 'education_type',
@@ -140,7 +144,7 @@ const headCells = [
     }
 ];
 
-
+// генерирование "шапки" таблицы
 function EnhancedTableHead(props) {
     const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} =
         props;
@@ -200,6 +204,7 @@ EnhancedTableHead.propTypes = {
 let dataToDownload = null
 let selectToDelete = null
 
+// плашка с отображением выбранных студентов, их колличеством, кнопка для импорта, экспорта и удаления
 const EnhancedTableToolbar = (props) => {
     const {numSelected} = props;
     const [file, setFile] = React.useState(null);
@@ -302,6 +307,7 @@ const EnhancedTableToolbar = (props) => {
                     </>
                 )}
             </Toolbar>
+            {/* Диалоговое окно для подтверждения удаления*/}
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -358,6 +364,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 
+// код с основной таблицей
 export default function EnhancedTable() {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
@@ -374,6 +381,7 @@ export default function EnhancedTable() {
     const [loading, setLoading] = useState(true);
 
     const [list, setList] = useState([]);
+    // хук для постоянного получения студентов с бэка
     useEffect(() => {
         getStudents()
             .then(items => setList(items.reverse()))
@@ -381,6 +389,7 @@ export default function EnhancedTable() {
     }, [])
 
     rows = list
+    // из бд приходит дата в ужасном формате, поэтому вот так криво каждая строка парсится
     rows.map(item => {
         item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
         item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD")
@@ -403,6 +412,7 @@ export default function EnhancedTable() {
         setOrderBy(property);
     };
 
+    // нажатие кнопки для выбора всех студентов
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
             const newSelects = filteredValues.map((n) => n.id);
@@ -415,6 +425,7 @@ export default function EnhancedTable() {
         setSelected([]);
     };
 
+    // для выбора по отдельности
     const handleClick = (event, name) => {
         const selectedIndex = selected.indexOf(name);
         let newSelected = [];
@@ -450,11 +461,13 @@ export default function EnhancedTable() {
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
-    // Avoid a layout jump when reaching the last page with empty rows.
+
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-    // выводятся только фильтрующиеся данные
+    /*
+        в таблице выводятся данные из filteredValues. При внесении в поле для ввода данных происходит моментальная сортировка
+        на данный момент поиск происходит только по russian_name и менять можно только в коде
+    */
     const [searchingValue, setSearchingValue] = useState('')
     const filteredValues = rows.filter(row => {
         return row['russian_name'].toLowerCase().includes(searchingValue.toLowerCase())
@@ -506,9 +519,6 @@ export default function EnhancedTable() {
                             />
 
                             <TableBody>
-                                {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                            {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
                                 {stableSort(filteredValues, getComparator(order, orderBy))
                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                     .map((row, index) => {

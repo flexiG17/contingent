@@ -3,6 +3,7 @@ const controller = require('../controllers/notification')
 const passport = require("passport");
 const router = express.Router() // для создания роутов используем express.Router
 
+// роуты, прописанные для всего, что связано с уведомлениям (создание, редактирование, получение и тп)
 
 // create new notification
 router.post('/create', passport.authenticate('jwt', {session: false}), controller.create)

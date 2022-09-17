@@ -5,16 +5,8 @@ const Student = require('../models/Student');
 const errorHandler = require('../utils/errorHandler')
 
 const databaseName = 'students'
-const columnsToDisplay = [
-    'education_type',
-    'latin_name',
-    'russian_name',
-    'country',
-    'gender',
-    'contract_number',
-    'enrollment_order',
-    'enrollment',
-]
+
+// контроллер для написания методов роутов студентов
 
 module.exports.getAll = function (req, res) {
     database.getAllData(databaseName)
@@ -24,7 +16,9 @@ module.exports.getAll = function (req, res) {
         .catch(error => errorHandler(res, error))
 }
 
+// создание нового пользователя с проверкой на существования с таким номером паспорта (можно усложнить)
 module.exports.create = async function (req, res) {
+    // работа с файлом не организована, это всё на будущее
     const filePath = req.files ? `uploads\\\\${req.body.passport_number}` : ""
     const student = new Student(req, filePath)
 
@@ -51,6 +45,7 @@ module.exports.create = async function (req, res) {
         .catch(error => errorHandler(res, error))
 }
 
+// метод для обновления данных студента - просто перезаписывает все поля
 module.exports.update = function (req, res) {
     console.log(req.body.document_path)
     let filePath = ''
@@ -97,6 +92,7 @@ module.exports.getById = function (req, res) {
 
 }
 
+// получает данные студентов в формате json, которые записываются в xlsx, а таблица сохраняется в папку на бэке
 module.exports.createXlsx = function (req, res) {
     const workSheet = XLSX.utils.json_to_sheet(req.body)
     const workBook = XLSX.utils.book_new()
@@ -111,6 +107,7 @@ module.exports.createXlsx = function (req, res) {
     XLSX.writeFile(workBook, "./uploads/xlsxToDownload/studentsByFilter.xlsx")
 }
 
+// получает xlsx файл, который парсится в json и данные записываются в бд
 module.exports.importXlsxData = (req, res) => {
     if (req.file) {
         const workbook = XLSX.readFile(`./uploads/studentsToImport/${req.file.originalname}`);
@@ -124,11 +121,13 @@ module.exports.importXlsxData = (req, res) => {
     }
 }
 
+// просто метод, отправляющий на клиент файл
 module.exports.downloadXlsx = function (req, res) {
     const file = './uploads/xlsxToDownload/studentsByFilter.xlsx'
     res.download(file)
 }
 
+// метод удаляющий студентов по массиву id
 module.exports.removeArrayStudents = (req, res) => {
     database.removeArray(databaseName, req.body, 'id')
         .then(() => res.status(200).json("Successfully"))

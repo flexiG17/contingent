@@ -12,6 +12,11 @@ const options = {
     secretOrKey: keys.jwt
 }
 
+/*
+создается jwt в соответствии с ключем из ../config/keys
+и именем, почтой и id пользователя (эти данные нужны на клиенте)
+*/
+
 module.exports = passport => {
     passport.use(
         new JwtStrategy(options, (payload, done) => {

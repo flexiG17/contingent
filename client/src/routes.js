@@ -20,6 +20,8 @@ import AddStudent from "./Pages/AddStudent";
 import AddStudentNotification from "./Pages/AddStudentNotification";
 import AddNotification from "./Pages/AddNotification";
 
+// файл с константами для роутнга авторизованных и неавторизованных пользователей (вскоре нужно будет учиывать роли)
+
 export const authRoutes = [
     {
         path: HOME_ROUTE,

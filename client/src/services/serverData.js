@@ -1,4 +1,5 @@
 const axios = require('axios')
+// чисто файл со всеми запросами на бэк (переписать через axios и разбить по файлам, как actions/user.js)
 
 // ____________STUDENT____________
 export function getStudents() {

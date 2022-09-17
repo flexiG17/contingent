@@ -1,5 +1,7 @@
 const db = require('../db')
 
+// чисто файл для простоты обращения к бд в коде
+
 module.exports.isExist = async (databaseName, condition) => {
     const database = await db(databaseName).where(condition)
 

@@ -25,6 +25,12 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 let inputData = ''
 let navigate = ''
 
+/*
+страница создания уведомления относительно входных данных -
+если во входных данных нет ФИО студента (создается уведомление без привязки к студенту), то пропадает поле ФИО студент,
+а если есть ФИО студента (уведомление создается из личной карточки студента опр. челу), то появляется поле ФИО студента
+*/
+
 function TurnOnSpeedDial() {
 
     const actions = [
@@ -132,6 +138,7 @@ export default function AddStudentNotification() {
     const inputPageData = data[1];
     [inputData] = data
 
+    // тернарный оператор сделан для того, чтобы смотреть, какие входные данные
     const [active, setActive] = useState(true);
     const [date, setDate] = useState(inputData.date === undefined ? '' : inputData.date)
     const [type, setType] = useState(inputData.type === undefined ? '' : inputData.type)
@@ -142,6 +149,7 @@ export default function AddStudentNotification() {
         setActive(!active)
     }
 
+    // относительно того, какой статус, меняются сообщения в выплывающем списоке
     if (status === 'Выполнено') {
         inputPageData.button = "Удалить"
         inputPageData.message = "Вы уверены, что хотите удалить уведомление?"

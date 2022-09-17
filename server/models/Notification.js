@@ -1,6 +1,6 @@
 module.exports= class Notification{
 
-    //constructor(req, user){
+    // кажому уведомлению соответствует id пользователя, которой его создал
     constructor(req){
         this.type = req.body.type;
         this.russian_name = req.body.russian_name;

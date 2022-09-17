@@ -13,6 +13,8 @@ const notificationRoutes = require('./routes/notification')
 
 const app = express() // в app кладем наше приложение
 app.use(passport.initialize())
+
+// какая-то конструкция, чтобы работал passport
 require('./middleware/passport')(passport)
 
 app.use(cors()) // app.use() - дает возможность добавлять плагины, роуты

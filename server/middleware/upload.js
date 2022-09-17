@@ -2,6 +2,8 @@ const multer = require('multer')
 const moment = require('moment')
 const fs = require("fs-extra");
 
+
+// работа с сохранением файлом при помощи multer, но, возможно, отойдем от этой задумки
 const storage = multer.diskStorage({
     async destination(req, file, cb){
         //const param = await req.body.passportNumber

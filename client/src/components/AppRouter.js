@@ -4,6 +4,11 @@ import {authRoutes, publicRoutes} from "../routes";
 import {START_ROUTE} from "../utils/consts";
 
 const AppRouter = () => {
+    // вынесен сюда роутинг
+    /*
+    isAuth Должен быть норм.
+    Если токен просрочен на бэке, то на клиенте он всё равно остается в localstorage и данное условие проходит
+    */
     const isAuth = localStorage.getItem("jwt")
     return (
         <Routes>

@@ -17,6 +17,7 @@ function StartPage() {
 
                 <div className="RightSide_greeting">
                     <div className="Start_Logo">
+                        {{/*сделано ссылкой, потому что после авторизации не происходит редирект на главную, а на дефолтную*/}}
                     <a href={HOME_ROUTE}>
                             <img src={Logo} width="250px" height="181px" alt=""/>
                     </a>

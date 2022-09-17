@@ -15,6 +15,10 @@ export default function DocContract() {
         setActive(!active)
     }
 
+
+// файл с по сути тем же, что на страницах Quota.jsx, PersonalCardContract.jsx, DocContract.jsx, PersonalCardQuota.jsx
+// отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
+
     const [latin_name, setLatinName] = useState('')
     const [russian_name, setRussianName] = useState('')
     const [RF_location, setLocation] = useState('')

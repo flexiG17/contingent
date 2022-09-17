@@ -4,10 +4,9 @@ const errorHandler = require('../utils/errorHandler')
 
 const databaseName = 'notifications'
 
-module.exports.create = async (req, res) => {
-    //const [user] = await req.user
+// контроллер для написания методов роутов уведомлений
 
-    //const notification = new Notification(req, user)
+module.exports.create = async (req, res) => {
     const notification = new Notification(req)
     database.save(databaseName, notification.getModel())
         .then(() => {
@@ -22,7 +21,9 @@ module.exports.update = async function (req, res) {
     const [user] = await req.user
     const notification = new Notification(req, user)
 
+    // условие для того, чтобы из бд брать уведомления, созданные опр. пользователем (по id)
     const condition = {id: req.params.id}
+    // это, конечно, ужас
     if (req.body.status === "Выполнено") {
         database.remove(databaseName, condition)
             .then(() => {
@@ -40,6 +41,7 @@ module.exports.update = async function (req, res) {
     }
 }
 
+// используется для вывода на сайте уведомлений соответствующему сотруднику
 module.exports.getByUserId = async function (req, res) {
     database.getOneField(databaseName, {user_id: req.params.id})
         .then(data => {
@@ -60,6 +62,7 @@ module.exports.remove = function (req, res) {
         })
 }
 
+// метод просто для того, чтобы получить кол-во уведомлений, присущих пользователю
 module.exports.getCount = async (req, res) => {
     database.getOneField(databaseName, {user_id: req.params.id})
         .then((data) => {

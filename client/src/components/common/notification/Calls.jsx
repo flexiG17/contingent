@@ -33,6 +33,8 @@ import iziToast from "izitoast";
 
 let notifications = []
 
+// страница для отображения уведомлений и работы с ними. Никак не рализован поиск и пагинация
+
 function Row(props) {
     const {row} = props;
 

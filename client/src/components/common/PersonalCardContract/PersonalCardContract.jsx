@@ -24,6 +24,9 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 let filesToSave = new FormData()
 
+// файл с по сути тем же, что на страницах Quota.jsx, PersonalCardContract.jsx, DocContract.jsx, PersonalCardQuota.jsx
+// отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
+
 export default function PersonalCardContract() {
     const [active, setActive] = useState(true);
     const handleClickContract = () => {
@@ -594,6 +597,7 @@ export default function PersonalCardContract() {
                                        onChange={event => setDateOfReceipt(event.target.value)}
                                        value={actual_receipt_date_invitation}/>
                         </div>
+                        {/*Тупо тесовый код ниже, можно удалять. Я пытался понять, как работать с файлами*/}
                         <div className="column_style_contract">
                             <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
                                 контрактника </p>

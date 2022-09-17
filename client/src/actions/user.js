@@ -1,7 +1,8 @@
 import axios from 'axios'
 import iziToast from "izitoast";
-import {useNavigate} from "react-router-dom";
 import {HOME_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+
+// просто сюда вынесены методы для обращения к бэку
 
 export const Registration = async (userName, userEmail, userPassword, navigate) => {
     try {

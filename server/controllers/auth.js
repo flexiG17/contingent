@@ -8,11 +8,16 @@ const keys = require('../config/keys')
 
 const databaseName = 'users'
 
+// контроллер для написания методов роутов авторизации
+
+// метод логина в систему
 module.exports.login =  function (req, res) {
     database.isExist(databaseName, {email: req.body.email})
         .then(async userExistInSystem => {
             if (userExistInSystem) {
+                // получаем пользователя из бд по его почте
                 const [user] = await database.getOneField(databaseName, {email: req.body.email})
+                // сравниваем при помощи bcrypt введенный пароль и закодированный
                 const passwordResult = bcrypt.compareSync(req.body.password, user.password)
 
                 if (passwordResult){
@@ -22,7 +27,7 @@ module.exports.login =  function (req, res) {
                         email: user.email,
                         name: user.name
                     }, keys.jwt, {})
-                    //{expiresIn: 60}
+                    //{expiresIn: 60} - время жизни токена можно указать
 
                     res.status(200).json({
                         message: 'Сотрудник успешно авторизован',
@@ -43,11 +48,13 @@ module.exports.login =  function (req, res) {
         .catch(error => errorHandler(res, error))
 }
 
+// метод регистрации в систему
 module.exports.register = async function (req, res) {
 
     const {userName, userEmail, userPassword} = req.body
     const salt = bcrypt.genSaltSync(10)
 
+    // генерируем модель пользователя с созданием закодированного пароля
     const user = new User(
         userEmail,
         bcrypt.hashSync(userPassword, salt),
@@ -74,6 +81,7 @@ module.exports.register = async function (req, res) {
         .catch(error => errorHandler(res, error))
 }
 
+// метод смены пароля, пока что никак не используется
 module.exports.changeData = function (req, res) {
     const salt = bcrypt.genSaltSync(10)
     const newPassword = req.body.password
@@ -87,13 +95,4 @@ module.exports.changeData = function (req, res) {
             console.log(`user's password with email ${req.body.email} successfully changing`)
         })
         .catch(error => errorHandler(res, error))
-}
-
-module.exports.getByEmail = async function (req, res) {
-    database.getDataWithSelectedColumns(databaseName, {email: req.params.email}, ['name', 'email'])
-        .then(data => {
-            console.log(data)
-            res.status(200).json(data)
-        })
-        .catch(error => {errorHandler(res, error)})
 }

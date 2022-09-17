@@ -1,3 +1,5 @@
+// константы url для страниц
+
 export const START_ROUTE = '/start'
 export const HOME_ROUTE = '/main'
 export const REGISTRATION_ROUTE = '/registration'

@@ -10,12 +10,16 @@ import "./QuotaDoc.css";
 import './QuotaEducation.css'
 import './QuotaInfo.css'
 
+    // страница добавления студентов квотной основы
+
 function QuotaDoc() {
     const [active, setActive] = useState(true);
     const handleClickContract = () => {
         setActive(!active)
     }
 
+    // огромный блок useState-ов (как и со страницей добавления контрактников)
+    // хз как исправиться, ибо тут 30+ полей
     const [direction_number, setDirectionNumber] = useState('')
     const [location_educational_institution, setLocationEducationalInstitution] = useState('')
     const [graduation_year, setGraduationYear] = useState('')
@@ -53,6 +57,8 @@ function QuotaDoc() {
     const [comments, setComments] = useState('')
 
     const navigate = useNavigate()
+
+    // подготовка переменной для пуша в бд
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -119,6 +125,7 @@ function QuotaDoc() {
             })
     };
 
+    // тут просто тьма одних и тех же компонентов. Их в принципе много, однако как это записать проще?
     return (
         <form onSubmit={handleSubmit}>
             <div className="info_and_education_container">
@@ -777,6 +784,7 @@ function QuotaDoc() {
                                    }}
                                    onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                     </div>
+                    {/*Большой раздел нашей разработки - файлы*/}
                     <div className="column_style_contract">
                         <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
                             контрактника </p>
@@ -788,7 +796,7 @@ function QuotaDoc() {
                         <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
                         <input type="file" id="actual-btn" onChange={event => setDocumentPath(event.target.value)}
                                value={document_path} hidden/>
-                        <label className="label_doc"> Выберите файлы <InsertDriveFileIcon
+                        <label htmlFor="actual-btn" className="label_doc"> Выберите файлы <InsertDriveFileIcon
                             sx={{fontSize: 20}}/></label>
                     </div>
                 </div>
