@@ -4,17 +4,14 @@ import './Quota.css';
 import QuotaDoc from './QuotaDoc';
 
 
-
-
 function Quota() {
 
 
-
     return (
-            <>
-                <QuotaDoc/>
-            </>
-            )
+        <>
+            <QuotaDoc/>
+        </>
+    )
 }
 
 export default Quota;

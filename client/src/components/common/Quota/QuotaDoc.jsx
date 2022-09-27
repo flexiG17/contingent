@@ -10,7 +10,7 @@ import "./QuotaDoc.css";
 import './QuotaEducation.css'
 import './QuotaInfo.css'
 
-    // страница добавления студентов квотной основы
+// страница добавления студентов квотной основы
 
 function QuotaDoc() {
     const [active, setActive] = useState(true);
@@ -133,7 +133,7 @@ function QuotaDoc() {
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Личные данные</p>
                         <TextField label="Ф.И.О. (лат.)" variant="outlined" color="warning" type="text" margin='normal'
-                                   required size="small" sx={{width:"325px"}}
+                                   required size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -205,7 +205,8 @@ function QuotaDoc() {
                                        }
                                    }}
                                    onChange={event => setPhoneNumber(event.target.value)} value={contact_phone_number}/>
-                        <TextField label="E-mail студента" variant="outlined" color="warning" type="email" margin='normal'
+                        <TextField label="E-mail студента" variant="outlined" color="warning" type="email"
+                                   margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -223,7 +224,8 @@ function QuotaDoc() {
                                    }}
                                    onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
                         <p className="tytle_contract_info"> Учёба</p>
-                        <TextField label="Местонахождение учебного заведения" type="text" variant="outlined" color="warning" margin='normal'
+                        <TextField label="Местонахождение учебного заведения" type="text" variant="outlined"
+                                   color="warning" margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -239,7 +241,8 @@ function QuotaDoc() {
                                            fontWeight: '450'
                                        }
                                    }}
-                                   onChange={event => setLocationEducationalInstitution(event.target.value)} value={location_educational_institution}/>
+                                   onChange={event => setLocationEducationalInstitution(event.target.value)}
+                                   value={location_educational_institution}/>
                         <TextField label="Год окончания" type="text" variant="outlined" color="warning" margin='normal'
                                    required size="small"
                                    inputProps={{
@@ -257,7 +260,8 @@ function QuotaDoc() {
                                        }
                                    }}
                                    onChange={event => setGraduationYear(event.target.value)} value={graduation_year}/>
-                        <TextField label="Уровень желаемого образования" type="text" variant="outlined" color="warning" margin='normal'
+                        <TextField label="Уровень желаемого образования" type="text" variant="outlined" color="warning"
+                                   margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -273,8 +277,10 @@ function QuotaDoc() {
                                            fontWeight: '450'
                                        }
                                    }}
-                                   onChange={event => setDesiredEducationLevel(event.target.value)} value={desired_education_level}/>
-                        <TextField label="Код направления подготовки (специальности)" type="text" variant="outlined" color="warning" margin='normal'
+                                   onChange={event => setDesiredEducationLevel(event.target.value)}
+                                   value={desired_education_level}/>
+                        <TextField label="Код направления подготовки (специальности)" type="text" variant="outlined"
+                                   color="warning" margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -291,7 +297,8 @@ function QuotaDoc() {
                                        }
                                    }}
                                    onChange={event => setSpecialtyCode(event.target.value)} value={specialty_code}/>
-                        <TextField label="Направление подготовки (специальность)" type="text" variant="outlined" color="warning" margin='normal'
+                        <TextField label="Направление подготовки (специальность)" type="text" variant="outlined"
+                                   color="warning" margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -307,8 +314,10 @@ function QuotaDoc() {
                                            fontWeight: '450'
                                        }
                                    }}
-                                   onChange={event => setSpecialtyDirection(event.target.value)} value={specialty_direction}/>
-                        <TextField label="Область образования" type="text" variant="outlined" color="warning" margin='normal'
+                                   onChange={event => setSpecialtyDirection(event.target.value)}
+                                   value={specialty_direction}/>
+                        <TextField label="Область образования" type="text" variant="outlined" color="warning"
+                                   margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -325,7 +334,8 @@ function QuotaDoc() {
                                        }
                                    }}
                                    onChange={event => setEducationField(event.target.value)} value={education_field}/>
-                        <TextField label="Образовательная организация" type="text" variant="outlined" color="warning" margin='normal'
+                        <TextField label="Образовательная организация" type="text" variant="outlined" color="warning"
+                                   margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -341,7 +351,8 @@ function QuotaDoc() {
                                            fontWeight: '450'
                                        }
                                    }}
-                                   onChange={event => setEducationalOrganization(event.target.value)} value={educational_organization}/>
+                                   onChange={event => setEducationalOrganization(event.target.value)}
+                                   value={educational_organization}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_info"> Паспортные данные </p>
@@ -538,7 +549,8 @@ function QuotaDoc() {
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Уровень образования</p>
-                        <TextField label="Уровень полученного образования" type="text" variant="outlined" color="warning" margin='normal'
+                        <TextField label="Уровень полученного образования" type="text" variant="outlined"
+                                   color="warning" margin='normal'
                                    required size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
@@ -555,7 +567,8 @@ function QuotaDoc() {
                                        }
                                    }}
                                    onChange={event => setLevelEducation(event.target.value)} value={level_education}/>
-                        <TextField label="Наименование учебного заведения" type="text" variant="outlined" color="warning" margin='normal'
+                        <TextField label="Наименование учебного заведения" type="text" variant="outlined"
+                                   color="warning" margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -571,9 +584,11 @@ function QuotaDoc() {
                                            fontWeight: '450'
                                        }
                                    }}
-                                   onChange={event => setEducationalInstitution(event.target.value)} value={name_educational_institution}/>
+                                   onChange={event => setEducationalInstitution(event.target.value)}
+                                   value={name_educational_institution}/>
                         <p className="tytle_contract_education"> Нынешнее образование </p>
-                        <TextField label="Рег. номер направления" type="text" variant="outlined" color="warning" margin='normal'
+                        <TextField label="Рег. номер направления" type="text" variant="outlined" color="warning"
+                                   margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {

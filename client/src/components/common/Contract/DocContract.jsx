@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import {addStudent, checkFiles} from '../../../services/serverData'
 import iziToast from "izitoast";
 import {HOME_ROUTE} from "../../../utils/consts";
-import {Link, useNavigate} from "react-router-dom";
-import './InfoContacts.css'
+import {useNavigate} from "react-router-dom";
 import './DocContract.css'
 import TextField from "@mui/material/TextField";
 import {MenuItem} from "@mui/material";
@@ -142,7 +141,7 @@ export default function DocContract() {
             <div className="info_and_education_container">
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="tytle_contract_info"> Личные данные</p>
+                        <p className="title_contract_info"> Личные данные</p>
 
                         <TextField label="Ф.И.О. (лат.)" variant="outlined" color="warning" type="text" margin='normal'
                                    required size="small" sx={{width: "325px"}}
@@ -199,7 +198,7 @@ export default function DocContract() {
                                     style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
                             </MenuItem>
                         </TextField>
-                        <p className="tytle_contract_info"> Контактные данные</p>
+                        <p className="title_contract_info"> Контактные данные</p>
                         <TextField label="Контактный телефон студента" variant="outlined" color="warning" type="tel"
                                    margin='normal' required size="small"
                                    inputProps={{
@@ -217,7 +216,8 @@ export default function DocContract() {
                                        }
                                    }}
                                    onChange={event => setPhoneNumber(event.target.value)} value={contact_phone_number}/>
-                        <TextField label="E-mail студента" variant="outlined" color="warning" type="email" margin='normal'
+                        <TextField label="E-mail студента" variant="outlined" color="warning" type="email"
+                                   margin='normal'
                                    required size="small"
                                    inputProps={{
                                        style: {
@@ -234,7 +234,7 @@ export default function DocContract() {
                                        }
                                    }}
                                    onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
-                        <p className="tytle_contract_info"> Контактные данные агента</p>
+                        <p className="title_contract_info"> Контактные данные агента</p>
                         <TextField label="Ф.И.О." variant="outlined" color="warning" type="text" margin='normal'
                                    required size="small"
                                    inputProps={{
@@ -286,7 +286,7 @@ export default function DocContract() {
                                        }
                                    }}
                                    onChange={event => setAgentEmail(event.target.value)} value={agent_email}/>
-                        <p className="tytle_contract_info"> Контактные данные представителя</p>
+                        <p className="title_contract_info"> Контактные данные представителя</p>
                         <TextField label="Ф.И.О." type="text" variant="outlined" color="warning" margin='normal'
                                    required size="small"
                                    inputProps={{
@@ -343,7 +343,7 @@ export default function DocContract() {
                                    value={representative_email}/>
                     </div>
                     <div className="column_style_contract">
-                        <p className="tytle_contract_info"> Паспортные данные </p>
+                        <p className="title_contract_info"> Паспортные данные </p>
                         <TextField label="Страна" type="text" variant="outlined" color="warning" margin='normal'
                                    required size="small"
                                    sx={{width: "325px"}}
