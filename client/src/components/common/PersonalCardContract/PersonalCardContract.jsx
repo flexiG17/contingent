@@ -24,7 +24,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 let filesToSave = new FormData()
 
-// файл с по сути тем же, что на страницах Quota.jsx, PersonalCardContract.jsx, DocContract.jsx, PersonalCardQuota.jsx
+// файл с по сути тем же, что на страницах Quota.jsx, index.jsx, DocContract.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
 
 export default function PersonalCardContract() {

@@ -1,5 +1,5 @@
 import React from "react";
-import {Header, Quota, Contract} from "../components/common";
+import {Header, Quota, Contract} from "../../components/common";
 import './AddStudent.css';
 import {useState} from 'react';
 

@@ -1,5 +1,5 @@
 import React from "react";
-import {Header, PersonalCardContract} from "../components/common";
+import {Header, PersonalCardContract} from "../../components/common";
 import './PersonalCardContract.css';
 
 

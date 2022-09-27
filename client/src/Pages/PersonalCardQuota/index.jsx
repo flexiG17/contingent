@@ -1,5 +1,5 @@
 import React from "react";
-import {Header, PersonalCardQuota} from "../components/common";
+import {Header, PersonalCardQuota} from "../../components/common";
 import './PersonalCardQuota.css';
 
 

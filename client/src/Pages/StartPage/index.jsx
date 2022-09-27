@@ -1,8 +1,8 @@
 import React from "react";
 import './StartPage.css';
-import Logo from './full_logo.png';
+import Logo from '../full_logo.png';
 import {NavLink} from "react-router-dom";
-import {HOME_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {HOME_ROUTE, LOGIN_ROUTE} from "../../utils/consts";
 
 
 function StartPage() {
@@ -17,10 +17,10 @@ function StartPage() {
 
                 <div className="RightSide_greeting">
                     <div className="Start_Logo">
-                        {{/*сделано ссылкой, потому что после авторизации не происходит редирект на главную, а на дефолтную*/}}
-                    <a href={HOME_ROUTE}>
+                        {/*сделано ссылкой, потому что после авторизации не происходит редирект на главную, а на дефолтную*/}
+                        <a href={HOME_ROUTE}>
                             <img src={Logo} width="250px" height="181px" alt=""/>
-                    </a>
+                        </a>
                     </div>
                     <p className="Sub_sub_header">Вход ПОдИУ УрФУ</p>
                     <NavLink to={LOGIN_ROUTE} className="button_start"> Войти </NavLink>

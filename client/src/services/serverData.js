@@ -116,7 +116,7 @@ export function getNotifications(userId) {
         .then(data => data.json())
 }
 
-export function getCountNotifications(userId){
+export function getCountNotifications(userId) {
     return fetch(`http://localhost:5000/api/notification/count/${userId}`, {
         method: 'GET',
         headers: {
@@ -126,7 +126,7 @@ export function getCountNotifications(userId){
         .then(data => data.json())
 }
 
-export function removeNotification(id){
+export function removeNotification(id) {
     return fetch(`http://localhost:5000/api/notification/remove/${id}`, {
         method: 'DELETE',
         headers: {
@@ -135,7 +135,7 @@ export function removeNotification(id){
     })
 }
 
-export function updateNotification(id, item){
+export function updateNotification(id, item) {
     return fetch(`http://localhost:5000/api/notification/update/${id}`, {
         method: 'PATCH',
         headers: {

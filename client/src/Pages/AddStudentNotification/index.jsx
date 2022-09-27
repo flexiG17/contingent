@@ -1,38 +1,41 @@
 import * as React from 'react';
-import {Header} from "../components/common";
+import {Header} from "../../components/common";
 import './AddStudentNotification.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {createNotification, removeNotification, updateNotification} from "../services/serverData";
+import {createNotification, removeNotification, updateNotification} from "../../services/serverData";
 import iziToast from "izitoast";
-import {NOTIFICATION_ROUTE} from "../utils/consts";
+import { NOTIFICATION_ROUTE} from "../../utils/consts";
 import jwt_decode from 'jwt-decode'
 import {
     Button,
-    Dialog, DialogActions,
+    Dialog,
+    DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
     MenuItem,
-    SpeedDial,
-    SpeedDialAction,
-    SpeedDialIcon
+    SpeedDial, SpeedDialAction, SpeedDialIcon
 } from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+
+const propsStyle = {
+    style:
+        {
+            fontSize: "14.5px",
+            fontFamily: ['Montserrat'],
+            fontWeight: '450'
+        }
+}
 
 let inputData = ''
 let navigate = ''
 
-/*
-страница создания уведомления относительно входных данных -
-если во входных данных нет ФИО студента (создается уведомление без привязки к студенту), то пропадает поле ФИО студент,
-а если есть ФИО студента (уведомление создается из личной карточки студента опр. челу), то появляется поле ФИО студента
-*/
-
 function TurnOnSpeedDial() {
 
+    // при нажатии на кнопку открывается диалоговое окно с подтверждением удаления
     const actions = [
         {
             icon: <DeleteOutlineIcon/>,
@@ -132,24 +135,20 @@ function TurnOnSpeedDial() {
 
 export default function AddStudentNotification() {
     const location = useLocation();
-    navigate = useNavigate()
+    navigate = useNavigate();
 
     const data = location.state
-    const inputPageData = data[1];
-    [inputData] = data
-
-    // тернарный оператор сделан для того, чтобы смотреть, какие входные данные
+    let inputPageData = data[1];
+    [inputData] = data;
     const [active, setActive] = useState(true);
     const [date, setDate] = useState(inputData.date === undefined ? '' : inputData.date)
     const [type, setType] = useState(inputData.type === undefined ? '' : inputData.type)
     const [status, setStatus] = useState(inputData.status === undefined ? '' : inputData.status)
-    const [comment, setComment] = useState(inputData.comment)
+    const [comment, setComment] = useState(inputData.comment === undefined ? '' : inputData.comment)
 
     const handleClickContract = () => {
         setActive(!active)
     }
-
-    // относительно того, какой статус, меняются сообщения в выплывающем списоке
     if (status === 'Выполнено') {
         inputPageData.button = "Удалить"
         inputPageData.message = "Вы уверены, что хотите удалить уведомление?"
@@ -162,21 +161,13 @@ export default function AddStudentNotification() {
             inputPageData.message = 'Вы уверены, что хотите изменить уведомление?'
         }
     }
-
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
-    }
-
     const userId = jwt_decode(localStorage.getItem('jwt')).userId
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
             type: type,
+            russian_name: inputData.russian_name,
+            student_id: inputData.id,
             date: date,
             comment: comment,
             status: status,
@@ -256,6 +247,12 @@ export default function AddStudentNotification() {
                         </MenuItem>
                     </TextField>
                     <TextField
+                        sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
+                        label="Имя студента" variant="outlined" color="warning" focused
+                        inputProps={propsStyle}
+                        InputLabelProps={propsStyle}
+                        disabled value={inputData.russian_name}/>
+                    <TextField
                         label="Дата" type="date" color="warning" focused inputProps={propsStyle}
                         InputLabelProps={propsStyle} onChange={event => setDate(event.target.value)} value={date}
                         sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
@@ -284,6 +281,7 @@ export default function AddStudentNotification() {
                             disabled={active}>{inputPageData.button}</button>
                 </div>
             </form>
+
             {TurnOnSpeedDial()}
         </>
     )

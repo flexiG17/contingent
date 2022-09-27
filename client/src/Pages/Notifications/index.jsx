@@ -1,6 +1,6 @@
 import React from "react";
-import { Header } from "../components/common";
-import { Notification } from "../components/common";
+import { Header } from "../../components/common";
+import { Notification } from "../../components/common";
 
 
 function Account() {

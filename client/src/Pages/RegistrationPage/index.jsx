@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import './RegistrationPage.css';
-import Logo from "./full_logo.png";
-import {Registration} from "../actions/user";
+import Logo from "../full_logo.png";
+import {Registration} from "../../actions/user";
 import {useNavigate} from "react-router-dom";
 
 function RegisterPage() {
