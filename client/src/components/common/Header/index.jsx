@@ -5,7 +5,7 @@ import Logo from '../Header/logo.png';
 import {HOME_ROUTE} from "../../../utils/consts";
 
 
-function Header() {
+export default function Header() {
 
     return (
         <section className="header">
@@ -20,5 +20,3 @@ function Header() {
         </section>
     )
 }
-
-export default Header;

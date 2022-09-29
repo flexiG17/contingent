@@ -1,5 +1,5 @@
 /*Позиционирование*/
-.nav{
+.nav {
     max-width: 1500px;
     margin-left: auto;
     margin-right: auto;
@@ -8,12 +8,12 @@
     justify-content: space-between;
 }
 
-.serchbar_position{
+.serchbar_position {
     padding-left: 20px;
 }
 
 /*Кнопка добавить студента*/
-.add_student_btn{
+.add_student_btn {
     margin-left: auto;
     margin-right: 0;
     display: flex;
@@ -30,7 +30,7 @@
     border: none;
 }
 
-.add_student_btn:hover{
+.add_student_btn:hover {
     background-color: #FF4B00;
 }
 

@@ -1,22 +1,20 @@
 import './Searchbar.css';
-import  Search  from './Search/Search';
+import Search from './Search/Search';
 import AddIcon from '@mui/icons-material/Add';
 import {
     NavLink
-  } from "react-router-dom";
+} from "react-router-dom";
 
 
-function Searchbar() {
+export default function Searchbar() {
 // по сути не используется, потому что этот код перенесен на сами страницы, т.к. я хз как динамически передавать данные
-        return(
+    return (
         <div className="nav">
 
             <NavLink className="add_student_btn" to="/AddStudent"> Добавить студента <AddIcon/></NavLink>
-            
-            <div className="serchbar_position"> <Search placeholder = "Введите данные для поиска..."/></div> 
+
+            <div className="serchbar_position"><Search placeholder="Введите данные для поиска..."/></div>
 
         </div>
-        )
+    )
 }   
-
-export default Searchbar;
