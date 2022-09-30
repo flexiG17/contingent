@@ -2,8 +2,6 @@ import axios from 'axios'
 import iziToast from "izitoast";
 import {HOME_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 
-// просто сюда вынесены методы для обращения к бэку
-
 export const Registration = async (userName, userEmail, userPassword, navigate) => {
     try {
         const response = await axios.post('http://localhost:5000/api/auth/register', {
