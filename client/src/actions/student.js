@@ -20,6 +20,19 @@ export function removeStudent(id) {
             'Authorization': localStorage.getItem("jwt"),
             'Content-Type': 'application/json;charset=utf-8'
         }
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
     // return fetch(`http://localhost:5000/api/student/remove/${id}`, {
     //     method: 'DELETE',
@@ -39,6 +52,19 @@ export function removeArrayOfStudents(data) {
             'Content-Type': 'application/json;charset=utf-8'
         },
         data: data
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
     // return fetch(`http://localhost:5000/api/student/removeStudents`, {
     //     method: 'DELETE',
@@ -57,7 +83,20 @@ export function changeStudentData(item, id) {
                 'Authorization': localStorage.getItem("jwt"),
                 'Content-Type': 'application/json;charset=utf-8'
             }
+        }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
         })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
+    })
     // return fetch(`http://localhost:5000/api/student/update/${id}`, {
     //     method: 'PATCH',
     //     headers: {
@@ -74,6 +113,19 @@ export function addStudent(item) {
             'Authorization': localStorage.getItem("jwt"),
             'Content-Type': 'application/json;charset=utf-8'
         },
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
     // return fetch('http://localhost:5000/api/student/create', {
     //     method: 'POST',
@@ -91,6 +143,19 @@ export function createXlsx(item) {
             'Authorization': localStorage.getItem("jwt"),
             'Content-Type': 'application/json;charset=utf-8'
         }
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
     // return fetch('http://localhost:5000/api/student/getXlsxToDownload', {
     //     method: 'POST',
@@ -108,6 +173,19 @@ export function importXlsx(data) {
         headers: {
             'Authorization': localStorage.getItem("jwt")
         },
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
 }
 

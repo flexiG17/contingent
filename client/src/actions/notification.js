@@ -1,4 +1,5 @@
 import axios from "axios";
+import iziToast from "izitoast";
 
 export function createNotification(item) {
     return axios.post('http://localhost:5000/api/notification/create', item, {
@@ -6,6 +7,19 @@ export function createNotification(item) {
             'Authorization': localStorage.getItem("jwt"),
             'Content-Type': 'application/json;charset=utf-8'
         }
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
     // return fetch('http://localhost:5000/api/notification/create', {
     //     method: 'POST',
@@ -52,6 +66,19 @@ export function removeNotification(id) {
         headers: {
             'Authorization': localStorage.getItem('jwt')
         }
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
     // return fetch(`http://localhost:5000/api/notification/remove/${id}`, {
     //     method: 'DELETE',
@@ -67,6 +94,19 @@ export function updateNotification(id, item) {
             'Authorization': localStorage.getItem("jwt"),
             'Content-Type': 'application/json;charset=utf-8'
         }
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
     })
     // return fetch(`http://localhost:5000/api/notification/update/${id}`, {
     //     method: 'PATCH',
