@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import {addStudent, checkFiles} from '../../../services/serverData'
+import {addStudent, checkFiles} from '../../../actions/student'
 import iziToast from "izitoast";
 import {HOME_ROUTE} from "../../../utils/consts";
 import {useNavigate} from "react-router-dom";

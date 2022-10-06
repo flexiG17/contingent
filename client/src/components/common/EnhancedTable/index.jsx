@@ -31,7 +31,7 @@ import {
     getXlsx,
     importXlsx,
     removeArrayOfStudents
-} from '../../../services/serverData'
+} from '../../../actions/student'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';

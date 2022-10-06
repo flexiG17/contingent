@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import {changeStudentData, checkFiles, createNotification, removeStudent} from '../../../services/serverData'
-import {Link, useLocation, useNavigate} from 'react-router-dom';
+import {changeStudentData, checkFiles, removeStudent} from '../../../actions/student'
+import {useLocation, useNavigate} from 'react-router-dom';
 import iziToast from "izitoast";
 import {ADD_STUDENT_NOTIFICATION_ROUTE, HOME_ROUTE} from "../../../utils/consts";
 import TextField from "@mui/material/TextField";

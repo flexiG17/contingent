@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
-import {createNotification, removeNotification, updateNotification} from "../../services/serverData";
+import {createNotification, removeNotification, updateNotification} from "../../actions/notification";
 import iziToast from "izitoast";
 import { NOTIFICATION_ROUTE} from "../../utils/consts";
 import jwt_decode from 'jwt-decode'
