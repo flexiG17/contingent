@@ -1,15 +1,10 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import './LoginPage.css';
 import Logo from '../full_logo.png';
-import {loginUser} from '../../services/serverData'
 import "izitoast/dist/css/iziToast.css";
-import iziToast from "izitoast";
 import {useNavigate} from "react-router-dom";
-import {HOME_ROUTE} from "../../utils/consts";
 import {Alert} from "@mui/material";
-import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
-import {Login, login} from "../../actions/user";
-import {useDispatch} from "react-redux";
+import {Login} from "../../actions/user";
 
 function LoginPage() {
     const [inputEmail, setEmailItemInput] = useState('')
