@@ -4,12 +4,11 @@ import { NavLink } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import PersonIcon from '@mui/icons-material/Person';
 import jwt_decode from 'jwt-decode'
 import {HOME_ROUTE, NOTIFICATION_ROUTE, REGISTRATION_ROUTE} from "../../../utils/consts";
-import {getCountNotifications} from "../../../services/serverData";
+import {getCountNotifications} from "../../../actions/notification";
 import IconButton from "@mui/material/IconButton";
-import {Avatar, Badge} from "@mui/material";
+import {Badge} from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 
 export default function Navbar() {

@@ -31,7 +31,7 @@ import {
     getXlsx,
     importXlsx,
     removeArrayOfStudents
-} from '../../../services/serverData'
+} from '../../../actions/student'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
@@ -43,7 +43,7 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle, Pagination
+    DialogTitle
 } from "@mui/material";
 import iziToast from "izitoast";
 import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
