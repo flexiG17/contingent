@@ -1,26 +1,34 @@
 const multer = require('multer')
-const moment = require('moment')
-const fs = require("fs-extra");
+const path = require('path')
+const fs = require('fs')
+const os = require('os')
 
 const storage = multer.diskStorage({
-    async destination(req, file, cb){
-        //const param = await req.body.passportNumber
-        //const path = `uploads/${param}`
-        const path = `uploads/studentsToImport`
-        cb(null, path)
+    destination: function (req, file, cb) {
+        let dir = path.join(".", "uploads")
+
+        const passport_number = req.body.passport_number
+        const name = req.body.russian_name
+
+        if (passport_number && name) {
+            dir = path.join(dir, `${req.body.passport_number}-${req.body.russian_name}`)
+
+            if (!fs.existsSync(dir))
+                fs.mkdirSync(dir)
+
+            return cb(null, dir)
+        }
+
+        return cb(null, os.tmpdir())
     },
-    filename(req, file, cb){
-        //const date = moment().format('DDMMYYYY-HHmmss_SSS')
-        //cb(null, `${date}-${file.originalname}`)
-        cb(null, `${file.originalname}`)
-    }
+
+    filename: function (req, file, cb) {
+        if (!/[^\u0000-\u00ff]/.test(file.originalname)) {
+            file.originalname = Buffer.from(file.originalname, 'latin1').toString('utf8')
+        }
+
+        cb(null, file.originalname)
+    },
 })
 
-/*const limits = {
-    fileSize: 1024 * 1024 * 5
-}*/
-
-module.exports = multer({
-    storage: storage
-    //limits: limits
-})
+module.exports = multer({storage})

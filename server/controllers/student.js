@@ -1,146 +1,145 @@
 const XLSX = require('xlsx');
 
-const database = require('../utils/database')
 const Student = require('../models/Student');
-const errorHandler = require('../utils/errorHandler')
+const os = require('os')
 
-const databaseName = 'students'
-const columnsToDisplay = [
-    'education_type',
-    'latin_name',
-    'russian_name',
-    'country',
-    'gender',
-    'contract_number',
-    'enrollment_order',
-    'enrollment',
-]
+const path = require('path')
+const fs = require('fs')
 
-module.exports.getAll = function (req, res) {
-    database.getAllData(databaseName)
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch(error => errorHandler(res, error))
+const db = require('../db')
+
+function getUploadFilePath(passport_number, russian_name) {
+    return path.join(".", "uploads", `${passport_number}-${russian_name}`)
+}
+
+function jsonParseDate(obj) {
+    const dateFormat = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*))(?:Z|(\+|-)([\d|:]*))?$/
+
+    for (let [k, v] of Object.entries(obj)) {
+        if (typeof v === "string" && dateFormat.test(v))
+            obj[k] = new Date(v)
+    }
+
+    return obj
+}
+
+module.exports.getAll = async function (req, res) {
+    const data = await db.students
+
+    return res.status(200).json(data)
 }
 
 module.exports.create = async function (req, res) {
-    const filePath = req.files ? `uploads\\\\${req.body.passport_number}` : ""
-    const student = new Student(req, filePath)
+    const filePath = getUploadFilePath(req.body.passport_number, req.body.russian_name)
 
-    database.isExist(databaseName, {passport_number: student.passport_number})
-        .then(studentExistsInSystem => {
-            if (studentExistsInSystem) {
-                res.status(409).json({
-                    message: `User ${student.russian_name} exists in system. Try again`
-                })
+    const model = new Student(req.body, filePath)
 
-                console.log(`User \"${student.russian_name}\" exists in system`)
-            } else {
-                const modelToSave = student.getModel()
-                database.save(databaseName, modelToSave)
-                    .then(() => {
-                        res.status(201).json({
-                            message: `Added to database ${student.russian_name}`
-                        })
-                        console.log(`It\`s a new user. Added to database \"${student.russian_name}\"`)
-                    })
-                    .catch(error => errorHandler(res, error))
-            }
+    const [student] = await db.students.where({passport_number: model.passport_number})
+
+    if (student != null)
+        return res.status(400).json({
+            message: `'${model.russian_name}' уже существует`
         })
-        .catch(error => errorHandler(res, error))
+
+    await db.students.insert(model)
+
+    return res.status(201).json({
+        message: `'${model.russian_name}' добавлен(а) в базу данных`
+    })
 }
 
-module.exports.update = function (req, res) {
-    console.log(req.body.document_path)
-    let filePath = ''
-    if (req.file) {
-        filePath = req.file
+module.exports.update = async function (req, res) {
+    const dbStudent = _ => db.students.where({id: req.params.id})
+    const [student] = await dbStudent()
+
+    if (!student)
+        return res.status(404).json({message: "Студент не найден"})
+
+    const newPath = getUploadFilePath(req.body.passport_number, req.body.russian_name)
+    const model = new Student(req.body, newPath)
+
+    const oldPath = getUploadFilePath(student.passport_number, student.russian_name)
+
+    if (!fs.existsSync(oldPath))
+        fs.mkdirSync(newPath)
+    else
+        fs.renameSync(oldPath, newPath)
+
+    await dbStudent().update(model)
+    return res.status(200).json({message: `Студент '${model.russian_name}' был изменён`})
+}
+
+module.exports.remove = async function (req, res) {
+    const dbStudent = _ => db.students.where({id: req.params.id})
+    const [student] = await dbStudent()
+
+    if (!student)
+        return res.status(404).json({message: 'Студента не существует'})
+
+    const filePath = getUploadFilePath(student.passport_number, student.russian_name)
+
+    if (fs.existsSync(filePath))
+        fs.rmdirSync(filePath, {recursive: true})
+
+    await dbStudent().delete()
+    return res.status(200).json({message: `'${student.russian_name}' успешно удалён`})
+}
+
+module.exports.getById = async function (req, res) {
+    const [student] = await db.students.where({id: req.params.id})
+
+    if (!student)
+        return res.status(401).json({message: "Студента не существует"})
+
+    return res.status(200).json(student)
+}
+
+module.exports.importXlsxData = async function (req, res) {
+    if (!req.file)
+        return res.status(404).json({message: "Файл не найден"})
+
+    const workbook = XLSX.readFile(req.file.path);
+    const sheetNames = workbook.SheetNames;
+    const data = XLSX.utils.sheet_to_json(workbook.Sheets[sheetNames[0]])
+
+    for (let obj of data) {
+        const filePath = getUploadFilePath(obj.passport_number, obj.russian_name)
+
+        if (!fs.existsSync(filePath))
+            fs.mkdirSync(filePath)
     }
-    const student = new Student(req, filePath)
 
-    database.changeData(databaseName, {id: req.params.id}, student.getModel())
-        .then(() => {
-            res.status(200).json({
-                message: "Student data successfully changing"
-            })
-            console.log(`Student data successfully changing`)
-        })
-        .catch(error => errorHandler(res, error))
-}
-
-module.exports.remove = function (req, res) {
-    const condition = {id: req.params.id}
-
-    database.isExist(databaseName, condition)
-        .then(studentExistsInSystem => {
-            if (studentExistsInSystem) {
-                database.remove(databaseName, condition)
-                    .then(() => {
-                        res.status(200).json({
-                            message: `${req.body.russian_name} successfully deleted from ${databaseName} database`
-                        })
-                        console.log(`Student \"${req.body.russian_name}\" successfully deleted from \"${databaseName}\" database`)
-                    })
-                    .catch(error => errorHandler(res, error))
-            } else {
-                res.status(201).json({
-                    message: `You can't remove student ${req.body.russian_name}, because he doesn't exist in the system. Check the correctness of the entered data`
-                })
-                console.log(`Student \"${req.body.russian_name}\" doesn't exist in the system. Try again`)
-            }
-        })
-        .catch(error => errorHandler(res, error))
-}
-
-module.exports.getById = function (req, res) {
-
-}
-
-module.exports.createXlsx = function (req, res) {
-    const workSheet = XLSX.utils.json_to_sheet(req.body)
-    const workBook = XLSX.utils.book_new()
-
-    XLSX.utils.book_append_sheet(workBook, workSheet, "students")
-    // Generate buffer
-    XLSX.write(workBook, {bookType: 'xlsx', type: "buffer"})
-
-    // Binary string
-    XLSX.write(workBook, {bookType: 'xlsx', type: "binary"})
-
-    XLSX.writeFile(workBook, "./uploads/xlsxToDownload/studentsByFilter.xlsx")
-}
-
-module.exports.importXlsxData = (req, res) => {
-    if (req.file) {
-        const workbook = XLSX.readFile(`./uploads/studentsToImport/${req.file.originalname}`);
-        const sheet_name_list = workbook.SheetNames;
-        const dataToSave = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
-        database.save(databaseName, dataToSave)
-            .then(() => {
-                res.status(201).json({message: "haha"})
-            })
-            .catch(e => errorHandler(res, e))
-    }
+    await db.students.insert(data)
+    return res.status(201).json({message: "Импорт завершён успешно"})
 }
 
 module.exports.downloadXlsx = function (req, res) {
-    const file = './uploads/xlsxToDownload/studentsByFilter.xlsx'
-    res.download(file)
+    if (Object.keys(req.body).length === 0)
+        return res.status(400).json({message: "Пустой запрос"})
+
+    let data = req.body.map(jsonParseDate)
+
+    const workSheet = XLSX.utils.json_to_sheet(data)
+    const workBook = XLSX.utils.book_new()
+
+    XLSX.utils.book_append_sheet(workBook, workSheet, "students")
+    const filePath = path.join(os.tmpdir(), "students.xlsx")
+    XLSX.writeFile(workBook, filePath)
+
+    res.download(filePath)
 }
 
-module.exports.removeArrayStudents = (req, res) => {
-    database.removeArray(databaseName, req.body, 'id')
-        .then(() => res.status(200).json("Successfully"))
-}
+module.exports.removeArrayStudents = async function (req, res) {
+    const dbStudents = _ => db.students.whereIn('id', req.body)
+    const students = await dbStudents()
 
-module.exports.checkFiles = (req, res) => {
-    const file = req.files
-    console.log(file)
-    /*file.originalname = Buffer.from(req.files[1].originalname, 'latin1').toString('utf8')
-    file.filename = Buffer.from(req.files[1].filename, 'latin1').toString('utf8')*/
+    for (let student of students) {
+        const filePath = getUploadFilePath(student.passport_number, student.russian_name)
 
-    if (file){
-        res.sendStatus(200)
-    } else res.sendStatus(400)
+        if (fs.existsSync(filePath))
+            fs.rmdirSync(filePath)
+    }
+
+    await dbStudents().delete()
+    return res.status(200).json({message: "Студенты удалены"})
 }

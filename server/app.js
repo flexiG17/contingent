@@ -1,29 +1,35 @@
-// тут мы создаем наше приложение
+const express = require('express')
 
-const express = require('express') // подключаем express в наш файл с помощью функции require
-const bodyParser = require('body-parser') // для парсинга данных клиента
-const cors = require('cors') // для обработки cors запросов на сервере
-const morgan = require('morgan') // для более красивого логирования запросов (смотреть, что происходит с серверов в данный момент)
+require('express-async-errors') // stub for catching async errors in controllers
+
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const morgan = require('morgan')
+
 const passport = require('passport')
+const authorization = require('./middleware/passport')
 
-// регистрируем роуты
 const authRoutes = require('./routes/auth')
 const studentRoutes = require('./routes/student')
 const notificationRoutes = require('./routes/notification')
 
-const app = express() // в app кладем наше приложение
+const errorHandler = require('./utils/errorHandler')
+
+const app = express()
+
 app.use(passport.initialize())
-require('./middleware/passport')(passport)
+passport.use(authorization.strategy)
 
-app.use(cors()) // app.use() - дает возможность добавлять плагины, роуты
+app.use(cors())
 app.use('/uploads', express.static('uploads'))
-app.use(morgan('dev')) // dev - режим разработки
-app.use(bodyParser.urlencoded({extended: true})) // помогает декодировать Url
-app.use(bodyParser.json()) // помогает генерировать js объекты из json, который мы получаем
+app.use(morgan('dev'))
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json())
 
-// path - тот базовый url, который будет совмещаться с тем, который в роуте
 app.use('/api/auth', authRoutes)
 app.use('/api/student', studentRoutes)
 app.use('/api/notification', notificationRoutes)
+
+app.use((err, req, res, next) => errorHandler(err, res))
 
 module.exports = app

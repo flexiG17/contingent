@@ -1,10 +1,14 @@
-const app = require('./app')
-// можно задать порт через консоль, а если не задано, то используем 5000
-const port = process.env.PORT || 5000
+require('dotenv').config({
+    path: process.env.ENV_PATH === undefined ? '.env' : process.env.ENV_PATH
+});
 
-// '/' - корень приложения
-// req - request - содержит всё, что пользователь отправляет на сервер
-// res - response - то, что мы отправляем на клиент с сервера
+// const cron = require('./utils/notificationDaemon') // not yet implemented
+
+const app = require('./app')
+
+// cron.job.start()
+
+const port = process.env.PORT || 5000
 
 app.listen(port, (err) => {
     if (err) throw err;

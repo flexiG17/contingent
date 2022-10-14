@@ -5,13 +5,5 @@ module.exports = class User {
         this.password = password;
         this.name = name;
     }
-
-    getModel(){
-        return{
-            email: this.email,
-            password: this.password,
-            name: this.name
-        }
-    }
 }
 

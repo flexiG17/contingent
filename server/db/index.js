@@ -1,9 +1,23 @@
 const knex = require('knex');
-const { development, production } = require('../knexfile');
+const {development, production} = require('../knexfile');
 
 const isProduction = process.env.NODE_ENV === 'production';
 const opt = isProduction ? production : development;
 
-const db = knex(opt);
+module.exports = {
+    get db() {
+        return knex(opt)
+    },
 
-module.exports = db
+    get users() {
+        return this.db('users')
+    },
+
+    get students() {
+        return this.db('students')
+    },
+
+    get notifications() {
+        return this.db('notifications')
+    }
+}
