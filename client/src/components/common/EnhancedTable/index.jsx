@@ -35,7 +35,6 @@ import {
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
-import SearchIcon from "@mui/icons-material/Search";
 import {
     Button,
     CircularProgress,
@@ -47,6 +46,7 @@ import {
 } from "@mui/material";
 import iziToast from "izitoast";
 import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
+import  Filter from "../Searchbar/Search/Filter";
 
 
 /*
@@ -378,6 +378,8 @@ export default function EnhancedTable() {
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
 
+    const [filters, setFilters] = useState([]);
+
     const [list, setList] = useState([]);
     // хук для постоянного получения студентов с бэка
     useEffect(() => {
@@ -466,30 +468,58 @@ export default function EnhancedTable() {
         в таблице выводятся данные из filteredValues. При внесении в поле для ввода данных происходит моментальная сортировка
         на данный момент поиск происходит только по russian_name и менять можно только в коде
     */
+
+    function multiFilter(item) {
+        for (let i = 0; i < filters.length; i++) {
+            let filter = filters[i];
+            if (item[filter.param] === undefined) return false;
+            switch (filter.operator) {
+                case "coincidence":
+                    if (
+                        !String(item[filter.param])
+                            .toLowerCase()
+                            .includes(filter.value.toLowerCase())
+                    )
+                        return false;
+                    break;
+                case "equals":
+                    if (item[filter.param] !== Number(filter.value)) return false;
+                    break;
+                case "less":
+                    if (item[filter.param] >= Number(filter.value)) return false;
+                    break;
+                case "lessE":
+                    if (item[filter.param] > Number(filter.value)) return false;
+                    break;
+                case "more":
+                    if (item[filter.param] <= Number(filter.value)) return false;
+                    break;
+                case "moreE":
+                    if (item[filter.param] < Number(filter.value)) return false;
+                    break;
+                default:
+                    return false;
+            }
+        }
+        return true;
+    }
+    console.log(rows);
+
     const [searchingValue, setSearchingValue] = useState('')
     const filteredValues = rows.filter(row => {
-        return row['russian_name'].toLowerCase().includes(searchingValue.toLowerCase())
+         // return row['russian_name'].toLowerCase().includes(searchingValue.toLowerCase())
+        return multiFilter(row);
     })
     return (
         <div>
             {/* Перенёс сюда SearchBar.jsx */}
             <div className="nav">
-                {loading && <CircularProgress color="warning"/>}
-                <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить студента <AddIcon/></NavLink>
-                <div className="serchbar_position">
-                    {/* Перенёс сюда Search.jsx */}
-                    <div className="search">
-                        <div className="searchInput">
-                            <input
-                                type="text"
-                                placeholder={"Введите данные для поиска..."}
-                                onChange={(event => setSearchingValue(event.target.value))}
-                            />
-                            <div className="searchIcon"><SearchIcon/></div>
-                        </div>
-                        <div className="dataResult"></div>
-                    </div>
+                <div className="filter_position">
+                    <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить студента <AddIcon/></NavLink>
+                        {/* Перенёс сюда Filter.jsx */}
+                    {!loading && <Filter params={Object.keys(rows[0])} filters={filters} setFilters={setFilters}/>}
                 </div>
+                {loading && <CircularProgress color="warning"/>}
             </div>
             <Box sx={{width: '1500px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
                 <Paper sx={{

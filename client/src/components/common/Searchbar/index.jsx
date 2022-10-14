@@ -1,5 +1,5 @@
 import './Searchbar.css';
-import Search from './Search/Search';
+import Search from './Search/Filter';
 import AddIcon from '@mui/icons-material/Add';
 import {
     NavLink
