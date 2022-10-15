@@ -3,12 +3,12 @@ const controller = require('../controllers/notification')
 const passport = require("passport");
 const router = express.Router()
 
+router.use(passport.authenticate('jwt', {session: false}, null))
 
-router.post('/create', passport.authenticate('jwt', {session: false}), controller.create)
-router.patch('/update/:id', passport.authenticate('jwt', {session: false}), controller.update)
-router.get('/getByUser/:id', passport.authenticate('jwt', {session: false}), controller.getByUserId)
-router.delete('/remove/:id', passport.authenticate('jwt', {session: false}), controller.remove)
-router.get('/count/:id', passport.authenticate('jwt', {session: false}), controller.getCount)
-
+router.post('/create', controller.create)
+router.patch('/update/:id', controller.update)
+router.get('/getByUser/:id', controller.getByUserId)
+router.delete('/remove/:id', controller.remove)
+router.get('/count/:id', controller.getCount)
 
 module.exports = router

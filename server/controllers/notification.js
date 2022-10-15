@@ -6,7 +6,7 @@ module.exports.create = async function (req, res) {
 
     await db.notifications.insert(model)
 
-    return res.status(200).json({message: "Notification added successfully"})
+    return res.status(200).json({message: "Уведомление добавлено"})
 }
 
 module.exports.update = async function (req, res) {
@@ -14,7 +14,7 @@ module.exports.update = async function (req, res) {
 
     await db.notifications.where({id: req.params.id}).update(model)
 
-    return res.status(200).json({message: "Notification updated successfully"})
+    return res.status(200).json({message: "Уведомление обновлено"})
 }
 
 module.exports.getByUserId = async function (req, res) {
@@ -26,7 +26,7 @@ module.exports.getByUserId = async function (req, res) {
 module.exports.remove = async function (req, res) {
     await db.notifications.where({id: req.params.id}).delete()
 
-    return res.status(200).json({message: "Notification removed"})
+    return res.status(200).json({message: "Уведомление удалено"})
 }
 
 module.exports.getCount = async function (req, res) {

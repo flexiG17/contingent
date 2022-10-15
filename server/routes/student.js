@@ -6,7 +6,7 @@ const upload = require('../middleware/upload')
 
 const router = express.Router()
 
-router.use(passport.authenticate('jwt', {session: false}))
+router.use(passport.authenticate('jwt', {session: false}, null))
 
 //localhost:5000/api/student
 router.get('/', controller.getAll)
