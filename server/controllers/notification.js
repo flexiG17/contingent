@@ -1,74 +1,36 @@
 const Notification = require('../models/Notification')
-const database = require('../utils/database')
-const errorHandler = require('../utils/errorHandler')
+const db = require('../db')
 
-const databaseName = 'notifications'
+module.exports.create = async function (req, res) {
+    const model = new Notification(req.body)
 
-// контроллер для написания методов роутов уведомлений
+    await db.notifications.insert(model)
 
-module.exports.create = async (req, res) => {
-    const notification = new Notification(req)
-    database.save(databaseName, notification.getModel())
-        .then(() => {
-            res.status(200).json({message: "successfully"})
-        })
-        .catch(e => {
-            errorHandler(res, e)
-        })
+    return res.status(200).json({message: "Уведомление добавлено"})
 }
 
 module.exports.update = async function (req, res) {
-    const [user] = await req.user
-    const notification = new Notification(req, user)
+    const model = new Notification(req.body)
 
-    // условие для того, чтобы из бд брать уведомления, созданные опр. пользователем (по id)
-    const condition = {id: req.params.id}
-    // это, конечно, ужас
-    if (req.body.status === "Выполнено") {
-        database.remove(databaseName, condition)
-            .then(() => {
-                res.status(200).send(`Так как выставлен статус ${req.body.status}, то уведомление удалено`)
-            })
-            .catch(e => {
-                errorHandler(res, e)
-            })
-    } else {
-        database.changeData(databaseName, condition, notification.getModel())
-            .then(() => {
-                res.status(200).json({message: `Изменения успешно внесены`})
-            })
-            .catch(e => errorHandler(res, e))
-    }
+    await db.notifications.where({id: req.params.id}).update(model)
+
+    return res.status(200).json({message: "Уведомление обновлено"})
 }
 
-// используется для вывода на сайте уведомлений соответствующему сотруднику
 module.exports.getByUserId = async function (req, res) {
-    database.getOneField(databaseName, {user_id: req.params.id})
-        .then(data => {
-            res.status(200).send(data)
-        })
-        .catch(e => {
-            errorHandler(res, e)
-        })
+    const data = await db.notifications.where({user_id: req.params.id})
+
+    return res.status(200).send(data)
 }
 
-module.exports.remove = function (req, res) {
-    database.remove(databaseName, {id: req.params.id})
-        .then(() => {
-            res.status(200).json("Напоминение успешно удалено")
-        })
-        .catch(e => {
-            errorHandler(res, e)
-        })
+module.exports.remove = async function (req, res) {
+    await db.notifications.where({id: req.params.id}).delete()
+
+    return res.status(200).json({message: "Уведомление удалено"})
 }
 
-// метод просто для того, чтобы получить кол-во уведомлений, присущих пользователю
-module.exports.getCount = async (req, res) => {
-    database.getOneField(databaseName, {user_id: req.params.id})
-        .then((data) => {
-            res.status(200).json(data.length)
-        })
-        .catch(e => {
-            errorHandler(res, e)
-        })
+module.exports.getCount = async function (req, res) {
+    const data = await db.notifications.where({user_id: req.params.id})
+
+    return res.status(200).json(data.length)
 }

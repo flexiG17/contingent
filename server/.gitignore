@@ -1,2 +1,5 @@
 # Project exclude paths
 /node_modules/
+.env
+.local_env
+/.idea

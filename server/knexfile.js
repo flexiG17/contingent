@@ -1,8 +1,3 @@
-const dotenv = require('dotenv');
-dotenv.config({path: '.env'});
-
-// настройка подключения к бд
-
 module.exports = {
     development: {
         client: 'mysql2',
