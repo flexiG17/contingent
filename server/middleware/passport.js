@@ -1,39 +1,24 @@
 const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
-const keys = require('../config/keys')
-const database = require('../utils/database')
-const errorHandler = require('../utils/errorHandler')
-
+const db = require('../db')
 
 const options = {
-    // берём токен из Header
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: keys.jwt
+    secretOrKey: process.env.TOKEN_SECRET
 }
 
-/*
-создается jwt в соответствии с ключем из ../config/keys
-и именем, почтой и id пользователя (эти данные нужны на клиенте)
-*/
+async function verify(payload, done) {
+    const [user] = await db.users.where({id: payload.userId})
 
-module.exports = passport => {
-    passport.use(
-        new JwtStrategy(options, (payload, done) => {
-                database.isExist('users', {id: payload.userId})
-                    .then(userExistInSystem => {
-                        if (userExistInSystem){
-                            const user = database.getDataWithSelectedColumns(
-                                'users',
-                                {id: payload.userId},
-                                ['name', 'email', 'id'])
-                            done(null, user)
-                        } else {
-                            done(null, false)
-                        }
-                    })
-                    .catch(error => console.log(error))
-            }
-        )
-    )
+    if (user == null)
+        return done(null, false)
+
+    return done(null, {
+        id: user.id,
+        name: user.name,
+        email: user.email
+    })
 }
+
+module.exports.strategy = new JwtStrategy(options, verify)
