@@ -145,10 +145,7 @@ export default function PersonalCardContract() {
                             message: 'Данные студента успешно обновлены',
                             position: "topRight"
                         });
-                        /*setTimeout(() => {
-                            navigate(HOME_ROUTE)
-                        }, 2000)*/
-                        break
+                        break;
                     }
                     default: {
                         iziToast.error({

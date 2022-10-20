@@ -14,13 +14,14 @@ export default function LongMenu({params, filters, setFilters}) {
     const [anchorEl, setAnchorEl] = useState();
     const open = Boolean(anchorEl);
 
+    const [filterArr, setFilterArr] = useState(filters)
 
     const filter = params.map((item) => {
         return {
             value: item, label: item
         }
     });
-    const filter1 = [
+    const operators = [
         {value: 'coincidence', label: 'Содержит'},
         {value: 'equals', label: 'Равно'},
         {value: 'more', label: 'Больше'},
@@ -34,11 +35,12 @@ export default function LongMenu({params, filters, setFilters}) {
     };
 
     const handleClose = () => {
+        setFilters(filterArr);
         setAnchorEl(null);
     };
 
     const changeFilterParam = (id, value) => {
-        setFilters((prevState) => {
+        setFilterArr((prevState) => {
             const newArr = prevState.map(item => {
                 if (item.id === id) {
                     return {...item, param: value};
@@ -51,7 +53,7 @@ export default function LongMenu({params, filters, setFilters}) {
     }
 
     const changeFilterOperator = (id, value) => {
-        setFilters((prevState) => {
+        setFilterArr((prevState) => {
             const newArr = prevState.map(item => {
                 if (item.id === id) {
                     return {...item, operator: value};
@@ -64,7 +66,7 @@ export default function LongMenu({params, filters, setFilters}) {
     }
 
     const changeFilterValue = (id, value) => {
-        setFilters((prevState) => {
+        setFilterArr((prevState) => {
             const newArr = prevState.map(item => {
                 if (item.id === id) {
                     return {...item, value: value};
@@ -88,61 +90,66 @@ export default function LongMenu({params, filters, setFilters}) {
             >
                 <MoreVertIcon/>
             </IconButton>
-                <Menu
-                    id="long-menu"
-                    MenuListProps={{
-                        'aria-labelledby': 'long-button',
-                    }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    PaperProps={{
-                        style: {
-                            minHeight: ITEM_HEIGHT * 7,
-                            maxHeight: ITEM_HEIGHT * 4.5,
-                            width: '900px',
-                        },
-                    }}
-                >
-                    {filters.map((item) => (
-                        <MenuItem>
-                            <div className="filter_container">
-                                <Select className="first_parameter" placeholder="Описание" options={filter}
-                                        onChange={(e) => {
-                                            changeFilterParam(item.id, e.value);
-                                        }
-                                        }/>
-                                <Select className="second_parameter" placeholder="Оператор" options={filter1}
-                                        onChange={(e) => {
-                                            changeFilterOperator(item.id, e.value);
-                                        }
-                                        }/>
-                                <div className="third_parameter">
-                                    <input className="search_filter" type="text" onChange={(e) => {
-                                        changeFilterValue(item.id, e.target.value);
+            <Menu
+                id="long-menu"
+                MenuListProps={{
+                    'aria-labelledby': 'long-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                PaperProps={{
+                    style: {
+                        minHeight: ITEM_HEIGHT * 7,
+                        maxHeight: ITEM_HEIGHT * 4.5,
+                        width: '900px',
+                    },
+                }}
+            >
+                {filterArr.map((item) => (
+                    <MenuItem>
+                        <div className="filter_container">
+                            <Select className="first_parameter" placeholder="Описание" options={filter}
+                                    value={item.param}
+                                    onChange={(e) => {
+                                        changeFilterParam(item.id, e);
                                     }
                                     }/>
-                                </div>
-                                <button className="delete_filter_button"
-                                        onClick={() => setFilters((prevState) => prevState.filter((obj) => {
-                                            return obj.id !== item.id;
-                                        }))}>
-                                    <DeleteIcon sx={{fontSize: 22}}/>
-                                </button>
+                            <Select className="second_parameter" placeholder="Оператор" options={operators}
+                                    value={item.operator}
+                                    onChange={(e) => {
+                                        changeFilterOperator(item.id, e);
+                                    }
+                                    }/>
+                            <div className="third_parameter">
+                                <input className="search_filter" type="text" onChange={(e) => {
+                                    changeFilterValue(item.id, e.target.value);
+                                }
+                                }
+                                       value={item.value}/>
                             </div>
-                        </MenuItem>
-                    ))}
-                    <div className="button_position">
-                        <button className="add_filter_button" onClick={() => setFilters([...filters, {
-                            id: filters.length !== 0 ? filters[filters.length - 1].id + 1 : 1,
-                            param: '',
-                            value: '',
-                            operator: ''
-                        }])}>
-                            Добавить <AddIcon/>
-                        </button>
-                    </div>
-                </Menu>
+                            <button className="delete_filter_button"
+                                    onClick={() => setFilterArr((prevState) => prevState.filter((obj) => {
+                                        return obj.id !== item.id;
+                                    }))}>
+                                <DeleteIcon sx={{fontSize: 22}}/>
+                            </button>
+                        </div>
+                    </MenuItem>
+                ))}
+                <div className="button_position">
+                    <button className="add_filter_button" onClick={() => setFilterArr([...filters, {
+                        id: filters.length !== 0 ? filters[filters.length - 1].id + 1 : 1,
+                        param:
+                            {value: '', label: ''},
+                        operator:
+                            {value: '', label: ''},
+                        value: '',
+                    }])}>
+                        Добавить <AddIcon/>
+                    </button>
+                </div>
+            </Menu>
         </div>
     );
 }
