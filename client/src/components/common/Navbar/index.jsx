@@ -5,11 +5,12 @@ import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import jwt_decode from 'jwt-decode'
-import {HOME_ROUTE, NOTIFICATION_ROUTE, REGISTRATION_ROUTE} from "../../../utils/consts";
+import {HOME_ROUTE, NOTIFICATION_ROUTE, REGISTRATION_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
 import {getCountNotifications} from "../../../actions/notification";
 import IconButton from "@mui/material/IconButton";
 import {Badge} from "@mui/material";
 import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function Navbar() {
     const [countOfNotifications, setCountOfNotifications] = useState('')
@@ -54,6 +55,12 @@ export default function Navbar() {
                         <div className="user_account">
                             <div className="user_name_account">{userName}</div>
                         </div>
+
+                        <NavLink to={ACCOUNT_ROUTE} className="account_button_account">
+                            <PersonIcon sx={{fontSize: 19}}/>
+                            <div className="nav__pad"> Личный кабинет </div>
+                        </NavLink>
+
                         <NavLink to={NOTIFICATION_ROUTE} className="mail_button_account">
                             <EmailIcon sx={{fontSize: 19}}/>
                             <div className="nav__pad"> Уведомления</div>

@@ -68,6 +68,7 @@
     position: relative;
     padding-bottom: 20px;
     padding-right: 20px;
+    width: 130px;
 }
 
 .account .dropdown_content_account .mail_button_account::before {
@@ -97,6 +98,9 @@
     background-color: transparent;
     border:none;
     cursor:pointer;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    width: 90px;
 }
 
 .account .dropdown_content_account .exit_button_account ::before {
@@ -139,4 +143,32 @@
     height: 30px;
     border-radius: 50px;
     border: 1px solid #FA7A45;
+}
+
+.account .dropdown_content_account .account_button_account {
+    font-size: 15px;
+    /*font-weight: 450;*/
+    display: flex;
+    align-items: center;
+    color: #FA7A45;
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 20px;
+    padding-right: 20px;
+    width: 160px;
+}
+
+.account .dropdown_content_account .account_button_account::before {
+    content: '';
+    bottom: 14px;
+    left: 0;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #FA7A45;
+    transition: 0.7s;
+}
+
+.account .dropdown_content_account .account_button_account:hover:before {
+    width: 90%;
 }

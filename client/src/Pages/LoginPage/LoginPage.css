@@ -47,6 +47,7 @@
     border: 1px solid #FA7A45;
     border-radius: 10px;
     height: 35px;
+    outline: none;
 }
 
 .button_style_login{

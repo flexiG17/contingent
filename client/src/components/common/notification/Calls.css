@@ -1,18 +1,15 @@
-.searchbar_position{
-     padding-left: 20px;
- }
 
 .notification_navbar{
-    margin-left: auto;
-    margin-right: 460px;
     padding-top: 50px;
     display: flex;
-    justify-content: space-between;
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .add_notification_button{
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: 0;
+    margin-right: auto;
     display: flex;
     text-decoration: none;
     font-size: 14px;
@@ -44,4 +41,5 @@
     padding: 12px;
     height: 14px;
     width: 250px;
+    outline: none;
 }
