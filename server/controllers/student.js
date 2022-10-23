@@ -20,6 +20,20 @@ function getStudents(ids) {
     return db.students.whereIn('id', ids)
 }
 
+module.exports.getColumns = async function (req, res) {
+    let data = await db.informationColumns
+        .select('column_name', 'column_type', 'column_comment')
+        .where({table_name: 'students'})
+
+    data = data.map(element => new Object({
+        name: element['COLUMN_NAME'],
+        type: element['COLUMN_TYPE'],
+        ru: element['COLUMN_COMMENT']
+    }))
+
+    res.status(200).json(data);
+}
+
 module.exports.getAll = async function (req, res) {
     const data = await db.students
 

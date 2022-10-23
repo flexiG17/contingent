@@ -17,5 +17,9 @@ module.exports = {
 
     get notifications() {
         return this.db('notifications')
+    },
+
+    get informationColumns() {
+        return this.db('information_schema.columns')
     }
 }
