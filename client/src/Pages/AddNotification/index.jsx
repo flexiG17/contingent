@@ -180,7 +180,8 @@ export default function AddStudentNotification() {
             date: date,
             comment: comment,
             status: status,
-            user_id: userId
+            user_id: userId,
+            student_id: null
         }
         inputPageData.type === 'create' ?
             createNotification(data)
