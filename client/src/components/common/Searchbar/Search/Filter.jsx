@@ -18,7 +18,6 @@ export default function LongMenu({params, filters, setFilters}) {
     const [filterArr, setFilterArr] = useState(filters)
     const [columns, setColumns] = useState([])
 
-    console.log(columns)
     const operators = [
         {value: 'coincidence', label: 'Содержит'},
         {value: 'equals', label: 'Равно'},
@@ -82,7 +81,12 @@ export default function LongMenu({params, filters, setFilters}) {
                 'Authorization': localStorage.getItem("jwt"),
                 'Content-Type': 'application/json;charset=utf-8'
             }
-        }).then(res => console.log(res.data))
+        }).then(res => setColumns(res.data.map((item) => {
+            return {
+                value: item.name,
+                label: item.ru
+            }
+        })))
     }, [])
 
     return (
