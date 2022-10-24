@@ -26,9 +26,9 @@ module.exports.getColumns = async function (req, res) {
         .where({table_name: 'students'})
 
     data = data.map(element => new Object({
-        name: element['COLUMN_NAME'],
-        type: element['COLUMN_TYPE'],
-        ru: element['COLUMN_COMMENT']
+        name: element['column_name'],
+        type: element['column_type'],
+        ru: element['column_comment']
     }))
 
     res.status(200).json(data);
