@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './Search.css';
 import Select from 'react-select';
 import IconButton from '@mui/material/IconButton';
@@ -138,8 +138,8 @@ export default function LongMenu({params, filters, setFilters}) {
                     </MenuItem>
                 ))}
                 <div className="button_position">
-                    <button className="add_filter_button" onClick={() => setFilterArr([...filters, {
-                        id: filters.length !== 0 ? filters[filters.length - 1].id + 1 : 1,
+                    <button className="add_filter_button" onClick={() => setFilterArr([...filterArr, {
+                        id: filterArr.length !== 0 ? filterArr[filterArr.length - 1].id + 1 : 1,
                         param:
                             {value: '', label: ''},
                         operator:
