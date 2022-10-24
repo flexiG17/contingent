@@ -5,9 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 const opt = isProduction ? production : development;
 
 module.exports = {
-    get db() {
-        return knex(opt)
-    },
+    db: knex(opt),
 
     get users() {
         return this.db('users')
@@ -19,5 +17,9 @@ module.exports = {
 
     get notifications() {
         return this.db('notifications')
+    },
+
+    get informationColumns() {
+        return this.db('information_schema.columns')
     }
 }

@@ -10,7 +10,8 @@ router.use(passport.authenticate('jwt', {session: false}, null))
 
 //localhost:5000/api/student
 router.get('/', controller.getAll)
-router.get('/:id', controller.getById)
+router.get('/:id(\\d{12})', controller.getById)
+router.get('/columns', controller.getColumns)
 
 router.post('/create', upload.any(), controller.create)
 
