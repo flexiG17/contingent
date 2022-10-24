@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import axios from "axios";
 import './Search.css';
 import Select from 'react-select';
 import IconButton from '@mui/material/IconButton';
@@ -15,12 +16,9 @@ export default function LongMenu({params, filters, setFilters}) {
     const open = Boolean(anchorEl);
 
     const [filterArr, setFilterArr] = useState(filters)
+    const [columns, setColumns] = useState([])
 
-    const filter = params.map((item) => {
-        return {
-            value: item, label: item
-        }
-    });
+    console.log(columns)
     const operators = [
         {value: 'coincidence', label: 'Содержит'},
         {value: 'equals', label: 'Равно'},
@@ -78,6 +76,15 @@ export default function LongMenu({params, filters, setFilters}) {
         })
     }
 
+    useEffect(() => {
+        let result = axios.get('http://localhost:5000/api/student/columns', {
+            headers: {
+                'Authorization': localStorage.getItem("jwt"),
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then(res => console.log(res.data))
+    }, [])
+
     return (
         <div>
             <IconButton
@@ -109,7 +116,7 @@ export default function LongMenu({params, filters, setFilters}) {
                 {filterArr.map((item) => (
                     <MenuItem>
                         <div className="filter_container">
-                            <Select className="first_parameter" placeholder="Описание" options={filter}
+                            <Select className="first_parameter" placeholder="Описание" options={columns}
                                     value={item.param}
                                     onChange={(e) => {
                                         changeFilterParam(item.id, e);
