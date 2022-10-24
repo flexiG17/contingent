@@ -1,0 +1,143 @@
+
+/*Левая часть блока*/
+
+.container_account{
+    max-width: 1400px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.left_side_container_account{
+    display: flex;
+    flex-direction: column;
+}
+.container_information{
+    display: flex;
+    flex-direction: column;
+    padding: 19px 25px;
+
+    background-color: #fff;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    border-radius: 15px;
+    width: 430px;
+}
+
+.title_container_information{
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 30px;
+
+    color: #FA7A45;
+}
+
+.button_container_information_position{
+    display: flex;
+    justify-content: space-between;
+    width: 400px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+}
+
+.change_parameters_button{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 13px;
+
+    color: #1A3BE8;
+
+    outline: none;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+
+    position: relative;
+    padding: 0;
+    margin: 0;
+
+}
+
+.change_parameters_button::before{
+    content: '';
+    bottom: -7px;
+    left: 0;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #1A3BE8;
+    transition: 0.7s;
+}
+
+.change_parameters_button:hover:before{
+    width: 100%;
+}
+
+
+.change_password{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 13px;
+
+    color: #FF4B00;
+
+    outline: none;
+    background-color: #fff;
+    border: none;
+
+    cursor: pointer;
+
+    position: relative;
+    padding: 0;
+    margin: 0;
+
+}
+
+.change_password::before{
+    content: '';
+    bottom: -7px;
+    left: 0;
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    background-color: #FF4B00;
+    transition: 0.7s;
+}
+
+.change_password:hover:before{
+    width: 100%;
+}
+
+.users_table{
+    display: flex;
+    flex-direction: column;
+    padding: 19px 25px;
+
+    background-color: #fff;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    border-radius: 15px;
+    width: 430px;
+    margin-top: 30px;
+}
+
+
+/*Правая часть блока*/
+
+.container_table_notification{
+    display: flex;
+    flex-direction: column;
+    padding: 19px 25px;
+
+    background-color: #fff;
+    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    border-radius: 15px;
+    width: 800px;
+}
+.table_notification{
+}

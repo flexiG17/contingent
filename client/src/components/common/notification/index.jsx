@@ -12,7 +12,6 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {getNotifications, removeNotification} from "../../../actions/notification";
 import {Link} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
-import SearchIcon from "@mui/icons-material/Search";
 import {
     Button,
     CircularProgress,
@@ -167,22 +166,9 @@ export default function CollapsibleTable() {
                     }]}
                     className="add_notification_button"> Добавить
                     уведомление <AddIcon/></Link>
-                <div className="searchbar_position">
-                    <div className="search_notification_input">
-                        <div className="search_notification">
-                            <input
-                                type="text"
-                                placeholder={"Введите данные для поиска..."}
-                                onChange={(event => (event.target.value))}
-                            />
-                            <div className="searchIcon"><SearchIcon/></div>
-                        </div>
-                        <div className="dataResult"></div>
-                    </div>
-                </div>
             </div>
             <TableContainer component={Paper}
-                            sx={{width: '1000px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
+                            sx={{width: '800px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
