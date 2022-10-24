@@ -472,30 +472,30 @@ export default function EnhancedTable() {
     function multiFilter(item) {
         for (let i = 0; i < filters.length; i++) {
             let filter = filters[i];
-            if (item[filter.param] === undefined) return false;
-            switch (filter.operator) {
+            if (item[filter.param.value] === undefined) return false;
+            switch (filter.operator.value) {
                 case "coincidence":
                     if (
-                        !String(item[filter.param])
+                        !String(item[filter.param.value])
                             .toLowerCase()
                             .includes(filter.value.toLowerCase())
                     )
                         return false;
                     break;
                 case "equals":
-                    if (item[filter.param] !== Number(filter.value)) return false;
+                    if (item[filter.param.value] !== Number(filter.value)) return false;
                     break;
                 case "less":
-                    if (item[filter.param] >= Number(filter.value)) return false;
+                    if (item[filter.param.value] >= Number(filter.value)) return false;
                     break;
                 case "lessE":
-                    if (item[filter.param] > Number(filter.value)) return false;
+                    if (item[filter.param.value] > Number(filter.value)) return false;
                     break;
                 case "more":
-                    if (item[filter.param] <= Number(filter.value)) return false;
+                    if (item[filter.param.value] <= Number(filter.value)) return false;
                     break;
                 case "moreE":
-                    if (item[filter.param] < Number(filter.value)) return false;
+                    if (item[filter.param.value] < Number(filter.value)) return false;
                     break;
                 default:
                     return false;
@@ -503,7 +503,6 @@ export default function EnhancedTable() {
         }
         return true;
     }
-    console.log(rows);
 
     const [searchingValue, setSearchingValue] = useState('')
     const filteredValues = rows.filter(row => {
