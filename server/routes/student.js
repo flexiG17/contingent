@@ -21,6 +21,6 @@ router.delete('/remove/:id', controller.remove)
 router.post('/importXlsxFile', upload.single(), controller.importXlsxData)
 router.post('/download/xlsx', controller.downloadXlsx)
 
-router.delete('/removeStudents', controller.removeArrayStudents)
+router.delete('/removeStudents', controller.removeStudents)
 
 module.exports = router
