@@ -628,27 +628,29 @@ export default function PersonalCardContract() {
                                        filesToSave.append('visa', e.target.files[0])
                                    }}/>
                             <label htmlFor="visa" className="file_label_doc"> Визовая анкета <InsertDriveFileIcon
-                                    sx={{fontSize: 20}}/></label>
+                                sx={{fontSize: 20}}/></label>
 
                             <input id="payment" type="file" hidden
                                    onChange={(e) => {
                                        filesToSave.append('payment', e.target.files[0])
                                    }}/>
                             <label htmlFor="payment" className="file_label_doc"> Факт оплаты <InsertDriveFileIcon
-                                    sx={{fontSize: 20}}/></label>
+                                sx={{fontSize: 20}}/></label>
 
                             <input id="identification" type="file" hidden
                                    onChange={(e) => {
                                        filesToSave.append('identification', e.target.files[0])
                                    }}/>
-                            <label htmlFor="identification" className="file_label_doc"> Удостоверение личности <InsertDriveFileIcon
-                                sx={{fontSize: 20}}/></label>
+                            <label htmlFor="identification" className="file_label_doc"> Удостоверение
+                                личности <InsertDriveFileIcon
+                                    sx={{fontSize: 20}}/></label>
                             <input id="identification_translate" type="file" hidden
                                    onChange={(e) => {
                                        filesToSave.append('identification_translate', e.target.files[0])
                                    }}/>
-                            <label htmlFor="identification_translate" className="file_label_doc"> Перевод удостоверения <InsertDriveFileIcon
-                                sx={{fontSize: 20}}/></label>
+                            <label htmlFor="identification_translate" className="file_label_doc"> Перевод
+                                удостоверения <InsertDriveFileIcon
+                                    sx={{fontSize: 20}}/></label>
                         </div>
                     </div>
                 </div>

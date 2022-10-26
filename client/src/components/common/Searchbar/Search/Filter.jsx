@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import axios from "axios";
 import './Search.css';
 import Select from 'react-select';
 import IconButton from '@mui/material/IconButton';
@@ -15,12 +16,8 @@ export default function LongMenu({params, filters, setFilters}) {
     const open = Boolean(anchorEl);
 
     const [filterArr, setFilterArr] = useState(filters)
+    const [columns, setColumns] = useState([])
 
-    const filter = params.map((item) => {
-        return {
-            value: item, label: item
-        }
-    });
     const operators = [
         {value: 'coincidence', label: 'Содержит'},
         {value: 'equals', label: 'Равно'},
@@ -78,6 +75,20 @@ export default function LongMenu({params, filters, setFilters}) {
         })
     }
 
+    useEffect(() => {
+        let result = axios.get('http://localhost:5000/api/student/columns', {
+            headers: {
+                'Authorization': localStorage.getItem("jwt"),
+                'Content-Type': 'application/json;charset=utf-8'
+            }
+        }).then(res => setColumns(res.data.map((item) => {
+            return {
+                value: item.name,
+                label: item.ru
+            }
+        })))
+    }, [])
+
     return (
         <div>
             <IconButton
@@ -109,7 +120,7 @@ export default function LongMenu({params, filters, setFilters}) {
                 {filterArr.map((item) => (
                     <MenuItem>
                         <div className="filter_container">
-                            <Select className="first_parameter" placeholder="Описание" options={filter}
+                            <Select className="first_parameter" placeholder="Описание" options={columns}
                                     value={item.param}
                                     onChange={(e) => {
                                         changeFilterParam(item.id, e);
@@ -138,8 +149,8 @@ export default function LongMenu({params, filters, setFilters}) {
                     </MenuItem>
                 ))}
                 <div className="button_position">
-                    <button className="add_filter_button" onClick={() => setFilterArr([...filters, {
-                        id: filters.length !== 0 ? filters[filters.length - 1].id + 1 : 1,
+                    <button className="add_filter_button" onClick={() => setFilterArr([...filterArr, {
+                        id: filterArr.length !== 0 ? filterArr[filterArr.length - 1].id + 1 : 1,
                         param:
                             {value: '', label: ''},
                         operator:
