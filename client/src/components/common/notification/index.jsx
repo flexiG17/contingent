@@ -125,7 +125,6 @@ function Row(props) {
                     </TableCell>
                     <TableCell align="right">{row.russian_name}</TableCell>
                     <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">{row.status}</TableCell>
                     <TableCell align="right">{row.comment}</TableCell>
                 </TableRow>
                 <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
@@ -177,7 +176,6 @@ export default function CollapsibleTable() {
                             <TableCell align="right">Уведомление</TableCell>
                             <TableCell align="right">Cтудент</TableCell>
                             <TableCell align="right">Дата</TableCell>
-                            <TableCell align="right">Статус</TableCell>
                             <TableCell align="right">Комментарий</TableCell>
                         </TableRow>
                     </TableHead>

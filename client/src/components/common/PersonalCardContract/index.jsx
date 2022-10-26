@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import {changeStudentData, checkFiles, removeStudent} from '../../../actions/student'
+import {changeStudentData, removeStudent} from '../../../actions/student'
 import {useLocation, useNavigate} from 'react-router-dom';
 import iziToast from "izitoast";
 import {ADD_STUDENT_NOTIFICATION_ROUTE, HOME_ROUTE} from "../../../utils/consts";
@@ -70,7 +70,6 @@ export default function PersonalCardContract() {
     const [passport_issue_date, setPassportIssueDate] = useState(rows.passport_issue_date)
     const [level_education, setLevelEducation] = useState(rows.level_education)
     const [name_educational_institution, setEducationalInstitution] = useState(rows.name_educational_institution)
-    const [education_field, setEducation_field] = useState(rows.education_field)
     const [form_study, setFormStudy] = useState(rows.form_study)
     const [enrollment, setEnrollment] = useState(rows.enrollment)
     const [enrollment_order, setEnrollmentOrder] = useState(rows.enrollment_order)
@@ -115,7 +114,6 @@ export default function PersonalCardContract() {
             passport_issue_date: passport_issue_date,
             level_education: level_education,
             name_educational_institution: name_educational_institution,
-            education_field: education_field,
             form_study: form_study,
             enrollment: enrollment,
             enrollment_order: enrollment_order,
@@ -135,7 +133,6 @@ export default function PersonalCardContract() {
             estimated_receipt_date: estimated_receipt_date,
             actual_receipt_date_invitation: actual_receipt_date_invitation
         }
-        checkFiles(filesToSave)
         changeStudentData(data, rows.id)
             .then((res) => {
                 switch (res.status) {

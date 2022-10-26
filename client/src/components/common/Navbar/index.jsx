@@ -5,7 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import jwt_decode from 'jwt-decode'
-import {HOME_ROUTE, NOTIFICATION_ROUTE, REGISTRATION_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
+import {HOME_ROUTE, REGISTRATION_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
 import {getCountNotifications} from "../../../actions/notification";
 import IconButton from "@mui/material/IconButton";
 import {Badge} from "@mui/material";
@@ -39,8 +39,8 @@ export default function Navbar() {
                 <div className="nav__pad">Главная</div>
             </NavLink>
             <div className="account">
-                <div className="dropdown_btn_account" onClick={(e) => setIsActive(!isActive)}>
-                    <NavLink to={NOTIFICATION_ROUTE}>
+                <div className="dropdown_btn_account" onClick={() => setIsActive(!isActive)}>
+                    <NavLink to={ACCOUNT_ROUTE}>
                         <IconButton aria-label={countOfNotifications}>
                             <Badge badgeContent={countOfNotifications} color="info">
                                 <EmailIcon sx={{fontSize: 19, color: "#FA7A45"}}/>
@@ -61,12 +61,7 @@ export default function Navbar() {
                             <div className="nav__pad"> Личный кабинет </div>
                         </NavLink>
 
-                        <NavLink to={NOTIFICATION_ROUTE} className="mail_button_account">
-                            <EmailIcon sx={{fontSize: 19}}/>
-                            <div className="nav__pad"> Уведомления</div>
-                        </NavLink>
-
-                        {decodedToken.userId === 35 &&
+                        {decodedToken.userId === 24 &&
                             <NavLink to={REGISTRATION_ROUTE} className="mail_button_account">
                                 <HowToRegOutlinedIcon sx={{fontSize: 19}}/>
                                 <div className="nav__pad"> Регистрация</div>
