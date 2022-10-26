@@ -77,7 +77,7 @@ export function removeArrayOfStudents(data) {
 }
 
 export function changeStudentData(item, id) {
-    return axios.patch(
+    return axios.put(
         `http://localhost:5000/api/student/update/${id}`, item, {
             headers: {
                 'Authorization': localStorage.getItem("jwt"),
