@@ -389,6 +389,7 @@ export default function EnhancedTable() {
     }, [])
 
     rows = list
+    console.log(rows);
     // из бд приходит дата в ужасном формате, поэтому вот так криво каждая строка парсится
     rows.map(item => {
         item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
@@ -404,6 +405,22 @@ export default function EnhancedTable() {
         item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD")
         item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD")
         item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD")
+
+        // НЕ УДАЛЯТЬ; Дальше идёт код для новой фильтрации, пока что не могу решить, но заготовку оставил
+
+        // item.birth_date = new Date(item.birth_date)
+        // item.passport_issue_date = new Date(item.passport_issue_date)
+        // item.passport_expiration = new Date(item.passport_expiration)
+        // item.entry_date = new Date(item.entry_date)
+        // item.visa_validity = new Date(item.visa_validity)
+        // item.first_payment = new Date(item.first_payment)
+        // item.second_payment = new Date(item.second_payment)
+        // item.third_payment = new Date(item.third_payment)
+        // item.fourth_payment = new Date(item.fourth_payment)
+        // item.transfer_to_international_service = new Date(item.transfer_to_international_service)
+        // item.transfer_to_MVD = new Date(item.transfer_to_MVD)
+        // item.estimated_receipt_date = new Date(item.estimated_receipt_date)
+        // item.actual_receipt_date_invitation = new Date(item.actual_receipt_date_invitation)
     })
 
     const handleRequestSort = (event, property) => {
@@ -504,9 +521,7 @@ export default function EnhancedTable() {
         return true;
     }
 
-    const [searchingValue, setSearchingValue] = useState('')
     const filteredValues = rows.filter(row => {
-         // return row['russian_name'].toLowerCase().includes(searchingValue.toLowerCase())
         return multiFilter(row);
     })
     return (

@@ -8,7 +8,7 @@ import {
     LOGIN_ROUTE, NOTIFICATION_ROUTE,
     REGISTRATION_ROUTE,
     START_ROUTE,
-    ACCOUNT_ROUTE
+    ACCOUNT_ROUTE, LOAD_ROUTE
 } from "./utils/consts";
 import HomePage from './Pages/HomePage'
 import RegistrationPage from './Pages/RegistrationPage'
@@ -21,6 +21,7 @@ import AddStudent from "./Pages/AddStudent";
 import AddStudentNotification from "./Pages/AddStudentNotification";
 import AddNotification from "./Pages/AddNotification";
 import Index from "./Pages/Account";
+import LoadingPage from "./Pages/LoadingPage";
 
 // файл с константами для роутнга авторизованных и неавторизованных пользователей (вскоре нужно будет учиывать роли)
 
@@ -71,5 +72,9 @@ export const publicRoutes = [
     {
         path: LOGIN_ROUTE,
         Component: LoginPage
+    },
+    {
+        path: LOAD_ROUTE,
+        Component: LoadingPage
     }
 ]
