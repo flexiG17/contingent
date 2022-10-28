@@ -104,3 +104,20 @@
     color: #FA7A45;
     font-weight: 500;
 }
+
+.file-input {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 150px;
+    background-color: #FA7A45;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+}
+
+.file-input input[type="file"] {
+    display: none;
+}

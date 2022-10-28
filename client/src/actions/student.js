@@ -1,5 +1,6 @@
 import axios from "axios";
 import iziToast from "izitoast";
+import {HOME_ROUTE} from '../utils/consts'
 
 export function getStudents() {
     return axios.get('http://localhost:5000/api/student/', {
@@ -107,11 +108,11 @@ export function changeStudentData(item, id) {
     // })
 }
 
-export function addStudent(item) {
+export function addStudent(item, navigate) {
     return axios.post('http://localhost:5000/api/student/create', item, {
         headers: {
             'Authorization': localStorage.getItem("jwt"),
-            'Content-Type': 'application/json;charset=utf-8'
+            'Content-Type': 'multipart/form-data;'
         },
     }).then(({statusText, data}) => {
         iziToast.success({
@@ -119,6 +120,7 @@ export function addStudent(item) {
             message: data.message,
             position: 'topRight'
         })
+        navigate(HOME_ROUTE);
     }).catch((e) => {
         iziToast.error({
             title: e.response.statusText,
