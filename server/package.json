@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "server": "node_modules/.bin/nodemon index"
+    "server": "nodemon --inspect index"
   },
   "author": "Senya Kozhevnikov",
   "license": "ISC",
