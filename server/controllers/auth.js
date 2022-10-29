@@ -32,10 +32,10 @@ module.exports.login = async function (req, res) {
 }
 
 module.exports.register = async function (req, res) {
-    const {name, email, password} = req.body
+    const {name, email, password, role} = req.body
     const salt = bcrypt.genSaltSync(10)
 
-    const model = new User(email, bcrypt.hashSync(password, salt), name)
+    const model = new User(email, bcrypt.hashSync(password, salt), name, role)
 
     const [user] = await db.users.where({email: model.email})
 

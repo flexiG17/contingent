@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "server": "nodemon --inspect index"
+    "server": "nodemon --inspect index",
+    "test": "mocha"
   },
   "author": "Senya Kozhevnikov",
   "license": "ISC",
@@ -33,6 +34,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "mocha": "^10.1.0",
     "nodemon": "^2.0.16"
   }
 }
