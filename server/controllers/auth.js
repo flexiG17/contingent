@@ -23,7 +23,8 @@ module.exports.login = async function (req, res) {
     const token = jwt.sign({
         userId: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        role: user.role
     }, process.env.TOKEN_SECRET, {})
 
     return res.status(200).json({

@@ -27,7 +27,7 @@ export default function Navbar() {
     }
 
     useEffect(() => {
-        getCountNotifications(decodedToken.userId)
+        getCountNotifications()
             .then(data => setCountOfNotifications(data))
     }, [])
 
