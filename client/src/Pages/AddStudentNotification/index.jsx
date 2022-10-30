@@ -161,17 +161,15 @@ export default function AddStudentNotification() {
             inputPageData.message = 'Вы уверены, что хотите изменить уведомление?'
         }
     }
-    const userId = jwt_decode(localStorage.getItem('jwt')).userId
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
             type: type,
             russian_name: inputData.russian_name,
-            student_id: inputData.id,
+            student_id: inputData.student_id,
             date: date,
             comment: comment,
             status: status,
-            user_id: userId
         }
         inputPageData.type === 'create' ?
             createNotification(data)
