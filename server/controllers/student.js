@@ -87,6 +87,8 @@ module.exports.remove = async function (req, res) {
 
     const filePath = getUploadFilePath(student.passport_number, student.russian_name)
 
+    await db.notifications.where({student_id: req.params.id}).delete();
+
     if (fs.existsSync(filePath))
         fs.rmdirSync(filePath, {recursive: true})
 
@@ -138,7 +140,7 @@ module.exports.downloadXlsx = async function (req, res) {
     res.download(filePath)
 }
 
-module.exports.removeArrayStudents = async function (req, res) {
+module.exports.removeStudents = async function (req, res) {
     const students = await getStudents(req.body)
 
     for (let student of students) {
@@ -148,6 +150,8 @@ module.exports.removeArrayStudents = async function (req, res) {
             fs.rmdirSync(filePath)
     }
 
+    await db.notifications.whereIn('student_id', req.body).delete()
     await getStudents(req.body).delete()
+
     return res.status(200).json({message: "Студенты удалены"})
 }
