@@ -1,21 +1,27 @@
 /*Позиционирование*/
-.nav{
+.nav {
     max-width: 1500px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 50px;
+    padding-top: 70px;
     display: flex;
+    flex-direction: row;
+}
+
+.filter_position{
+    width: 260px;
+    margin-right: auto;
+    margin-left: 0;
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
 }
 
-.serchbar_position{
-    padding-left: 20px;
-}
 
 /*Кнопка добавить студента*/
-.add_student_btn{
-    margin-left: auto;
-    margin-right: 0;
+.add_student_btn {
+    margin-left: 0;
+    margin-right: auto;
     display: flex;
     text-decoration: none;
     font-size: 14px;
@@ -30,7 +36,7 @@
     border: none;
 }
 
-.add_student_btn:hover{
+.add_student_btn:hover {
     background-color: #FF4B00;
 }
 

@@ -4,7 +4,7 @@ import Searchbar from './Searchbar';
 import Quota from './Quota';
 import Contract from './Contract';
 import EnhancedTable from './EnhancedTable';
-import Notification from './notification';
+import CollapsibleTable from './notification';
 import PersonalCardContract from './PersonalCardContract';
 import PersonalCardQuota from './PersonalCardQuota'
 
@@ -16,7 +16,7 @@ export {
     Quota,
     EnhancedTable,
     Contract,
-    Notification,
+    CollapsibleTable,
     PersonalCardContract,
     PersonalCardQuota
 }

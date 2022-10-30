@@ -1,29 +1,28 @@
-.columns_position{
+.columns_position {
     display: flex;
     justify-content: space-between;
 }
 
-.column_style_contract{
+.column_style_contract {
     display: flex;
     flex-direction: column;
-
 }
 
-.tytle_contract_doc{
+.title_contract_doc {
     font-size: 15px;
     color: #FA7A45;
     font-weight: 500;
-
 }
 
-.tytle_contract_doc_contaner{
+.title_contract_doc_container {
     width: 230px;
     font-size: 15px;
     color: #FA7A45;
     font-weight: 500;
 }
 
-.input_style_contract{
+/*doesn't use*/
+.input_style_contract {
     display: flex;
     background-color: #fff;
     border: 1px solid #FA7A45;
@@ -37,14 +36,14 @@
     margin-bottom: 10px;
 }
 
-.button_position_contract_doc{
+.button_position_contract_doc {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     margin-bottom: 100px;
 }
 
-.button_style_contract_doc{
+.button_style_contract_doc {
     width: 120px;
     height: 45px;
     background-color: #FA7A45;
@@ -57,47 +56,50 @@
     border-radius: 5px;
 }
 
-.button_style_contract_doc:hover{
+.button_style_contract_doc:hover {
     background-color: #FF4B00;
 }
-.button_style_contract_doc:disabled:hover{
+
+.button_style_contract_doc:disabled:hover {
     background-color: #D0BDB5;
-    cursor:no-drop;
+    cursor: no-drop;
 
 }
 
-.Doc_list{
+.Doc_list {
     font-size: 12px;
     margin: 0;
     padding-top: 5px;
 }
-.label_doc{
-  width: 150px;
-  background-color: #FA7A45;
-  color: white;
-  padding: 10px 20px;
-  font-family: 'Montserrat', sans-serif;
-  border-radius: 3px;
-  cursor: pointer;
-  margin-top: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
+.label_doc {
+    width: 150px;
+    background-color: #FA7A45;
+    color: white;
+    padding: 10px 20px;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.label_doc:hover{
+.label_doc:hover {
     background-color: #FF4B00;
 }
 
-.info_and_education_quota{
+/*doesn't use*/
+.info_and_education_quota {
     padding-top: 50px;
     padding-bottom: 50px;
     border-bottom: 1px solid #FF4B00;
 }
 
-.checkbox_style_contract{
+.checkbox_style_contract {
     padding-top: 30px;
     display: flex;
     justify-content: center;

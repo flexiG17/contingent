@@ -1,38 +1,116 @@
-.searchInput{
+.filter_container{
     display: flex;
-}
-
-.search input{
-    background-color: #fff;
-    border: 1px solid #FA7A45;
-    border-radius: 3px;
-    font-size: 14px;
-    font-family: 'Montserrat', sans-serif;
-    padding: 12px;
-    height: 14px;
-    width: 250px;
-}
-
-input:focus{
-    outline: none;
-}
-
-.searchIcon{
-    margin-left: 3px;
+    flex-direction: row;
+    width: 800px;
     height: 40px;
-    width: 45px;
-    border-radius: 3px;
-    background-color: #FA7A45;
-    display: grid;
-    place-items: center;
-    cursor: pointer;
+    align-items: center;
+    margin-left: 30px;
 }
 
-.searchIcon:hover{
+.first_parameter{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    width: 300px;
+
+}
+
+.second_parameter{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    margin-left: 15px;
+    width: 300px;
+}
+
+.third_parameter{
+    margin-left: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.search_filter{
+    height: 34px;
+    outline: none;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+    padding-left: 5px;
+    width: 200px;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: default;
+
+}
+
+.filter_button{
+    margin-left: 5px;
+    background-color: #fff;
+    cursor: pointer;
+    width: 42px;
+    border: none;
+    background-color: #FA7A45;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: #fff;
+}
+
+.filter_button:hover{
     background-color: #FF4B00;
 }
 
-.searchIcon svg{
-    font-size: 25px;
-    color: #fff;
+
+.add_filter_button{
+    height: 40px;
+    width: 150px;
+    background-color: #FA7A45;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left:15px;
+
+}
+
+.add_filter_button:hover{
+    background-color: #FF4B00;
+}
+
+.delete_filter_button{
+    margin-left: 15px;
+
+    height: 40px;
+    width: 40px;
+    background-color: #FA7A45;
+    border: none;
+    border-radius: 5px;
+    color: #ffffff;
+
+    cursor: pointer;
+}
+
+.delete_filter_button:hover{
+    background-color: #FF4B00;
+}
+
+
+.button_position{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 818px;
+    padding-left: 45px;
+    margin-top: 20px;
+    margin-bottom: 55px;
 }

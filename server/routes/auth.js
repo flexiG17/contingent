@@ -15,12 +15,6 @@ router.post('/login', controller.login)
 router.post('/register', auth, access(roles.admin), controller.register)
 
 // localhost:5000/api/auth/changePassword
-router.put('/changePassword', auth, access(roles.admin), controller.changePassword)
-
-// localhost:5000/api/auth/changePassword
-router.put('/change')
-
-// get user data (name) for display on pages
-router.get('/:email', auth, access(roles.admin), controller.getByEmail)
+router.put('/changePassword', auth, controller.changePassword)
 
 module.exports = router

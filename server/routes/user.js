@@ -1,5 +1,5 @@
 const express = require('express')
-const controller = require('../controllers/auth')
+const controller = require('../controllers/userController')
 const passport = require("passport");
 
 const access = require("../middleware/access")
@@ -9,10 +9,9 @@ const router = express.Router()
 router.use(passport.authenticate('jwt', {session: false}, null))
 router.use(access(roles.admin))
 
-// localhost:5000/api/user/change/{id}
-router.put('/change/:id')
+router.get('/', controller.getAll)
 
-// get user data (name) for display on pages
-router.get('/:email', controller.getByEmail)
+// localhost:5000/api/user/change/{id}
+router.put('/change/:id', controller.change)
 
 module.exports = router

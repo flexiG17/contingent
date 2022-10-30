@@ -9,7 +9,7 @@
 
 }
 
-.tytle_contract_doc{
+.title_contract_doc{
     font-size: 15px;
     color: #FA7A45;
     font-weight: 500;
@@ -63,6 +63,15 @@
     font-size: 25px;
     color: #FA7A45;
     font-weight: 500;
+}
+
+
+.tytle_contract_info{
+    color: #FF4B00;
+}
+
+.tytle_contract_education{
+    color: #FF4B00;
 }
 
 .tytle_contract_doc_contaner{

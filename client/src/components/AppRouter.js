@@ -1,5 +1,5 @@
 import React from 'react';
-import {Routes, Route, Navigate, Redirect} from 'react-router-dom'
+import {Routes, Route, Navigate} from 'react-router-dom'
 import {authRoutes, publicRoutes} from "../routes";
 import {START_ROUTE} from "../utils/consts";
 
