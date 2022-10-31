@@ -595,59 +595,49 @@ export default function PersonalCardContract() {
                         <div className="column_style_contract">
                             <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
                                 контрактника </p>
+
                             <p className="Doc_list">1) Фото паспорта со сроком действия (.PDF)</p>
+                            <label htmlFor="passport_photo" className='file-input'>
+                                Добавить файл
+                                <input className='file_input' type="file" name='passport_photo' id='passport_photo'/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>
+
                             <p className="Doc_list">2) Перевод паспорта на русский язык (.PDF)</p>
+                            <label htmlFor="passport_translate" className='file-input'>
+                                Добавить файл
+                                <input className='file_input' type="file" name='passport_translate'
+                                       id='passport_translate'/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>
+
                             <p className="Doc_list">3) Визовая анкета (.PDF)</p>
+                            <label htmlFor="visa_photo" className='file-input'>
+                                Добавить файл
+                                <input className='file_input' type="file" name='visa_photo' id='visa_photo'/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>
+
                             <p className="Doc_list">4) Документ, подтверждающий факт оплаты (.PDF)</p>
+                            <label htmlFor="document" className='file-input'>
+                                Добавить файл
+                                <input className='file_input' type="file" name='document' id='document'/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>
+
                             <p className="Doc_list">5) Удостоверение личности(.PDF)</p>
+                            <label htmlFor="pass_photo" className='file-input'>
+                                Добавить файл
+                                <input className='file_input' type="file" name='pass_photo' id='pass_photo'/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>
+
                             <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
-                            <input id="passport" type="file" hidden multiple="multiple"
-                                   onChange={(e) => {
-                                       let count = 1
-                                       Array.from(e.target.files).map(file => {
-                                           const objectName = `passportList_${count}`
-                                           filesToSave.append(objectName, file)
-                                           count += 1
-                                       })
-                                   }}/>
-                            <label htmlFor="passport" className="file_label_doc"> Пасспорт <InsertDriveFileIcon
-                                sx={{fontSize: 20}}/></label>
-                            <input id="passport_translate" type="file" hidden
-                                   onChange={(e) => {
-                                       filesToSave.append('passport_translate', e.target.files[0])
-                                   }}/>
-                            <label htmlFor="passport_translate" className="file_label_doc"> Перевод
-                                пасспорта <InsertDriveFileIcon
-                                    sx={{fontSize: 20}}/></label>
-
-                            <input id="visa" type="file" hidden
-                                   onChange={(e) => {
-                                       filesToSave.append('visa', e.target.files[0])
-                                   }}/>
-                            <label htmlFor="visa" className="file_label_doc"> Визовая анкета <InsertDriveFileIcon
-                                sx={{fontSize: 20}}/></label>
-
-                            <input id="payment" type="file" hidden
-                                   onChange={(e) => {
-                                       filesToSave.append('payment', e.target.files[0])
-                                   }}/>
-                            <label htmlFor="payment" className="file_label_doc"> Факт оплаты <InsertDriveFileIcon
-                                sx={{fontSize: 20}}/></label>
-
-                            <input id="identification" type="file" hidden
-                                   onChange={(e) => {
-                                       filesToSave.append('identification', e.target.files[0])
-                                   }}/>
-                            <label htmlFor="identification" className="file_label_doc"> Удостоверение
-                                личности <InsertDriveFileIcon
-                                    sx={{fontSize: 20}}/></label>
-                            <input id="identification_translate" type="file" hidden
-                                   onChange={(e) => {
-                                       filesToSave.append('identification_translate', e.target.files[0])
-                                   }}/>
-                            <label htmlFor="identification_translate" className="file_label_doc"> Перевод
-                                удостоверения <InsertDriveFileIcon
-                                    sx={{fontSize: 20}}/></label>
+                            <label htmlFor="pass_translate" className='file-input'>
+                                Добавить файл
+                                <input className='file_input' type="file" name='pass_translate' id='pass_translate'/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>
                         </div>
                     </div>
                 </div>
