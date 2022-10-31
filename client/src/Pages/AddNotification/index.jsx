@@ -172,7 +172,6 @@ export default function AddStudentNotification() {
             }
     }
 
-    const userId = jwt_decode(localStorage.getItem('jwt')).userId
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -180,7 +179,6 @@ export default function AddStudentNotification() {
             date: date,
             comment: comment,
             status: status,
-            user_id: userId,
             student_id: null
         }
         inputPageData.type === 'create' ?

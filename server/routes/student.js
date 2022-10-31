@@ -4,6 +4,9 @@ const passport = require('passport')
 const controller = require('../controllers/student')
 const upload = require('../middleware/upload')
 
+const roles = require('../utils/roles')
+const access = require('../middleware/access')
+
 const router = express.Router()
 
 router.use(passport.authenticate('jwt', {session: false}, null))
@@ -13,14 +16,14 @@ router.get('/', controller.getAll)
 router.get('/:id(\\d{12})', controller.getById)
 router.get('/columns', controller.getColumns)
 
-router.post('/create', upload.any(), controller.create)
+router.post('/create', access(roles.editor), upload.any(), controller.create)
 
-router.put('/update/:id', controller.update)
-router.delete('/remove/:id', controller.remove)
+router.put('/update/:id', access(roles.editor), controller.update)
+router.delete('/remove/:id', access(roles.editor), controller.remove)
 
-router.post('/importXlsxFile', upload.single(), controller.importXlsxData)
+router.post('/importXlsxFile', access(roles.editor), upload.single(), controller.importXlsxData)
 router.post('/download/xlsx', controller.downloadXlsx)
 
-router.delete('/removeStudents', controller.removeStudents)
+router.delete('/removeStudents', access(roles.editor), controller.removeStudents)
 
 module.exports = router

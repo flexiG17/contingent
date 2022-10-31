@@ -20,12 +20,19 @@ function getStudents(ids) {
     return db.students.whereIn('id', ids)
 }
 
+function toLowerKeys(obj) {
+    return Object.keys(obj).reduce((accumulator, key) => {
+        accumulator[key.toLowerCase()] = obj[key]
+        return accumulator
+    }, {})
+}
+
 module.exports.getColumns = async function (req, res) {
     let data = await db.informationColumns
         .select('column_name', 'column_type', 'column_comment')
         .where({table_name: 'students'})
 
-    data = data.map(element => new Object({
+    data = data.map(toLowerKeys).map(element => new Object({
         name: element['column_name'],
         type: element['column_type'],
         ru: element['column_comment']
@@ -86,8 +93,6 @@ module.exports.remove = async function (req, res) {
         return res.status(404).json({message: 'Студента не существует'})
 
     const filePath = getUploadFilePath(student.passport_number, student.russian_name)
-
-    await db.notifications.where({student_id: req.params.id}).delete();
 
     if (fs.existsSync(filePath))
         fs.rmdirSync(filePath, {recursive: true})
