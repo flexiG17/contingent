@@ -1,7 +1,8 @@
 import axios from "axios";
 import iziToast from "izitoast";
+import {NOTIFICATION_ROUTE} from "../utils/consts";
 
-export function createNotification(item) {
+export function createNotification(item, navigate) {
     return axios.post('http://localhost:5000/api/notification/create', item, {
         headers: {
             'Authorization': localStorage.getItem("jwt"),
@@ -12,7 +13,10 @@ export function createNotification(item) {
             title : statusText,
             message: data.message,
             position: 'topRight'
-        })
+        });
+        setTimeout(() => {
+            navigate(NOTIFICATION_ROUTE)
+        }, 1000);
     }).catch((e) => {
         iziToast.error({
             title: e.response.statusText,
@@ -21,14 +25,6 @@ export function createNotification(item) {
             color: "#FFF2ED"
         });
     })
-    // return fetch('http://localhost:5000/api/notification/create', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Authorization': localStorage.getItem("jwt"),
-    //         'Content-Type': 'application/json;charset=utf-8'
-    //     },
-    //     body: JSON.stringify(item)
-    // })
 }
 
 export function getNotifications() {
@@ -37,13 +33,6 @@ export function getNotifications() {
             'Authorization': localStorage.getItem("jwt")
         }
     }).then(res => res.data)
-    // return fetch(`http://localhost:5000/api/notification/getByUser/${userId}`, {
-    //     method: 'GET',
-    //     headers: {
-    //         'Authorization': localStorage.getItem("jwt")
-    //     }
-    // })
-    //     .then(data => data.json())
 }
 
 export function getCountNotifications() {
@@ -52,16 +41,9 @@ export function getCountNotifications() {
             'Authorization': localStorage.getItem("jwt")
         }
     }).then(res => res.data.length)
-    // return fetch(`http://localhost:5000/api/notification/count/${userId}`, {
-    //     method: 'GET',
-    //     headers: {
-    //         'Authorization': localStorage.getItem("jwt")
-    //     }
-    // })
-    //     .then(data => data.json())
 }
 
-export function removeNotification(id) {
+export function removeNotification(id, navigate) {
     return axios.delete(`http://localhost:5000/api/notification/remove/${id}`, {
         headers: {
             'Authorization': localStorage.getItem('jwt')
@@ -72,6 +54,9 @@ export function removeNotification(id) {
             message: data.message,
             position: 'topRight'
         })
+        setTimeout(() => {
+            navigate(NOTIFICATION_ROUTE)
+        }, 1000)
     }).catch((e) => {
         iziToast.error({
             title: e.response.statusText,
@@ -80,15 +65,9 @@ export function removeNotification(id) {
             color: "#FFF2ED"
         });
     })
-    // return fetch(`http://localhost:5000/api/notification/remove/${id}`, {
-    //     method: 'DELETE',
-    //     headers: {
-    //         'Authorization': localStorage.getItem('jwt')
-    //     }
-    // })
 }
 
-export function updateNotification(id, item) {
+export function updateNotification(id, item, navigate) {
     return axios.put(`http://localhost:5000/api/notification/update/${id}`, item, {
         headers: {
             'Authorization': localStorage.getItem("jwt"),
@@ -100,6 +79,9 @@ export function updateNotification(id, item) {
             message: data.message,
             position: 'topRight'
         })
+        setTimeout(() => {
+            navigate(NOTIFICATION_ROUTE)
+        }, 1000)
     }).catch((e) => {
         iziToast.error({
             title: e.response.statusText,
@@ -108,12 +90,4 @@ export function updateNotification(id, item) {
             color: "#FFF2ED"
         });
     })
-    // return fetch(`http://localhost:5000/api/notification/update/${id}`, {
-    //     method: 'PATCH',
-    //     headers: {
-    //         'Authorization': localStorage.getItem("jwt"),
-    //         'Content-Type': 'application/json;charset=utf-8'
-    //     },
-    //     body: JSON.stringify(item)
-    // })
 }
