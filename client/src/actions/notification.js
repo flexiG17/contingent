@@ -31,8 +31,8 @@ export function createNotification(item) {
     // })
 }
 
-export function getNotifications(userId) {
-    return axios.get(`http://localhost:5000/api/notification/getByUser/${userId}`, {
+export function getNotifications() {
+    return axios.get(`http://localhost:5000/api/notification/`, {
         headers: {
             'Authorization': localStorage.getItem("jwt")
         }
@@ -46,12 +46,12 @@ export function getNotifications(userId) {
     //     .then(data => data.json())
 }
 
-export function getCountNotifications(userId) {
-    return axios.get(`http://localhost:5000/api/notification/count/${userId}`, {
+export function getCountNotifications() {
+    return axios.get(`http://localhost:5000/api/notification/`, {
         headers: {
             'Authorization': localStorage.getItem("jwt")
         }
-    }).then(res => res.data)
+    }).then(res => res.data.length)
     // return fetch(`http://localhost:5000/api/notification/count/${userId}`, {
     //     method: 'GET',
     //     headers: {
@@ -89,7 +89,7 @@ export function removeNotification(id) {
 }
 
 export function updateNotification(id, item) {
-    return axios.patch(`http://localhost:5000/api/notification/update/${id}`, item, {
+    return axios.put(`http://localhost:5000/api/notification/update/${id}`, item, {
         headers: {
             'Authorization': localStorage.getItem("jwt"),
             'Content-Type': 'application/json;charset=utf-8'

@@ -20,12 +20,19 @@ function getStudents(ids) {
     return db.students.whereIn('id', ids)
 }
 
+function toLowerKeys(obj) {
+    return Object.keys(obj).reduce((accumulator, key) => {
+        accumulator[key.toLowerCase()] = obj[key]
+        return accumulator
+    }, {})
+}
+
 module.exports.getColumns = async function (req, res) {
     let data = await db.informationColumns
         .select('column_name', 'column_type', 'column_comment')
         .where({table_name: 'students'})
 
-    data = data.map(element => new Object({
+    data = data.map(toLowerKeys).map(element => new Object({
         name: element['column_name'],
         type: element['column_type'],
         ru: element['column_comment']
@@ -138,7 +145,7 @@ module.exports.downloadXlsx = async function (req, res) {
     res.download(filePath)
 }
 
-module.exports.removeArrayStudents = async function (req, res) {
+module.exports.removeStudents = async function (req, res) {
     const students = await getStudents(req.body)
 
     for (let student of students) {
@@ -148,6 +155,8 @@ module.exports.removeArrayStudents = async function (req, res) {
             fs.rmdirSync(filePath)
     }
 
+    await db.notifications.whereIn('student_id', req.body).delete()
     await getStudents(req.body).delete()
+
     return res.status(200).json({message: "Студенты удалены"})
 }

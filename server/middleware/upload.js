@@ -4,7 +4,6 @@ const fs = require('fs')
 const os = require('os')
 
 
-// работа с сохранением файлом при помощи multer, но, возможно, отойдем от этой задумки
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         let dir = path.join(".", "uploads")

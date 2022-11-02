@@ -5,6 +5,7 @@ const User = require('../models/User')
 
 const db = require('../db')
 
+
 module.exports.login = async function (req, res) {
     const {email, password} = req.body
     const [user] = await db.users.where({email})
@@ -22,7 +23,8 @@ module.exports.login = async function (req, res) {
     const token = jwt.sign({
         userId: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        role: user.role
     }, process.env.TOKEN_SECRET, {})
 
     return res.status(200).json({
@@ -31,11 +33,12 @@ module.exports.login = async function (req, res) {
     })
 }
 
+
 module.exports.register = async function (req, res) {
-    const {name, email, password} = req.body
+    const {name, email, password, role} = req.body
     const salt = bcrypt.genSaltSync(10)
 
-    const model = new User(email, bcrypt.hashSync(password, salt), name)
+    const model = new User(email, bcrypt.hashSync(password, salt), name, role)
 
     const [user] = await db.users.where({email: model.email})
 
@@ -51,19 +54,13 @@ module.exports.register = async function (req, res) {
     })
 }
 
+
 module.exports.changePassword = async function (req, res) {
     const salt = bcrypt.genSaltSync(10)
-    const {email, password} = req.body
+    const password = req.body.password
 
-    await db.users.where({email})
+    await db.users.where({id: req.user.id})
         .update({password: bcrypt.hashSync(password, salt)})
 
     return res.status(201).json({message: "Пароль изменён"})
-}
-
-module.exports.getByEmail = async function (req, res) {
-    const data = await db.users.where({email: req.params.email})
-        .select(['name', 'email'])
-
-    return res.status(200).json(data)
 }

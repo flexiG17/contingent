@@ -141,8 +141,7 @@ export default function CollapsibleTable() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const userId = jwt_decode(localStorage.getItem('jwt')).userId
-        getNotifications(userId)
+        getNotifications()
             .then(items => setNotificationList(items.reverse()))
             .finally(() => setLoading(false))
     }, [])
