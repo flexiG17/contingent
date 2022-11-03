@@ -14,9 +14,11 @@ import PersonIcon from '@mui/icons-material/Person';
 
 export default function Navbar() {
     const [countOfNotifications, setCountOfNotifications] = useState('')
+
     let tokenName = ''
     let userName = ''
     let decodedToken = jwt_decode(localStorage.getItem("jwt"))
+    const ADMIN_ACCESS = decodedToken.role === 'Администратор'
     try {
         if (localStorage.getItem("jwt")){
             tokenName = decodedToken.name.split(' ')
@@ -26,11 +28,11 @@ export default function Navbar() {
         userName = "Не авторизовано"
     }
 
+
     useEffect(() => {
         getCountNotifications()
             .then(data => setCountOfNotifications(data))
     }, [])
-
     const [isActive, setIsActive] = useState(false)
 
     return (
@@ -61,7 +63,7 @@ export default function Navbar() {
                             <div className="nav__pad"> Личный кабинет </div>
                         </NavLink>
 
-                        {decodedToken.userId === 24 &&
+                        {ADMIN_ACCESS &&
                             <NavLink to={REGISTRATION_ROUTE} className="mail_button_account">
                                 <HowToRegOutlinedIcon sx={{fontSize: 19}}/>
                                 <div className="nav__pad"> Регистрация</div>
