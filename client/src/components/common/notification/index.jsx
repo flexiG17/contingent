@@ -29,6 +29,7 @@ import {
 } from "../../../utils/consts";
 import './Calls.css'
 import iziToast from "izitoast";
+import Modal from "../ModalWindow";
 
 let notifications = []
 
@@ -46,6 +47,7 @@ function Row(props) {
     const handleClose = () => {
         setOpen(false);
     };
+    const [modalActive, setModalActive] = useState(false)
 
     return (
         <>
@@ -112,16 +114,8 @@ function Row(props) {
                         {row.type}
                     </TableCell>
                     <TableCell align="right">
-                        <Link
-                            to={row.russian_name !== '' ? ADD_STUDENT_NOTIFICATION_ROUTE : ADD_NOTIFICATION_ROUTE}
-                            state={[row, {
-                                type: 'update',
-                                button: 'Изменить',
-                                message: 'Вы уверены, что хотите изменить уведомление?',
-                            }]}
-                            style={{textDecoration: 'none', color: 'black'}}
-                        >Ссылка
-                        </Link>
+                         <button onClick={()=> setModalActive(true)}
+                         >Ссылка </button>
                     </TableCell>
                     <TableCell align="right">{row.russian_name}</TableCell>
                     <TableCell align="right">{row.date}</TableCell>
@@ -132,6 +126,7 @@ function Row(props) {
                     </TableCell>
                 </TableRow>
             </React.Fragment>
+            <Modal active={modalActive} setActive={setModalActive}/>
         </>
     );
 }
@@ -139,6 +134,7 @@ function Row(props) {
 export default function CollapsibleTable() {
     const [notificationList, setNotificationList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [modalActive, setModalActive] = useState(false)
 
     useEffect(() => {
         getNotifications()
@@ -154,17 +150,12 @@ export default function CollapsibleTable() {
     return (
         <>
             <div className="notification_navbar">
-                {loading && <CircularProgress color="warning" sx={{ml: "490px"}}/>}
-                <Link
-                    to={ADD_NOTIFICATION_ROUTE}
-                    state={[{}, {
-                        type: 'create',
-                        button: 'Добавить',
-                        message: 'Вы уверены, что хотите создать уведомление?',
-                    }]}
+                <button
+                    onClick={()=> setModalActive(true)}
                     className="add_notification_button"> Добавить
-                    уведомление <AddIcon/></Link>
+                    уведомление <AddIcon/></button>
             </div>
+            <Modal active={modalActive} setActive={setModalActive}/>
             <TableContainer component={Paper}
                             sx={{width: '800px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
                 <Table aria-label="collapsible table">
@@ -188,3 +179,17 @@ export default function CollapsibleTable() {
         </>
     );
 }
+
+/*
+
+<Link
+    to={row.russian_name !== '' ? ADD_STUDENT_NOTIFICATION_ROUTE : ADD_NOTIFICATION_ROUTE}
+    state={[row, {
+        type: 'update',
+        button: 'Изменить',
+        message: 'Вы уверены, что хотите изменить уведомление?',
+    }]}
+    style={{textDecoration: 'none', color: 'black'}}
+
+> <button onClick={()=> setModalActive(true)}>Ссылка </button>
+</Link>*/
