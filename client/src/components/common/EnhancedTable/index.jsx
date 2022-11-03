@@ -28,7 +28,6 @@ import moment from 'moment'
 import {
     getStudents,
     createXlsx,
-    getXlsx,
     importXlsx,
     removeArrayOfStudents
 } from '../../../actions/student'
@@ -46,7 +45,7 @@ import {
 } from "@mui/material";
 import iziToast from "izitoast";
 import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
-import  Filter from "../Searchbar/Search/Filter";
+import Filter from "../Searchbar/Search/Filter";
 
 
 /*
@@ -240,19 +239,19 @@ const EnhancedTableToolbar = (props) => {
                 {numSelected > 0 ? (<>
                         <Tooltip title="Загрузить">
                             <IconButton onClick={() => {
+                                dataToDownload = dataToDownload.map(({id}) => id)
                                 createXlsx(dataToDownload)
-                                setTimeout(() => {
-                                    getXlsx()
-                                        .then(response => {
-                                            response.blob().then(blob => {
-                                                let url = window.URL.createObjectURL(blob);
-                                                let a = document.createElement('a');
-                                                a.href = url;
-                                                a.download = 'studentsByFilter.xlsx';
-                                                a.click();
-                                            });
-                                        });
-                                }, 1000)
+                                    .then(response => {
+                                        let url = window.URL.createObjectURL(response.data);
+                                        let a = document.createElement('a');
+                                        a.href = url;
+                                        a.setAttribute('download', 'studentsByFilter.xlsx')
+
+                                        document.body.appendChild(a);
+                                        a.click();
+                                        document.body.removeChild(a);
+                                        URL.revokeObjectURL(url);
+                                    });
                             }}>
                                 <FileDownloadIcon/>
                             </IconButton>
@@ -368,7 +367,7 @@ export default function EnhancedTable() {
     const [orderBy, setOrderBy] = useState('calories');
 
     const [selectedForDownloading, setSelectedForDownloading] = useState([]);
-    dataToDownload = selectedForDownloading
+    dataToDownload = selectedForDownloading;
 
     const [selected, setSelected] = useState([]);
     selectToDelete = selected
@@ -389,7 +388,6 @@ export default function EnhancedTable() {
     }, [])
 
     rows = list
-    console.log(rows);
     // из бд приходит дата в ужасном формате, поэтому вот так криво каждая строка парсится
     rows.map(item => {
         item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
@@ -481,6 +479,7 @@ export default function EnhancedTable() {
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
     /*
         в таблице выводятся данные из filteredValues. При внесении в поле для ввода данных происходит моментальная сортировка
         на данный момент поиск происходит только по russian_name и менять можно только в коде
@@ -530,7 +529,7 @@ export default function EnhancedTable() {
             <div className="nav">
                 <div className="filter_position">
                     <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить студента <AddIcon/></NavLink>
-                        {/* Перенёс сюда Filter.jsx */}
+                    {/* Перенёс сюда Filter.jsx */}
                     {!loading && <Filter params={Object.keys(rows[0])} filters={filters} setFilters={setFilters}/>}
                 </div>
                 {loading && <CircularProgress color="warning"/>}

@@ -23,7 +23,7 @@ import {
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 let inputData = ''
-let navigate = ''
+// let navigate = ''
 
 /*
 страница создания уведомления относительно входных данных -
@@ -31,7 +31,7 @@ let navigate = ''
 а если есть ФИО студента (уведомление создается из личной карточки студента опр. челу), то появляется поле ФИО студента
 */
 
-function TurnOnSpeedDial() {
+function TurnOnSpeedDial(navigate) {
 
     const actions = [
         {
@@ -47,84 +47,84 @@ function TurnOnSpeedDial() {
     return (
         <>
             {inputData.user_id !== undefined &&
-            <>
-                <Box>
-                    <SpeedDial
-                        ariaLabel="SpeedDial openIcon example"
-                        sx={{position: 'fixed', bottom: 20, right: 20}}
-                        icon={<SpeedDialIcon/>}
-                        FabProps={{
-                            sx: {
-                                bgcolor: '#FA7A45',
-                                '&:hover': {
+                <>
+                    <Box>
+                        <SpeedDial
+                            ariaLabel="SpeedDial openIcon example"
+                            sx={{position: 'fixed', bottom: 20, right: 20}}
+                            icon={<SpeedDialIcon/>}
+                            FabProps={{
+                                sx: {
                                     bgcolor: '#FA7A45',
+                                    '&:hover': {
+                                        bgcolor: '#FA7A45',
+                                    }
                                 }
-                            }
-                        }}
+                            }}
+                        >
+                            {actions.map((action) => (
+                                <SpeedDialAction
+                                    key={action.name}
+                                    icon={action.icon}
+                                    tooltipTitle={action.name}
+                                    onClick={() => {
+                                        action.runFunction()
+                                    }}
+                                />
+                            ))}
+                        </SpeedDial>
+                    </Box>
+                    <Dialog
+                        open={isDialogWindowOpen}
+                        onClose={() => setOpenDialogWindow(false)}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
                     >
-                        {actions.map((action) => (
-                            <SpeedDialAction
-                                key={action.name}
-                                icon={action.icon}
-                                tooltipTitle={action.name}
-                                onClick={() => {
-                                    action.runFunction()
-                                }}
-                            />
-                        ))}
-                    </SpeedDial>
-                </Box>
-                <Dialog
-                    open={isDialogWindowOpen}
-                    onClose={() => setOpenDialogWindow(false)}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            Вы уверены, что хотите удалить уведомление?
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={() => {
-                            removeNotification(inputData.id)
-                                .then(res => {
-                                    res.json()
-                                        .then(answer => {
-                                            switch (res.status) {
-                                                case 200: {
-                                                    iziToast.success({
-                                                        title: res.statusText,
-                                                        message: `${answer}. Обновляю страницу :)`,
-                                                        position: "topRight"
-                                                    });
-                                                    setTimeout(() => {
-                                                        navigate(NOTIFICATION_ROUTE)
-                                                    }, 1000)
-                                                    break
-                                                }
-                                                default: {
-                                                    iziToast.error({
-                                                        title: res.statusText,
-                                                        message: 'Ошибка. Попробуйте снова.',
-                                                        position: "topRight",
-                                                        color: "#FFF2ED"
-                                                    });
-                                                }
-                                            }
-                                        })
-                                })
-                            setOpenDialogWindow(false)
-                        }
-                        }>Да</Button>
-                        <Button onClick={() => {
-                            setOpenDialogWindow(false)
-                        }
-                        }>Нет</Button>
-                    </DialogActions>
-                </Dialog>
-            </>
+                        <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Вы уверены, что хотите удалить уведомление?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => {
+                                removeNotification(inputData.id, navigate)
+                                // .then(res => {
+                                //     res.json()
+                                //         .then(answer => {
+                                //             switch (res.status) {
+                                //                 case 200: {
+                                //                     iziToast.success({
+                                //                         title: res.statusText,
+                                //                         message: `${answer}. Обновляю страницу :)`,
+                                //                         position: "topRight"
+                                //                     });
+                                //                     setTimeout(() => {
+                                //                         navigate(NOTIFICATION_ROUTE)
+                                //                     }, 1000)
+                                //                     break
+                                //                 }
+                                //                 default: {
+                                //                     iziToast.error({
+                                //                         title: res.statusText,
+                                //                         message: 'Ошибка. Попробуйте снова.',
+                                //                         position: "topRight",
+                                //                         color: "#FFF2ED"
+                                //                     });
+                                //                 }
+                                //             }
+                                //         })
+                                // })
+                                setOpenDialogWindow(false)
+                            }
+                            }>Да</Button>
+                            <Button onClick={() => {
+                                setOpenDialogWindow(false)
+                            }
+                            }>Нет</Button>
+                        </DialogActions>
+                    </Dialog>
+                </>
             }
         </>
     )
@@ -132,7 +132,7 @@ function TurnOnSpeedDial() {
 
 export default function AddStudentNotification() {
     const location = useLocation();
-    navigate = useNavigate()
+    let navigate = useNavigate()
 
     const data = location.state
     const inputPageData = data[1];
@@ -182,53 +182,9 @@ export default function AddStudentNotification() {
             student_id: null
         }
         inputPageData.type === 'create' ?
-            createNotification(data)
-                .then((res) => {
-                    switch (res.status) {
-                        case 200: {
-                            iziToast.success({
-                                title: res.statusText,
-                                message: 'Уведомление успешно создано',
-                                position: "topRight"
-                            });
-                            setTimeout(() => {
-                                navigate(NOTIFICATION_ROUTE)
-                            }, 1000)
-                            break
-                        }
-                        default: {
-                            iziToast.error({
-                                title: res.statusText,
-                                message: 'Попробуйте ещё раз',
-                                position: "topRight",
-                                color: "#FFF2ED"
-                            });
-                        }
-                    }
-                }) :
-            updateNotification(inputData.id, data).then((res) => {
-                switch (res.status) {
-                    case 200: {
-                        iziToast.success({
-                            title: res.statusText,
-                            message: 'Уведомление успешно изменено',
-                            position: "topRight"
-                        });
-                        setTimeout(() => {
-                            navigate(NOTIFICATION_ROUTE)
-                        }, 1000)
-                        break
-                    }
-                    default: {
-                        iziToast.error({
-                            title: res.statusText,
-                            message: 'Попробуйте ещё раз',
-                            position: "topRight",
-                            color: "#FFF2ED"
-                        });
-                    }
-                }
-            })
+            createNotification(data, navigate)
+            :
+            updateNotification(inputData.id, data, navigate);
     };
 
     return (
@@ -283,7 +239,7 @@ export default function AddStudentNotification() {
                             disabled={active}>{inputPageData.button}</button>
                 </div>
             </form>
-            {TurnOnSpeedDial()}
+            {TurnOnSpeedDial(navigate)}
         </>
     )
 }

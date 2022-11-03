@@ -7,7 +7,7 @@ import {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {createNotification, removeNotification, updateNotification} from "../../actions/notification";
 import iziToast from "izitoast";
-import { NOTIFICATION_ROUTE} from "../../utils/consts";
+import {NOTIFICATION_ROUTE} from "../../utils/consts";
 import jwt_decode from 'jwt-decode'
 import {
     Button,
@@ -31,9 +31,10 @@ const propsStyle = {
 }
 
 let inputData = ''
-let navigate = ''
 
-function TurnOnSpeedDial() {
+// let navigate = ''
+
+function TurnOnSpeedDial(navigate) {
 
     // при нажатии на кнопку открывается диалоговое окно с подтверждением удаления
     const actions = [
@@ -91,7 +92,7 @@ function TurnOnSpeedDial() {
                         </DialogContent>
                         <DialogActions>
                             <Button onClick={() => {
-                                removeNotification(inputData.id)
+                                removeNotification(inputData.id, navigate)
                                     .then(res => {
                                         res.json()
                                             .then(answer => {
@@ -135,7 +136,7 @@ function TurnOnSpeedDial() {
 
 export default function AddStudentNotification() {
     const location = useLocation();
-    navigate = useNavigate();
+    let navigate = useNavigate();
 
     const data = location.state
     let inputPageData = data[1];
@@ -153,10 +154,10 @@ export default function AddStudentNotification() {
         inputPageData.button = "Удалить"
         inputPageData.message = "Вы уверены, что хотите удалить уведомление?"
     } else if (status === 'Не выполнено') {
-        if (inputPageData.type === 'create'){
+        if (inputPageData.type === 'create') {
             inputPageData.button = 'Добавить'
             inputPageData.message = 'Вы уверены, что хотите создать уведомление?'
-        } else if (inputPageData.type === 'update'){
+        } else if (inputPageData.type === 'update') {
             inputPageData.button = 'Изменить'
             inputPageData.message = 'Вы уверены, что хотите изменить уведомление?'
         }
@@ -172,53 +173,9 @@ export default function AddStudentNotification() {
             status: status,
         }
         inputPageData.type === 'create' ?
-            createNotification(data)
-                .then((res) => {
-                    switch (res.status) {
-                        case 200: {
-                            iziToast.success({
-                                title: res.statusText,
-                                message: 'Уведомление успешно создано',
-                                position: "topRight"
-                            });
-                            setTimeout(() => {
-                                navigate(NOTIFICATION_ROUTE)
-                            }, 1000)
-                            break
-                        }
-                        default: {
-                            iziToast.error({
-                                title: res.statusText,
-                                message: 'Попробуйте ещё раз',
-                                position: "topRight",
-                                color: "#FFF2ED"
-                            });
-                        }
-                    }
-                }) :
-            updateNotification(inputData.id, data).then((res) => {
-                switch (res.status) {
-                    case 200: {
-                        iziToast.success({
-                            title: res.statusText,
-                            message: 'Уведомление успешно изменено',
-                            position: "topRight"
-                        });
-                        setTimeout(() => {
-                            navigate(NOTIFICATION_ROUTE)
-                        }, 1000)
-                        break
-                    }
-                    default: {
-                        iziToast.error({
-                            title: res.statusText,
-                            message: 'Попробуйте ещё раз',
-                            position: "topRight",
-                            color: "#FFF2ED"
-                        });
-                    }
-                }
-            })
+            createNotification(data, navigate)
+            :
+            updateNotification(inputData.id, data, navigate);
     };
 
     return (
@@ -280,7 +237,7 @@ export default function AddStudentNotification() {
                 </div>
             </form>
 
-            {TurnOnSpeedDial()}
+            {TurnOnSpeedDial(navigate)}
         </>
     )
 }

@@ -66,32 +66,6 @@ function Row(props) {
                 <DialogActions>
                     <Button onClick={() => {
                         removeNotification(row.id)
-                            .then(res => {
-                                res.json()
-                                    .then(answer => {
-                                        switch (res.status) {
-                                            case 200: {
-                                                iziToast.success({
-                                                    title: res.statusText,
-                                                    message: `${answer}. Обновляю страницу :)`,
-                                                    position: "topRight"
-                                                });
-                                                setTimeout(() => {
-                                                    window.location.reload()
-                                                }, 1000)
-                                                break
-                                            }
-                                            default: {
-                                                iziToast.error({
-                                                    title: res.statusText,
-                                                    message: 'Ошибка. Попробуйте снова.',
-                                                    position: "topRight",
-                                                    color: "#FFF2ED"
-                                                });
-                                            }
-                                        }
-                                    })
-                            })
                         setOpen(false)
                     }
                     }>Да</Button>
