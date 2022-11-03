@@ -2,12 +2,18 @@ import axios from 'axios'
 import iziToast from "izitoast";
 import {LOAD_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 
-export const Registration = async (userName, userEmail, userPassword, navigate) => {
+export const Registration = async (name, role, email, password, navigate) => {
     try {
         const response = await axios.post('http://localhost:5000/api/auth/register', {
-            userName,
-            userEmail,
-            userPassword
+            name,
+            email,
+            password,
+            role
+        }, {
+            headers: {
+                'Authorization': localStorage.getItem("jwt"),
+                'Content-Type': 'multipart/form-data;'
+            }
         });
         iziToast.success({
             title: response.statusText,

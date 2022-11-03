@@ -18,6 +18,7 @@ function Index(){
     }
 
     const decodedToken = jwt_decode(localStorage.getItem('jwt'))
+    const ADMIN_ACCESS = decodedToken.role === 'Администратор'
 
     return(
         <>
@@ -47,9 +48,10 @@ function Index(){
                             <button className="change_password">Сменить пароль</button>
                         </div>
                     </div>
-                    <div className="users_table">
+                    {ADMIN_ACCESS &&
+                        <div className="users_table">
                         <div className="title_container_information">Список пользователей</div>
-                    </div>
+                    </div>}
                 </div>
                 <div className="right_side_container_account">
                     <div className="container_table_notification">

@@ -46,6 +46,7 @@ import {
 import iziToast from "izitoast";
 import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
 import Filter from "../Searchbar/Search/Filter";
+import jwt_decode from "jwt-decode";
 
 
 /*
@@ -211,6 +212,8 @@ const EnhancedTableToolbar = (props) => {
         setOpen(true);
     };
 
+    let decodedToken = jwt_decode(localStorage.getItem("jwt"))
+    const READER_ACCESS = decodedToken.role === 'Читатель'
     const handleClose = () => {
         setOpen(false);
     };
@@ -256,13 +259,16 @@ const EnhancedTableToolbar = (props) => {
                                 <FileDownloadIcon/>
                             </IconButton>
                         </Tooltip>
-                        <Tooltip title="Удалить">
-                            <IconButton onClick={() => {
-                                handleOpen()
-                            }}>
-                                <DeleteIcon/>
-                            </IconButton>
-                        </Tooltip>
+                        {!READER_ACCESS &&
+                            <Tooltip title="Удалить">
+                                <IconButton onClick={() => {
+                                    handleOpen()
+                                }}>
+                                    <DeleteIcon/>
+                                </IconButton>
+                            </Tooltip>
+                        }
+
 
                     </>
                 ) : (
@@ -421,6 +427,9 @@ export default function EnhancedTable() {
         // item.actual_receipt_date_invitation = new Date(item.actual_receipt_date_invitation)
     })
 
+    const decodedToken = jwt_decode(localStorage.getItem('jwt'))
+    const READER_ACCESS = decodedToken.role === 'Читатель'
+
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
@@ -528,7 +537,9 @@ export default function EnhancedTable() {
             {/* Перенёс сюда SearchBar.jsx */}
             <div className="nav">
                 <div className="filter_position">
-                    <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить студента <AddIcon/></NavLink>
+                    {!READER_ACCESS &&
+                        <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить
+                            студента <AddIcon/></NavLink>}
                     {/* Перенёс сюда Filter.jsx */}
                     {!loading && <Filter params={Object.keys(rows[0])} filters={filters} setFilters={setFilters}/>}
                 </div>
