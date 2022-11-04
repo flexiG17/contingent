@@ -20,6 +20,7 @@ import Box from "@mui/material/Box";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import jwt_decode from "jwt-decode";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
@@ -41,6 +42,9 @@ export default function PersonalCardQuota() {
 
     const location = useLocation();
     const rows = location.state;
+
+    const role = jwt_decode(localStorage.getItem('jwt')).role
+    const READER_ACCESS = role === 'Читатель'
 
     const [education_type, setEducationType] = useState(rows.education_type)
     const [direction_number, setDirectionNumber] = useState(rows.direction_number)
@@ -146,36 +150,53 @@ export default function PersonalCardQuota() {
             })
     };
 
-    const actions = [
-        {
-            icon: <NotificationsNoneIcon/>,
-            name: 'Создать уведомление',
-            runFunction: () => {
-                navigate(
-                    ADD_STUDENT_NOTIFICATION_ROUTE,
-                    {
-                        state: [rows, {
-                            type: 'create',
-                            button: 'Добавить',
-                            message: 'Вы уверены, что хотите создать уведомление?',
-                        }]
-                    })
+    const actions = !READER_ACCESS ? [
+            {
+                icon: <NotificationsNoneIcon/>,
+                name: 'Создать уведомление',
+                runFunction: () => {
+                    navigate(
+                        ADD_STUDENT_NOTIFICATION_ROUTE,
+                        {
+                            state: [rows, {
+                                type: 'create',
+                                button: 'Добавить',
+                                message: 'Вы уверены, что хотите создать уведомление?',
+                            }]
+                        })
+                }
+            },
+            {
+                icon: <MailOutlineIcon/>,
+                name: 'Написать письмо',
+                runFunction: () => {
+                }
+            },
+            {
+                icon: <DeleteOutlineIcon/>,
+                name: 'Удалить студента',
+                runFunction: () => {
+                    handleOpen()
+                }
+            },
+        ] :
+        [
+            {
+                icon: <NotificationsNoneIcon/>,
+                name: 'Создать уведомление',
+                runFunction: () => {
+                    navigate(
+                        ADD_STUDENT_NOTIFICATION_ROUTE,
+                        {
+                            state: [rows, {
+                                type: 'create',
+                                button: 'Добавить',
+                                message: 'Вы уверены, что хотите создать уведомление?',
+                            }]
+                        })
+                }
             }
-        },
-        {
-            icon: <MailOutlineIcon/>,
-            name: 'Написать письмо',
-            runFunction: () => {
-            }
-        },
-        {
-            icon: <DeleteOutlineIcon/>,
-            name: 'Удалить студента',
-            runFunction: () => {
-                handleOpen()
-            }
-        },
-    ];
+        ]
 
     const propsStyle = {
         style:
