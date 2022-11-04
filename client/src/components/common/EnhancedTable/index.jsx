@@ -47,6 +47,7 @@ import iziToast from "izitoast";
 import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
 import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 
 /*
@@ -273,8 +274,18 @@ const EnhancedTableToolbar = (props) => {
                     </>
                 ) : (
                     <>
-                        <input type='file' multiple='multiple' onChange={e => setFile(e.target.files[0])}/>
-                        <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
+                        {!READER_ACCESS &&
+                            <label htmlFor="input_students" className='file_input'>
+                            {file === null ? 'Выбрать файл' : file.name}
+                            <input className='file_input' type="file" name='input_students' id='input_students'
+                                   onChange={e => {
+                                       setFile(e.target.files[0])
+                                   }}/>
+                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                        </label>}
+
+                        {!READER_ACCESS &&
+                            <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
                             <UploadIcon fontSize='medium' onClick={() => {
                                 const data = new FormData()
                                 data.append('fileToImport', file)
@@ -306,7 +317,7 @@ const EnhancedTableToolbar = (props) => {
                             }}>
                                 <FilterListIcon/>
                             </UploadIcon>
-                        </Tooltip>
+                        </Tooltip>}
                     </>
                 )}
             </Toolbar>
