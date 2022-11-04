@@ -24,8 +24,6 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import jwt_decode from "jwt-decode";
 
-let filesToSave = new FormData()
-
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
 
@@ -203,7 +201,7 @@ export default function PersonalCardContract() {
                 icon: <EditIcon/>,
                 name: 'Редактировать карточку',
                 runFunction: () => {
-                    editMode ? setEditMode(false) : setEditMode(true)
+                    setEditMode(!editMode)
                     editMode ?
                         iziToast.success({
                             title: 'ON',
@@ -460,7 +458,7 @@ export default function PersonalCardContract() {
                             </TextField>
                             <p className="tytle_contract_education"> Дополнительно </p>
                             <TextField label="Примечания" type="text" variant="outlined" color="warning" margin='normal'
-                                       required size="small" multiline rows={3} disabled={editMode}
+                                       required size="small" multiline rows={5} disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setComments(event.target.value)} value={comments}/>
                         </div>
@@ -691,12 +689,14 @@ export default function PersonalCardContract() {
                         </div>
                     </div>
                 </div>
-                <label className="checkbox_style_contract">
-                    <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите изменить данные?
-                </label>
-                <div className="button_position_contract_doc">
-                    <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить</button>
-                </div>
+                {!editMode && <div>
+                    <label className="checkbox_style_contract">
+                        <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите изменить данные?
+                    </label>
+                    <div className="button_position_contract_doc">
+                        <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить</button>
+                    </div>
+                </div>}
             </form>
             <Dialog
                 open={open}
