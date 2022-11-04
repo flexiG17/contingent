@@ -23,20 +23,10 @@ import AddNotification from "./Pages/AddNotification";
 import Index from "./Pages/Account";
 import LoadingPage from "./Pages/LoadingPage";
 
-// файл с константами для роутнга авторизованных и неавторизованных пользователей (вскоре нужно будет учиывать роли)
-
-export const authRoutes = [
+export const readerRoutes = [
     {
         path: HOME_ROUTE,
         Component: HomePage
-    },
-    {
-        path: ACCOUNT_ROUTE,
-        Component: Index
-    },
-    {
-        path: REGISTRATION_ROUTE,
-        Component: RegistrationPage
     },
     {
         path: CARD_CONTRACT_ROUTE,
@@ -47,12 +37,12 @@ export const authRoutes = [
         Component: PersonalCardQuota
     },
     {
-        path: NOTIFICATION_ROUTE,
-        Component: Notifications
+        path: ACCOUNT_ROUTE,
+        Component: Index
     },
     {
-        path: ADD_STUDENT_ROUTE,
-        Component: AddStudent
+        path: NOTIFICATION_ROUTE,
+        Component: Notifications
     },
     {
         path: ADD_STUDENT_NOTIFICATION_ROUTE,
@@ -76,5 +66,19 @@ export const publicRoutes = [
     {
         path: LOAD_ROUTE,
         Component: LoadingPage
+    }
+]
+
+export const adminRoutes = [
+    {
+        path: REGISTRATION_ROUTE,
+        Component: RegistrationPage
+    }
+]
+
+export const editorRoutes = [
+    {
+        path: ADD_STUDENT_ROUTE,
+        Component: AddStudent
     }
 ]
