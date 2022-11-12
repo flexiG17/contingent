@@ -14,7 +14,7 @@ module.exports = new class MailService {
 
     async sendEmail(message) {
         await this.#transport.sendMail({
-            from: process.env.EMAIL,
+            from: `"${message.from}" <${process.env.EMAIL}>`,
             to: message.to,
             subject: message.subject,
             text: message.text

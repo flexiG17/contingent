@@ -155,8 +155,6 @@ module.exports.removeStudents = async function (req, res) {
             fs.rmdirSync(filePath)
     }
 
-    await db.notifications.whereIn('student_id', req.body).delete()
     await getStudents(req.body).delete()
-
     return res.status(200).json({message: "Студенты удалены"})
 }
