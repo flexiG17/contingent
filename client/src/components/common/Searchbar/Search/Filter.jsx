@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
+import {FilterItem} from "../../FilterItem";
 
 const ITEM_HEIGHT = 50;
 
@@ -17,15 +18,6 @@ export default function LongMenu({params, filters, setFilters}) {
 
     const [filterArr, setFilterArr] = useState(filters)
     const [columns, setColumns] = useState([])
-
-    const operators = [
-        {value: 'coincidence', label: 'Содержит'},
-        {value: 'equals', label: 'Равно'},
-        {value: 'more', label: 'Больше'},
-        {value: 'less', label: 'Меньше'},
-        {value: 'moreE', label: 'Больше или равно'},
-        {value: 'lessE', label: 'Меньше или равно'}
-    ]
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -84,7 +76,8 @@ export default function LongMenu({params, filters, setFilters}) {
         }).then(res => setColumns(res.data.map((item) => {
             return {
                 value: item.name,
-                label: item.ru
+                label: item.ru,
+                type: item.type
             }
         })))
     }, [])
@@ -118,35 +111,11 @@ export default function LongMenu({params, filters, setFilters}) {
                 }}
             >
                 {filterArr.map((item) => (
-                    <MenuItem>
-                        <div className="filter_container">
-                            <Select className="first_parameter" placeholder="Описание" options={columns}
-                                    value={item.param}
-                                    onChange={(e) => {
-                                        changeFilterParam(item.id, e);
-                                    }
-                                    }/>
-                            <Select className="second_parameter" placeholder="Оператор" options={operators}
-                                    value={item.operator}
-                                    onChange={(e) => {
-                                        changeFilterOperator(item.id, e);
-                                    }
-                                    }/>
-                            <div className="third_parameter">
-                                <input className="search_filter" type="text" onChange={(e) => {
-                                    changeFilterValue(item.id, e.target.value);
-                                }
-                                }
-                                       value={item.value}/>
-                            </div>
-                            <button className="delete_filter_button"
-                                    onClick={() => setFilterArr((prevState) => prevState.filter((obj) => {
-                                        return obj.id !== item.id;
-                                    }))}>
-                                <DeleteIcon sx={{fontSize: 22}}/>
-                            </button>
-                        </div>
-                    </MenuItem>
+                    <FilterItem item={item} columns={columns}
+                                setFilterArr={setFilterArr}
+                                changeFilterParam={changeFilterParam}
+                                changeFilterValue={changeFilterValue}
+                                changeFilterOperator={changeFilterOperator}/>
                 ))}
                 <div className="button_position">
                     <button className="add_filter_button" onClick={() => setFilterArr([...filterArr, {

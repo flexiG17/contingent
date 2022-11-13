@@ -276,48 +276,48 @@ const EnhancedTableToolbar = (props) => {
                     <>
                         {!READER_ACCESS &&
                             <label htmlFor="input_students" className='file_input'>
-                            {file === null ? 'Выбрать файл' : file.name}
-                            <input className='file_input' type="file" name='input_students' id='input_students'
-                                   onChange={e => {
-                                       setFile(e.target.files[0])
-                                   }}/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>}
+                                {file === null ? 'Выбрать файл' : file.name}
+                                <input className='file_input' type="file" name='input_students' id='input_students'
+                                       onChange={e => {
+                                           setFile(e.target.files[0])
+                                       }}/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>}
 
                         {!READER_ACCESS &&
                             <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
-                            <UploadIcon fontSize='medium' onClick={() => {
-                                const data = new FormData()
-                                data.append('fileToImport', file)
+                                <UploadIcon fontSize='medium' onClick={() => {
+                                    const data = new FormData()
+                                    data.append('fileToImport', file)
 
-                                importXlsx(data)
-                                    .then(res => {
-                                        switch (res.status) {
-                                            case 201: {
-                                                iziToast.success({
-                                                    title: res.statusText,
-                                                    message: 'Студенты успешно импортированы в базу. Обновляю страницу :)',
-                                                    position: "topRight"
-                                                });
-                                                setTimeout(() => {
-                                                    window.location.reload()
-                                                }, 2000)
-                                                break
+                                    importXlsx(data)
+                                        .then(res => {
+                                            switch (res.status) {
+                                                case 201: {
+                                                    iziToast.success({
+                                                        title: res.statusText,
+                                                        message: 'Студенты успешно импортированы в базу. Обновляю страницу :)',
+                                                        position: "topRight"
+                                                    });
+                                                    setTimeout(() => {
+                                                        window.location.reload()
+                                                    }, 2000)
+                                                    break
+                                                }
+                                                default: {
+                                                    iziToast.error({
+                                                        title: res.statusText,
+                                                        message: 'Ошибка. Попробуйте снова.',
+                                                        position: "topRight",
+                                                        color: "#FFF2ED"
+                                                    });
+                                                }
                                             }
-                                            default: {
-                                                iziToast.error({
-                                                    title: res.statusText,
-                                                    message: 'Ошибка. Попробуйте снова.',
-                                                    position: "topRight",
-                                                    color: "#FFF2ED"
-                                                });
-                                            }
-                                        }
-                                    })
-                            }}>
-                                <FilterListIcon/>
-                            </UploadIcon>
-                        </Tooltip>}
+                                        })
+                                }}>
+                                    <FilterListIcon/>
+                                </UploadIcon>
+                            </Tooltip>}
                     </>
                 )}
             </Toolbar>
@@ -404,39 +404,23 @@ export default function EnhancedTable() {
             .finally(() => setLoading(false))
     }, [])
 
-    rows = list
-    // из бд приходит дата в ужасном формате, поэтому вот так криво каждая строка парсится
+    rows = list;
+
     rows.map(item => {
-        item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
-        item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD")
-        item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD")
-        item.entry_date = moment(item.entry_date).format("YYYY-MM-DD")
-        item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD")
-        item.first_payment = moment(item.first_payment).format("YYYY-MM-DD")
-        item.second_payment = moment(item.second_payment).format("YYYY-MM-DD")
-        item.third_payment = moment(item.third_payment).format("YYYY-MM-DD")
-        item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD")
-        item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD")
-        item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD")
-        item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD")
-        item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD")
-
-        // НЕ УДАЛЯТЬ; Дальше идёт код для новой фильтрации, пока что не могу решить, но заготовку оставил
-
-        // item.birth_date = new Date(item.birth_date)
-        // item.passport_issue_date = new Date(item.passport_issue_date)
-        // item.passport_expiration = new Date(item.passport_expiration)
-        // item.entry_date = new Date(item.entry_date)
-        // item.visa_validity = new Date(item.visa_validity)
-        // item.first_payment = new Date(item.first_payment)
-        // item.second_payment = new Date(item.second_payment)
-        // item.third_payment = new Date(item.third_payment)
-        // item.fourth_payment = new Date(item.fourth_payment)
-        // item.transfer_to_international_service = new Date(item.transfer_to_international_service)
-        // item.transfer_to_MVD = new Date(item.transfer_to_MVD)
-        // item.estimated_receipt_date = new Date(item.estimated_receipt_date)
-        // item.actual_receipt_date_invitation = new Date(item.actual_receipt_date_invitation)
-    })
+        item.birth_date = new Date(item.birth_date);
+        item.passport_issue_date = new Date(item.passport_issue_date);
+        item.passport_expiration = new Date(item.passport_expiration);
+        item.entry_date = new Date(item.entry_date);
+        item.visa_validity = new Date(item.visa_validity);
+        item.first_payment = new Date(item.first_payment);
+        item.second_payment = new Date(item.second_payment);
+        item.third_payment = new Date(item.third_payment);
+        item.fourth_payment = new Date(item.fourth_payment);
+        item.transfer_to_international_service = new Date(item.transfer_to_international_service);
+        item.transfer_to_MVD = new Date(item.transfer_to_MVD);
+        item.estimated_receipt_date = new Date(item.estimated_receipt_date);
+        item.actual_receipt_date_invitation = new Date(item.actual_receipt_date_invitation);
+    });
 
     const decodedToken = jwt_decode(localStorage.getItem('jwt'))
     const READER_ACCESS = decodedToken.role === 'Читатель'
@@ -519,19 +503,39 @@ export default function EnhancedTable() {
                         return false;
                     break;
                 case "equals":
-                    if (item[filter.param.value] !== Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && item[filter.param.value] !== new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] !== Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "less":
-                    if (item[filter.param.value] >= Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && item[filter.param.value] >= new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] >= Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "lessE":
-                    if (item[filter.param.value] > Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && item[filter.param.value] > new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] > Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "more":
-                    if (item[filter.param.value] <= Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && item[filter.param.value] <= new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] <= Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "moreE":
-                    if (item[filter.param.value] < Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && item[filter.param.value] < new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] < Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 default:
                     return false;
