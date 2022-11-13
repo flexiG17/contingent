@@ -1,12 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import axios from "axios";
 import './Search.css';
-import Select from 'react-select';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteIcon from '@mui/icons-material/Delete';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AddIcon from '@mui/icons-material/Add';
 import {FilterItem} from "../../FilterItem";
 
@@ -92,7 +89,7 @@ export default function LongMenu({params, filters, setFilters}) {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <MoreVertIcon/>
+                <FilterAltIcon/>
             </IconButton>
             <Menu
                 id="long-menu"
