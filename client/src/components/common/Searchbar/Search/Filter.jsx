@@ -21,7 +21,6 @@ export default function LongMenu({params, filters, setFilters}) {
     };
 
     const handleClose = () => {
-        setFilters(filterArr);
         setAnchorEl(null);
     };
 
@@ -108,7 +107,7 @@ export default function LongMenu({params, filters, setFilters}) {
                 }}
             >
                 {filterArr.map((item) => (
-                    <FilterItem item={item} columns={columns}
+                    <FilterItem key={item.id} item={item} columns={columns}
                                 setFilterArr={setFilterArr}
                                 changeFilterParam={changeFilterParam}
                                 changeFilterValue={changeFilterValue}
@@ -124,6 +123,17 @@ export default function LongMenu({params, filters, setFilters}) {
                         value: '',
                     }])}>
                         Добавить <AddIcon/>
+                    </button>
+                    <button className="add_filter_button" onClick={() => {
+                        setFilterArr([]);
+                        setFilters([]);
+                    }}>
+                        Сбросить
+                    </button>
+                    <button className="add_filter_button" onClick={() => {
+                        setFilters(filterArr);
+                    }}>
+                        Применить
                     </button>
                 </div>
             </Menu>

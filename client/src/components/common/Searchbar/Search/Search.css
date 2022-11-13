@@ -1,4 +1,4 @@
-.filter_container{
+.filter_container {
     display: flex;
     flex-direction: row;
     width: 800px;
@@ -7,28 +7,28 @@
     margin-left: 30px;
 }
 
-.first_parameter{
+.first_parameter {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     width: 300px;
 
 }
 
-.second_parameter{
+.second_parameter {
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     margin-left: 15px;
     width: 300px;
 }
 
-.third_parameter{
+.third_parameter {
     margin-left: 15px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.search_filter{
+.search_filter {
     height: 34px;
     outline: none;
     border: 1px solid #CCCCCC;
@@ -43,7 +43,7 @@
 
 }
 
-.filter_button{
+.filter_button {
     margin-left: 5px;
     background-color: #fff;
     cursor: pointer;
@@ -58,12 +58,12 @@
     color: #fff;
 }
 
-.filter_button:hover{
+.filter_button:hover {
     background-color: #FF4B00;
 }
 
 
-.add_filter_button{
+.add_filter_button {
     height: 40px;
     width: 150px;
     background-color: #FA7A45;
@@ -77,17 +77,15 @@
     cursor: pointer;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
-    padding-left:15px;
-
 }
 
-.add_filter_button:hover{
+.add_filter_button:hover {
     background-color: #FF4B00;
 }
 
-.delete_filter_button{
+.delete_filter_button {
     margin-left: 15px;
 
     height: 40px;
@@ -100,12 +98,12 @@
     cursor: pointer;
 }
 
-.delete_filter_button:hover{
+.delete_filter_button:hover {
     background-color: #FF4B00;
 }
 
 
-.button_position{
+.button_position {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
