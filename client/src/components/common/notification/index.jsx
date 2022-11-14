@@ -78,11 +78,9 @@ function Row(props) {
             <React.Fragment>
                 <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                     <TableCell>
-                        <IconButton aria-label="expand row" size="small" onClick={() => {
+                        <DeleteOutlineIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
                             handleOpen()
-                        }}>
-                            <DeleteOutlineIcon/>
-                        </IconButton>
+                        }}/>
                     </TableCell>
                     <TableCell component="th" scope="row">
                         {row.type}

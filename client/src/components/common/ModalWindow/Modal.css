@@ -16,8 +16,60 @@
 }
 
 .modal_content{
-
     padding: 20px;
     border-radius: 12px;
     background-color: #fff;
+}
+
+.container_addNotification{
+}
+
+.container_position{
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    marign: 25px;
+
+}
+
+.input_position_message{
+    display: flex;
+    flex-direction: column;
+
+}
+.message_input_style{
+    width: 200px;
+    margin-left: 0;
+    margin-right: auto;
+}
+.title_message_container{
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-size: 25px;
+    font-weight: 500;
+    color: #FF4B00;
+    display: flex;
+}
+
+.send_message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FA7A45;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 200px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.send_message:hover{
+    background-color: #FF4B00;
 }
