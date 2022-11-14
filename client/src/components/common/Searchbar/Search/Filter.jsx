@@ -6,10 +6,11 @@ import Menu from '@mui/material/Menu';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AddIcon from '@mui/icons-material/Add';
 import {FilterItem} from "../../FilterItem";
+import {Badge} from "@mui/material";
 
 const ITEM_HEIGHT = 50;
 
-export default function LongMenu({params, filters, setFilters}) {
+export default function LongMenu({filters, setFilters, filtersCount, setFiltersCount}) {
     const [anchorEl, setAnchorEl] = useState();
     const open = Boolean(anchorEl);
 
@@ -88,7 +89,10 @@ export default function LongMenu({params, filters, setFilters}) {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <FilterAltIcon/>
+
+                <Badge badgeContent={filtersCount} color="info">
+                    <FilterAltIcon sx={{color: "#FA7A45"}}/>
+                </Badge>
             </IconButton>
             <Menu
                 id="long-menu"
@@ -109,24 +113,29 @@ export default function LongMenu({params, filters, setFilters}) {
                 {filterArr.map((item) => (
                     <FilterItem key={item.id} item={item} columns={columns}
                                 setFilterArr={setFilterArr}
+                                setFiltersCount={setFiltersCount}
                                 changeFilterParam={changeFilterParam}
                                 changeFilterValue={changeFilterValue}
                                 changeFilterOperator={changeFilterOperator}/>
                 ))}
                 <div className="button_position">
-                    <button className="add_filter_button" onClick={() => setFilterArr([...filterArr, {
-                        id: filterArr.length !== 0 ? filterArr[filterArr.length - 1].id + 1 : 1,
-                        param:
-                            {value: '', label: ''},
-                        operator:
-                            {value: '', label: ''},
-                        value: '',
-                    }])}>
+                    <button className="add_filter_button" onClick={() => {
+                        setFilterArr([...filterArr, {
+                            id: filterArr.length !== 0 ? filterArr[filterArr.length - 1].id + 1 : 1,
+                            param:
+                                {value: '', label: ''},
+                            operator:
+                                {value: '', label: ''},
+                            value: '',
+                        }]);
+                        setFiltersCount(prevState => prevState + 1);
+                    }}>
                         Добавить <AddIcon/>
                     </button>
                     <button className="add_filter_button" onClick={() => {
                         setFilterArr([]);
                         setFilters([]);
+                        setFiltersCount(0);
                     }}>
                         Сбросить
                     </button>
