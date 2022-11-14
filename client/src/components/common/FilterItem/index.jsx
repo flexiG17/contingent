@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
 
-export function FilterItem({item, columns, setFilterArr, changeFilterParam, changeFilterOperator, changeFilterValue}) {
+export function FilterItem({item, columns, setFilterArr, setFiltersCount, changeFilterParam, changeFilterOperator, changeFilterValue}) {
     const operators = [
         {value: 'coincidence', label: 'Содержит'},
         {value: 'equals', label: 'Равно'},
@@ -39,9 +39,12 @@ export function FilterItem({item, columns, setFilterArr, changeFilterParam, chan
                            value={item.value}/>
                 </div>
                 <button className="delete_filter_button"
-                        onClick={() => setFilterArr((prevState) => prevState.filter((obj) => {
-                            return obj.id !== item.id;
-                        }))}>
+                        onClick={() => {
+                            setFilterArr((prevState) => prevState.filter((obj) => {
+                                return obj.id !== item.id;
+                            }));
+                            setFiltersCount((prevState) => prevState - 1);
+                        }}>
                     <DeleteIcon sx={{fontSize: 22}}/>
                 </button>
             </div>

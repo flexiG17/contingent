@@ -395,6 +395,7 @@ export default function EnhancedTable() {
     const [loading, setLoading] = useState(true);
 
     const [filters, setFilters] = useState([]);
+    const [filtersCount, setFiltersCount] = useState(0);
 
     const [list, setList] = useState([]);
     // хук для постоянного получения студентов с бэка
@@ -407,19 +408,19 @@ export default function EnhancedTable() {
     rows = list;
 
     rows.map(item => {
-        item.birth_date = new Date(item.birth_date);
-        item.passport_issue_date = new Date(item.passport_issue_date);
-        item.passport_expiration = new Date(item.passport_expiration);
-        item.entry_date = new Date(item.entry_date);
-        item.visa_validity = new Date(item.visa_validity);
-        item.first_payment = new Date(item.first_payment);
-        item.second_payment = new Date(item.second_payment);
-        item.third_payment = new Date(item.third_payment);
-        item.fourth_payment = new Date(item.fourth_payment);
-        item.transfer_to_international_service = new Date(item.transfer_to_international_service);
-        item.transfer_to_MVD = new Date(item.transfer_to_MVD);
-        item.estimated_receipt_date = new Date(item.estimated_receipt_date);
-        item.actual_receipt_date_invitation = new Date(item.actual_receipt_date_invitation);
+        item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
+        item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD")
+        item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD")
+        item.entry_date = moment(item.entry_date).format("YYYY-MM-DD")
+        item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD")
+        item.first_payment = moment(item.first_payment).format("YYYY-MM-DD")
+        item.second_payment = moment(item.second_payment).format("YYYY-MM-DD")
+        item.third_payment = moment(item.third_payment).format("YYYY-MM-DD")
+        item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD")
+        item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD")
+        item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD")
+        item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD")
+        item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD")
     });
 
     const decodedToken = jwt_decode(localStorage.getItem('jwt'))
@@ -503,35 +504,35 @@ export default function EnhancedTable() {
                         return false;
                     break;
                 case "equals":
-                    if (filter.param.type === 'date' && item[filter.param.value] !== new Date(filter.value)) {
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) !== new Date(filter.value)) {
                         return false;
                     } else if (item[filter.param.value] !== Number(filter.value)) {
                         return false;
                     }
                     break;
                 case "less":
-                    if (filter.param.type === 'date' && item[filter.param.value] >= new Date(filter.value)) {
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) >= new Date(filter.value)) {
                         return false;
                     } else if (item[filter.param.value] >= Number(filter.value)) {
                         return false;
                     }
                     break;
                 case "lessE":
-                    if (filter.param.type === 'date' && item[filter.param.value] > new Date(filter.value)) {
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) > new Date(filter.value)) {
                         return false;
                     } else if (item[filter.param.value] > Number(filter.value)) {
                         return false;
                     }
                     break;
                 case "more":
-                    if (filter.param.type === 'date' && item[filter.param.value] <= new Date(filter.value)) {
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) <= new Date(filter.value)) {
                         return false;
                     } else if (item[filter.param.value] <= Number(filter.value)) {
                         return false;
                     }
                     break;
                 case "moreE":
-                    if (filter.param.type === 'date' && item[filter.param.value] < new Date(filter.value)) {
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) < new Date(filter.value)) {
                         return false;
                     } else if (item[filter.param.value] < Number(filter.value)) {
                         return false;
@@ -556,7 +557,8 @@ export default function EnhancedTable() {
                         <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить
                             студента <AddIcon/></NavLink>}
                     {/* Перенёс сюда Filter.jsx */}
-                    {!loading && <Filter params={Object.keys(rows[0])} filters={filters} setFilters={setFilters}/>}
+                    {!loading && <Filter filters={filters} setFilters={setFilters}
+                                         filtersCount={filtersCount} setFiltersCount={setFiltersCount}/>}
                 </div>
                 {loading && <CircularProgress color="warning"/>}
             </div>
