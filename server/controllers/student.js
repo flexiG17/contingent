@@ -26,7 +26,7 @@ function getStudents(ids) {
 
 
 module.exports.getColumns = async (req, res) =>
-    res.status(200).json(StudentService.columns)
+    res.status(200).json(await StudentService.columns())
 
 
 module.exports.getAll = async function (req, res) {
