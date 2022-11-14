@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {useEffect, useState} from 'react';
-import IconButton from '@mui/material/IconButton';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,11 +9,9 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {getNotifications, removeNotification} from "../../../actions/notification";
-import {Link} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import {
     Button,
-    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -22,13 +19,7 @@ import {
     DialogTitle
 } from "@mui/material";
 import moment from "moment";
-import jwt_decode from 'jwt-decode'
-import {
-    ADD_NOTIFICATION_ROUTE,
-    ADD_STUDENT_NOTIFICATION_ROUTE,
-} from "../../../utils/consts";
 import './Calls.css'
-import iziToast from "izitoast";
 import Modal from "../ModalWindow";
 
 let notifications = []
@@ -86,8 +77,8 @@ function Row(props) {
                         {row.type}
                     </TableCell>
                     <TableCell align="right">
-                         <button onClick={()=> setModalActive(true)}
-                         >Ссылка </button>
+                        <button onClick={()=> setModalActive(true)}
+                        >Ссылка </button>
                     </TableCell>
                     <TableCell align="right">{row.russian_name}</TableCell>
                     <TableCell align="right">{row.date}</TableCell>
