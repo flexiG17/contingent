@@ -1,6 +1,6 @@
 import axios from 'axios'
 import iziToast from "izitoast";
-import {ACCOUNT_ROUTE, LOAD_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {ACCOUNT_ROUTE, LOAD_ROUTE, LOGIN_ROUTE, NOTIFICATION_ROUTE} from "../utils/consts";
 
 export const Registration = async (name, role, email, password, navigate) => {
     try {
@@ -52,4 +52,33 @@ export const Login = async (email, password, navigate) => {
             color: "#FFF2ED"
         });
     }
+}
+
+export function getUsers() {
+    return axios.get('http://localhost:5000/api/user/', {
+        headers: {Authorization: localStorage.getItem('jwt')}
+    }).then(resp => resp.data)
+}
+
+export function changeUserData(data, id) {
+    return axios.put(`http://localhost:5000/api/user/change/${id}`, data, {
+        headers: {
+            'Authorization': localStorage.getItem("jwt"),
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    })
+        .then(({statusText, data}) => {
+            iziToast.success({
+                title : statusText,
+                message: data.message,
+                position: 'topRight'
+            })
+        }).catch((e) => {
+            iziToast.error({
+                title: e.response.statusText,
+                message: e.response.data.message,
+                position: "topRight",
+                color: "#FFF2ED"
+            });
+        })
 }
