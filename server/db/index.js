@@ -21,5 +21,9 @@ module.exports = {
 
     get informationColumns() {
         return this.db('information_schema.columns')
+    },
+
+    transaction() {
+        return this.db.transaction()
     }
 }
