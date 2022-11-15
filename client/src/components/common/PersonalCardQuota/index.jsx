@@ -23,6 +23,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import jwt_decode from "jwt-decode";
 import EditIcon from "@mui/icons-material/Edit";
 import ModalMessage from '../MessageModal/index'
+import Modal from "../ModalWindow";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
@@ -30,6 +31,7 @@ import ModalMessage from '../MessageModal/index'
 export default function PersonalCardQuota() {
     const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
+    const [modalActiveMessage, setModalActiveMessage] = useState(false);
 
     const [editMode, setEditMode] = useState(true)
     const handleClickContract = () => {
@@ -41,6 +43,9 @@ export default function PersonalCardQuota() {
         setOpen(true);
     };
 
+    const handleModalMessage = () =>{
+        setModalActiveMessage(true);
+    }
     const handleModal = () =>{
         setModalActive(true);
     }
@@ -163,22 +168,14 @@ export default function PersonalCardQuota() {
                 icon: <NotificationsNoneIcon/>,
                 name: 'Создать уведомление',
                 runFunction: () => {
-                    navigate(
-                        ADD_STUDENT_NOTIFICATION_ROUTE,
-                        {
-                            state: [rows, {
-                                type: 'create',
-                                button: 'Добавить',
-                                message: 'Вы уверены, что хотите создать уведомление?',
-                            }]
-                        })
+                    handleModal()
                 }
             },
             {
                 icon: <MailOutlineIcon/>,
                 name: 'Написать письмо',
                 runFunction: () => {
-                    handleModal()
+                    handleModalMessage()
                 }
             },
             {
@@ -232,7 +229,7 @@ export default function PersonalCardQuota() {
             {
                 fontSize: "14.5px",
                 fontFamily: ['Montserrat'],
-                fontWeight: '450'
+                fontWeight: '450',
             }
     }
 
@@ -632,7 +629,8 @@ export default function PersonalCardQuota() {
                         />
                     ))}
                 </SpeedDial>
-                <ModalMessage active={modalActive} setActive={setModalActive}/>
+                <Modal active={modalActive} setActive={setModalActive}/>
+                <ModalMessage active={modalActiveMessage} setActive={setModalActiveMessage}/>
             </Box>
         </>
     )

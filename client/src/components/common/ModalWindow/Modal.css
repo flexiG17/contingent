@@ -9,6 +9,7 @@
     justify-content: center;
     align-items: center;
     transform: scale(0);
+    z-index: 1;
 }
 
 .modal.active{
@@ -19,6 +20,7 @@
     padding: 20px;
     border-radius: 12px;
     background-color: #fff;
+
 }
 
 .container_addNotification{

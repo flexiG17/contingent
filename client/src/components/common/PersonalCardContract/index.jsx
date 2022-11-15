@@ -24,6 +24,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import jwt_decode from "jwt-decode";
 import ModalMessage from "../MessageModal";
+import Modal from "../ModalWindow";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
@@ -31,6 +32,7 @@ import ModalMessage from "../MessageModal";
 export default function PersonalCardContract() {
     const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
+    const [modalActiveMessage, setModalActiveMessage] = useState(false);
     const [editMode, setEditMode] = useState(true)
     const handleClickContract = () => {
         setActive(!active)
@@ -44,6 +46,11 @@ export default function PersonalCardContract() {
     const handleModal = () =>{
         setModalActive(true);
     }
+
+    const handleModalMessage = () =>{
+        setModalActiveMessage(true);
+    }
+
 
     const handleClose = () => {
         setOpen(false);
@@ -179,22 +186,14 @@ export default function PersonalCardContract() {
                 icon: <NotificationsNoneIcon/>,
                 name: 'Создать уведомление',
                 runFunction: () => {
-                    navigate(
-                        ADD_STUDENT_NOTIFICATION_ROUTE,
-                        {
-                            state: [rows, {
-                                type: 'create',
-                                button: 'Добавить',
-                                message: 'Вы уверены, что хотите создать уведомление?',
-                            }]
-                        })
+                    handleModal()
                 }
             },
             {
                 icon: <MailOutlineIcon/>,
                 name: 'Написать письмо',
                 runFunction: () => {
-                    handleModal()
+                    handleModalMessage()
                 }
             },
             {
@@ -777,7 +776,8 @@ export default function PersonalCardContract() {
                         />
                     ))}
                 </SpeedDial>
-                <ModalMessage active={modalActive} setActive={setModalActive}/>
+                <Modal active={modalActive} setActive={setModalActive}/>
+                <ModalMessage active={modalActiveMessage} setActive={setModalActiveMessage}/>
             </Box>
         </>
     )

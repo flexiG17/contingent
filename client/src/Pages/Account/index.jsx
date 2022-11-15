@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './Account.css';
+
 import {Header} from "../../components/common";
 import TextField from "@mui/material/TextField";
 import CollapsibleTable from "../../components/common/notification";
