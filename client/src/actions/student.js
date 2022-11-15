@@ -130,3 +130,25 @@ export function importXlsx(data) {
         });
     })
 }
+
+export function sendMessage(data) {
+    return axios.post('http://localhost:5000/api/mail/send', data, {
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Authorization': localStorage.getItem("jwt")
+        },
+    }).then(({statusText, data}) => {
+        iziToast.success({
+            title : statusText,
+            message: data.message,
+            position: 'topRight'
+        })
+    }).catch((e) => {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
+    })
+}

@@ -1,14 +1,13 @@
-import React,{useState} from "react"
+import React, {useState} from "react"
 import '../ModalWindow/Modal.css'
 import '../../../Pages/Account/Account.css';
 import TextField from "@mui/material/TextField";
+import jwt_decode from "jwt-decode";
+import {sendMessage} from "../../../actions/student";
+import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {changeUserData} from "../../../actions/user";
 
-
-
-
-const ModalMessage = ({active, setActive}) => {
-    const [editMode, setEditMode] = useState(true)
-    const [openDialog, setOpenDialog] = useState(false)
+const ModalMessage = ({active, setActive, studentEmail}) => {
     const propsStyle = {
         style:
             {
@@ -17,21 +16,37 @@ const ModalMessage = ({active, setActive}) => {
                 fontWeight: '450'
             }
     }
-    return(
-            <div className={active ? "modal active" : "modal"} onClick={()=> setActive(false)}>
+    const [openDialog, setOpenDialog] = useState(false)
+    //const [destination, setDestination] =  useState()
+    const [subject, setSubject] =  useState()
+    const [text, setText] =  useState()
+
+    const data = {
+        to: Array(studentEmail),
+        subject: subject,
+        text: text
+    }
+
+    const decodeToken = jwt_decode(localStorage.getItem('jwt'))
+    return (
+        <>
+            <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
                 <div className="modal_content" onClick={e => e.stopPropagation()}>
                     <div className="container_position">
-                        <div className="title_message_container"> Новое письмо</div>
+                        <div className="title_message_container">Новое письмо</div>
                         <div className="input_position_message">
-                            <TextField label="От кого" variant="outlined" color="warning" type="text" inputProps={propsStyle}
+                            <TextField label="От кого" variant="outlined" color="warning" type="text"
+                                       inputProps={propsStyle} value={decodeToken.email} disabled
                                        margin='normal' InputLabelProps={propsStyle}
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
                             <TextField label="Кому" variant="outlined" color="warning" type="text" inputProps={propsStyle}
-                                       margin='normal' InputLabelProps={propsStyle}
+                                       margin='normal' InputLabelProps={propsStyle} value={studentEmail} disabled
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
-                            <TextField label="Тема пиьсма" variant="outlined" color="warning" type="text" inputProps={propsStyle}
+                            <TextField label="Тема пиьсма" variant="outlined" color="warning" type="text"
+                                       inputProps={propsStyle} value={subject}
+                                       onChange={e => setSubject(e.target.value)}
                                        margin='normal' InputLabelProps={propsStyle}
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
@@ -39,19 +54,49 @@ const ModalMessage = ({active, setActive}) => {
                         <TextField
                             className="input_message_sms"
                             label="Текст письма"
-                            multiline
+                            multiline value={text} onChange={e => setText(e.target.value)}
                             rows={5}
                             variant="outlined"
-                            sx={{width: "800px", marginTop: "15px", marginBottom: "25px",marginRight:"auto", marginLeft:"auto"}}
+                            sx={{
+                                width: "800px",
+                                marginTop: "15px",
+                                marginBottom: "25px",
+                                marginRight: "auto",
+                                marginLeft: "auto"
+                            }}
                             inputProps={propsStyle} InputLabelProps={propsStyle}
                             color="warning"
                         />
                         <div className="button_message_position">
-                            <button className="send_message"> Отправить сообщение</button>
+                            <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение</button>
                         </div>
                     </div>
                 </div>
             </div>
+            <Dialog
+                open={openDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">Отправка письма</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Вы уверены, что хотите отправить сообщение?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => {
+                        sendMessage(data)
+                        setOpenDialog(false)
+                    }
+                    }>Да</Button>
+                    <Button onClick={() => {
+                        setOpenDialog(false)
+                    }
+                    }>Нет</Button>
+                </DialogActions>
+            </Dialog>
+        </>
     )
 }
 

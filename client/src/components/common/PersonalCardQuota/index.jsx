@@ -632,7 +632,7 @@ export default function PersonalCardQuota() {
                         />
                     ))}
                 </SpeedDial>
-                <ModalMessage active={modalActive} setActive={setModalActive}/>
+                <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={student_email}/>
             </Box>
         </>
     )
