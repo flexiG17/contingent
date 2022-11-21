@@ -5,12 +5,12 @@ import {START_ROUTE} from "../utils/consts";
 import jwt_decode from "jwt-decode";
 
 const AppRouter = () => {
-    const token = localStorage.getItem("jwt")
-    const userRole = token === null ? 'Unauthorized' : jwt_decode(token).role
+    const token = localStorage.getItem("jwt");
+    const userRole = token === null ? 'Unauthorized' : jwt_decode(token).role;
 
-    const adminAccess = userRole === 'Администратор'
-    const readerAccess = userRole === 'Читатель'
-    const editorAccess = userRole === 'Администратор' || userRole === 'Редактор'
+    const adminAccess = userRole === 'Администратор';
+    const readerAccess = userRole === 'Читатель';
+    const editorAccess = userRole === 'Администратор' || userRole === 'Редактор';
     return (
         <Routes>
             {(readerAccess || editorAccess || adminAccess) && readerRoutes.map(({path, Component}) =>
@@ -25,7 +25,7 @@ const AppRouter = () => {
             {publicRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={<Component/>} exact/>
             )}
-            <Route path="*" element={<Navigate to={START_ROUTE} replace />} />
+            <Route path="*" element={<Navigate to={START_ROUTE} replace/>}/>
         </Routes>
     );
 };

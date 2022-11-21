@@ -55,7 +55,7 @@ import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 Это код главной страницы с таблицей
 */
 
-let rows = []
+let rows = [];
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -200,8 +200,8 @@ EnhancedTableHead.propTypes = {
     rowCount: PropTypes.number.isRequired,
 };
 
-let dataToDownload = null
-let selectToDelete = null
+let dataToDownload = null;
+let selectToDelete = null;
 
 // плашка с отображением выбранных студентов, их колличеством, кнопка для импорта, экспорта и удаления
 const EnhancedTableToolbar = (props) => {
@@ -398,7 +398,7 @@ export default function EnhancedTable() {
     const [filtersCount, setFiltersCount] = useState(0);
 
     const [list, setList] = useState([]);
-    // хук для постоянного получения студентов с бэка
+
     useEffect(() => {
         getStudents()
             .then(items => setList(items.reverse()))
@@ -485,11 +485,6 @@ export default function EnhancedTable() {
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    /*
-        в таблице выводятся данные из filteredValues. При внесении в поле для ввода данных происходит моментальная сортировка
-        на данный момент поиск происходит только по russian_name и менять можно только в коде
-    */
-
     function multiFilter(item) {
         for (let i = 0; i < filters.length; i++) {
             let filter = filters[i];
@@ -556,7 +551,6 @@ export default function EnhancedTable() {
                     {!READER_ACCESS &&
                         <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить
                             студента <AddIcon/></NavLink>}
-                    {/* Перенёс сюда Filter.jsx */}
                     {!loading && <Filter filters={filters} setFilters={setFilters}
                                          filtersCount={filtersCount} setFiltersCount={setFiltersCount}/>}
                 </div>

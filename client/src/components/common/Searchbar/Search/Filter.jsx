@@ -132,18 +132,23 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
                     }}>
                         Добавить <AddIcon/>
                     </button>
-                    <button className="add_filter_button" onClick={() => {
-                        setFilterArr([]);
-                        setFilters([]);
-                        setFiltersCount(0);
-                    }}>
-                        Сбросить
-                    </button>
-                    <button className="add_filter_button" onClick={() => {
-                        setFilters(filterArr);
-                    }}>
-                        Применить
-                    </button>
+                    {
+                        (filters.length !== 0 || filterArr.length !== 0) &&
+                        <>
+                            <button className="add_filter_button" onClick={() => {
+                                setFilterArr([]);
+                                setFilters([]);
+                                setFiltersCount(0);
+                            }}>
+                                Сбросить
+                            </button>
+                            <button className="add_filter_button" onClick={() => {
+                                setFilters(filterArr);
+                            }}>
+                                Применить
+                            </button>
+                        </>
+                    }
                 </div>
             </Menu>
         </div>
