@@ -14,8 +14,8 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
     const [anchorEl, setAnchorEl] = useState();
     const open = Boolean(anchorEl);
 
-    const [filterArr, setFilterArr] = useState(filters)
-    const [columns, setColumns] = useState([])
+    const [filterArr, setFilterArr] = useState(filters);
+    const [columns, setColumns] = useState([]);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
