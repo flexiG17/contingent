@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
 
-export function FilterItem({item, columns, setFilterArr, setFiltersCount, changeFilterParam, changeFilterOperator, changeFilterValue}) {
+export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     const operators = [
         {value: 'coincidence', label: 'Содержит'},
         {value: 'equals', label: 'Равно'},
@@ -22,18 +22,18 @@ export function FilterItem({item, columns, setFilterArr, setFiltersCount, change
                         value={item.param}
                         onChange={(e) => {
                             setInputType(e.type);
-                            changeFilterParam(item.id, e);
+                            changeFilterProp(item.id, e, 'param');
                         }
                         }/>
                 <Select className="second_parameter" placeholder="Оператор" options={operators}
                         value={item.operator}
                         onChange={(e) => {
-                            changeFilterOperator(item.id, e);
+                            changeFilterProp(item.id, e, 'operator');
                         }
                         }/>
                 <div className="third_parameter">
                     <input className="search_filter" type={inputType} onChange={(e) => {
-                        changeFilterValue(item.id, e.target.value);
+                        changeFilterProp(item.id, e.target.value, 'value');
                     }
                     }
                            value={item.value}/>
@@ -43,7 +43,6 @@ export function FilterItem({item, columns, setFilterArr, setFiltersCount, change
                             setFilterArr((prevState) => prevState.filter((obj) => {
                                 return obj.id !== item.id;
                             }));
-                            setFiltersCount((prevState) => prevState - 1);
                         }}>
                     <DeleteIcon sx={{fontSize: 22}}/>
                 </button>

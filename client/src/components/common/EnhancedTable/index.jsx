@@ -56,7 +56,6 @@ export default function EnhancedTable() {
     const [orderBy, setOrderBy] = useState('calories');
 
     const [selected, setSelected] = useState([]);
-    console.log('selected - ', selected);
 
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(false);
@@ -233,8 +232,7 @@ export default function EnhancedTable() {
                     {!READER_ACCESS &&
                         <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить
                             студента <AddIcon/></NavLink>}
-                    {!loading && <Filter filters={filters} setFilters={setFilters}
-                                         filtersCount={filtersCount} setFiltersCount={setFiltersCount}/>}
+                    {!loading && <Filter filters={filters} setFilters={setFilters}/>}
                 </div>
                 {loading && <CircularProgress color="warning"/>}
             </div>

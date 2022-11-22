@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import './Search.css';
 import IconButton from '@mui/material/IconButton';
@@ -10,7 +10,7 @@ import {Badge} from "@mui/material";
 
 const ITEM_HEIGHT = 50;
 
-export default function LongMenu({filters, setFilters, filtersCount, setFiltersCount}) {
+export default function LongMenu({filters, setFilters}) {
     const [anchorEl, setAnchorEl] = useState();
     const open = Boolean(anchorEl);
 
@@ -25,44 +25,16 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
         setAnchorEl(null);
     };
 
-    const changeFilterParam = (id, value) => {
+    const changeFilterProp = (id, value, operator) => {
         setFilterArr((prevState) => {
-            const newArr = prevState.map(item => {
+            return prevState.map(item => {
                 if (item.id === id) {
-                    return {...item, param: value};
+                    return {...item, [operator]: value};
                 }
                 return item;
-            })
-
-            return newArr;
-        })
-    }
-
-    const changeFilterOperator = (id, value) => {
-        setFilterArr((prevState) => {
-            const newArr = prevState.map(item => {
-                if (item.id === id) {
-                    return {...item, operator: value};
-                }
-                return item;
-            })
-
-            return newArr;
-        })
-    }
-
-    const changeFilterValue = (id, value) => {
-        setFilterArr((prevState) => {
-            const newArr = prevState.map(item => {
-                if (item.id === id) {
-                    return {...item, value: value};
-                }
-                return item;
-            })
-
-            return newArr;
-        })
-    }
+            });
+        });
+    };
 
     useEffect(() => {
         let result = axios.get('http://localhost:5000/api/student/columns', {
@@ -76,8 +48,8 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
                 label: item.ru,
                 type: item.type
             }
-        })))
-    }, [])
+        })));
+    }, []);
 
     return (
         <div>
@@ -90,7 +62,7 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
                 onClick={handleClick}
             >
 
-                <Badge badgeContent={filtersCount} color="info">
+                <Badge badgeContent={filters.length} color="info">
                     <FilterAltIcon sx={{color: "#FA7A45"}}/>
                 </Badge>
             </IconButton>
@@ -111,12 +83,7 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
                 }}
             >
                 {filterArr.map((item) => (
-                    <FilterItem key={item.id} item={item} columns={columns}
-                                setFilterArr={setFilterArr}
-                                setFiltersCount={setFiltersCount}
-                                changeFilterParam={changeFilterParam}
-                                changeFilterValue={changeFilterValue}
-                                changeFilterOperator={changeFilterOperator}/>
+                    <FilterItem key={item.id} item={item} columns={columns} changeFilterProp={changeFilterProp}/>
                 ))}
                 <div className="button_position">
                     <button className="add_filter_button" onClick={() => {
@@ -128,7 +95,6 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
                                 {value: '', label: ''},
                             value: '',
                         }]);
-                        setFiltersCount(prevState => prevState + 1);
                     }}>
                         Добавить <AddIcon/>
                     </button>
@@ -138,12 +104,12 @@ export default function LongMenu({filters, setFilters, filtersCount, setFiltersC
                             <button className="add_filter_button" onClick={() => {
                                 setFilterArr([]);
                                 setFilters([]);
-                                setFiltersCount(0);
                             }}>
                                 Сбросить
                             </button>
                             <button className="add_filter_button" onClick={() => {
                                 setFilters(filterArr);
+                                handleClose();
                             }}>
                                 Применить
                             </button>
