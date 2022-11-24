@@ -63,7 +63,6 @@ export default function EnhancedTable() {
     const [loading, setLoading] = useState(true);
 
     const [filters, setFilters] = useState([]);
-    const [filtersCount, setFiltersCount] = useState(0);
 
     const [list, setList] = useState([]);
 
@@ -88,25 +87,7 @@ export default function EnhancedTable() {
                 setList(items);
             })
             .finally(() => setLoading(false))
-    }, [])
-
-    // rows = list;
-    //
-    // rows.map(item => {
-    //     item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
-    //     item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
-    //     item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
-    //     item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
-    //     item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
-    //     item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
-    //     item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
-    //     item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
-    //     item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
-    //     item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
-    //     item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
-    //     item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
-    //     item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
-    // });
+    }, []);
 
     const decodedToken = jwt_decode(localStorage.getItem('jwt'))
     const READER_ACCESS = decodedToken.role === 'Читатель'
@@ -117,7 +98,6 @@ export default function EnhancedTable() {
         setOrderBy(property);
     };
 
-    // нажатие кнопки для выбора всех студентов
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
             setSelected(filteredValues.map((n) => n.id));
@@ -126,7 +106,6 @@ export default function EnhancedTable() {
         setSelected([]);
     };
 
-    // для выбора по отдельности
     const handleClick = (userID) => {
         const selectedIndex = selected.indexOf(userID);
         let newSelected = [];
