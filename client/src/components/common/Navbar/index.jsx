@@ -18,6 +18,7 @@ export default function Navbar() {
     let tokenName = ''
     let userName = ''
     let decodedToken = jwt_decode(localStorage.getItem("jwt"))
+    console.log(localStorage.getItem("jwt"))
     const ADMIN_ACCESS = decodedToken.role === 'Администратор'
     try {
         if (localStorage.getItem("jwt")){
