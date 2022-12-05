@@ -10,3 +10,8 @@ export const NOTIFICATION_ROUTE = '/notifications'
 export const ADD_STUDENT_ROUTE = '/createStudent'
 export const ADD_NOTIFICATION_ROUTE = '/createNotification'
 export const ADD_STUDENT_NOTIFICATION_ROUTE = '/createStudentNotification'
+
+export enum NameSpace {
+    User = 'USER',
+    FileManager = 'MANAGER'
+}
