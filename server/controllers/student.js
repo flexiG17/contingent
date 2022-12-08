@@ -2,21 +2,16 @@ const XLSX = require('xlsx');
 
 const Student = require('../models/Student');
 const StudentService = require('../services/studentService')
-const os = require('os')
+const FileService = require('../services/fileManagerService')
 
+const os = require('os')
 const path = require('path')
-const fs = require('fs')
 
 const db = require('../db')
 
 
-function getUploadFilePath(passport_number, russian_name) {
-    return path.join(".", "uploads", `${passport_number}-${russian_name}`)
-}
-
-
 function getStudent(id) {
-    return db.students.where({id})
+    return db.students.where({id}).first()
 }
 
 
@@ -37,18 +32,13 @@ module.exports.getAll = async function (req, res) {
 
 
 module.exports.create = async function (req, res) {
-    const filePath = getUploadFilePath(req.body.passport_number, req.body.russian_name)
+    const model = new Student(req.body)
+    let [student_id] = await db.students.insert(model)
 
-    const model = new Student(req.body, filePath)
-
-    const [student] = await db.students.where({passport_number: model.passport_number})
-
-    if (student != null)
-        return res.status(400).json({
-            message: `'${model.russian_name}' уже существует`
-        })
-
-    await db.students.insert(model)
+    if (req.files.length > 0) {
+        const studentFile = await FileService.createStudentDir(student_id, req.user.id)
+        await FileService.uploadFiles(req.files, studentFile.id, req.user.id)
+    }
 
     return res.status(201).json({
         message: `'${model.russian_name}' добавлен(а) в базу данных`
@@ -57,20 +47,12 @@ module.exports.create = async function (req, res) {
 
 
 module.exports.update = async function (req, res) {
-    const [student] = await getStudent(req.params.id)
+    const student = await getStudent(req.params.id)
 
     if (!student)
         return res.status(404).json({message: "Студент не найден"})
 
-    const newPath = getUploadFilePath(req.body.passport_number, req.body.russian_name)
-    const model = new Student(req.body, newPath)
-
-    const oldPath = getUploadFilePath(student.passport_number, student.russian_name)
-
-    if (!fs.existsSync(oldPath))
-        fs.mkdirSync(newPath)
-    else
-        fs.renameSync(oldPath, newPath)
+    const model = new Student(req.body)
 
     await getStudent(req.params.id).update(model)
     return res.status(200).json({message: `Студент '${model.russian_name}' был изменён`})
@@ -78,15 +60,12 @@ module.exports.update = async function (req, res) {
 
 
 module.exports.remove = async function (req, res) {
-    const [student] = await getStudent(req.params.id)
+    const student = await getStudent(req.params.id)
 
     if (!student)
         return res.status(404).json({message: 'Студента не существует'})
 
-    const filePath = getUploadFilePath(student.passport_number, student.russian_name)
-
-    if (fs.existsSync(filePath))
-        fs.rmdirSync(filePath, {recursive: true})
+    await FileService.deleteStudentDirs([student.id])
 
     await getStudent(req.params.id).delete()
     return res.status(200).json({message: `'${student.russian_name}' успешно удалён`})
@@ -94,7 +73,7 @@ module.exports.remove = async function (req, res) {
 
 
 module.exports.getById = async function (req, res) {
-    const [student] = await getStudent(req.params.id)
+    const student = await getStudent(req.params.id)
 
     if (!student)
         return res.status(401).json({message: "Студента не существует"})
@@ -118,8 +97,7 @@ module.exports.importXlsxData = async function (req, res) {
 
     const range = XLSX.utils.decode_range(sheet["!ref"])
 
-    for (let col = range.s.c; col <= range.e.c; col++)
-    {
+    for (let col = range.s.c; col <= range.e.c; col++) {
         const cell_ref = XLSX.utils.encode_cell({r: 0, c: col})
         let cell = sheet[cell_ref].v
         sheet[cell_ref].v = columns.get(cell)
@@ -129,7 +107,9 @@ module.exports.importXlsxData = async function (req, res) {
 
     let data = XLSX.utils.sheet_to_json(sheet, {raw: false})
 
+    data = data.map(student => new Student(student))
     await db.students.insert(data)
+
     return res.status(201).json({message: "Импорт завершён успешно"})
 }
 
@@ -158,13 +138,9 @@ module.exports.downloadXlsx = async function (req, res) {
 
 module.exports.removeStudents = async function (req, res) {
     const students = await getStudents(req.body)
+    const student_ids = students.map(student => student.id)
 
-    for (let student of students) {
-        const filePath = getUploadFilePath(student.passport_number, student.russian_name)
-
-        if (fs.existsSync(filePath))
-            fs.rmdirSync(filePath)
-    }
+    await FileService.deleteStudentDirs(student_ids)
 
     await getStudents(req.body).delete()
     return res.status(200).json({message: "Студенты удалены"})

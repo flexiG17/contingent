@@ -1,6 +1,6 @@
-const CreateNotificationDto = require('../dto/CreateNotificationDto')
+const CreateNotificationDto = require('../dto/NotficationDtos/CreateNotificationDto')
 const NotificationRepository = require('../repositories/notificationRepository')
-const UpdateNotificationDto = require("../dto/UpdateNotificationDto");
+const UpdateNotificationDto = require("../dto/NotficationDtos/UpdateNotificationDto");
 
 
 const notificationRepository = new NotificationRepository()

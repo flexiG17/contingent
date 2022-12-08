@@ -1,7 +1,6 @@
 const Notification = require('../models/Notification')
-const CreateNotificationDto = require('../dto/CreateNotificationDto')
 const db = require('../db')
-const GetNotificationDto = require("../dto/GetNotificationDto");
+const GetNotificationDto = require("../dto/NotficationDtos/GetNotificationDto");
 
 module.exports = class NotificationRepository {
     async getAsync(userId) {
