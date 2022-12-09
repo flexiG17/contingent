@@ -5,23 +5,7 @@ const os = require('os')
 
 
 const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        let dir = path.join(".", "uploads")
-
-        const passport_number = req.body.passport_number
-        const name = req.body.russian_name
-
-        if (passport_number && name) {
-            dir = path.join(dir, `${req.body.passport_number}-${req.body.russian_name}`)
-
-            if (!fs.existsSync(dir))
-                fs.mkdirSync(dir)
-
-            return cb(null, dir)
-        }
-
-        return cb(null, os.tmpdir())
-    },
+    destination: os.tmpdir(),
 
     filename: function (req, file, cb) {
         if (!/[^\u0000-\u00ff]/.test(file.originalname)) {

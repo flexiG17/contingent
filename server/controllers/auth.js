@@ -8,6 +8,9 @@ const db = require('../db')
 
 module.exports.login = async function (req, res) {
     const {email, password} = req.body
+    if (!email || !password)
+        return res.status(400).json({message: "E-mail или пароль отсутствует"})
+
     const [user] = await db.users.where({email})
 
     if (user == null)
@@ -36,6 +39,10 @@ module.exports.login = async function (req, res) {
 
 module.exports.register = async function (req, res) {
     const {name, email, password, role} = req.body
+
+    if (!email || !password)
+        return res.status(400).json({message: "E-mail или пароль отсутствует"})
+
     const salt = bcrypt.genSaltSync(10)
 
     const model = new User(email, bcrypt.hashSync(password, salt), name, role)
@@ -58,6 +65,9 @@ module.exports.register = async function (req, res) {
 module.exports.changePassword = async function (req, res) {
     const salt = bcrypt.genSaltSync(10)
     const password = req.body.password
+
+    if (!password)
+        return res.status(400).json({message: "Пароль отсутствует"})
 
     await db.users.where({id: req.user.id})
         .update({password: bcrypt.hashSync(password, salt)})

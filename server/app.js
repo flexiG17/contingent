@@ -14,6 +14,7 @@ const studentRoutes = require('./routes/student')
 const notificationRoutes = require('./routes/notification')
 const userRoutes = require('./routes/user')
 const mailRoutes = require('./routes/mail')
+const fileRoutes = require('./routes/fileManager')
 
 const errorHandler = require('./utils/errorHandler')
 
@@ -33,6 +34,7 @@ app.use('/api/student', studentRoutes)
 app.use('/api/notification', notificationRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/mail', mailRoutes)
+app.use("/api/files", fileRoutes)
 
 app.use((err, req, res, next) => errorHandler(err, res))
 
