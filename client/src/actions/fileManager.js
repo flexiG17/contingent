@@ -5,10 +5,9 @@ import iziToast from "izitoast";
 
 export async function getFiles(UserID: number) {
     try {
-        const {data} = await axios.get(`'http://localhost:5000/api`, {
+        const {data} = await axios.get(`localhost:5000/api/files`, {
             headers: {
-                'Authorization': localStorage.getItem("jwt"),
-                'Content-Type': 'application/json;charset=utf-8'
+                'Authorization': localStorage.getItem("jwt")
             }
         });
         dispatch(setFiles(data));
@@ -22,16 +21,35 @@ export async function getFiles(UserID: number) {
     }
 }
 
-export async function addDir(UserID: number, parentDirID: number, name: string) {
+export async function createDir(UserID: number, parentDirID: number | null, name: string) {
     try {
         const {data} = await axios.post(`'http://localhost:5000/api`, {
-            name,
-            parentDirID,
-            type: 'dir'
-        },{
+            "name": name,
+            "parent_id": parentDirID,
+            "student_id": UserID
+        }, {
             headers: {
                 'Authorization': localStorage.getItem("jwt"),
                 'Content-Type': 'application/json;charset=utf-8'
+            }
+        });
+        dispatch(addFile(data));
+    } catch (e) {
+        iziToast.error({
+            title: e.response.statusText,
+            message: e.response.data.message,
+            position: "topRight",
+            color: "#FFF2ED"
+        });
+    }
+}
+
+export async function uploadFile(data: FormData) {
+    try {
+        const {data} = await axios.post(`localhost:5000/api/files/upload`, data, {
+            headers: {
+                'Authorization': localStorage.getItem("jwt"),
+                'Content-Type': 'multipart/form-data'
             }
         });
         dispatch(addFile(data));
