@@ -55,7 +55,7 @@ module.exports = new class FileManagerService {
         if (!fs.existsSync(studentPath))
             fs.mkdirSync(studentPath)
 
-        let studentFile = new File({
+        let model = new File({
             name: student.id,
             type: "dir",
             path: studentPath,
@@ -64,7 +64,7 @@ module.exports = new class FileManagerService {
             student_id: student.id
         })
 
-        const [studentFileId] = await db.files.insert(studentFile).onConflict('path').merge()
+        const [studentFileId] = await db.files.insert(model).onConflict('path').merge()
         return db.files.where({id: studentFileId}).first()
     }
 
@@ -75,7 +75,12 @@ module.exports = new class FileManagerService {
         return this.deleteFiles(studentFiles.map(studentFile => studentFile.id))
     }
 
-    async uploadFiles(files, parent_id, user_id) {
+    async uploadFiles(files, parent_id, student_id, user_id) {
+        const studentFile = await this.createStudentDir(student_id, user_id)
+
+        if (!parent_id)
+            parent_id = studentFile.id
+
         const parent = await db.files.where({id: parent_id}).first()
 
         if (!parent)

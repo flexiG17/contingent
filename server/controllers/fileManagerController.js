@@ -2,6 +2,9 @@ const fileService = require('../services/fileManagerService')
 const fs = require('fs')
 const db = require('../db')
 
+// TODO:
+//  add rename folder/file
+//  move folders/files
 class FileController {
     async createDir(req, res) {
         const {name, parent_id, student_id} = req.body
@@ -14,7 +17,12 @@ class FileController {
     }
 
     async getFiles(req, res) {
-        let {sort, parent_id} = req.query
+        let {sort, parent_id, student_id} = req.query
+
+        if (!parent_id) {
+            const studentFile = await fileService.createStudentDir(student_id, req.user.id)
+            parent_id = studentFile.id
+        }
 
         let sortParam = {}
         sortParam[`${sort}`] = 1
@@ -28,7 +36,7 @@ class FileController {
     }
 
     async uploadFile(req, res) {
-        await fileService.uploadFiles(req.files, req.body.parent_id, req.user.id)
+        await fileService.uploadFiles(req.files, req.body.parent_id, req.body.student_id, req.user.id)
 
         return res.json({message: "Файлы успешно добавлены"})
     }
