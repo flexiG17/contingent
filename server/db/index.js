@@ -25,5 +25,13 @@ module.exports = {
 
     transaction() {
         return this.db.transaction()
+    },
+
+    get studentNotification() {
+        return this.db('student_notification')
+    },
+
+    get files() {
+        return this.db('files')
     }
 }

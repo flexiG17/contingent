@@ -1,6 +1,6 @@
 module.exports = class Student {
 
-    constructor(other, pathFile) {
+    constructor(other) {
         this.education_type = other.education_type
         this.direction_number = other.direction_number
         this.country = other.country
@@ -44,7 +44,6 @@ module.exports = class Student {
         this.hours_number = other.hours_number
         this.entry_date = new Date(other.entry_date)
         this.visa_validity = new Date(other.visa_validity)
-        this.document_Path = pathFile
         this.first_payment = new Date(other.first_payment)
         this.second_payment = new Date(other.second_payment)
         this.third_payment = new Date(other.third_payment)

@@ -1,10 +1,13 @@
-const Notification = require('../models/Notification')
-const CreateNotificationDto = require('../dto/CreateNotificationDto')
-const db = require('../db')
+const CreateNotificationDto = require('../dto/NotficationDtos/CreateNotificationDto')
+const NotificationRepository = require('../repositories/notificationRepository')
+const UpdateNotificationDto = require("../dto/NotficationDtos/UpdateNotificationDto");
+
+
+const notificationRepository = new NotificationRepository()
 
 
 module.exports.getAll = async function (req, res) {
-    const data = await db.notifications.where({user_id: req.user.id})
+    let data = await notificationRepository.getAsync(req.user.id)
 
     return res.status(200).json(data)
 }
@@ -14,41 +17,24 @@ module.exports.create = async function (req, res) {
     req.body.students_id = [].concat(req.body.students_id)
     let dto = new CreateNotificationDto(req.body)
 
-    let models = dto.students_id.map(student_id => {
-        let model = new Notification(dto)
-        model.user_id = req.user.id
-        model.student_id = student_id
-        return model
-    })
-
-    const trx = await db.transaction()
-    try {
-        for (let model of models)
-            await db.notifications.insert(model).transacting(trx)
-
-        await trx.commit()
-
-    } catch (err) {
-        await trx.rollback()
-        throw err
-    }
+    await notificationRepository.createAsync(dto, req.user.id)
 
     return res.status(200).json({message: "Уведомления добавлены"})
 }
 
 
 module.exports.update = async function (req, res) {
-    let model = new Notification(req.body)
-    model.user_id = req.user.id
+    req.body.students_id = [].concat(req.body.students_id)
+    let dto = new UpdateNotificationDto(req.body)
 
-    await db.notifications.where({id: req.params.id}).update(model)
+    await notificationRepository.updateAsync(dto, req.params.id)
 
     return res.status(200).json({message: "Уведомление обновлено"})
 }
 
 
 module.exports.remove = async function (req, res) {
-    await db.notifications.whereIn('id', req.body).delete()
+    await notificationRepository.deleteAsync(req.body)
 
     return res.status(200).json({message: "Уведомления удалены"})
 }
