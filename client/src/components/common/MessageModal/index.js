@@ -5,7 +5,7 @@ import TextField from "@mui/material/TextField";
 import jwt_decode from "jwt-decode";
 import {sendMessage} from "../../../actions/student";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
-import {changeUserData} from "../../../actions/user";
+import Select from 'react-select';
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
     const propsStyle = {
@@ -27,6 +27,12 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
         text: text
     }
 
+    const options = [
+        { value: 'type1', label: 'Первый шаблон' },
+        { value: 'type2', label: 'Второй шаблон' },
+        { value: 'type3', label: 'Третий шаблон' }
+    ]
+
     const decodeToken = jwt_decode(localStorage.getItem('jwt'))
     return (
         <>
@@ -44,6 +50,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                        margin='normal' InputLabelProps={propsStyle} value={studentEmail} disabled
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
+                            <Select className="message_type" placeholder="Шаблоны письма" options={options}/>
                             <TextField label="Тема пиьсма" variant="outlined" color="warning" type="text"
                                        inputProps={propsStyle} value={subject}
                                        onChange={e => setSubject(e.target.value)}
@@ -68,6 +75,10 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                             color="warning"
                         />
                         <div className="button_message_position">
+                            <label className="confirm_message">
+                                Вы действительно хотите отправить письмо?
+                                <input type="checkbox" name = "confirm_message"/>
+                            </label>
                             <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение</button>
                         </div>
                     </div>
