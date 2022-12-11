@@ -584,7 +584,7 @@ export default function Contract() {
                                 <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>108 ак.ч.</span>
                             </MenuItem>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
-                                      value="588 ак.ч.">
+                                      value="72 ак.ч.">
                                 <span style={{
                                     fontSize: "14px",
                                     fontFamily: ['Montserrat'],

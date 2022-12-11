@@ -5,11 +5,10 @@ import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import jwt_decode from 'jwt-decode'
-import {HOME_ROUTE, REGISTRATION_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
+import {HOME_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
 import {getCountNotifications} from "../../../actions/notification";
 import IconButton from "@mui/material/IconButton";
 import {Badge} from "@mui/material";
-import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import PersonIcon from '@mui/icons-material/Person';
 
 export default function Navbar() {
@@ -18,7 +17,7 @@ export default function Navbar() {
     let tokenName = ''
     let userName = ''
     let decodedToken = jwt_decode(localStorage.getItem("jwt"))
-    const ADMIN_ACCESS = decodedToken.role === 'Администратор'
+    console.log(localStorage.getItem("jwt"))
     try {
         if (localStorage.getItem("jwt")){
             tokenName = decodedToken.name.split(' ')
@@ -62,14 +61,6 @@ export default function Navbar() {
                             <PersonIcon sx={{fontSize: 19}}/>
                             <div className="nav__pad"> Личный кабинет </div>
                         </NavLink>
-
-                        {ADMIN_ACCESS &&
-                            <NavLink to={REGISTRATION_ROUTE} className="mail_button_account">
-                                <HowToRegOutlinedIcon sx={{fontSize: 19}}/>
-                                <div className="nav__pad"> Регистрация</div>
-                            </NavLink>
-                        }
-
                         <button
                             className="exit_button_account"
                             onClick={() => {

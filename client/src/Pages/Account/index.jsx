@@ -16,12 +16,8 @@ import {
 } from "@mui/material";
 import {changeUserData, getUsers} from "../../actions/user";
 import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-
-
-function FolderIcon() {
-    return null;
-}
+import AddIcon from '@mui/icons-material/Add';
+import ModalRegistration from "../../components/common/ModalRegistration";
 
 function DeleteIcon() {
     return null;
@@ -31,6 +27,7 @@ function Index() {
     const [editMode, setEditMode] = useState(true)
     const [openDialog, setOpenDialog] = useState(false)
     const [userList, setUserList] = useState([]);
+    const [modalRegistrationActive, setModalRegistrationActive] = useState(false)
 
     const [userName, setUserName] = useState(jwt_decode(localStorage.getItem('jwt')).name)
     const [userEmail, setUserEmail] = useState(jwt_decode(localStorage.getItem('jwt')).email)
@@ -108,6 +105,8 @@ function Index() {
                     {ADMIN_ACCESS &&
                         <div className="users_table">
                             <div className="title_container_information">Список пользователей</div>
+                            <button className="add_account" onClick={()=> setModalRegistrationActive(true)} > Добавить пользователя   <AddIcon/></button>
+                            <ModalRegistration active={modalRegistrationActive} setActive={setModalRegistrationActive}/>
                             {userList.map(user => {
                                 return (
                                     <List
