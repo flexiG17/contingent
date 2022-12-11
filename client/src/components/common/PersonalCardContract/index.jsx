@@ -229,15 +229,7 @@ export default function PersonalCardContract() {
                 icon: <NotificationsNoneIcon/>,
                 name: 'Создать уведомление',
                 runFunction: () => {
-                    navigate(
-                        ADD_STUDENT_NOTIFICATION_ROUTE,
-                        {
-                            state: [rows, {
-                                type: 'create',
-                                button: 'Добавить',
-                                message: 'Вы уверены, что хотите создать уведомление?',
-                            }]
-                        })
+                    handleModalMessage()
                 }
             }
         ]
