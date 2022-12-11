@@ -25,15 +25,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import jwt_decode from "jwt-decode";
 import ModalMessage from "../MessageModal";
 import Modal from "../ModalWindow";
+import ModalFile from "../filemanager/ModalFile";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
 
 export default function PersonalCardContract() {
-    const [active, setActive] = useState(true);
+    const [active, setActive] = useState(false);
     const [modalActive, setModalActive] = useState(false);
-    const [editMode, setEditMode] = useState(true)
-    const [modalMessageActive, setModalMessageActive] = useState(false)
+    const [editMode, setEditMode] = useState(true);
+    const [modalMessageActive, setModalMessageActive] = useState(false);
+    const [modalFileActive,setModalFileActive] = useState(false);
 
     const handleClickContract = () => {
         setActive(!active)
@@ -43,6 +45,10 @@ export default function PersonalCardContract() {
     const handleOpen = () => {
         setOpen(true);
     };
+
+    const handleFileModal = () =>{
+        setModalFileActive(true);
+    }
 
     const handleModal = () =>{
         setModalActive(true);
@@ -187,6 +193,13 @@ export default function PersonalCardContract() {
                 name: 'Создать уведомление',
                 runFunction: () => {
                     handleModalMessage()
+                }
+            },
+            {
+                icon: <InsertDriveFileIcon/>,
+                name: 'Файловый менеджер',
+                runFunction: () => {
+                    handleFileModal()
                 }
             },
             {
@@ -820,6 +833,7 @@ export default function PersonalCardContract() {
                 </SpeedDial>
                 <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={student_email}/>
                 <Modal active={modalMessageActive} setActive={setModalMessageActive}/>
+                <ModalFile active={modalFileActive} setActive={setModalFileActive}/>
             </Box>
         </>
     )
