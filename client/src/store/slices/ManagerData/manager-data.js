@@ -28,7 +28,10 @@ export const managerData = createSlice({
             state.popupDisplay = action.payload;
         },
         pushDirStack: (state, action) => {
-            state.dirStack = [...state.dirStack, action.payload]
+            state.dirStack = [...state.dirStack, action.payload];
+        },
+        popDirStack: (state) => {
+            state.dirStack = [...state.dirStack.slice(0, state.dirStack.length - 1)];
         },
     }
 })
