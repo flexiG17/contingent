@@ -3,6 +3,7 @@ const path = require("path");
 
 const File = require('../models/File')
 const db = require('../db')
+const mv = require("mv")
 
 const uploadPath = process.env.UPLOAD_PATH
 
@@ -89,7 +90,10 @@ module.exports = new class FileManagerService {
         for (const file of files) {
             const filePath = path.join(parent.path, file.originalname)
 
-            fs.renameSync(file.path, filePath)
+            mv(file.path, filePath, {mkdirp: true}, function (err) {
+                if (err)
+                    throw err
+            })
 
             const model = new File({
                 name: file.originalname,
