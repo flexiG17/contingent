@@ -17,7 +17,6 @@ export default function Navbar() {
     let tokenName = ''
     let userName = ''
     let decodedToken = jwt_decode(localStorage.getItem("jwt"))
-    console.log(localStorage.getItem("jwt"))
     try {
         if (localStorage.getItem("jwt")){
             tokenName = decodedToken.name.split(' ')

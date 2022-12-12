@@ -9,7 +9,7 @@ const File =({file})=>{
             <div className="file">
                 <div className="icon_file">{file.type === 'dir' ? <FolderIcon/> : <InsertDriveFileIcon/> }</div>
                 <div className="file_name">{file.name}</div>
-                <div className="file_date">{file.date}</div>
+                <div className="file_date">{file.date.slice(0,10)}</div>
                 <div className="file_size">{file.size}</div>
             </div>
         </>

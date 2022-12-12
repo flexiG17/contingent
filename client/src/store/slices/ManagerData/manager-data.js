@@ -33,4 +33,4 @@ export const managerData = createSlice({
     }
 })
 
-export const {setFiles, setCurrentDir, addFile, pushDirStack, popDirStack} = managerData.actions;
+export const {setFiles, setCurrentDir, addFile, deleteFile, pushDirStack, popDirStack} = managerData.actions;

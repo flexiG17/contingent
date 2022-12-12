@@ -17,10 +17,7 @@ export default function LongMenu({filters, setFilters}) {
     const [filterArr, setFilterArr] = useState(filters);
     const [columns, setColumns] = useState([]);
 
-    console.log(filterArr);
-    console.log(filters);
-
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -86,7 +83,8 @@ export default function LongMenu({filters, setFilters}) {
                 }}
             >
                 {filterArr.map((item) => (
-                    <FilterItem key={item.id} item={item} columns={columns} setFilterArr={setFilterArr} changeFilterProp={changeFilterProp}/>
+                    <FilterItem key={item.id} item={item} columns={columns} setFilterArr={setFilterArr}
+                                changeFilterProp={changeFilterProp}/>
                 ))}
                 <div className="button_position">
                     <button className="add_filter_button" onClick={() => {

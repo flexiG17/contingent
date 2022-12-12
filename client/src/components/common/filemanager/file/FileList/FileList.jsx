@@ -1,15 +1,15 @@
 import React from 'react'
 import './FileList.css';
 import File from './File/File';
+import {useSelector} from "react-redux";
+import {getFiles} from "../../../../../store/slices/ManagerData/selectors";
 
 
-const FileList = () =>{
+const FileList = () => {
 
-    const files = [{id:1,name:'direc',type:'dir',size:'5gb',date:'11.12.2022'},
-        {id:1,name:'file1',type:'file',size:'5gb',date:'11.12.2022'},
-        {id:1,name:'direc3',type:'dir',size:'5gb',date:'11.12.2022'}].map(file=><File file={file} key={file.id}/>)
+    const files = useSelector(getFiles);
 
-    return(
+    return (
 
         <div className="filelist">
             <div className="filelist_header">
@@ -17,7 +17,7 @@ const FileList = () =>{
                 <div className="filelist_date">Дата</div>
                 <div className="filelist_size">Размер</div>
             </div>
-            {files}
+            {files.map(file => <File file={file}/>)}
         </div>
 
     )
