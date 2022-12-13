@@ -87,6 +87,7 @@ module.exports = new class FileManagerService {
         if (!parent)
             throw new Error("Директория не задана")
 
+        let file_ids = [];
         for (const file of files) {
             const filePath = path.join(parent.path, file.originalname)
 
@@ -106,8 +107,11 @@ module.exports = new class FileManagerService {
                 date: new Date()
             })
 
-            await db.files.insert(model).onConflict('path').merge()
+            let [id] = await db.files.insert(model).onConflict('path').merge()
+            file_ids.push(id)
         }
+
+        return db.files.whereIn('id', file_ids)
     }
 
     async deleteFiles(file_ids) {
