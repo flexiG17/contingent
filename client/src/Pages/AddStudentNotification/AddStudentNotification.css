@@ -26,8 +26,11 @@
 
 .checkbox_style_notification{
     padding-top: 30px;
+    padding-left: 15px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    width: 300px;
+    align-items: baseline;
 }
 
 .button_position_notification{

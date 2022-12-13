@@ -1,0 +1,29 @@
+disk {
+    padding-top: 20px;
+}
+
+.disk_btns{
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    justify-content: space-between;
+}
+
+.disk_style_btns{
+    text-align: center;
+    padding: 5px 10px;
+    
+    border:2px solid #FF6347;
+    background-color: #fff;
+    border-radius: 5px;
+
+    font-family: 'Montserrat', sans-serif;
+    color: black;
+    font-weight: 500;
+
+    cursor: pointer;
+}
+
+.disk_style_btns:hover{
+    color: #FF4B00;
+}

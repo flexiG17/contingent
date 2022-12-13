@@ -12,3 +12,6 @@ code {
     monospace;
 }
 
+.MuiInputLabel-root{
+  z-index: unset;
+}

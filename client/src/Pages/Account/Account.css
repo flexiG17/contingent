@@ -30,7 +30,7 @@
     font-weight: 500;
     font-size: 25px;
     line-height: 30px;
-
+    margin-bottom: 20px;
     color: #FA7A45;
 }
 
@@ -140,4 +140,29 @@
     width: 800px;
 }
 .table_notification{
+    position: relative;
+}
+
+.add_account{
+    width: 242px;
+    margin-left: 15px;
+    margin-bottom: 10px;
+
+    background-color: rgba(0,0,0,0);
+    border: none;
+
+    cursor: pointer;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+}
+
+.add_account:hover{
+    color: #FF4B00;
 }

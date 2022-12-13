@@ -28,9 +28,10 @@ export default function Contract() {
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
             <div className="info_and_education_container">
+                <p className="title_block"> Личная информация </p>
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="title_contract_info"> Личные данные</p>
+                        <p className="title_contract_info"> Личная информация студента </p>
 
                         <TextField name='latin_name' label="Ф.И.О. (лат.)" variant="outlined" color="warning"
                                    type="text" margin='normal'
@@ -66,28 +67,6 @@ export default function Contract() {
                                            fontWeight: '450'
                                        }
                                    }}/>
-
-                        <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
-                                   color="warning"
-                                   margin='normal' required select size="small"
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}>
-                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}} value="Да">
-                                <span
-                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Да</span>
-                            </MenuItem>
-                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
-                                      value="Нет">
-                                <span
-                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
-                            </MenuItem>
-                        </TextField>
-                        <p className="title_contract_info"> Контактные данные</p>
                         <TextField name='contact_phone_number' label="Контактный телефон студента" variant="outlined"
                                    color="warning" type="tel"
                                    margin='normal' required size="small"
@@ -123,6 +102,141 @@ export default function Contract() {
                                            fontWeight: '450'
                                        }
                                    }}/>
+                        <TextField name='country' label="Страна" type="text" variant="outlined" color="warning"
+                                   margin='normal'
+                                   required size="small"
+                                   sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='birth_date' label="Дата рождения" type="date" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+                        <TextField name='birth_place' label="Место рождения" type="text" variant="outlined"
+                                   color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+
+                        <TextField name='residence_place' label="Место проживания" type="text" variant="outlined"
+                                   color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='citizenship' label="Гражданство" type="text" variant="outlined" color="warning"
+                                   margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='gender' label="Пол" type="text" variant="outlined" color="warning"
+                                   margin='normal'
+                                   required size="small" select
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Мужской">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Мужской</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Женский">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Женский</span>
+                            </MenuItem>
+                        </TextField>
+                        <TextField name='tutor_name' label="Куратор" type="text" variant="outlined" color="warning"
+                                   margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+
+
+                    </div>
+                    <div className="column_style_contract">
                         <p className="title_contract_info"> Контактные данные агента</p>
                         <TextField name='agent_name' label="Ф.И.О." variant="outlined" color="warning" type="text"
                                    margin='normal'
@@ -227,98 +341,10 @@ export default function Contract() {
                                            fontWeight: '450'
                                        }
                                    }}/>
-                    </div>
-                    <div className="column_style_contract">
-                        <p className="title_contract_info"> Паспортные данные </p>
-                        <TextField name='country' label="Страна" type="text" variant="outlined" color="warning"
-                                   margin='normal'
-                                   required size="small"
-                                   sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='birth_place' label="Место рождения" type="text" variant="outlined"
-                                   color="warning" margin='normal'
-                                   required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='birth_date' label="Дата рождения" type="date" color="warning"
-                                   margin='normal' required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
-                        <TextField name='residence_place' label="Место проживания" type="text" variant="outlined"
+                        <p className="title_contract_info"> Данные о местоположении </p>
+                        <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
                                    color="warning"
-                                   margin='normal' required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='citizenship' label="Гражданство" type="text" variant="outlined" color="warning"
-                                   margin='normal'
-                                   required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='gender' label="Пол" type="text" variant="outlined" color="warning"
-                                   margin='normal'
-                                   required size="small" select
+                                   margin='normal' required select size="small"
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -326,75 +352,17 @@ export default function Contract() {
                                            fontWeight: '450'
                                        }
                                    }}>
-                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
-                                      value="Мужской">
-                                <span style={{
-                                    fontSize: "14px",
-                                    fontFamily: ['Montserrat'],
-                                    fontWeight: '400'
-                                }}>Мужской</span>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}} value="Да">
+                                <span
+                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Да</span>
                             </MenuItem>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
-                                      value="Женский">
-                                <span style={{
-                                    fontSize: "14px",
-                                    fontFamily: ['Montserrat'],
-                                    fontWeight: '400'
-                                }}>Женский</span>
+                                      value="Нет">
+                                <span
+                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
                             </MenuItem>
                         </TextField>
-                        <TextField name='passport_number' label="Номер паспорта" type="text" variant="outlined"
-                                   color="warning" margin='normal'
-                                   required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='passport_expiration' label="Срок действия паспорта" type="date" color="warning"
-                                   margin='normal' required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
-                        <TextField name='passport_issued' label="Кем выдан" type="text" variant="outlined"
-                                   color="warning" margin='normal'
-                                   required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='passport_issue_date' label="Дата выдачи" type="date" color="warning"
+                        <TextField name='arrival_date' label="Дата въезда" type="date" color="warning"
                                    margin='normal' required size="small"
                                    inputProps={{
                                        style: {
@@ -416,10 +384,29 @@ export default function Contract() {
             </div>
 
             <div className="info_and_education_container">
+                <p className="title_block"> Образование </p>
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="tytle_contract_education"> Уровень образования</p>
+                        <p className="tytle_contract_education"> Полученный уровень образования</p>
                         <TextField name='level_education' label="Уровень полученного образования" type="text"
+                                   variant="outlined"
+                                   color="warning" margin='normal' sx={{width: "325px"}}
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='education_organisation' label="Образовательная организация" type="text"
                                    variant="outlined"
                                    color="warning" margin='normal' sx={{width: "325px"}}
                                    required size="small"
@@ -454,8 +441,102 @@ export default function Contract() {
                                            fontWeight: '450'
                                        }
                                    }}/>
-                        <p className="tytle_contract_education"> Нынешнее образование </p>
+                        <TextField name='educational_institution_location' label="Местонахождение учебного заведения"
+                                   type="text" variant="outlined"
+                                   color="warning" margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='field_of_education' label="Область образования"
+                                   type="text" variant="outlined"
+                                   color="warning" margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='graduation_year' label="Год окончания" type="date" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
 
+                        <p className="tytle_contract_education"> Дополнительно </p>
+                        <TextField name='comments' label="Примечания" type="text" variant="outlined" color="warning"
+                                   margin='normal'
+                                   required size="small" multiline rows={3}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                    </div>
+                    <div className="column_style_contract">
+                        <p className="tytle_contract_education"> Уровень получаемого образования </p>
+                        <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
+                                   color="warning"
+                                   margin='normal' required size="small" select sx={{width: "325px"}}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Зачислен">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Зачислен</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Не зачислен">
+                                <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Не зачислен</span>
+                            </MenuItem>
+                        </TextField>
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
                                    color="warning"
                                    margin='normal' required size="small" select
@@ -503,7 +584,7 @@ export default function Contract() {
                                 <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>108 ак.ч.</span>
                             </MenuItem>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
-                                      value="588 ак.ч.">
+                                      value="72 ак.ч.">
                                 <span style={{
                                     fontSize: "14px",
                                     fontFamily: ['Montserrat'],
@@ -511,6 +592,23 @@ export default function Contract() {
                                 }}>72 ак.ч.</span>
                             </MenuItem>
                         </TextField>
+                        <TextField name='field_of_education' label="Уровень желаемого образования"
+                                   type="text" variant="outlined"
+                                   color="warning" margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
                         <TextField name='form_study' label="Форма обучения" type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    required size="small" select
@@ -546,27 +644,41 @@ export default function Contract() {
                                 }}>Онлайн</span>
                             </MenuItem>
                         </TextField>
-                        <p className="tytle_contract_education"> Дополнительно </p>
-                        <TextField name='comments' label="Примечания" type="text" variant="outlined" color="warning"
-                                   margin='normal'
-                                   required size="small" multiline rows={3}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
+                        <TextField name='type_study' label="Тип обучения" type="text" variant="outlined"
+                                   color="warning" margin='normal'
+                                   required size="small" select
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
                                            fontFamily: ['Montserrat'],
                                            fontWeight: '450'
                                        }
-                                   }}/>
-                    </div>
-                    <div className="column_style_contract">
-                        <p className="tytle_contract_education"> Статус </p>
+                                   }}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Очная">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Очная</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Гибрид">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Гибрид</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Онлайн">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Онлайн</span>
+                            </MenuItem>
+                        </TextField>
                         <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
                                    color="warning"
                                    margin='normal' required size="small" select sx={{width: "325px"}}
@@ -624,6 +736,24 @@ export default function Contract() {
                                            fontWeight: '450'
                                        }
                                    }}/>
+                        <TextField name='education_code' label="Код направления подготовки" type="text"
+                                   variant="outlined" color="warning"
+                                   margin='normal' size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+
                         <TextField name='contract_number' label="Номер договора" type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    required size="small"
@@ -641,7 +771,235 @@ export default function Contract() {
                                            fontWeight: '450'
                                        }
                                    }}/>
+                        <TextField name='scholarship' label="Стипендия" type="text" variant="outlined"
+                                   color="warning"
+                                   margin='normal' required size="small" select sx={{width: "325px"}}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Да">
+                                <span style={{
+                                    fontSize: "14px",
+                                    fontFamily: ['Montserrat'],
+                                    fontWeight: '400'
+                                }}>Да</span>
+                            </MenuItem>
+                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
+                                      value="Нет">
+                                <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
+                            </MenuItem>
+                        </TextField>
+                    </div>
+                </div>
+            </div>
+            <div className="info_and_education_container">
+                <p className="title_block"> Документы </p>
+                <div className="columns_position">
+                    <div className="column_style_contract">
+                        <p className="title_contract_info"> Паспортные данные </p>
+                        <TextField name='passport_number' label="Номер паспорта" type="text" variant="outlined"
+                                   color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='passport_expiration' label="Срок действия паспорта" type="date" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+                        <TextField name='passport_issued' label="Кем выдан" type="text" variant="outlined"
+                                   color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
 
+                        <TextField name='passport_issue_date' label="Дата выдачи" type="date" color="warning"
+                                   margin='normal' required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+                        <p className="title_contract_info"> Дополнительные документы </p>
+                        <TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
+                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+                        <TextField name='transfer_to_international_service' label="Дата передачи в международную службу"
+                                   type="date" color="warning"
+                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+                        <TextField name='transfer_to_MVD' label="Дата передачи в МВД" type="date" color="warning"
+                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+                        <TextField name='estimated_receipt_date' label="Ориентировочная дата получения" type="date"
+                                   color="warning"
+                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+
+                        <TextField name='actual_receipt_date_invitation' label="Фактическая дата получения приглашения"
+                                   type="date" color="warning"
+                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       },
+                                       shrink: true
+                                   }}/>
+
+
+                    </div>
+                    <div className="column_style_contract">
+                        <p className="title_contract_info">  Документы оплаты  </p>
+                        <TextField name='Payment_agreement_number' label="Номер договора" type="text" variant="outlined"
+                                   color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
+                        <TextField name='Direction_number' label="Рег. номер направления" type="text" variant="outlined"
+                                   color="warning" margin='normal'
+                                   required size="small"
+                                   inputProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}
+                                   InputLabelProps={{
+                                       style: {
+                                           fontSize: "14px",
+                                           fontFamily: ['Montserrat'],
+                                           fontWeight: '450'
+                                       }
+                                   }}/>
                         <TextField name='status_1C' label="Статус 1C" type="text" variant="outlined" color="warning"
                                    margin='normal'
                                    required size="small" select
@@ -665,23 +1023,6 @@ export default function Contract() {
                                 <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Не прикреплен</span>
                             </MenuItem>
                         </TextField>
-                        <TextField name='tutor_name' label="Куратор" type="text" variant="outlined" color="warning"
-                                   margin='normal'
-                                   required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
                         <TextField name='first_payment' label="Платеж 1" type="date" color="warning"
                                    margin='normal' required size="small"
                                    inputProps={{
@@ -750,170 +1091,57 @@ export default function Contract() {
                                        },
                                        shrink: true
                                    }}/>
+
                     </div>
                 </div>
             </div>
             <div className="info_and_education_container">
-                <div className="columns_position">
-                    <div className="column_style_contract">
-                        <p className="title_contract_doc"> Уровень образования</p>
+                <p className="title_block"> Сканы документов </p>
+                <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
+                    контрактника </p>
 
-                        <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
-                        <TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
-                        <TextField name='transfer_to_international_service' label="Дата передачи в международную службу"
-                                   type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
-                        <TextField name='transfer_to_MVD' label="Дата передачи в МВД" type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                <p className="Doc_list">1) Фото паспорта со сроком действия (.PDF)</p>
+                <label htmlFor="passport_photo" className='file-input'>
+                    Добавить файл
+                    <input className='file_input' type="file" name='passport_photo' id='passport_photo'/>
+                    <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                </label>
 
-                        <TextField name='estimated_receipt_date' label="Ориентировочная дата получения" type="date"
-                                   color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                <p className="Doc_list">2) Перевод паспорта на русский язык (.PDF)</p>
+                <label htmlFor="passport_translate" className='file-input'>
+                    Добавить файл
+                    <input className='file_input' type="file" name='passport_translate'
+                           id='passport_translate'/>
+                    <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                </label>
 
-                        <TextField name='actual_receipt_date_invitation' label="Фактическая дата получения приглашения"
-                                   type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
-                    </div>
-                    <div className="column_style_contract">
-                        <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
-                            контрактника </p>
+                <p className="Doc_list">3) Визовая анкета (.PDF)</p>
+                <label htmlFor="visa_photo" className='file-input'>
+                    Добавить файл
+                    <input className='file_input' type="file" name='visa_photo' id='visa_photo'/>
+                    <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                </label>
 
-                        <p className="Doc_list">1) Фото паспорта со сроком действия (.PDF)</p>
-                        <label htmlFor="passport_photo" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='passport_photo' id='passport_photo'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
+                <p className="Doc_list">4) Документ, подтверждающий факт оплаты (.PDF)</p>
+                <label htmlFor="document" className='file-input'>
+                    Добавить файл
+                    <input className='file_input' type="file" name='document' id='document'/>
+                    <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                </label>
 
-                        <p className="Doc_list">2) Перевод паспорта на русский язык (.PDF)</p>
-                        <label htmlFor="passport_translate" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='passport_translate'
-                                   id='passport_translate'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
+                <p className="Doc_list">5) Удостоверение личности(.PDF)</p>
+                <label htmlFor="pass_photo" className='file-input'>
+                    Добавить файл
+                    <input className='file_input' type="file" name='pass_photo' id='pass_photo'/>
+                    <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                </label>
 
-                        <p className="Doc_list">3) Визовая анкета (.PDF)</p>
-                        <label htmlFor="visa_photo" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='visa_photo' id='visa_photo'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">4) Документ, подтверждающий факт оплаты (.PDF)</p>
-                        <label htmlFor="document" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='document' id='document'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">5) Удостоверение личности(.PDF)</p>
-                        <label htmlFor="pass_photo" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='pass_photo' id='pass_photo'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
-                        <label htmlFor="pass_translate" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='pass_translate' id='pass_translate'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-                    </div>
-                </div>
+                <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
+                <label htmlFor="pass_translate" className='file-input'>
+                    Добавить файл
+                    <input className='file_input' type="file" name='pass_translate' id='pass_translate'/>
+                    <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                </label>
             </div>
             <label className="checkbox_style_contract">
                 <input type="checkbox" onClick={handleClickContract}/> Вы уверены, что хотите добавить студента?

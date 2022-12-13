@@ -5,20 +5,21 @@ import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import jwt_decode from 'jwt-decode'
-import {HOME_ROUTE, REGISTRATION_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
+import {HOME_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
 import {getCountNotifications} from "../../../actions/notification";
 import IconButton from "@mui/material/IconButton";
 import {Badge} from "@mui/material";
-import HowToRegOutlinedIcon from '@mui/icons-material/HowToRegOutlined';
 import PersonIcon from '@mui/icons-material/Person';
+import {dropToken, getToken} from "../../../utils/token";
 
 export default function Navbar() {
     const [countOfNotifications, setCountOfNotifications] = useState('')
+
     let tokenName = ''
     let userName = ''
-    let decodedToken = jwt_decode(localStorage.getItem("jwt"))
+    let decodedToken = jwt_decode(getToken())
     try {
-        if (localStorage.getItem("jwt")){
+        if (getToken()){
             tokenName = decodedToken.name.split(' ')
             userName =  tokenName.length === 2 ? `${tokenName[0]} ${tokenName[1]}` : tokenName
         }
@@ -26,11 +27,11 @@ export default function Navbar() {
         userName = "Не авторизовано"
     }
 
+
     useEffect(() => {
         getCountNotifications()
             .then(data => setCountOfNotifications(data))
     }, [])
-
     const [isActive, setIsActive] = useState(false)
 
     return (
@@ -60,18 +61,10 @@ export default function Navbar() {
                             <PersonIcon sx={{fontSize: 19}}/>
                             <div className="nav__pad"> Личный кабинет </div>
                         </NavLink>
-
-                        {decodedToken.userId === 24 &&
-                            <NavLink to={REGISTRATION_ROUTE} className="mail_button_account">
-                                <HowToRegOutlinedIcon sx={{fontSize: 19}}/>
-                                <div className="nav__pad"> Регистрация</div>
-                            </NavLink>
-                        }
-
                         <button
                             className="exit_button_account"
                             onClick={() => {
-                                localStorage.removeItem('jwt')
+                                dropToken()
                                 window.location.reload()
                             }}><ExitToAppIcon sx={{fontSize: 19}}/>
                             <div className="nav__pad">Выход</div>

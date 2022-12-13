@@ -121,3 +121,12 @@
 .file-input input[type="file"] {
     display: none;
 }
+
+.title_block{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    font-weight: 500;
+    font-size: 22px;
+    color: #FF4B00;
+}

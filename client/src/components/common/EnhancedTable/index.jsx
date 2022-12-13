@@ -1,60 +1,28 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
-import {alpha} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import UploadIcon from '@mui/icons-material/Upload';
-import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
-import FileDownloadIcon from '@mui/icons-material/FileDownload';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import {visuallyHidden} from '@mui/utils';
 import {useEffect, useState} from "react"
 import moment from 'moment'
-import {
-    getStudents,
-    createXlsx,
-    getXlsx,
-    importXlsx,
-    removeArrayOfStudents
-} from '../../../actions/student'
+import {getStudents} from '../../../actions/student'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
-import {
-    Button,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle
-} from "@mui/material";
-import iziToast from "izitoast";
+import {CircularProgress} from "@mui/material";
 import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
-import  Filter from "../Searchbar/Search/Filter";
-
-
-/*
-Самый больной файл по моему мнению
-Это код главной страницы с таблицей
-*/
-
-let rows = []
+import Filter from "../Searchbar/Search/Filter";
+import jwt_decode from "jwt-decode";
+import TableToolbar from "./TableToolbar";
+import TableHeader from "./TableHeader";
+import {getToken} from "../../../utils/token";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -84,294 +52,11 @@ function stableSort(array, comparator) {
     return stabilizedThis.map((el) => el[0]);
 }
 
-// название "шапки" таблицы
-const headCells = [
-    {
-        id: 'education_type',
-        numeric: false,
-        disablePadding: true,
-        label: 'Тип обучения',
-    },
-    {
-        id: 'hours_number',
-        numeric: false,
-        disablePadding: true,
-        label: 'Кол-во часов',
-    },
-    {
-        id: 'latin_name',
-        numeric: false,
-        disablePadding: false,
-        label: 'ФИО (лат.)',
-    },
-    {
-        id: 'russian_name',
-        numeric: false,
-        disablePadding: true,
-        label: 'ФИО (кир.)',
-    },
-    {
-        id: 'country',
-        numeric: false,
-        disablePadding: false,
-        label: 'Страна',
-    },
-    {
-        id: 'gender',
-        numeric: false,
-        disablePadding: false,
-        label: 'Пол',
-    },
-    {
-        id: 'contract_number',
-        numeric: true,
-        disablePadding: true,
-        label: '№ договора',
-    },
-    {
-        id: 'enrollment_order',
-        numeric: false,
-        disablePadding: true,
-        label: '№ приказа о зачислении',
-    },
-    {
-        id: 'enrollment',
-        numeric: false,
-        disablePadding: false,
-        label: 'Зачисление',
-    }
-];
-
-// генерирование "шапки" таблицы
-function EnhancedTableHead(props) {
-    const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} =
-        props;
-    const createSortHandler = (property) => (event) => {
-        onRequestSort(event, property);
-    };
-
-    return (
-        <TableHead>
-            <TableRow>
-                <TableCell padding="checkbox">
-                    <Checkbox
-                        color="primary"
-                        indeterminate={numSelected > 0 && numSelected < rowCount}
-                        checked={rowCount > 0 && numSelected === rowCount}
-                        onChange={onSelectAllClick}
-                        inputProps={{
-                            'aria-label': 'select all desserts',
-                        }}
-                    />
-                </TableCell>
-                {headCells.map((headCell) => (
-                    <TableCell
-                        key={headCell.id}
-                        align={'center'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
-                        sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>
-                            ) : null}
-                        </TableSortLabel>
-                    </TableCell>
-                ))}
-            </TableRow>
-        </TableHead>
-    );
-}
-
-EnhancedTableHead.propTypes = {
-    numSelected: PropTypes.number.isRequired,
-    onRequestSort: PropTypes.func.isRequired,
-    onSelectAllClick: PropTypes.func.isRequired,
-    order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-    orderBy: PropTypes.string.isRequired,
-    rowCount: PropTypes.number.isRequired,
-};
-
-let dataToDownload = null
-let selectToDelete = null
-
-// плашка с отображением выбранных студентов, их колличеством, кнопка для импорта, экспорта и удаления
-const EnhancedTableToolbar = (props) => {
-    const {numSelected} = props;
-    const [file, setFile] = React.useState(null);
-
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => {
-        setOpen(true);
-    };
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    return (
-        <>
-            <Toolbar
-                sx={{
-                    pl: {sm: 2},
-                    pr: {xs: 1, sm: 1},
-                    ...(numSelected > 0 && {
-                        bgcolor: (theme) =>
-                            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-                    }),
-                }}
-            >
-                {numSelected > 0 ? (
-                    <Typography sx={{flex: '1 1 100%'}} color="inherit" variant="subtitle1" component="div">
-                        {numSelected} выбрано
-                    </Typography>
-                ) : (
-                    <Typography sx={{flex: '1 1 100%'}} variant="h6" id="tableTitle" component="div">
-                    </Typography>
-                )}
-
-                {numSelected > 0 ? (<>
-                        <Tooltip title="Загрузить">
-                            <IconButton onClick={() => {
-                                createXlsx(dataToDownload)
-                                setTimeout(() => {
-                                    getXlsx()
-                                        .then(response => {
-                                            response.blob().then(blob => {
-                                                let url = window.URL.createObjectURL(blob);
-                                                let a = document.createElement('a');
-                                                a.href = url;
-                                                a.download = 'studentsByFilter.xlsx';
-                                                a.click();
-                                            });
-                                        });
-                                }, 1000)
-                            }}>
-                                <FileDownloadIcon/>
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Удалить">
-                            <IconButton onClick={() => {
-                                handleOpen()
-                            }}>
-                                <DeleteIcon/>
-                            </IconButton>
-                        </Tooltip>
-
-                    </>
-                ) : (
-                    <>
-                        <input type='file' multiple='multiple' onChange={e => setFile(e.target.files[0])}/>
-                        <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
-                            <UploadIcon fontSize='medium' onClick={() => {
-                                const data = new FormData()
-                                data.append('fileToImport', file)
-
-                                importXlsx(data)
-                                    .then(res => {
-                                        switch (res.status) {
-                                            case 201: {
-                                                iziToast.success({
-                                                    title: res.statusText,
-                                                    message: 'Студенты успешно импортированы в базу. Обновляю страницу :)',
-                                                    position: "topRight"
-                                                });
-                                                setTimeout(() => {
-                                                    window.location.reload()
-                                                }, 2000)
-                                                break
-                                            }
-                                            default: {
-                                                iziToast.error({
-                                                    title: res.statusText,
-                                                    message: 'Ошибка. Попробуйте снова.',
-                                                    position: "topRight",
-                                                    color: "#FFF2ED"
-                                                });
-                                            }
-                                        }
-                                    })
-                            }}>
-                                <FilterListIcon/>
-                            </UploadIcon>
-                        </Tooltip>
-                    </>
-                )}
-            </Toolbar>
-            {/* Диалоговое окно для подтверждения удаления*/}
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Вы уверены, что хотите удалить выбранных студентов?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        removeArrayOfStudents(selectToDelete)
-                            .then((res) => {
-                                switch (res.status) {
-                                    case 200: {
-                                        iziToast.success({
-                                            title: res.statusText,
-                                            message: 'Студенты успешно удалены из базы. Обновляю страницу :)',
-                                            position: "topRight"
-                                        });
-                                        setTimeout(() => {
-                                            window.location.reload()
-                                        }, 2000)
-                                        break
-                                    }
-                                    default: {
-                                        iziToast.error({
-                                            title: res.statusText,
-                                            message: 'Ошибка. Попробуйте снова.',
-                                            position: "topRight",
-                                            color: "#FFF2ED"
-                                        });
-                                    }
-                                }
-                            })
-                        setOpen(false)
-                    }
-                    }>Да</Button>
-                    <Button onClick={() => {
-                        setOpen(false)
-                    }
-                    }>Нет</Button>
-                </DialogActions>
-            </Dialog>
-        </>
-    );
-};
-
-EnhancedTableToolbar.propTypes = {
-    numSelected: PropTypes.number.isRequired,
-};
-
-
-// код с основной таблицей
 export default function EnhancedTable() {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
 
-    const [selectedForDownloading, setSelectedForDownloading] = useState([]);
-    dataToDownload = selectedForDownloading
-
     const [selected, setSelected] = useState([]);
-    selectToDelete = selected
 
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(false);
@@ -381,47 +66,32 @@ export default function EnhancedTable() {
     const [filters, setFilters] = useState([]);
 
     const [list, setList] = useState([]);
-    // хук для постоянного получения студентов с бэка
+
     useEffect(() => {
         getStudents()
-            .then(items => setList(items.reverse()))
+            .then(items => {
+                items.map(item => {
+                            item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
+                            item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
+                            item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
+                            item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
+                            item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
+                            item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
+                            item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
+                            item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
+                            item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
+                            item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
+                            item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
+                            item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
+                            item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
+                        });
+                setList(items);
+            })
             .finally(() => setLoading(false))
-    }, [])
+    }, []);
 
-    rows = list
-    console.log(rows);
-    // из бд приходит дата в ужасном формате, поэтому вот так криво каждая строка парсится
-    rows.map(item => {
-        item.birth_date = moment(item.birth_date).format("YYYY-MM-DD")
-        item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD")
-        item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD")
-        item.entry_date = moment(item.entry_date).format("YYYY-MM-DD")
-        item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD")
-        item.first_payment = moment(item.first_payment).format("YYYY-MM-DD")
-        item.second_payment = moment(item.second_payment).format("YYYY-MM-DD")
-        item.third_payment = moment(item.third_payment).format("YYYY-MM-DD")
-        item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD")
-        item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD")
-        item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD")
-        item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD")
-        item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD")
-
-        // НЕ УДАЛЯТЬ; Дальше идёт код для новой фильтрации, пока что не могу решить, но заготовку оставил
-
-        // item.birth_date = new Date(item.birth_date)
-        // item.passport_issue_date = new Date(item.passport_issue_date)
-        // item.passport_expiration = new Date(item.passport_expiration)
-        // item.entry_date = new Date(item.entry_date)
-        // item.visa_validity = new Date(item.visa_validity)
-        // item.first_payment = new Date(item.first_payment)
-        // item.second_payment = new Date(item.second_payment)
-        // item.third_payment = new Date(item.third_payment)
-        // item.fourth_payment = new Date(item.fourth_payment)
-        // item.transfer_to_international_service = new Date(item.transfer_to_international_service)
-        // item.transfer_to_MVD = new Date(item.transfer_to_MVD)
-        // item.estimated_receipt_date = new Date(item.estimated_receipt_date)
-        // item.actual_receipt_date_invitation = new Date(item.actual_receipt_date_invitation)
-    })
+    const decodedToken = jwt_decode(getToken())
+    const READER_ACCESS = decodedToken.role === 'Читатель'
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -429,26 +99,20 @@ export default function EnhancedTable() {
         setOrderBy(property);
     };
 
-    // нажатие кнопки для выбора всех студентов
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelects = filteredValues.map((n) => n.id);
-            setSelected(newSelects);
-
-            const newSelectsForDownloading = filteredValues.map((n) => n);
-            setSelectedForDownloading(newSelectsForDownloading)
+            setSelected(filteredValues.map((n) => n.id));
             return;
         }
         setSelected([]);
     };
 
-    // для выбора по отдельности
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
+    const handleClick = (userID) => {
+        const selectedIndex = selected.indexOf(userID);
         let newSelected = [];
 
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
+            newSelected = newSelected.concat(selected, userID);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -480,13 +144,9 @@ export default function EnhancedTable() {
 
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-    /*
-        в таблице выводятся данные из filteredValues. При внесении в поле для ввода данных происходит моментальная сортировка
-        на данный момент поиск происходит только по russian_name и менять можно только в коде
-    */
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - list.length) : 0;
 
-    function multiFilter(item) {
+    const multiFilter = (item) => {
         for (let i = 0; i < filters.length; i++) {
             let filter = filters[i];
             if (item[filter.param.value] === undefined) return false;
@@ -500,38 +160,59 @@ export default function EnhancedTable() {
                         return false;
                     break;
                 case "equals":
-                    if (item[filter.param.value] !== Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) !== new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] !== Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "less":
-                    if (item[filter.param.value] >= Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) >= new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] >= Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "lessE":
-                    if (item[filter.param.value] > Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) > new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] > Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "more":
-                    if (item[filter.param.value] <= Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) <= new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] <= Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 case "moreE":
-                    if (item[filter.param.value] < Number(filter.value)) return false;
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) < new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] < Number(filter.value)) {
+                        return false;
+                    }
                     break;
                 default:
                     return false;
             }
         }
         return true;
-    }
+    };
 
-    const filteredValues = rows.filter(row => {
+    const filteredValues = list.filter(row => {
         return multiFilter(row);
-    })
+    });
+
     return (
         <div>
-            {/* Перенёс сюда SearchBar.jsx */}
             <div className="nav">
                 <div className="filter_position">
-                    <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить студента <AddIcon/></NavLink>
-                        {/* Перенёс сюда Filter.jsx */}
-                    {!loading && <Filter params={Object.keys(rows[0])} filters={filters} setFilters={setFilters}/>}
+                    {!READER_ACCESS &&
+                        <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить
+                            студента <AddIcon/></NavLink>}
+                    {!loading && <Filter filters={filters} setFilters={setFilters}/>}
                 </div>
                 {loading && <CircularProgress color="warning"/>}
             </div>
@@ -544,14 +225,14 @@ export default function EnhancedTable() {
                     borderRadius: '0px',
                     borderTop: '1px solid #FA7A45'
                 }}>
-                    <EnhancedTableToolbar numSelected={selected.length}/>
+                    <TableToolbar numSelected={selected.length} selectedRows={selected}/>
                     <TableContainer>
                         <Table
                             sx={{minWidth: 750}}
                             aria-labelledby="tableTitle"
                             size={dense ? 'small' : 'medium'}
                         >
-                            <EnhancedTableHead
+                            <TableHeader
                                 numSelected={selected.length}
                                 order={order}
                                 orderBy={orderBy}
@@ -578,8 +259,8 @@ export default function EnhancedTable() {
                                             >
                                                 <TableCell padding="checkbox">
                                                     <Checkbox
-                                                        onClick={(event) => {
-                                                            handleClick(event, row.id)
+                                                        onClick={() => {
+                                                            handleClick(row.id);
                                                         }}
                                                         color="primary"
                                                         checked={isItemSelected}

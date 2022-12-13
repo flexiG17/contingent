@@ -40,3 +40,22 @@
     background-color: #FF4B00;
 }
 
+
+.file_input{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 160px;
+    margin: 5px 15px 5px 0;
+    background-color: #FA7A45;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+}
+
+.file_input input[type="file"] {
+    display: none;
+}
+

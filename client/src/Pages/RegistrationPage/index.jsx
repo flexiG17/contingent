@@ -3,18 +3,29 @@ import './RegistrationPage.css';
 import Logo from "../full_logo.png";
 import {Registration} from "../../actions/user";
 import {useNavigate} from "react-router-dom";
+import {MenuItem} from "@mui/material";
+import TextField from "@mui/material/TextField";
 
 function RegisterPage() {
     const [inputName, setNameItemInput] = useState('')
+    const [inputRole, setRoleItemInput] = useState('')
     const [inputEmail, setEmailItemInput] = useState('')
     const [inputPassword, setPasswordItemInput] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        Registration(inputName, inputEmail, inputPassword, navigate)
+        Registration(inputName, inputRole, inputEmail, inputPassword, navigate)
     };
 
+    const propsStyle = {
+        style:
+            {
+                fontSize: "14.5px",
+                fontFamily: ['Montserrat'],
+                fontWeight: '450'
+            }
+    }
     return (
         <>
             <div className="form_container">
@@ -25,6 +36,20 @@ function RegisterPage() {
                         <label className="label_style" htmlFor="name">Имя сотрудника</label>
                         <input className="input_style" name="name" type="text" placeholder="Введите имя сотрудника"
                                onChange={event => setNameItemInput(event.target.value)} value={inputName}/>
+                        <label className="label_style" htmlFor="name">Роль</label>
+                        <TextField type="text" variant="outlined" color="warning" margin='normal'
+                                   size="small" select InputLabelProps={propsStyle}
+                                   onChange={event => setRoleItemInput(event.target.value)} value={inputRole}>
+                            <MenuItem sx={propsStyle} value="Администратор">
+                                <span style={propsStyle.style}>Администратор</span>
+                            </MenuItem>
+                            <MenuItem sx={propsStyle} value="Редактор">
+                                <span style={propsStyle.style}>Редактор</span>
+                            </MenuItem>
+                            <MenuItem sx={propsStyle} value="Читатель">
+                                <span style={propsStyle.style}>Читатель</span>
+                            </MenuItem>
+                        </TextField>
                         <label className="label_style" htmlFor="email">Email</label>
                         <input className="input_style" name="email" type="email" placeholder="Введите email сотрудника"
                                onChange={event => setEmailItemInput(event.target.value)} value={inputEmail}/>
