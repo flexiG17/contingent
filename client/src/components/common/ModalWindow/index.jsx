@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {MenuItem} from "@mui/material";
 import jwt_decode from "jwt-decode";
+import {getToken} from "../../../utils/token";
 
 
 const Modal = ({active, setActive}) => {
@@ -27,7 +28,7 @@ const Modal = ({active, setActive}) => {
             }
     }
 
-    const userId = jwt_decode(localStorage.getItem('jwt')).userId
+    const userId = jwt_decode(getToken()).userId
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {

@@ -3,9 +3,10 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 import {adminRoutes, editorRoutes, publicRoutes, readerRoutes} from "../routes";
 import {START_ROUTE} from "../utils/consts";
 import jwt_decode from "jwt-decode";
+import {getToken} from "../utils/token";
 
 const AppRouter = () => {
-    const token = localStorage.getItem("jwt");
+    const token = getToken();
     const userRole = token === null ? 'Unauthorized' : jwt_decode(token).role;
 
     const adminAccess = userRole === 'Администратор';

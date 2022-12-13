@@ -1,6 +1,7 @@
 import axios from 'axios'
 import iziToast from "izitoast";
 import {ACCOUNT_ROUTE, LOAD_ROUTE, LOGIN_ROUTE, NOTIFICATION_ROUTE} from "../utils/consts";
+import {getToken, setToken} from "../utils/token";
 
 export const Registration = async (name, role, email, password, navigate) => {
     try {
@@ -11,7 +12,7 @@ export const Registration = async (name, role, email, password, navigate) => {
             role: role
         }, {
             headers: {
-                'Authorization': localStorage.getItem("jwt"),
+                'Authorization': getToken(),
                 'Content-Type': 'application/json'
             }
         });
@@ -37,7 +38,7 @@ export const Login = async (email, password, navigate) => {
             email,
             password
         });
-        localStorage.setItem('jwt', response.data.token)
+        setToken(response.data.token);
         iziToast.success({
             title: response.statusText,
             message: response.data.message,
@@ -56,20 +57,22 @@ export const Login = async (email, password, navigate) => {
 
 export function getUsers() {
     return axios.get('http://localhost:5000/api/user/', {
-        headers: {Authorization: localStorage.getItem('jwt')}
+        headers: {
+            Authorization: getToken()
+        }
     }).then(resp => resp.data)
 }
 
 export function changeUserData(data, id) {
     return axios.put(`http://localhost:5000/api/user/change/${id}`, data, {
         headers: {
-            'Authorization': localStorage.getItem("jwt"),
+            'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
         }
     })
         .then(({statusText, data}) => {
             iziToast.success({
-                title : statusText,
+                title: statusText,
                 message: data.message,
                 position: 'topRight'
             })

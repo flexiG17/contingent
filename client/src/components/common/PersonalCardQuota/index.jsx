@@ -24,6 +24,7 @@ import jwt_decode from "jwt-decode";
 import EditIcon from "@mui/icons-material/Edit";
 import ModalMessage from '../MessageModal/index'
 import Modal from "../ModalWindow";
+import {getToken} from "../../../utils/token";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
@@ -56,7 +57,7 @@ export default function PersonalCardQuota() {
     const location = useLocation();
     const rows = location.state;
 
-    const role = jwt_decode(localStorage.getItem('jwt')).role
+    const role = jwt_decode(getToken()).role
     const READER_ACCESS = role === 'Читатель'
 
 

@@ -13,6 +13,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 import iziToast from "izitoast";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {getToken} from "../../../../utils/token";
 
 export default function TableToolbar({numSelected, selectedRows}) {
     const [file, setFile] = React.useState(null);
@@ -22,7 +23,7 @@ export default function TableToolbar({numSelected, selectedRows}) {
         setOpen(true);
     };
 
-    let decodedToken = jwt_decode(localStorage.getItem("jwt"));
+    let decodedToken = jwt_decode(getToken());
     const READER_ACCESS = decodedToken.role === 'Читатель';
     const handleClose = () => {
         setOpen(false);

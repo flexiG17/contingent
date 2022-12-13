@@ -22,6 +22,7 @@ import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
 import TableToolbar from "./TableToolbar";
 import TableHeader from "./TableHeader";
+import {getToken} from "../../../utils/token";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -89,7 +90,7 @@ export default function EnhancedTable() {
             .finally(() => setLoading(false))
     }, []);
 
-    const decodedToken = jwt_decode(localStorage.getItem('jwt'))
+    const decodedToken = jwt_decode(getToken())
     const READER_ACCESS = decodedToken.role === 'Читатель'
 
     const handleRequestSort = (event, property) => {

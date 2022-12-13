@@ -1,17 +1,18 @@
 import axios from "axios";
 import iziToast from "izitoast";
 import {HOME_ROUTE} from '../utils/consts'
+import {getToken} from "../utils/token";
 
 export function getStudents() {
     return axios.get('http://localhost:5000/api/student/', {
-        headers: {Authorization: localStorage.getItem('jwt')}
+        headers: {Authorization: getToken()}
     }).then(resp => resp.data)
 }
 
 export function removeStudent(id) {
     return axios.delete(`http://localhost:5000/api/student/remove/${id}`, {
         headers: {
-            'Authorization': localStorage.getItem("jwt"),
+            'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
         }
     }).then(({statusText, data}) => {
@@ -33,7 +34,7 @@ export function removeStudent(id) {
 export function removeArrayOfStudents(data) {
     return axios.delete(`http://localhost:5000/api/student/removeStudents`, {
         headers: {
-            'Authorization': localStorage.getItem("jwt"),
+            'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
         },
         data: data
@@ -57,7 +58,7 @@ export function changeStudentData(item, id) {
     return axios.put(
         `http://localhost:5000/api/student/update/${id}`, item, {
             headers: {
-                'Authorization': localStorage.getItem("jwt"),
+                'Authorization': getToken(),
                 'Content-Type': 'application/json;charset=utf-8'
             }
         }).then(({statusText, data}) => {
@@ -79,7 +80,7 @@ export function changeStudentData(item, id) {
 export function addStudent(item, navigate) {
     return axios.post('http://localhost:5000/api/student/create', item, {
         headers: {
-            'Authorization': localStorage.getItem("jwt"),
+            'Authorization': getToken(),
             'Content-Type': 'multipart/form-data;'
         },
     }).then(({statusText, data}) => {
@@ -102,7 +103,7 @@ export function addStudent(item, navigate) {
 export function createXlsx(item) {
     return axios.post('http://localhost:5000/api/student/download/xlsx', item, {
         headers: {
-            'Authorization': localStorage.getItem("jwt"),
+            'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
         },
         responseType: 'blob'
@@ -113,7 +114,7 @@ export function importXlsx(data) {
     return axios.post('http://localhost:5000/api/student/importXlsxFile', data, {
         'content-type': 'multipart/form-data',
         headers: {
-            'Authorization': localStorage.getItem("jwt")
+            'Authorization': getToken()
         },
     }).then(({statusText, data}) => {
         iziToast.success({
@@ -134,8 +135,8 @@ export function importXlsx(data) {
 export function sendMessage(data) {
     return axios.post('http://localhost:5000/api/mail/send', data, {
         headers: {
-            'Content-Type': 'application/json;charset=utf-8',
-            'Authorization': localStorage.getItem("jwt")
+            'Authorization': getToken(),
+            'Content-Type': 'application/json;charset=utf-8'
         },
     }).then(({statusText, data}) => {
         iziToast.success({

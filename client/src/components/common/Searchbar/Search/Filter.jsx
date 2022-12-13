@@ -7,6 +7,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AddIcon from '@mui/icons-material/Add';
 import {FilterItem} from "../../FilterItem";
 import {Badge} from "@mui/material";
+import {getToken} from "../../../../utils/token";
 
 const ITEM_HEIGHT = 50;
 
@@ -39,7 +40,7 @@ export default function LongMenu({filters, setFilters}) {
     useEffect(() => {
         let result = axios.get('http://localhost:5000/api/student/columns', {
             headers: {
-                'Authorization': localStorage.getItem("jwt"),
+                'Authorization': getToken(),
                 'Content-Type': 'application/json;charset=utf-8'
             }
         }).then(res => setColumns(res.data.map((item) => {

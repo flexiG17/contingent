@@ -18,6 +18,7 @@ import {changeUserData, getUsers} from "../../actions/user";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from '@mui/icons-material/Add';
 import ModalRegistration from "../../components/common/ModalRegistration";
+import {getToken} from "../../utils/token";
 
 function DeleteIcon() {
     return null;
@@ -29,10 +30,10 @@ function Index() {
     const [userList, setUserList] = useState([]);
     const [modalRegistrationActive, setModalRegistrationActive] = useState(false)
 
-    const [userName, setUserName] = useState(jwt_decode(localStorage.getItem('jwt')).name)
-    const [userEmail, setUserEmail] = useState(jwt_decode(localStorage.getItem('jwt')).email)
-    const [userRole, setUserRole] = useState(jwt_decode(localStorage.getItem('jwt')).role)
-    const [userId, setUserId] = useState(jwt_decode(localStorage.getItem('jwt')).id)
+    const [userName, setUserName] = useState(jwt_decode(getToken()).name)
+    const [userEmail, setUserEmail] = useState(jwt_decode(getToken()).email)
+    const [userRole, setUserRole] = useState(jwt_decode(getToken()).role)
+    const [userId, setUserId] = useState(jwt_decode(getToken()).id)
     const [userPassword, setUserPassword] = useState()
 
     const dataToChange = {
@@ -51,7 +52,7 @@ function Index() {
             }
     }
 
-    const decodedToken = jwt_decode(localStorage.getItem('jwt'))
+    const decodedToken = jwt_decode(getToken())
     const ADMIN_ACCESS = decodedToken.role === 'Администратор'
 
     useEffect(() => {

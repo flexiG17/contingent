@@ -6,6 +6,7 @@ import jwt_decode from "jwt-decode";
 import {sendMessage} from "../../../actions/student";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import Select from 'react-select';
+import {getToken} from "../../../utils/token";
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
     const propsStyle = {
@@ -33,7 +34,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
         { value: 'type3', label: 'Третий шаблон' }
     ]
 
-    const decodeToken = jwt_decode(localStorage.getItem('jwt'))
+    const decodeToken = jwt_decode(getToken())
     return (
         <>
             <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
