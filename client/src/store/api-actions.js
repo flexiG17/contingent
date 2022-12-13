@@ -74,14 +74,20 @@ export const deleteDir = createAsyncThunk(
 //TODO дописать dispatch
 export const uploadFile = createAsyncThunk(
     'files/upload',
-    async ({data}, {dispatch, extra: api}) => {
+    async ({files, parentId, studentId}, {dispatch, extra: api}) => {
+        const formData = new FormData();
+        formData.append('files', files);
+        if (parentId) {
+            formData.append('parent_id', parentId);
+        }
+        formData.append('student_id', studentId);
         try {
-            await api.post(`files/upload`, data, {
+            const {data} = await api.post(`files/upload`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            // dispatch(addFile(data));
+            dispatch(addFile(data));
         } catch (e) {
             iziToast.error({
                 title: e.response.statusText,

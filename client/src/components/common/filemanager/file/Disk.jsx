@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './Disk.css';
 import FileList from "./FileList/FileList";
 import {useDispatch, useSelector} from "react-redux";
@@ -13,6 +13,8 @@ const Disk = ({studentId}) => {
     const dirStack = useSelector(getDirStack);
 
     const [active, setActive] = useState(false);
+    const fileRef = useRef(null);
+    console.log(fileRef)
 
     useEffect(() => {
         dispatch(fetchFilesAction({studentId: studentId, parentId: currentDir}))
@@ -23,11 +25,14 @@ const Disk = ({studentId}) => {
     };
 
     const backClickHandler = () => {
-        console.log('ТЫ НЕ ПРОЙДЁШЬ!');
         const b = dirStack[dirStack.length - 1];
         dispatch(popDirStack());
         dispatch(setCurrentDir(b));
     };
+
+    const uploadFileHandler = (event) => {
+
+    }
 
     return (
         <>
@@ -35,7 +40,11 @@ const Disk = ({studentId}) => {
                 <div className="disk_btns">
                     <button className="disk_style_btns" onClick={backClickHandler}>Назад</button>
                     <button className="disk_style_btns" onClick={openCreateDir}>Добавить папку</button>
-                    <button className="disk_style_btns">Добавить файл</button>
+                    <div className="disk_style_btns">
+                        <label htmlFor="disk_upload_id">Выберете файл</label>
+                        <input ref={fileRef} type="file" id="disk_upload_id" style={{display: "none"}}
+                               onClick={uploadFileHandler} multiple={true}/>
+                    </div>
                 </div>
                 <FileList/>
                 {

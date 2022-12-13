@@ -19,7 +19,11 @@ export const managerData = createSlice({
             state.currentDir = action.payload;
         },
         addFile: (state, action) => {
-            state.files = [...state.files, action.payload];
+            if (Array.isArray(action.payload)) {
+                state.files = [...state.files, ...action.payload];
+            } else {
+                state.files = [...state.files, action.payload];
+            }
         },
         deleteFile: (state, action) => {
             state.files = [...state.files.filter((file) => file.id !== action.payload)];
