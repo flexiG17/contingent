@@ -1,6 +1,4 @@
 const fileService = require('../services/fileManagerService')
-const fs = require('fs')
-const db = require('../db')
 
 // TODO:
 //  add rename folder/file
@@ -36,9 +34,9 @@ class FileController {
     }
 
     async uploadFile(req, res) {
-        await fileService.uploadFiles(req.files, req.body.parent_id, req.body.student_id, req.user.id)
+        const files = await fileService.uploadFiles(req.files, req.body.parent_id, req.body.student_id, req.user.id)
 
-        return res.json({message: "Файлы успешно добавлены"})
+        return res.json(files)
     }
 
     async downloadFile(req, res) {
