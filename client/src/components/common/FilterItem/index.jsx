@@ -34,8 +34,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                 <div className="third_parameter">
                     <input className="search_filter" type={inputType} onChange={(e) => {
                         changeFilterProp(item.id, e.target.value, 'value');
-                    }
-                    }
+                    }}
                            value={item.value}/>
                 </div>
                 <button className="delete_filter_button"

@@ -68,6 +68,7 @@ export default function LongMenu({filters, setFilters}) {
                 </Badge>
             </IconButton>
             <Menu
+                autoFocus={false}
                 id="long-menu"
                 MenuListProps={{
                     'aria-labelledby': 'long-button',
@@ -106,6 +107,7 @@ export default function LongMenu({filters, setFilters}) {
                             <button className="add_filter_button" onClick={() => {
                                 setFilterArr([]);
                                 setFilters([]);
+                                handleClose();
                             }}>
                                 Сбросить
                             </button>
