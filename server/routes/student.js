@@ -26,6 +26,4 @@ router.post('/download/xlsx', controller.downloadXlsx)
 
 router.delete('/removeStudents', access(roles.editor), controller.removeStudents)
 
-router.post('/createStudents', controller.createStudents)
-
 module.exports = router
