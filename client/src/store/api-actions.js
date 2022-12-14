@@ -58,7 +58,10 @@ export const deleteDir = createAsyncThunk(
     'files/delete',
     async ({fileId}, {dispatch, extra: api}) => {
         try {
-            await api.delete(`files/`, {fileId});
+            const ids = [fileId];
+            await api.delete(`files/`, {
+                data: ids
+            });
             dispatch(deleteFile(fileId));
         } catch (e) {
             iziToast.error({
@@ -75,16 +78,25 @@ export const deleteDir = createAsyncThunk(
 export const uploadFile = createAsyncThunk(
     'files/upload',
     async ({files, parentId, studentId}, {dispatch, extra: api}) => {
-        const formData = new FormData();
-        formData.append('files', files);
-        if (parentId) {
-            formData.append('parent_id', parentId);
-        }
-        formData.append('student_id', studentId);
         try {
+            const formData = new FormData();
+            files.forEach(file => formData.append('files', file));
+            if (parentId) {
+                formData.append('parent_id', parentId);
+            }
+            formData.append('student_id', studentId);
+
             const {data} = await api.post(`files/upload`, formData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    // onUploadProgress: progressEvent => {
+                    //     const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
+                    //     console.log('total', totalLength);
+                    //     if (totalLength) {
+                    //         let progress = Math.round((progressEvent.loaded * 100) / totalLength);
+                    //         console.log(progress);
+                    //     }
+                    // }
                 }
             });
             dispatch(addFile(data));

@@ -20,6 +20,7 @@ export default function Contract() {
         e.preventDefault();
 
         let data = new FormData(formRef.current);
+        console.log(data);
         data.append('education_type', 'Контракт');
 
         addStudent(data, navigate);
@@ -791,7 +792,8 @@ export default function Contract() {
                             </MenuItem>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
                                       value="Нет">
-                                <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
+                                <span
+                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
                             </MenuItem>
                         </TextField>
                     </div>
@@ -965,7 +967,7 @@ export default function Contract() {
 
                     </div>
                     <div className="column_style_contract">
-                        <p className="title_contract_info">  Документы оплаты  </p>
+                        <p className="title_contract_info"> Документы оплаты </p>
                         <TextField name='Payment_agreement_number' label="Номер договора" type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    required size="small"
