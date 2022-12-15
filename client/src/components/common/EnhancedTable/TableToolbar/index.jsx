@@ -14,6 +14,7 @@ import iziToast from "izitoast";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import {getToken} from "../../../../utils/token";
+import moment from "moment";
 
 export default function TableToolbar({numSelected, selectedRows}) {
     const [file, setFile] = React.useState(null);
@@ -58,7 +59,8 @@ export default function TableToolbar({numSelected, selectedRows}) {
                                         let url = window.URL.createObjectURL(response.data);
                                         let a = document.createElement('a');
                                         a.href = url;
-                                        a.setAttribute('download', 'studentsByFilter.xlsx');
+                                        const date = moment();
+                                        a.setAttribute('download', `Выгрузка от ${date.format('DD.M.YYYY')}.xlsx`);
 
                                         document.body.appendChild(a);
                                         a.click();

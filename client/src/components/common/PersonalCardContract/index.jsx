@@ -784,7 +784,6 @@ export default function PersonalCardContract() {
                                             position: "topRight",
                                         });
                                         setTimeout(() => {
-                                            navigate(HOME_ROUTE)
                                         }, 1000)
                                         break
                                     }
@@ -799,6 +798,7 @@ export default function PersonalCardContract() {
                                 }
                             })
                         setOpen(false)
+                        navigate(HOME_ROUTE);
                     }
                     }>Да</Button>
                     <Button onClick={() => {

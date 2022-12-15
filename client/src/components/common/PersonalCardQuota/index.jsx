@@ -44,10 +44,10 @@ export default function PersonalCardQuota() {
         setOpen(true);
     };
 
-    const handleModal = () =>{
+    const handleModal = () => {
         setModalActive(true);
     }
-    const handleModalMessage = () =>{
+    const handleModalMessage = () => {
         setModalMessageActive(true);
     }
     const handleClose = () => {
@@ -637,7 +637,6 @@ export default function PersonalCardQuota() {
                                             position: "topRight",
                                         });
                                         setTimeout(() => {
-                                            navigate(HOME_ROUTE)
                                         }, 1000)
                                         break
                                     }
@@ -652,6 +651,7 @@ export default function PersonalCardQuota() {
                                 }
                             })
                         setOpen(false)
+                        navigate(HOME_ROUTE);
                     }
                     }>Да</Button>
                     <Button onClick={() => {
