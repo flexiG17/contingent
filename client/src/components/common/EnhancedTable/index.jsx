@@ -59,7 +59,7 @@ export default function EnhancedTable() {
     const [selected, setSelected] = useState([]);
 
     const [page, setPage] = useState(0);
-    const [dense, setDense] = useState(false);
+    const [dense, setDense] = useState(true);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [loading, setLoading] = useState(true);
 
@@ -67,25 +67,33 @@ export default function EnhancedTable() {
 
     const [list, setList] = useState([]);
 
+    const studentStyleInTable = {
+        textDecoration: 'none',
+        color: 'black',
+        fontSize: "14px",
+        fontFamily: ['Montserrat'],
+        fontWeight: '400'
+    }
+
     useEffect(() => {
         getStudents()
             .then(items => {
                 items.map(item => {
-                            item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
-                            item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
-                            item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
-                            item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
-                            item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
-                            item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
-                            item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
-                            item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
-                            item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
-                            item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
-                            item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
-                            item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
-                            item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
-                        });
-                setList(items);
+                    item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
+                    item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
+                    item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
+                    item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
+                    item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
+                    item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
+                    item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
+                    item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
+                    item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
+                    item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
+                    item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
+                    item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
+                    item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
+                });
+                setList(items.reverse());
             })
             .finally(() => setLoading(false))
     }, []);
@@ -258,36 +266,85 @@ export default function EnhancedTable() {
                                                 selected={isItemSelected}
                                             >
                                                 <TableCell padding="checkbox">
-                                                    <Checkbox
-                                                        onClick={() => {
-                                                            handleClick(row.id);
-                                                        }}
-                                                        color="primary"
-                                                        checked={isItemSelected}
-                                                        inputProps={{
-                                                            'aria-labelledby': labelId,
-                                                        }}
+                                                    <Checkbox onClick={() => {
+                                                        handleClick(row.id);
+                                                    }}
+                                                              color="primary" checked={isItemSelected}
+                                                              inputProps={{'aria-labelledby': labelId,}}
                                                     />
                                                 </TableCell>
-                                                <TableCell component="th" id={labelId} scope="row" padding="normal"
-                                                           align="left">
-                                                    {row.education_type}
-                                                </TableCell>
-                                                <TableCell align="left">{row.hours_number}</TableCell>
-                                                <TableCell align="left">{row.latin_name}</TableCell>
                                                 <TableCell align="left">
                                                     <Link
                                                         to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={{textDecoration: 'none', color: 'black'}}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.education_type}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.hours_number}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.latin_name}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
                                                     >
                                                         {row.russian_name}
                                                     </Link>
                                                 </TableCell>
-                                                <TableCell align="left">{row.country}</TableCell>
-                                                <TableCell align="left">{row.gender}</TableCell>
-                                                <TableCell align="left">{row.contract_number}</TableCell>
-                                                <TableCell align="left">{row.enrollment_order}</TableCell>
-                                                <TableCell align="left">{row.enrollment}</TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.country}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.gender}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.contract_number}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.enrollment_order}
+                                                    </Link>
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link
+                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
+                                                        state={row} style={studentStyleInTable}
+                                                    >
+                                                        {row.enrollment}
+                                                    </Link>
+                                                </TableCell>
                                             </TableRow>
                                         );
                                     })}
@@ -307,11 +364,16 @@ export default function EnhancedTable() {
                         count={filteredValues.length}
                         onPageChange={handleChangePage}
                         page={page}
-                        rowsPerPageOptions={[10, 25, 50, 100]}
+                        rowsPerPageOptions={[10, 25, 50, 100, filteredValues.length]}
                         component="div"
                         rowsPerPage={rowsPerPage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage="Строк на страницу:"
+                        labelDisplayedRows={({
+                                                 from,
+                                                 to,
+                                                 count
+                                             }) => `Показано ${from}-${to} (всего ${count})`}
                     />
                 </Paper>
                 <FormControlLabel

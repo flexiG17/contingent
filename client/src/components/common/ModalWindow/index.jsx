@@ -1,20 +1,22 @@
-import React,{useState} from "react"
+import React, {useState} from "react"
 import './Modal.css'
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {MenuItem} from "@mui/material";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../../../utils/token";
+import {createNotification, updateNotification} from "../../../actions/notification";
+import {useNavigate} from "react-router-dom";
 
 
-const Modal = ({active, setActive}) => {
-
+const Modal = ({active, setActive, studentData}) => {
     const [activeClick, setActiveClick] = useState(true);
     const [date, setDate] = useState()
     const [type, setType] = useState()
     const [status, setStatus] = useState()
     const [comment, setComment] = useState()
 
+    const navigate = useNavigate()
     const handleClickContract = () => {
         setActiveClick(!activeClick)
     }
@@ -37,11 +39,17 @@ const Modal = ({active, setActive}) => {
             comment: comment,
             status: status,
             user_id: userId,
-            student_id: null
-        }}
+            student_id: studentData === undefined ? null : [studentData.id]
+        }
+        createNotification(data, navigate)
+            .then(() => {
+                window.location.reload()
+            })
+    }
 
-    return(
-        <div className={active ? "modal active" : "modal"} onClick={()=> setActive(false)}>
+
+    return (
+        <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
             <div className="modal_content" onClick={e => e.stopPropagation()}>
                 <p className="title_addNotification">Добавить уведомление</p>
 
@@ -89,7 +97,8 @@ const Modal = ({active, setActive}) => {
                     </label>
                     <div className="button_position_notification">
                         <button type="submit" className="button_style_contract_doc"
-                                disabled={active}>Добавить</button>
+                                disabled={activeClick}>Добавить
+                        </button>
                     </div>
                 </form>
             </div>

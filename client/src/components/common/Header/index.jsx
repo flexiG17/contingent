@@ -1,7 +1,7 @@
 import React from 'react';
 import {Navbar} from '../../common';
 import './Header.css';
-import Logo from '../Header/logo.png';
+import Logo from '../Header/full_logo.png';
 import {HOME_ROUTE} from "../../../utils/consts";
 
 

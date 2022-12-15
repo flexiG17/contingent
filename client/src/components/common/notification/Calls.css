@@ -8,6 +8,7 @@
 }
 
 .add_notification_button{
+    cursor: pointer;
     margin-left: 0;
     margin-right: auto;
     margin-top: -25px;

@@ -15,6 +15,7 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import {getToken} from "../../../../utils/token";
 import moment from "moment";
+import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 
 export default function TableToolbar({numSelected, selectedRows}) {
     const [file, setFile] = React.useState(null);
@@ -95,40 +96,45 @@ export default function TableToolbar({numSelected, selectedRows}) {
                                 <InsertDriveFileIcon sx={{fontSize: 15}}/>
                             </label>}
 
-                        {!READER_ACCESS &&
-                            <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
-                                <UploadIcon fontSize='medium' onClick={() => {
-                                    const data = new FormData()
-                                    data.append('fileToImport', file)
-
-                                    importXlsx(data)
-                                        .then(res => {
-                                            switch (res.status) {
-                                                case 201: {
-                                                    iziToast.success({
-                                                        title: res.statusText,
-                                                        message: 'Студенты успешно импортированы в базу. Обновляю страницу :)',
-                                                        position: "topRight"
-                                                    });
-                                                    setTimeout(() => {
-                                                        window.location.reload()
-                                                    }, 2000)
-                                                    break
+                        {!READER_ACCESS && file !== null &&
+                            <>
+                                <DoNotDisturbIcon sx={{cursor: 'pointer', marginRight: '10px'}} onClick={() => {
+                                    setFile(null)}
+                                }/>
+                                <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
+                                    <UploadIcon fontSize='medium' onClick={() => {
+                                        const data = new FormData()
+                                        data.append('fileToImport', file)
+                                        importXlsx(data)
+                                            .then(res => {
+                                                switch (res.status) {
+                                                    case 201: {
+                                                        iziToast.success({
+                                                            title: res.statusText,
+                                                            message: 'Студенты успешно импортированы в базу. Обновляю страницу :)',
+                                                            position: "topRight"
+                                                        });
+                                                        setTimeout(() => {
+                                                            window.location.reload()
+                                                        }, 2000)
+                                                        break
+                                                    }
+                                                    default: {
+                                                        iziToast.error({
+                                                            title: res.statusText,
+                                                            message: 'Ошибка. Попробуйте снова.',
+                                                            position: "topRight",
+                                                            color: "#FFF2ED"
+                                                        });
+                                                    }
                                                 }
-                                                default: {
-                                                    iziToast.error({
-                                                        title: res.statusText,
-                                                        message: 'Ошибка. Попробуйте снова.',
-                                                        position: "topRight",
-                                                        color: "#FFF2ED"
-                                                    });
-                                                }
-                                            }
-                                        })
-                                }}>
-                                    <FilterListIcon/>
-                                </UploadIcon>
-                            </Tooltip>}
+                                            })
+                                    }}>
+                                        <FilterListIcon/>
+                                    </UploadIcon>
+                                </Tooltip>
+                            </>
+                        }
                     </>
                 )}
             </Toolbar>

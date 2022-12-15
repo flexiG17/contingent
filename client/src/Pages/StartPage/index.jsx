@@ -17,9 +17,7 @@ function StartPage() {
 
                 <div className="RightSide_greeting">
                     <div className="Start_Logo">
-                        <a href={HOME_ROUTE}>
-                            <img src={Logo} width="250px" height="181px" alt=""/>
-                        </a>
+                        <img src={Logo} width="250px" height="181px" alt=""/>
                     </div>
                     <p className="Sub_sub_header">Вход ПОдИУ УрФУ</p>
                     <NavLink to={LOGIN_ROUTE} className="button_start"> Войти </NavLink>

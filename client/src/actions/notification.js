@@ -1,6 +1,6 @@
 import axios from "axios";
 import iziToast from "izitoast";
-import {NOTIFICATION_ROUTE} from "../utils/consts";
+import {ACCOUNT_ROUTE, NOTIFICATION_ROUTE} from "../utils/consts";
 import {getToken} from "../utils/token";
 
 export function createNotification(item, navigate) {
@@ -16,7 +16,7 @@ export function createNotification(item, navigate) {
             position: 'topRight'
         });
         setTimeout(() => {
-            navigate(NOTIFICATION_ROUTE)
+            navigate(ACCOUNT_ROUTE)
         }, 1000);
     }).catch((e) => {
         iziToast.error({
@@ -56,7 +56,7 @@ export function removeNotification(id, navigate) {
             position: 'topRight'
         })
         setTimeout(() => {
-            navigate(NOTIFICATION_ROUTE)
+            navigate(ACCOUNT_ROUTE)
         }, 1000)
     }).catch((e) => {
         iziToast.error({
@@ -81,7 +81,7 @@ export function updateNotification(id, item, navigate) {
             position: 'topRight'
         })
         setTimeout(() => {
-            navigate(NOTIFICATION_ROUTE)
+            navigate(ACCOUNT_ROUTE)
         }, 1000)
     }).catch((e) => {
         iziToast.error({
