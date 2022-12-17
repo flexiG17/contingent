@@ -137,6 +137,7 @@ export default function EnhancedTable() {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        window.scrollTo(0, 0);
     };
 
     const handleChangeRowsPerPage = (event) => {
