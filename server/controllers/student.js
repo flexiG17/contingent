@@ -138,9 +138,9 @@ module.exports.downloadXlsx = async function (req, res) {
 
 module.exports.removeStudents = async function (req, res) {
     const students = await getStudents(req.body)
-    const student_ids = students.map(student => student.id)
+    const students_id = students.map(student => student.id)
 
-    await FileService.deleteStudentDirs(student_ids)
+    await FileService.deleteStudentDirs(students_id)
 
     await getStudents(req.body).delete()
     return res.status(200).json({message: "Студенты удалены"})

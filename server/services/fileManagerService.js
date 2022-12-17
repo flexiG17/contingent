@@ -69,8 +69,8 @@ module.exports = new class FileManagerService {
         return db.files.where({id: studentFileId}).first()
     }
 
-    async deleteStudentDirs(student_ids) {
-        const studentPaths = student_ids.map(student_id => this.getStudentDirPath(student_id))
+    async deleteStudentDirs(students_id) {
+        const studentPaths = students_id.map(student_id => this.getStudentDirPath(student_id))
         let studentFiles = await db.files.whereIn("path", studentPaths)
 
         return this.deleteFiles(studentFiles.map(studentFile => studentFile.id))

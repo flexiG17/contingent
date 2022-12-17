@@ -9,7 +9,8 @@ module.exports.send = async function (req, res) {
             from: req.user.email,
             to: to,
             subject: req.body.subject,
-            text: req.body.text
+            text: req.body.text,
+            files: req.files
         })
 
         await mailer.sendEmail(dto)
