@@ -13,5 +13,6 @@ router.get('/', controller.getAll)
 
 // localhost:5000/api/user/change/{id}
 router.put('/change/:id', controller.change)
+router.delete('/remove/:id', controller.remove)
 
 module.exports = router
