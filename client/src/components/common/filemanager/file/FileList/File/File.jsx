@@ -8,14 +8,29 @@ import {useDispatch} from "react-redux";
 import {pushDirStack, setCurrentDir} from "../../../../../../store/slices/ManagerData/manager-data";
 import {deleteDir} from "../../../../../../store/api-actions";
 import {downloadFile} from "../../../../../../actions/fileManager";
+import {fileSizes} from "../../../../../../utils/consts";
 
 const File = ({file}) => {
     const dispatch = useDispatch();
 
     const [active, setActive] = useState(false);
 
+    const calculateFileSize = (fSize) => {
+        if (fSize === null || fSize === undefined) {
+            return null;
+        }
+        let tmp = fSize;
+        let size = 0;
+
+        while (tmp >= 1024) {
+            tmp /= 1024;
+            size++;
+        }
+
+        return `${tmp.toFixed(1)} ${fileSizes[size]}`
+    }
+
     const handleFileClick = () => {
-        console.log('ТЫ НЕ ПРОЙДЁШЬ');
         if (file.type === 'dir') {
             dispatch(setCurrentDir(file.id));
             dispatch(pushDirStack(file.parent_id));
@@ -29,12 +44,10 @@ const File = ({file}) => {
     };
 
     const handleDeleteFile = () => {
-        console.log('НИЗВЁЛ ДО АТОМОВ');
         dispatch(deleteDir({fileId: file.id}));
     }
 
     const handleDownloadFile = () => {
-        console.log('ИДИ К ПАПОЧКЕ');
         downloadFile(file.id)
             .then((response) => {
                 let url = window.URL.createObjectURL(response.data);
@@ -60,7 +73,7 @@ const File = ({file}) => {
                                 <InsertDriveFileOutlinedIcon/>}</div>
                             <div className="file_name">{file.name}</div>
                             <div className="file_date">{file.date.slice(0, 10)}</div>
-                            <div className="file_size">{file.size}</div>
+                            <div className="file_size">{calculateFileSize(file.size)}</div>
                         </>
                         :
                         <>

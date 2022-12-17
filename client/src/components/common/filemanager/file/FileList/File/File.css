@@ -2,7 +2,7 @@
     padding: 10px 0;
     border-bottom: 1px solid #FF4B00;
     display: grid;
-    grid-template-columns: 1fr 4fr repeat(4, 1fr);
+    grid-template-columns: 1fr 4fr repeat(2, 2fr);
     align-items: center;
     cursor: pointer;
 }
@@ -16,12 +16,12 @@
 }
 
 .file_date{
-    grid-column-start: 5;
+    grid-column-start: 3;
     justify-self: center;
     margin-bottom: 5px;
 }
 
 .file_size{
-    grid-column-start: 6;
+    grid-column-start: 4;
     justify-self: center;
 }
