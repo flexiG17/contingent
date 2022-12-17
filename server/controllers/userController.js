@@ -26,3 +26,9 @@ module.exports.change = async function (req, res) {
 
     return res.status(201).json({message: `Данные '${model.name}' обновлены`})
 }
+
+module.exports.remove = async function (req, res) {
+    await db.users.where({id: req.params.id}).delete()
+
+    return res.status(200).json({message: "Пользователь удален"})
+}

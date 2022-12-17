@@ -4,12 +4,27 @@ const GetNotificationDto = require("../dto/NotficationDtos/GetNotificationDto");
 
 module.exports = class NotificationRepository {
     async getAsync(userId) {
-        const data = db.notifications
+        let data = await db.notifications
             .select('notifications.id', 'type', 'date', 'comment', 'completed', 'user_id', 'student_id')
             .leftJoin('student_notification', {'notification_id': 'notifications.id'})
             .where({user_id: userId})
 
-        return new GetNotificationDto(data)
+        let result = []
+        for (let notification of data) {
+            if (result.some(element => notification.id === element.id))
+                continue
+
+            notification.students_id = data
+                .filter(element => element.id === notification.id)
+                .map(element => element.student_id)
+
+            if (notification.students_id[0] === null)
+                notification.students_id = null
+
+            result.push(new GetNotificationDto(notification))
+        }
+
+        return result
     }
 
 
@@ -18,8 +33,7 @@ module.exports = class NotificationRepository {
         let model = new Notification(createNotificationDto)
         model.user_id = userId
 
-        let notification_id = await db.notifications.insert(model)
-        notification_id = notification_id[0]
+        const [notification_id] = await db.notifications.insert(model)
 
         const trx = await db.transaction()
 

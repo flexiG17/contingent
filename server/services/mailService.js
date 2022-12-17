@@ -13,11 +13,17 @@ module.exports = new class MailService {
     })
 
     async sendEmail(message) {
-        await this.#transport.sendMail({
+        const mail = {
             from: `"${message.from}" <${process.env.EMAIL}>`,
             to: message.to,
             subject: message.subject,
-            text: message.text
-        })
+            text: message.text,
+            attachments: message.files.map(file => new Object({
+                filename: file.originalname,
+                content: file.buffer
+            }))
+        }
+
+        await this.#transport.sendMail(mail)
     }
 }

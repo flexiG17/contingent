@@ -4,5 +4,6 @@ module.exports = class SendMailDto {
         this.to = other.to
         this.subject = other.subject
         this.text = other.text
+        this.files = other.files
     }
 }
