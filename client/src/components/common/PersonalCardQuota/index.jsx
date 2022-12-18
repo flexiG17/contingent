@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import {changeStudentData, removeStudent} from '../../../actions/student'
 import {useLocation, useNavigate} from 'react-router-dom';
 import iziToast from "izitoast";
-import {ADD_STUDENT_NOTIFICATION_ROUTE, HOME_ROUTE} from "../../../utils/consts";
+import {HOME_ROUTE} from "../../../utils/consts";
 import TextField from "@mui/material/TextField";
 import {
     Button,
@@ -23,8 +23,9 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import jwt_decode from "jwt-decode";
 import EditIcon from "@mui/icons-material/Edit";
 import ModalMessage from '../MessageModal/index'
-import Modal from "../ModalWindow";
+import CreateTaskModalWindow from "../CreateTaskModal";
 import {getToken} from "../../../utils/token";
+import ModalFile from "../filemanager/ModalFile";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
@@ -32,9 +33,9 @@ import {getToken} from "../../../utils/token";
 export default function PersonalCardQuota() {
     const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
-    const [modalMessageActive, setModalMessageActive] = useState(false)
-
     const [editMode, setEditMode] = useState(true)
+    const [modalMessageActive, setModalMessageActive] = useState(false)
+    const [modalFileActive,setModalFileActive] = useState(false);
     const handleClickContract = () => {
         setActive(!active)
     }
@@ -44,10 +45,14 @@ export default function PersonalCardQuota() {
         setOpen(true);
     };
 
-    const handleModal = () =>{
+    const handleFileModal = () =>{
+        setModalFileActive(true);
+    }
+
+    const handleModal = () => {
         setModalActive(true);
     }
-    const handleModalMessage = () =>{
+    const handleModalMessage = () => {
         setModalMessageActive(true);
     }
     const handleClose = () => {
@@ -167,9 +172,16 @@ export default function PersonalCardQuota() {
     const actions = !READER_ACCESS ? [
             {
                 icon: <NotificationsNoneIcon/>,
-                name: 'Создать уведомление',
+                name: 'Создать задачу',
                 runFunction: () => {
                     handleModalMessage()
+                }
+            },
+            {
+                icon: <InsertDriveFileOutlinedIcon/>,
+                name: 'Файлы студента',
+                runFunction: () => {
+                    handleFileModal()
                 }
             },
             {
@@ -210,17 +222,9 @@ export default function PersonalCardQuota() {
         [
             {
                 icon: <NotificationsNoneIcon/>,
-                name: 'Создать уведомление',
+                name: 'Создать задачу',
                 runFunction: () => {
-                    navigate(
-                        ADD_STUDENT_NOTIFICATION_ROUTE,
-                        {
-                            state: [rows, {
-                                type: 'create',
-                                button: 'Добавить',
-                                message: 'Вы уверены, что хотите создать уведомление?',
-                            }]
-                        })
+                    handleModalMessage()
                 }
             }
         ]
@@ -253,12 +257,12 @@ export default function PersonalCardQuota() {
                                        required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setRussianName(event.target.value)} value={russian_name}/>
                             <TextField label="Контактный телефон студента" variant="outlined" color="warning" type="tel"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setPhoneNumber(event.target.value)}
                                        value={contact_phone_number}/>
                             <TextField label="E-mail студента" variant="outlined" color="warning" type="email"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
                             <TextField label="Страна" type="text" variant="outlined" color="warning" margin='normal'
@@ -266,21 +270,21 @@ export default function PersonalCardQuota() {
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setCountry(event.target.value)} value={country}/>
                             <TextField label="Дата рождения" type="date" color="warning"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
                             <TextField label="Место рождения" type="text" variant="outlined" color="warning"
                                        margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setBirthPlace(event.target.value)} value={birth_place}/>
                             <TextField label="Место проживания" type="text" variant="outlined" color="warning"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setResidencePlace(event.target.value)}
                                        value={residence_place}/>
                             <TextField label="Гражданство" type="text" variant="outlined" color="warning"
                                        margin='normal' disabled={editMode}
-                                       required size="small"
+                                       size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setCitizenship(event.target.value)} value={citizenship}/>
                             <TextField label="Пол" type="text" variant="outlined" color="warning" margin='normal'
@@ -295,7 +299,7 @@ export default function PersonalCardQuota() {
                             </TextField>
                             {/*Нужно привязать*/}
                             <TextField label="Куратор" type="text" variant="outlined" color="warning" margin='normal'
-                                       required size="small" disabled={editMode}
+                                       size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
 
@@ -305,16 +309,16 @@ export default function PersonalCardQuota() {
                             {/*Нужно привязать*/}
                             <TextField label="Ф.И.О." variant="outlined" color="warning" type="text"
                                        margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
                             {/*Нужно привязать*/}
                             <TextField label="Телефон" variant="outlined" color="warning" type="tel"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setPhoneNumber(event.target.value)}
                                        value={contact_phone_number}/>
                             {/*Нужно привязать*/}
                             <TextField label="E-mail" variant="outlined" color="warning" type="email"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
 
@@ -322,22 +326,22 @@ export default function PersonalCardQuota() {
                             {/*Нужно привязать*/}
                             <TextField label="Ф.И.О." variant="outlined" color="warning" type="text"
                                        margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
                             {/*Нужно привязать*/}
                             <TextField label="Телефон" variant="outlined" color="warning" type="tel"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setPhoneNumber(event.target.value)}
                                        value={contact_phone_number}/>
                             {/*Нужно привязать*/}
                             <TextField label="E-mail" variant="outlined" color="warning" type="email"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
 
                             <p className="tytle_contract_info"> Данные о местоположении </p>
                             <TextField label="Нахождение в РФ" type="text" variant="outlined" color="warning"
-                                       margin='normal' required select size="small" InputLabelProps={propsStyle}
+                                       margin='normal' select size="small" InputLabelProps={propsStyle}
                                        onChange={event => setLocation(event.target.value)} value={RF_location}
                                        disabled={editMode}>
                                 <MenuItem sx={propsStyle} value="Да">
@@ -351,7 +355,7 @@ export default function PersonalCardQuota() {
                                 </MenuItem>
                             </TextField>
                             <TextField label="Дата въезда" type="date" color="warning"
-                                       margin='normal' required size="small" sx={{width: "325px"}}
+                                       margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} disabled={editMode}
                                        InputLabelProps={{
                                            style: {
@@ -373,44 +377,44 @@ export default function PersonalCardQuota() {
                             <p className="tytle_contract_education">Полученный уровень образования</p>
                             <TextField label="Уровень полученного образования" type="text" variant="outlined"
                                        color="warning" margin='normal' disabled={editMode}
-                                       required size="small" sx={{width: "325px"}}
+                                       size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setLevelEducation(event.target.value)}
                                        value={level_education}/>
                             {/*Нужно привязать*/}
                             <TextField label="Образовательная организация" type="text" variant="outlined"
                                        color="warning" disabled={editMode}
-                                       margin='normal' required size="small"
+                                       margin='normal' size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalOrganization(event.target.value)}
                                        value={educational_organization}/>
                             {/*Нужно привязать*/}
                             <TextField label="Наименование учебного заведения" type="text" variant="outlined"
                                        color="warning" margin='normal'
-                                       required size="small" disabled={editMode}
+                                       size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalInstitution(event.target.value)}
                                        value={name_educational_institution}/>
                             {/*Нужно привязать*/}
                             <TextField label="Местонахождение учебного заведения" type="text" variant="outlined"
-                                       color="warning" margin='normal' required size="small" disabled={editMode}
+                                       color="warning" margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setLocationEducationalInstitution(event.target.value)}
                                        value={location_educational_institution}/>
                             {/*Нужно привязать*/}
                             <TextField label="Область образования" type="text" variant="outlined" color="warning"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationField(event.target.value)}
                                        value={education_field}/>
                             <TextField label="Год окончания" type="text" variant="outlined" color="warning"
                                        margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setGraduationYear(event.target.value)}
                                        value={graduation_year}/>
                             <p className="tytle_contract_education"> Дополнительно </p>
                             <TextField label="Примечания" type="text" variant="outlined" color="warning" margin='normal'
-                                       required size="small" multiline rows={5} disabled={editMode}
+                                       size="small" multiline rows={5} disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setComments(event.target.value)} value={comments}/>
                         </div>
@@ -429,13 +433,13 @@ export default function PersonalCardQuota() {
                             </TextField>
                             <TextField label="Уровень желаемого образования" type="text" variant="outlined"
                                        color="warning" disabled={editMode}
-                                       margin='normal' required size="small"
+                                       margin='normal' size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setDesiredEducationLevel(event.target.value)}
                                        value={desired_education_level}/>
                             <TextField label="Форма обучения" type="text" variant="outlined" color="warning"
                                        margin='normal' disabled={editMode}
-                                       required size="small" select
+                                       size="small" select
                                        InputLabelProps={propsStyle}
                                        onChange={event => setFormStudy(event.target.value)} value={form_study}>
                                 <MenuItem sx={propsStyle} value="Очная">
@@ -471,17 +475,17 @@ export default function PersonalCardQuota() {
                                        onChange={event => setExpulsionOrder(event.target.value)}
                                        value={expulsion_order}/>
                             <TextField label="Код направления подготовки (специальности)" type="text" variant="outlined"
-                                       color="warning" margin='normal' required size="small" disabled={editMode}
+                                       color="warning" margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setSpecialtyCode(event.target.value)} value={specialty_code}/>
                             {/*Нужно привязать*/}
                             <TextField label="Направление подготовки (специальность)" type="text" variant="outlined"
-                                       color="warning" margin='normal' required size="small" disabled={editMode}
+                                       color="warning" margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setSpecialtyDirection(event.target.value)}
                                        value={specialty_direction}/>
                             <TextField label="Стипендия" type="text" variant="outlined" color="warning"
-                                       margin='normal' required select size="small" disabled={editMode}
+                                       margin='normal' select size="small" disabled={editMode}
                                        InputLabelProps={propsStyle}
                                        onChange={event => setScholarship(event.target.value)} value={scholarship}>
                                 <MenuItem sx={propsStyle} value="Да">
@@ -505,17 +509,16 @@ export default function PersonalCardQuota() {
                                        onChange={event => setPassportNumber(event.target.value)}
                                        value={passport_number}/>
                             <TextField label="Срок действия паспорта" type="date" color="warning"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setPassportExpiration(event.target.value)}
                                        value={passport_expiration}/>
                             <TextField label="Кем выдан" type="text" variant="outlined" color="warning" margin='normal'
-                                       required size="small" disabled={editMode}
+                                       size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setPassportIssued(event.target.value)}
                                        value={passport_issued}/>
-                            <TextField label="Дата выдачи" type="date" color="warning" margin='normal' required
-                                       size="small" disabled={editMode}
+                            <TextField label="Дата выдачи" type="date" color="warning" margin='normal'                                        size="small" disabled={editMode}
                                        inputProps={propsStyle}
                                        InputLabelProps={{
                                            style: {
@@ -532,75 +535,25 @@ export default function PersonalCardQuota() {
                             <p className="title_contract_doc"> Дополнительные документы</p>
                             {/*Здесь нужно прописать так же как и для контракта, для квоты, почему-то, не прописано...*/}
                             <TextField label="Срок действия визы" type="date" color="warning"
-                                       margin='normal' required size="small" sx={{width: "325px"}}
+                                       margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Дата передачи в международную службу" type="date" color="warning"
-                                       margin='normal' required size="small" sx={{width: "325px"}}
+                                       margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Дата передачи в МВД" type="date" color="warning"
-                                       margin='normal' required size="small" sx={{width: "325px"}}
+                                       margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Ориентировочная дата получения" type="date" color="warning"
-                                       margin='normal' required size="small" sx={{width: "325px"}}
+                                       margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Фактическая дата получения приглашения" type="date" color="warning"
-                                       margin='normal' required size="small" sx={{width: "325px"}}
+                                       margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
-                        </div>
-                    </div>
-                </div>
-                <div className="info_and_education_container">
-                    <p className="title_quota"> Сканы документов </p>
-                    <div className="columns_position">
-                        <div className="column_style_contract">
-                            <p className="title_contract_doc"> Документы для загрузки в личную карточку</p>
-                            <p className="Doc_list">1) Фото паспорта со сроком действия (.PDF)</p>
-                            <label htmlFor="passport_photo" className='file-input'>
-                                Добавить файл
-                                <input className='file_input' type="file" name='passport_photo' id='passport_photo'/>
-                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                            </label>
-
-                            <p className="Doc_list">2) Перевод паспорта на русский язык (.PDF)</p>
-                            <label htmlFor="passport_translate" className='file-input'>
-                                Добавить файл
-                                <input className='file_input' type="file" name='passport_translate'
-                                       id='passport_translate'/>
-                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                            </label>
-
-                            <p className="Doc_list">3) Визовая анкета (.PDF)</p>
-                            <label htmlFor="visa_photo" className='file-input'>
-                                Добавить файл
-                                <input className='file_input' type="file" name='visa_photo' id='visa_photo'/>
-                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                            </label>
-
-                            <p className="Doc_list">4) Документ, подтверждающий факт оплаты (.PDF)</p>
-                            <label htmlFor="document" className='file-input'>
-                                Добавить файл
-                                <input className='file_input' type="file" name='document' id='document'/>
-                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                            </label>
-
-                            <p className="Doc_list">5) Удостоверение личности(.PDF)</p>
-                            <label htmlFor="pass_photo" className='file-input'>
-                                Добавить файл
-                                <input className='file_input' type="file" name='pass_photo' id='pass_photo'/>
-                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                            </label>
-
-                            <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
-                            <label htmlFor="pass_translate" className='file-input'>
-                                Добавить файл
-                                <input className='file_input' type="file" name='pass_translate' id='pass_translate'/>
-                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                            </label>
                         </div>
                     </div>
                 </div>
@@ -637,7 +590,6 @@ export default function PersonalCardQuota() {
                                             position: "topRight",
                                         });
                                         setTimeout(() => {
-                                            navigate(HOME_ROUTE)
                                         }, 1000)
                                         break
                                     }
@@ -652,6 +604,7 @@ export default function PersonalCardQuota() {
                                 }
                             })
                         setOpen(false)
+                        navigate(HOME_ROUTE);
                     }
                     }>Да</Button>
                     <Button onClick={() => {
@@ -661,7 +614,8 @@ export default function PersonalCardQuota() {
                 </DialogActions>
             </Dialog>
             <Box>
-                <SpeedDial
+                {modalActive || modalMessageActive || modalFileActive ||
+                    <SpeedDial
                     ariaLabel="SpeedDial openIcon example"
                     sx={{position: 'fixed', bottom: 20, right: 20}}
                     icon={<SpeedDialIcon/>}
@@ -686,9 +640,10 @@ export default function PersonalCardQuota() {
 
                         />
                     ))}
-                </SpeedDial>
+                </SpeedDial>}
                 <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={student_email}/>
-                <Modal active={modalMessageActive} setActive={setModalMessageActive}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} singleId={rows.id}/>
+                <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
             </Box>
         </>
     )

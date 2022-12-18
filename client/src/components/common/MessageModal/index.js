@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import '../ModalWindow/Modal.css'
+import '../CreateTaskModal/Modal.css'
 import '../../../Pages/Account/Account.css';
 import TextField from "@mui/material/TextField";
 import jwt_decode from "jwt-decode";
@@ -7,8 +7,17 @@ import {sendMessage} from "../../../actions/student";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import Select from 'react-select';
 import {getToken} from "../../../utils/token";
+import {LetterTemplates} from "../../../utils/consts";
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import {Link} from "react-router-dom";
+import Tooltip from "@mui/material/Tooltip";
+import iziToast from "izitoast";
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
+    let options = []
+    LetterTemplates.map((template) => {
+        options.push({value: template.message, label: template.title})
+    })
     const propsStyle = {
         style:
             {
@@ -17,24 +26,25 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 fontWeight: '450'
             }
     }
+    const destination = Array(studentEmail)
     const [openDialog, setOpenDialog] = useState(false)
     //const [destination, setDestination] =  useState()
-    const [subject, setSubject] =  useState()
-    const [text, setText] =  useState()
+    const [subject, setSubject] = useState()
+    const [text, setText] = useState()
+    const [sender, setSender] = useState()
+    const [template, setTemplate] = useState()
 
     const data = {
-        to: Array(studentEmail),
+        to: destination,
         subject: subject,
         text: text
     }
+    const handleTypeSelect = e => {
+        setTemplate(e.value);
+        setText(e.value)
+    }
+    const mailtoHref = `mailto:${destination}?subject=${subject}&body`
 
-    const options = [
-        { value: 'type1', label: 'Первый шаблон' },
-        { value: 'type2', label: 'Второй шаблон' },
-        { value: 'type3', label: 'Третий шаблон' }
-    ]
-
-    const decodeToken = jwt_decode(getToken())
     return (
         <>
             <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
@@ -43,15 +53,38 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                         <div className="title_message_container">Новое письмо</div>
                         <div className="input_position_message">
                             <TextField label="От кого" variant="outlined" color="warning" type="text"
-                                       inputProps={propsStyle} value={decodeToken.email} disabled
+                                       inputProps={propsStyle}
+                                       value='Подготовительное отделение для иностранных учащихся УрФУ'
                                        margin='normal' InputLabelProps={propsStyle}
-                                       size="small" sx={{width: "300px", marginTop: "25px"}}
+                                       onChange={e => setSender(e.target.value)}
+                                       size="small" sx={{width: "530px", marginTop: "25px"}}
                             />
-                            <TextField label="Кому" variant="outlined" color="warning" type="text" inputProps={propsStyle}
+                            <a className='send_with_other_mail' href={mailtoHref}>Отправить с другой почты</a>
+
+                            <TextField label="Кому" variant="outlined" color="warning" type="text"
+                                       inputProps={propsStyle}
                                        margin='normal' InputLabelProps={propsStyle} value={studentEmail} disabled
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
-                            <Select className="message_type" placeholder="Шаблоны письма" options={options}/>
+                            <div className={'template_in_row_with_icon'}>
+                                <Select className="message_type" placeholder="Шаблоны письма" options={options}
+                                        onChange={handleTypeSelect}
+                                        value={options.filter(function (option) {
+                                            return option.value === template;
+                                        })}/>
+                                <Tooltip title="Скопировать шаблон">
+                                    <ContentCopyIcon sx={{cursor: 'pointer', marginTop: '22px', marginLeft: '15px'}}
+                                                     onClick={() => {
+                                                         navigator.clipboard.writeText(text === undefined ? 'Ничего не скопировано' : text)
+                                                             .then(() =>
+                                                                 iziToast.success({
+                                                                     message: 'Шаблон скопирован',
+                                                                     position: 'topRight'
+                                                                 })
+                                                             )
+                                                     }}/>
+                                </Tooltip>
+                            </div>
                             <TextField label="Тема пиьсма" variant="outlined" color="warning" type="text"
                                        inputProps={propsStyle} value={subject}
                                        onChange={e => setSubject(e.target.value)}
@@ -62,8 +95,9 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                         <TextField
                             className="input_message_sms"
                             label="Текст письма"
+                            focused
                             multiline value={text} onChange={e => setText(e.target.value)}
-                            rows={5}
+                            rows={8}
                             variant="outlined"
                             sx={{
                                 width: "800px",
@@ -76,11 +110,8 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                             color="warning"
                         />
                         <div className="button_message_position">
-                            <label className="confirm_message">
-                                Вы действительно хотите отправить письмо?
-                                <input type="checkbox" name = "confirm_message"/>
-                            </label>
-                            <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение</button>
+                            <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -100,6 +131,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                     <Button onClick={() => {
                         sendMessage(data)
                         setOpenDialog(false)
+                        setActive(false)
                     }
                     }>Да</Button>
                     <Button onClick={() => {

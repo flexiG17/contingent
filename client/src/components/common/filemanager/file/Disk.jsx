@@ -1,8 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './Disk.css';
 import FileList from "./FileList/FileList";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchFilesAction} from "../../../../store/api-actions";
+import {fetchFilesAction, uploadFile} from "../../../../store/api-actions";
 import {getCurrentDir, getDirStack} from "../../../../store/slices/ManagerData/selectors";
 import ModalDirectory from "./ModalDirectory";
 import {popDirStack, setCurrentDir} from "../../../../store/slices/ManagerData/manager-data";
@@ -13,8 +13,6 @@ const Disk = ({studentId}) => {
     const dirStack = useSelector(getDirStack);
 
     const [active, setActive] = useState(false);
-    const fileRef = useRef(null);
-    console.log(fileRef)
 
     useEffect(() => {
         dispatch(fetchFilesAction({studentId: studentId, parentId: currentDir}))
@@ -31,7 +29,8 @@ const Disk = ({studentId}) => {
     };
 
     const uploadFileHandler = (event) => {
-
+        const files = [...event.target.files];
+        dispatch(uploadFile({files: files, studentId: studentId, parentId: currentDir}));
     }
 
     return (
@@ -42,8 +41,8 @@ const Disk = ({studentId}) => {
                     <button className="disk_style_btns" onClick={openCreateDir}>Добавить папку</button>
                     <div className="disk_style_btns">
                         <label htmlFor="disk_upload_id">Выберете файл</label>
-                        <input ref={fileRef} type="file" id="disk_upload_id" style={{display: "none"}}
-                               onClick={uploadFileHandler} multiple={true}/>
+                        <input type="file" id="disk_upload_id" style={{display: "none"}}
+                               onChange={uploadFileHandler} multiple={true}/>
                     </div>
                 </div>
                 <FileList/>

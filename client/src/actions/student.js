@@ -77,6 +77,14 @@ export function changeStudentData(item, id) {
     })
 }
 
+export function getStudentsByIdArray(idArray) {
+    return axios.post('http://localhost:5000/api/student/getStudents', idArray, {
+        headers: {
+            'Authorization': getToken()
+        },
+    }).then(resp => resp.data)
+}
+
 export function addStudent(item, navigate) {
     return axios.post('http://localhost:5000/api/student/create', item, {
         headers: {

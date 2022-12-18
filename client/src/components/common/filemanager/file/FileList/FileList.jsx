@@ -17,7 +17,7 @@ const FileList = () => {
                 <div className="filelist_date">Дата</div>
                 <div className="filelist_size">Размер</div>
             </div>
-            {files.map(file => <File file={file}/>)}
+            {files.map(file => <File key={file.id} file={file}/>)}
         </div>
 
     )

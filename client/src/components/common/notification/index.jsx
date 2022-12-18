@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import CheckIcon from '@mui/icons-material/Check';
 import {getNotifications, removeNotification} from "../../../actions/notification";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -20,16 +20,17 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import './Calls.css'
-import Modal from "../ModalWindow";
+import CreateTaskModalWindow from "../CreateTaskModal";
+import TaskCard from "../TaskCardModal";
 
 let notifications = []
 
-// страница для отображения уведомлений и работы с ними. Никак не рализован поиск и пагинация
+// страница для отображения задач и работы с ними. Никак не рализован поиск и пагинация
 
 function Row(props) {
     const {row} = props;
-
     const [open, setOpen] = React.useState(false);
+    const [activeTaskCardModel, setActiveTaskCardModel] = useState(false)
 
     const handleOpen = () => {
         setOpen(true);
@@ -38,25 +39,25 @@ function Row(props) {
     const handleClose = () => {
         setOpen(false);
     };
-    const [modalActive, setModalActive] = useState(false)
 
     return (
         <>
+            <TaskCard active={activeTaskCardModel} setActive={setActiveTaskCardModel} taskData={row}/>
             <Dialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Удаление уведомления</DialogTitle>
+                <DialogTitle id="alert-dialog-title">Удаление задачи</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Вы уверены, что хотите удалить уведомление?
+                        Изменить статус задачи на "Выполнено" и удалить её?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        removeNotification(row.id)
+                        removeNotification([row.id])
                         setOpen(false)
                     }
                     }>Да</Button>
@@ -69,7 +70,7 @@ function Row(props) {
             <React.Fragment>
                 <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
                     <TableCell>
-                        <DeleteOutlineIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
+                        <CheckIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
                             handleOpen()
                         }}/>
                     </TableCell>
@@ -77,10 +78,11 @@ function Row(props) {
                         {row.type}
                     </TableCell>
                     <TableCell align="right">
-                        <button onClick={()=> setModalActive(true)}
-                        >Ссылка </button>
+                        <button onClick={() => setActiveTaskCardModel(true)}
+                        >Ссылка
+                        </button>
                     </TableCell>
-                    <TableCell align="right">{row.russian_name}</TableCell>
+                    <TableCell align="right">{row.students_id !== null && row.students_id.length}</TableCell>
                     <TableCell align="right">{row.date}</TableCell>
                     <TableCell align="right">{row.comment}</TableCell>
                 </TableRow>
@@ -89,7 +91,6 @@ function Row(props) {
                     </TableCell>
                 </TableRow>
             </React.Fragment>
-            <Modal active={modalActive} setActive={setModalActive}/>
         </>
     );
 }
@@ -114,11 +115,11 @@ export default function CollapsibleTable() {
         <>
             <div className="notification_navbar">
                 <button
-                    onClick={()=> setModalActive(true)}
+                    onClick={() => setModalActive(true)}
                     className="add_notification_button"> Добавить
-                    уведомление <AddIcon/></button>
+                    задачу <AddIcon/></button>
             </div>
-            <Modal active={modalActive} setActive={setModalActive}/>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>
             <TableContainer component={Paper}
                             sx={{width: '800px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
                 <Table aria-label="collapsible table">
@@ -126,8 +127,8 @@ export default function CollapsibleTable() {
                         <TableRow>
                             <TableCell/>
                             <TableCell>Тип</TableCell>
-                            <TableCell align="right">Уведомление</TableCell>
-                            <TableCell align="right">Cтудент</TableCell>
+                            <TableCell align="right">Задача</TableCell>
+                            <TableCell align="right">Cтуденты</TableCell>
                             <TableCell align="right">Дата</TableCell>
                             <TableCell align="right">Комментарий</TableCell>
                         </TableRow>

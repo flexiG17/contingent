@@ -1,5 +1,5 @@
 import React from 'react';
-import '../ModalWindow/Modal.css';
+import '../CreateTaskModal/Modal.css';
 import Disk from './file/Disk';
 
 

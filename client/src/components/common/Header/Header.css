@@ -32,6 +32,8 @@
     flex-direction: row;
     justify-content: flex-end;
     margin-right: 15px;
+    height: 170px;
+    align-items: end;
 }
   
   

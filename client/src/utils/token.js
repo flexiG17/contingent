@@ -3,7 +3,7 @@ const AUTH_TOKEN_KEY_NAME = 'jwt';
 
 export const getToken = () => {
     const token = localStorage.getItem(AUTH_TOKEN_KEY_NAME);
-    return token ?? '';
+    return token;
 };
 
 export const setToken = (token) => {

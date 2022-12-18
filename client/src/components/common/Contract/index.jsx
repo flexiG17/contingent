@@ -28,6 +28,7 @@ export default function Contract() {
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
             <div className="info_and_education_container">
+                <div className="title_contract_section">Основные данные студента</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="title_contract_info"> Личные данные</p>
@@ -69,7 +70,7 @@ export default function Contract() {
 
                         <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
                                    color="warning"
-                                   margin='normal' required select size="small"
+                                   margin='normal' select size="small"
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -90,7 +91,7 @@ export default function Contract() {
                         <p className="title_contract_info"> Контактные данные</p>
                         <TextField name='contact_phone_number' label="Контактный телефон студента" variant="outlined"
                                    color="warning" type="tel"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -108,7 +109,7 @@ export default function Contract() {
                         <TextField name='student_email' label="E-mail студента" variant="outlined" color="warning"
                                    type="email"
                                    margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -126,7 +127,7 @@ export default function Contract() {
                         <p className="title_contract_info"> Контактные данные агента</p>
                         <TextField name='agent_name' label="Ф.И.О." variant="outlined" color="warning" type="text"
                                    margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -143,7 +144,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='agent_phone_number' label="Телефон" variant="outlined" color="warning"
                                    type="tel" margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -160,7 +161,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='agent_email' label="E-mail" variant="outlined" color="warning" type="email"
                                    margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -178,7 +179,7 @@ export default function Contract() {
                         <p className="title_contract_info"> Контактные данные представителя</p>
                         <TextField name='representative_name' label="Ф.И.О." type="text" variant="outlined"
                                    color="warning" margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -195,7 +196,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='representative_phone_number' label="Телефон" type="tel" variant="outlined"
                                    color="warning" margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -212,7 +213,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='representative_email' label="E-mail" type="email" variant="outlined"
                                    color="warning" margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -231,8 +232,8 @@ export default function Contract() {
                     <div className="column_style_contract">
                         <p className="title_contract_info"> Паспортные данные </p>
                         <TextField name='country' label="Страна" type="text" variant="outlined" color="warning"
-                                   margin='normal'
-                                   required size="small"
+                                   margin='normal' required
+                                   size="small"
                                    sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
@@ -250,7 +251,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='birth_place' label="Место рождения" type="text" variant="outlined"
                                    color="warning" margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -266,7 +267,7 @@ export default function Contract() {
                                        }
                                    }}/>
                         <TextField name='birth_date' label="Дата рождения" type="date" color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -284,7 +285,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='residence_place' label="Место проживания" type="text" variant="outlined"
                                    color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -301,7 +302,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='citizenship' label="Гражданство" type="text" variant="outlined" color="warning"
                                    margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -317,8 +318,8 @@ export default function Contract() {
                                        }
                                    }}/>
                         <TextField name='gender' label="Пол" type="text" variant="outlined" color="warning"
-                                   margin='normal'
-                                   required size="small" select
+                                   margin='normal' required
+                                   size="small" select
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -344,8 +345,8 @@ export default function Contract() {
                             </MenuItem>
                         </TextField>
                         <TextField name='passport_number' label="Номер паспорта" type="text" variant="outlined"
-                                   color="warning" margin='normal'
-                                   required size="small"
+                                   color="warning" margin='normal' required
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -361,7 +362,7 @@ export default function Contract() {
                                        }
                                    }}/>
                         <TextField name='passport_expiration' label="Срок действия паспорта" type="date" color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -379,7 +380,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='passport_issued' label="Кем выдан" type="text" variant="outlined"
                                    color="warning" margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -395,7 +396,7 @@ export default function Contract() {
                                        }
                                    }}/>
                         <TextField name='passport_issue_date' label="Дата выдачи" type="date" color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -416,13 +417,14 @@ export default function Contract() {
             </div>
 
             <div className="info_and_education_container">
+                <div className="title_contract_section">Образование студента</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Уровень образования</p>
                         <TextField name='level_education' label="Уровень полученного образования" type="text"
                                    variant="outlined"
                                    color="warning" margin='normal' sx={{width: "325px"}}
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -439,7 +441,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='name_educational_institution' label="Наименование учебного заведения"
                                    type="text" variant="outlined"
-                                   color="warning" margin='normal' required size="small"
+                                   color="warning" margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -457,8 +459,8 @@ export default function Contract() {
                         <p className="tytle_contract_education"> Нынешнее образование </p>
 
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
-                                   color="warning"
-                                   margin='normal' required size="small" select
+                                   color="warning" required
+                                   margin='normal' size="small" select
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -513,7 +515,7 @@ export default function Contract() {
                         </TextField>
                         <TextField name='form_study' label="Форма обучения" type="text" variant="outlined"
                                    color="warning" margin='normal'
-                                   required size="small" select
+                                   size="small" select
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -549,7 +551,7 @@ export default function Contract() {
                         <p className="tytle_contract_education"> Дополнительно </p>
                         <TextField name='comments' label="Примечания" type="text" variant="outlined" color="warning"
                                    margin='normal'
-                                   required size="small" multiline rows={3}
+                                   size="small" multiline rows={3}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -568,8 +570,8 @@ export default function Contract() {
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Статус </p>
                         <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
-                                   color="warning"
-                                   margin='normal' required size="small" select sx={{width: "325px"}}
+                                   color="warning" required
+                                   margin='normal' size="small" select sx={{width: "325px"}}
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -591,8 +593,8 @@ export default function Contract() {
                             </MenuItem>
                         </TextField>
                         <TextField name='enrollment_order' label="Номер приказа о зачислении" type="text"
-                                   variant="outlined" color="warning"
-                                   margin='normal' required size="small"
+                                   variant="outlined" color="warning" required
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -626,7 +628,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='contract_number' label="Номер договора" type="text" variant="outlined"
                                    color="warning" margin='normal'
-                                   required size="small"
+                                   size="small" required
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -644,7 +646,7 @@ export default function Contract() {
 
                         <TextField name='status_1C' label="Статус 1C" type="text" variant="outlined" color="warning"
                                    margin='normal'
-                                   required size="small" select
+                                    size="small" select
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -667,7 +669,7 @@ export default function Contract() {
                         </TextField>
                         <TextField name='tutor_name' label="Куратор" type="text" variant="outlined" color="warning"
                                    margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -683,7 +685,7 @@ export default function Contract() {
                                        }
                                    }}/>
                         <TextField name='first_payment' label="Платеж 1" type="date" color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -700,7 +702,7 @@ export default function Contract() {
                                        shrink: true
                                    }}/>
                         <TextField name='second_payment' label="Платеж 2" type="date" color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -717,7 +719,7 @@ export default function Contract() {
                                        shrink: true
                                    }}/>
                         <TextField name='third_payment' label="Платеж 3" type="date" color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -734,7 +736,7 @@ export default function Contract() {
                                        shrink: true
                                    }}/>
                         <TextField name='fourth_payment' label="Платеж 4" type="date" color="warning"
-                                   margin='normal' required size="small"
+                                   margin='normal' size="small"
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -754,12 +756,13 @@ export default function Contract() {
                 </div>
             </div>
             <div className="info_and_education_container">
+                <div className="title_contract_section">Основные даты</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="title_contract_doc"> Уровень образования</p>
+                        <p className="title_contract_doc"> Даты </p>
 
                         <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -776,7 +779,7 @@ export default function Contract() {
                                        shrink: true
                                    }}/>
                         <TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -794,7 +797,7 @@ export default function Contract() {
                                    }}/>
                         <TextField name='transfer_to_international_service' label="Дата передачи в международную службу"
                                    type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -811,7 +814,7 @@ export default function Contract() {
                                        shrink: true
                                    }}/>
                         <TextField name='transfer_to_MVD' label="Дата передачи в МВД" type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -830,7 +833,7 @@ export default function Contract() {
 
                         <TextField name='estimated_receipt_date' label="Ориентировочная дата получения" type="date"
                                    color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -849,7 +852,7 @@ export default function Contract() {
 
                         <TextField name='actual_receipt_date_invitation' label="Фактическая дата получения приглашения"
                                    type="date" color="warning"
-                                   margin='normal' required size="small" sx={{width: "325px"}}
+                                   margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={{
                                        style: {
                                            fontSize: "14px",
@@ -865,53 +868,6 @@ export default function Contract() {
                                        },
                                        shrink: true
                                    }}/>
-                    </div>
-                    <div className="column_style_contract">
-                        <p className="tytle_contract_doc_contaner"> Документы для загрузки в личную карточку
-                            контрактника </p>
-
-                        <p className="Doc_list">1) Фото паспорта со сроком действия (.PDF)</p>
-                        <label htmlFor="passport_photo" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='passport_photo' id='passport_photo'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">2) Перевод паспорта на русский язык (.PDF)</p>
-                        <label htmlFor="passport_translate" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='passport_translate'
-                                   id='passport_translate'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">3) Визовая анкета (.PDF)</p>
-                        <label htmlFor="visa_photo" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='visa_photo' id='visa_photo'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">4) Документ, подтверждающий факт оплаты (.PDF)</p>
-                        <label htmlFor="document" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='document' id='document'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">5) Удостоверение личности(.PDF)</p>
-                        <label htmlFor="pass_photo" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='pass_photo' id='pass_photo'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
-
-                        <p className="Doc_list">6) Перевод удостоверения личности(.PDF)</p>
-                        <label htmlFor="pass_translate" className='file-input'>
-                            Добавить файл
-                            <input className='file_input' type="file" name='pass_translate' id='pass_translate'/>
-                            <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                        </label>
                     </div>
                 </div>
             </div>

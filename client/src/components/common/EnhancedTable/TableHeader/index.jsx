@@ -64,6 +64,14 @@ const headCells = [
     }
 ];
 
+const studentStyleInTable = {
+    textDecoration: 'none',
+    color: 'black',
+    fontSize: "14px",
+    fontFamily: ['Montserrat'],
+    fontWeight: '400'
+}
+
 export default function TableHeader({onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort}) {
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -85,6 +93,7 @@ export default function TableHeader({onSelectAllClick, order, orderBy, numSelect
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
+                        sx={studentStyleInTable}
                         key={headCell.id}
                         align={'center'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}

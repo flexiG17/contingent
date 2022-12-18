@@ -1,0 +1,135 @@
+.modal {
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+    z-index: 1;
+}
+
+.modal.active{
+    transform: scale(1);
+}
+
+.modal_content{
+    padding: 20px;
+    border-radius: 12px;
+    background-color: #fff;
+
+}
+
+.container_addNotification{
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.container_position{
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    margin: 25px;
+
+}
+
+.input_position_message{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.message_input_style{
+    width: 200px;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+.title_message_container{
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-size: 25px;
+    font-weight: 500;
+    color: #FF4B00;
+    display: flex;
+}
+
+.send_message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FA7A45;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 200px;
+    margin-top: 25px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+}
+
+.send_message:hover{
+    background-color: #FF4B00;
+}
+
+.message_type{
+    z-index: 10;
+    padding-top: 15px;
+    width: 300px;
+}
+
+.confirm_message{
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    width: 380px;
+    justify-content: space-between;
+}
+
+.title_addNotification {
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: 500;
+    color: #FA7A45;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.checkbox_style_notification{
+    padding-top: 30px;
+    padding-left: 15px;
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    align-items: baseline;
+}
+
+.button_position_notification{
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+    margin-bottom: 100px;
+}
+
+.template_in_row_with_icon{
+    display: flex;
+    cursor: pointer;
+}
+
+.send_with_other_mail{
+    margin-left: 3px;
+    color: black;
+    font-size: 16px;
+    font-family: Montserrat, serif;
+    font-width: 400
+}
