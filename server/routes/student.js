@@ -13,7 +13,7 @@ router.use(passport.authenticate('jwt', {session: false}, null))
 
 //localhost:5000/api/student
 router.get('/', controller.getAll)
-router.get('/getStudents', controller.getByIds)
+router.post('/getStudents', controller.getByIds)
 router.get('/columns', controller.getColumns)
 
 router.post('/create', access(roles.editor), upload.any(), controller.create)
