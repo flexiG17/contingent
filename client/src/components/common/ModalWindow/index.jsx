@@ -15,6 +15,7 @@ const Modal = ({active, setActive, studentData}) => {
     const [type, setType] = useState()
     const [status, setStatus] = useState()
     const [comment, setComment] = useState()
+    const [studentName, setStudentName] = useState()
 
     const navigate = useNavigate()
     const handleClickContract = () => {
@@ -39,6 +40,7 @@ const Modal = ({active, setActive, studentData}) => {
             comment: comment,
             status: status,
             user_id: userId,
+            student_name: studentName,
             student_id: studentData === undefined ? null : [studentData.id]
         }
         createNotification(data, navigate)
@@ -72,6 +74,10 @@ const Modal = ({active, setActive, studentData}) => {
                             </MenuItem>
                         </TextField>
                         <TextField
+                            label="Имя студента" type="text" color="warning" focused inputProps={propsStyle}
+                            InputLabelProps={propsStyle} onChange={event => setStudentName(event.target.value)} value={studentName}
+                            sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
+                        <TextField
                             label="Дата" type="date" color="warning" focused inputProps={propsStyle}
                             InputLabelProps={propsStyle} onChange={event => setDate(event.target.value)} value={date}
                             sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
@@ -80,10 +86,20 @@ const Modal = ({active, setActive, studentData}) => {
                             label="Статус" type="text" variant="outlined" color="warning"
                             focused select InputLabelProps={propsStyle}
                             onChange={event => setStatus(event.target.value)} value={status}>
-                            <MenuItem sx={propsStyle} value="Выполнено"> <span style={propsStyle.style}>Выполнено</span>
+                            <MenuItem sx={propsStyle} value="Запланировано">
+                                <span style={propsStyle.style}>Запланировано</span>
                             </MenuItem>
-                            <MenuItem sx={propsStyle} value="Не выполнено"> <span
-                                style={propsStyle.style}>Не выполнено</span>
+                            <MenuItem sx={propsStyle} value="В работе"> <span
+                                style={propsStyle.style}>В работе</span>
+                            </MenuItem>
+                            <MenuItem sx={propsStyle} value="Отложено"> <span
+                                style={propsStyle.style}>Отложено</span>
+                            </MenuItem>
+                            <MenuItem sx={propsStyle} value="Просрочено"> <span
+                                style={propsStyle.style}>Просрочено</span>
+                            </MenuItem>
+                            <MenuItem sx={propsStyle} value="Выполнено"> <span
+                                style={propsStyle.style}>Выполнено</span>
                             </MenuItem>
                         </TextField>
                         <TextField

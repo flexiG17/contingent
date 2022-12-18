@@ -23,6 +23,7 @@ import jwt_decode from "jwt-decode";
 import TableToolbar from "./TableToolbar";
 import TableHeader from "./TableHeader";
 import {getToken} from "../../../utils/token";
+import './TableHeader/HeaderTable.css';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -330,8 +331,9 @@ export default function EnhancedTable() {
                                                         {row.contract_number}
                                                     </Link>
                                                 </TableCell>
-                                                <TableCell align="left">
+                                                <TableCell align="center" >
                                                     <Link
+                                                        className = "margin_table"
                                                         to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
                                                         state={row} style={studentStyleInTable}
                                                     >

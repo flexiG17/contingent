@@ -131,6 +131,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                     <Button onClick={() => {
                         sendMessage(data)
                         setOpenDialog(false)
+                        setActive(false)
                     }
                     }>Да</Button>
                     <Button onClick={() => {
