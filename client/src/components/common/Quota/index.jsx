@@ -37,6 +37,7 @@ export default function Quota() {
     return (
         <form ref={formRef} onSubmit={handleSubmit}>
             <div className="info_and_education_container">
+                <div className="title_quota_section">Основные данные студента</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Личные данные</p>
@@ -204,6 +205,7 @@ export default function Quota() {
             </div>
 
             <div className="info_and_education_container">
+                <div className="title_quota_section">Образование студента</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Уровень образования</p>
@@ -416,9 +418,10 @@ export default function Quota() {
             </div>
 
             <div className="info_and_education_container">
+                <div className="title_quota_section">Основные даты</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="title_contract_doc"> Уровень образования</p>
+                        <p className="title_contract_doc"> Даты</p>
                         <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
                                    margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={{

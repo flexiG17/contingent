@@ -130,3 +130,13 @@
     font-size: 22px;
     color: #FF4B00;
 }
+
+.title_contract_section{
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #FF4B00;
+    font-weight: 500;
+}

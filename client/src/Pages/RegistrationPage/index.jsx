@@ -30,8 +30,6 @@ function RegisterPage() {
         <>
             <div className="form_container">
                 <div className="header_greeting">
-                    <div className="Login_Logo"><img src={Logo} width="220px" height="160px" alt=""/></div>
-
                     <form className="form_style" onSubmit={handleSubmit}>
                         <label className="label_style" htmlFor="name">Имя сотрудника</label>
                         <input className="input_style" name="name" type="text" placeholder="Введите имя сотрудника"
