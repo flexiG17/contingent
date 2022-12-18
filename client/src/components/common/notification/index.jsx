@@ -20,11 +20,11 @@ import {
 } from "@mui/material";
 import moment from "moment";
 import './Calls.css'
-import Modal from "../ModalWindow";
+import CreateTaskModalWindow from "../CreateTaskModal";
 
 let notifications = []
 
-// страница для отображения уведомлений и работы с ними. Никак не рализован поиск и пагинация
+// страница для отображения задач и работы с ними. Никак не рализован поиск и пагинация
 
 function Row(props) {
     const {row} = props;
@@ -48,10 +48,10 @@ function Row(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Удаление уведомления</DialogTitle>
+                <DialogTitle id="alert-dialog-title">Удаление задачи</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Вы уверены, что хотите удалить уведомление?
+                        Вы уверены, что хотите удалить задачу?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -89,7 +89,6 @@ function Row(props) {
                     </TableCell>
                 </TableRow>
             </React.Fragment>
-            <Modal active={modalActive} setActive={setModalActive}/>
         </>
     );
 }
@@ -116,9 +115,9 @@ export default function CollapsibleTable() {
                 <button
                     onClick={()=> setModalActive(true)}
                     className="add_notification_button"> Добавить
-                    уведомление <AddIcon/></button>
+                    задачу <AddIcon/></button>
             </div>
-            <Modal active={modalActive} setActive={setModalActive}/>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>
             <TableContainer component={Paper}
                             sx={{width: '800px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
                 <Table aria-label="collapsible table">
@@ -126,7 +125,7 @@ export default function CollapsibleTable() {
                         <TableRow>
                             <TableCell/>
                             <TableCell>Тип</TableCell>
-                            <TableCell align="right">Уведомление</TableCell>
+                            <TableCell align="right">Задача</TableCell>
                             <TableCell align="right">Cтудент</TableCell>
                             <TableCell align="right">Дата</TableCell>
                             <TableCell align="right">Комментарий</TableCell>

@@ -19,7 +19,7 @@ module.exports.create = async function (req, res) {
 
     await notificationRepository.createAsync(dto, req.user.id)
 
-    return res.status(200).json({message: "Уведомления добавлены"})
+    return res.status(200).json({message: "Задача добавлена"})
 }
 
 
@@ -29,12 +29,12 @@ module.exports.update = async function (req, res) {
 
     await notificationRepository.updateAsync(dto, req.params.id)
 
-    return res.status(200).json({message: "Уведомление обновлено"})
+    return res.status(200).json({message: "Задача обновлена"})
 }
 
 
 module.exports.remove = async function (req, res) {
     await notificationRepository.deleteAsync(req.body)
 
-    return res.status(200).json({message: "Уведомления удалены"})
+    return res.status(200).json({message: "Задача удалена"})
 }

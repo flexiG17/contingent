@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import '../../../ModalWindow/Modal.css';
+import '../../../CreateTaskModal/Modal.css';
 import {useDispatch, useSelector} from "react-redux";
 import {createDir} from "../../../../../store/api-actions";
 import {getCurrentDir} from "../../../../../store/slices/ManagerData/selectors";

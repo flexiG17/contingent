@@ -23,7 +23,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import jwt_decode from "jwt-decode";
 import EditIcon from "@mui/icons-material/Edit";
 import ModalMessage from '../MessageModal/index'
-import Modal from "../ModalWindow";
+import CreateTaskModalWindow from "../CreateTaskModal";
 import {getToken} from "../../../utils/token";
 import ModalFile from "../filemanager/ModalFile";
 
@@ -172,7 +172,7 @@ export default function PersonalCardQuota() {
     const actions = !READER_ACCESS ? [
             {
                 icon: <NotificationsNoneIcon/>,
-                name: 'Создать уведомление',
+                name: 'Создать задачу',
                 runFunction: () => {
                     handleModalMessage()
                 }
@@ -222,7 +222,7 @@ export default function PersonalCardQuota() {
         [
             {
                 icon: <NotificationsNoneIcon/>,
-                name: 'Создать уведомление',
+                name: 'Создать задачу',
                 runFunction: () => {
                     handleModalMessage()
                 }
@@ -642,7 +642,7 @@ export default function PersonalCardQuota() {
                     ))}
                 </SpeedDial>}
                 <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={student_email}/>
-                <Modal active={modalMessageActive} setActive={setModalMessageActive} studentData={rows}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} studentData={rows}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
             </Box>
         </>

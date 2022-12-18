@@ -9,7 +9,7 @@ import {createNotification, updateNotification} from "../../../actions/notificat
 import {useNavigate} from "react-router-dom";
 
 
-const Modal = ({active, setActive, studentData}) => {
+const CreateTaskModalWindow = ({active, setActive, studentData}) => {
     const [activeClick, setActiveClick] = useState(true);
     const [date, setDate] = useState()
     const [type, setType] = useState()
@@ -53,14 +53,14 @@ const Modal = ({active, setActive, studentData}) => {
     return (
         <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
             <div className="modal_content" onClick={e => e.stopPropagation()}>
-                <p className="title_addNotification">Добавить уведомление</p>
+                <p className="title_addNotification">Добавить задачу</p>
 
                 <form className="container_addNotification" onSubmit={handleSubmit}>
                     <Box component="form" sx={{'& > :not(style)': {mt: 1, ml: 2, width: '25ch'}}} noValidate
                          autoComplete="off">
                         <TextField
                             sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
-                            label="Тип уведомления" type="text" variant="outlined" color="warning"
+                            label="Тип задачи" type="text" variant="outlined" color="warning"
                             focused select InputLabelProps={propsStyle}
                             onChange={event => setType(event.target.value)} value={type}>
                             <MenuItem sx={propsStyle} value="Звонок">
@@ -109,7 +109,7 @@ const Modal = ({active, setActive, studentData}) => {
                             onChange={event => setComment(event.target.value)} value={comment}/>
                     </Box>
                     <label className="checkbox_style_notification">
-                        <input type="checkbox" onClick={handleClickContract}/>Вы уверены что хотите добавить?
+                        <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите добавить?
                     </label>
                     <div className="button_position_notification">
                         <button type="submit" className="button_style_contract_doc"
@@ -122,4 +122,4 @@ const Modal = ({active, setActive, studentData}) => {
     )
 }
 
-export default Modal;
+export default CreateTaskModalWindow;

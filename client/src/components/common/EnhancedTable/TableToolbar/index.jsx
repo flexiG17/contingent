@@ -16,11 +16,16 @@ import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogT
 import {getToken} from "../../../../utils/token";
 import moment from "moment";
 import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
+import CreateTaskModalWindow from "../../CreateTaskModal";
+import {useState} from "react";
+import TaskIcon from '@mui/icons-material/Task';
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 export default function TableToolbar({numSelected, selectedRows}) {
-    const [file, setFile] = React.useState(null);
+    const [file, setFile] = useState(null);
+    const [modalActive, setModalActive] = useState(false)
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -53,6 +58,13 @@ export default function TableToolbar({numSelected, selectedRows}) {
                 )}
 
                 {numSelected > 0 ? (<>
+                        <Tooltip title="Создать задачу">
+                            <IconButton onClick={() => {
+                                setModalActive(true)
+                            }}>
+                                <TaskIcon/>
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title="Загрузить">
                             <IconButton onClick={() => {
                                 createXlsx(selectedRows)
@@ -138,6 +150,7 @@ export default function TableToolbar({numSelected, selectedRows}) {
                     </>
                 )}
             </Toolbar>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive} studentData={selectedRows}/>
 
             {/* Диалоговое окно для подтверждения удаления*/}
             <Dialog
