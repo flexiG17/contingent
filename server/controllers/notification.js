@@ -37,5 +37,5 @@ module.exports.remove = async function (req, res) {
     const ids = [].concat(req.body)
     await notificationRepository.deleteAsync(ids)
 
-    return res.status(200).json({message: "Задача удалена"})
+    return res.status(200).json({message: "Задача выполнена"})
 }

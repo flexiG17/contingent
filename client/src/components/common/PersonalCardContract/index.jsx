@@ -35,8 +35,8 @@ export default function PersonalCardContract() {
     const [active, setActive] = useState(false);
     const [modalActive, setModalActive] = useState(false);
     const [editMode, setEditMode] = useState(true);
-    const [modalMessageActive, setModalMessageActive] = useState(false);
     const [modalFileActive,setModalFileActive] = useState(false);
+    const [modalMessageActive, setModalMessageActive] = useState(false);
 
     const handleClickContract = () => {
         setActive(!active)
@@ -783,7 +783,7 @@ export default function PersonalCardContract() {
                     ))}
                 </SpeedDial>}
                 <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={student_email}/>
-                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} studentData={rows}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} singleId={rows.id}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
             </Box>
         </>

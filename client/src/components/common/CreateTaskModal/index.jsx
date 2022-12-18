@@ -9,12 +9,11 @@ import {createNotification, updateNotification} from "../../../actions/notificat
 import {useNavigate} from "react-router-dom";
 
 
-const CreateTaskModalWindow = ({active, setActive, studentData}) => {
+const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
     const [activeClick, setActiveClick] = useState(true);
     const [date, setDate] = useState()
     const [type, setType] = useState()
     const [comment, setComment] = useState()
-    const [studentName, setStudentName] = useState()
 
     const navigate = useNavigate()
     const handleClickContract = () => {
@@ -31,11 +30,20 @@ const CreateTaskModalWindow = ({active, setActive, studentData}) => {
     }
 
     const userId = jwt_decode(getToken()).userId
+
+    let studentIdToSave = ''
+    if (singleId === undefined && idArray === undefined)
+        studentIdToSave = null
+    else if (singleId === undefined)
+        studentIdToSave = idArray
+    else if (idArray === undefined)
+        studentIdToSave = singleId
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
             type: type,
-            students_id: studentData === undefined ? null : [studentData.id],
+            students_id: studentIdToSave,
             date: date,
             comment: comment,
             completed: 'Запланировано',
@@ -50,7 +58,7 @@ const CreateTaskModalWindow = ({active, setActive, studentData}) => {
 
     return (
         <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
-            <Badge badgeContent={studentData.length} color="warning">
+            <Badge badgeContent={idArray !== undefined && idArray.length} color="warning">
                 <div className="modal_content" onClick={e => e.stopPropagation()}>
                     <p className="title_addNotification">Добавить задачу</p>
 

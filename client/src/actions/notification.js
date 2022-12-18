@@ -44,11 +44,12 @@ export function getCountNotifications() {
     }).then(res => res.data.length)
 }
 
-export function removeNotification(id, navigate) {
-    return axios.delete(`http://localhost:5000/api/notification/remove/${id}`, {
+export function removeNotification(idArray, navigate) {
+    return axios.delete(`http://localhost:5000/api/notification/remove`, {
         headers: {
             'Authorization': getToken()
-        }
+        },
+        data: idArray
     }).then(({statusText, data}) => {
         iziToast.success({
             title : statusText,

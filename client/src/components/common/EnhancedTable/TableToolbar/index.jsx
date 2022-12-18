@@ -19,7 +19,6 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import CreateTaskModalWindow from "../../CreateTaskModal";
 import {useState} from "react";
 import TaskIcon from '@mui/icons-material/Task';
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 
 export default function TableToolbar({numSelected, selectedRows}) {
     const [file, setFile] = useState(null);
@@ -150,7 +149,7 @@ export default function TableToolbar({numSelected, selectedRows}) {
                     </>
                 )}
             </Toolbar>
-            <CreateTaskModalWindow active={modalActive} setActive={setModalActive} studentData={selectedRows}/>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive} idArray={selectedRows}/>
 
             {/* Диалоговое окно для подтверждения удаления*/}
             <Dialog
