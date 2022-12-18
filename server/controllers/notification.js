@@ -34,7 +34,8 @@ module.exports.update = async function (req, res) {
 
 
 module.exports.remove = async function (req, res) {
-    await notificationRepository.deleteAsync(req.body)
+    const ids = [].concat(req.body)
+    await notificationRepository.deleteAsync(ids)
 
     return res.status(200).json({message: "Задача удалена"})
 }

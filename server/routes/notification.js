@@ -8,6 +8,6 @@ router.use(passport.authenticate('jwt', {session: false}, null))
 router.get('/', controller.getAll)
 router.post('/create', controller.create)
 router.put('/update/:id', controller.update)
-router.delete('/remove/:id', controller.remove)
+router.delete('/remove', controller.remove)
 
 module.exports = router
