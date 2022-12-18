@@ -20,11 +20,6 @@ module.exports = new class FileManagerService {
 
         const filePath = path.join(parentFile.path, file.name)
 
-        // TODO:
-        //  Check for directory creation bug if it exists in the uploads folder but is not in the `files` table
-        if (fs.existsSync(filePath))
-            throw new Error("Директория уже существует")
-
         file = new File({
             name: file.name,
             type: "dir",
@@ -36,7 +31,8 @@ module.exports = new class FileManagerService {
         })
 
         await db.files.insert(file).onConflict('path').merge()
-        fs.mkdirSync(filePath)
+        if (!fs.existsSync(filePath))
+            fs.mkdirSync(filePath)
 
         return file
     }
@@ -117,9 +113,10 @@ module.exports = new class FileManagerService {
     async deleteFiles(file_ids) {
         const files = await db.files.whereIn('id', file_ids)
 
-        for (const file of files)
-            fs.rmSync(file.path, {recursive: true})
-
+        for (const file of files) {
+            if (fs.existsSync(file.path))
+                fs.rmSync(file.path, {recursive: true})
+        }
         await db.files.whereIn('id', file_ids).delete()
     }
 
