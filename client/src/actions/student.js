@@ -8,14 +8,6 @@ export function getStudents() {
         headers: {Authorization: getToken()}
     }).then(resp => resp.data)
 }
-export function getStudentsByIdArray(idArray) {
-    return axios.get('http://localhost:5000/api/student/getStudents', {
-        headers: {
-            'Authorization': getToken()
-        },
-        data: idArray
-    }).then(resp => resp.data)
-}
 
 export function removeStudent(id) {
     return axios.delete(`http://localhost:5000/api/student/remove/${id}`, {
@@ -83,6 +75,14 @@ export function changeStudentData(item, id) {
             color: "#FFF2ED"
         });
     })
+}
+
+export function getStudentsByIdArray(idArray) {
+    return axios.post('http://localhost:5000/api/student/getStudents', idArray, {
+        headers: {
+            'Authorization': getToken()
+        },
+    }).then(resp => resp.data)
 }
 
 export function addStudent(item, navigate) {

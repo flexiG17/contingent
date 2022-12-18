@@ -12,11 +12,6 @@ import Tooltip from "@mui/material/Tooltip";
 import ModalMessage from "../MessageModal";
 import {getStudentsByIdArray} from "../../../actions/student";
 
-
-function FixedSizeList(props: { sx: { bgcolor: (string), borderRadius: string }, children: ReactNode }) {
-    return null;
-}
-
 const TaskCard = ({active, setActive, taskData}) => {
     const [activeClick, setActiveClick] = useState(true);
     const [type, setType] = useState(taskData.type)
@@ -57,23 +52,23 @@ const TaskCard = ({active, setActive, taskData}) => {
             })
     }
 
-    const data = [];
-
-    taskData.students_id !== null && taskData.students_id.map(id => {
-        data.push({id: id})
-    })
+    let studentEmails = []
+    let data = []
 
     if (active && taskData.students_id !== null) {
-        console.log(taskData.students_id);
         getStudentsByIdArray(taskData.students_id)
-            .then(a => {
-                console.log(a);
+            .then(students => {
+                data = students
+
+                students.map(student => {
+                    studentEmails.push(student.student_email)
+                })
             })
     }
 
     return (
         <>
-            <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={[]}/>
+            <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={studentEmails}/>
 
             <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
                 <div className="modal_content" onClick={e => e.stopPropagation()}>
@@ -118,7 +113,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             }}
                                         >
                                             <ListItemText
-                                                primary={`Список студентов в задаче (кол-во ${data.length})`}
+                                                primary={`Список студентов в задаче`}
                                                 primaryTypographyProps={propsStyle}
                                                 sx={{my: 0}}
                                             />
@@ -134,7 +129,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                     }}
                                                 >
                                                     <ListItemText
-                                                        primary={item.id}
+                                                        primary={item.russian_name}
                                                         primaryTypographyProps={{
                                                             fontSize: 14,
                                                             fontFamily: ['Montserrat'],
