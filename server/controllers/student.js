@@ -81,9 +81,10 @@ module.exports.getByIds = async function (req, res) {
 
 
 module.exports.importXlsxData = async function (req, res) {
-    if (!req.file)
+    if (!req.files[0])
         return res.status(404).json({message: "Файл не найден"})
 
+    req.file = req.files[0]
     const workbook = XLSX.readFile(req.file.path);
     const sheetNames = workbook.SheetNames;
     const sheet = workbook.Sheets[sheetNames[0]]

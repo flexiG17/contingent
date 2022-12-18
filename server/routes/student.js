@@ -21,7 +21,7 @@ router.post('/create', access(roles.editor), upload.any(), controller.create)
 router.put('/update/:id', access(roles.editor), controller.update)
 router.delete('/remove/:id', access(roles.editor), controller.remove)
 
-router.post('/importXlsxFile', access(roles.editor), upload.single(), controller.importXlsxData)
+router.post('/importXlsxFile', access(roles.editor), upload.any(), controller.importXlsxData)
 router.post('/download/xlsx', controller.downloadXlsx)
 
 router.delete('/removeStudents', access(roles.editor), controller.removeStudents)
