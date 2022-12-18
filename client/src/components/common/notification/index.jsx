@@ -111,7 +111,6 @@ export default function CollapsibleTable() {
         item.date = moment(item.date).format("YYYY-MM-DD")
     })
 
-    console.log(notifications);
     return (
         <>
             <div className="notification_navbar">

@@ -10,6 +10,7 @@ import {useNavigate} from "react-router-dom";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Tooltip from "@mui/material/Tooltip";
 import ModalMessage from "../MessageModal";
+import {getStudentsByIdArray} from "../../../actions/student";
 
 
 function FixedSizeList(props: { sx: { bgcolor: (string), borderRadius: string }, children: ReactNode }) {
@@ -62,6 +63,14 @@ const TaskCard = ({active, setActive, taskData}) => {
         data.push({id: id})
     })
 
+    if (active && taskData.students_id !== null) {
+        console.log(taskData.students_id);
+        getStudentsByIdArray(taskData.students_id)
+            .then(a => {
+                console.log(a);
+            })
+    }
+
     return (
         <>
             <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={[]}/>
@@ -109,7 +118,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             }}
                                         >
                                             <ListItemText
-                                                primary="Список студентов в задаче"
+                                                primary={`Список студентов в задаче (кол-во ${data.length})`}
                                                 primaryTypographyProps={propsStyle}
                                                 sx={{my: 0}}
                                             />
@@ -135,7 +144,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                 </ListItemButton>
                                             ))}
                                     </Box>
-                                    <Tooltip title="Рассылка студентам">
+                                    <Tooltip title="Рассылка указанным студентам">
                                         <MailOutlineIcon
                                             sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
                                             onClick={() => {

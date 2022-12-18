@@ -74,6 +74,7 @@ module.exports.remove = async function (req, res) {
 
 module.exports.getByIds = async function (req, res) {
     const ids = [].concat(req.body)
+    console.log(req.body);
     const students = await getStudents(ids)
 
     return res.status(200).json(students)

@@ -12,7 +12,6 @@ const ModalDirectory = ({active, setActive, studentId}) => {
 
 
     const createDirHandler = () => {
-        console.log(studentId, currentDir, name);
         dispatch(createDir({studentId: studentId, parentId: currentDir, name: name}));
         setActive(false);
     };
