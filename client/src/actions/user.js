@@ -1,6 +1,6 @@
 import axios from 'axios'
 import iziToast from "izitoast";
-import {ACCOUNT_ROUTE, LOAD_ROUTE, LOGIN_ROUTE, NOTIFICATION_ROUTE} from "../utils/consts";
+import {ACCOUNT_ROUTE} from "../utils/consts";
 import {getToken, setToken} from "../utils/token";
 
 export const Registration = async (name, role, email, password, navigate) => {
@@ -32,7 +32,7 @@ export const Registration = async (name, role, email, password, navigate) => {
     }
 }
 
-export const Login = async (email, password, navigate) => {
+export const Login = async (email, password) => {
     try {
         const response = await axios.post('http://localhost:5000/api/auth/login', {
             email,
@@ -44,7 +44,6 @@ export const Login = async (email, password, navigate) => {
             message: response.data.message,
             position: "topRight"
         });
-        navigate(LOAD_ROUTE);
     } catch (e) {
         iziToast.error({
             title: e.response.statusText,

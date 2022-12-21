@@ -10,7 +10,8 @@ export const ADD_STUDENT_ROUTE = '/createStudent'
 
 export const NameSpace = {
     User: 'USER',
-    FileManager: 'MANAGER'
+    App: 'APP',
+    FileManager: 'MANAGER',
 }
 
 export const fileSizes = {
