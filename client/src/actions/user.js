@@ -1,11 +1,11 @@
 import axios from 'axios'
 import iziToast from "izitoast";
-import {ACCOUNT_ROUTE, LOAD_ROUTE, LOGIN_ROUTE, NOTIFICATION_ROUTE} from "../utils/consts";
+import {ACCOUNT_ROUTE, LOAD_ROUTE, LOGIN_ROUTE, NOTIFICATION_ROUTE, URL_PATH} from "../utils/consts";
 import {getToken, setToken} from "../utils/token";
 
 export const Registration = async (name, role, email, password, navigate) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/register', {
+        const response = await axios.post(`${URL_PATH}/api/auth/register`, {
             name: name,
             email: email,
             password: password,
@@ -34,7 +34,7 @@ export const Registration = async (name, role, email, password, navigate) => {
 
 export const Login = async (email, password, navigate) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', {
+        const response = await axios.post(`${URL_PATH}/api/auth/login`, {
             email,
             password
         });
@@ -56,7 +56,7 @@ export const Login = async (email, password, navigate) => {
 }
 
 export function getUsers() {
-    return axios.get('http://localhost:5000/api/user/', {
+    return axios.get(`${URL_PATH}/api/user/`, {
         headers: {
             Authorization: getToken()
         }
@@ -64,7 +64,7 @@ export function getUsers() {
 }
 
 export function changeUserData(data, id) {
-    return axios.put(`http://localhost:5000/api/user/change/${id}`, data, {
+    return axios.put(`${URL_PATH}/api/user/change/${id}`, data, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'

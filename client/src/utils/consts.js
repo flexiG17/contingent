@@ -1,3 +1,4 @@
+export const URL_PATH = 'http://localhost:5000'
 export const START_ROUTE = '/start'
 export const LOGIN_ROUTE = '/login'
 export const LOAD_ROUTE = '/loading'

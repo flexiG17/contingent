@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {getToken} from './token';
+import {URL_PATH} from "./consts";
 
-const BACKEND_URL = 'http://localhost:5000/api/';
+const BACKEND_URL = `${URL_PATH}/api/`;
 const REQUEST_TIMEOUT = 5000;
 
 export const createApi = () => {

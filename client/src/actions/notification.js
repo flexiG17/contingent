@@ -1,10 +1,10 @@
 import axios from "axios";
 import iziToast from "izitoast";
-import {ACCOUNT_ROUTE, NOTIFICATION_ROUTE} from "../utils/consts";
+import {ACCOUNT_ROUTE, NOTIFICATION_ROUTE, URL_PATH} from "../utils/consts";
 import {getToken} from "../utils/token";
 
 export function createNotification(item, navigate) {
-    return axios.post('http://localhost:5000/api/notification/create', item, {
+    return axios.post(`${URL_PATH}/api/notification/create`, item, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
@@ -29,7 +29,7 @@ export function createNotification(item, navigate) {
 }
 
 export function getNotifications() {
-    return axios.get(`http://localhost:5000/api/notification/`, {
+    return axios.get(`${URL_PATH}/api/notification/`, {
         headers: {
             'Authorization': getToken()
         }
@@ -37,7 +37,7 @@ export function getNotifications() {
 }
 
 export function getCountNotifications() {
-    return axios.get(`http://localhost:5000/api/notification/`, {
+    return axios.get(`${URL_PATH}/api/notification/`, {
         headers: {
             'Authorization': getToken()
         }
@@ -45,7 +45,7 @@ export function getCountNotifications() {
 }
 
 export function removeNotification(idArray, navigate) {
-    return axios.delete(`http://localhost:5000/api/notification/remove`, {
+    return axios.delete(`${URL_PATH}/api/notification/remove`, {
         headers: {
             'Authorization': getToken()
         },
@@ -70,7 +70,7 @@ export function removeNotification(idArray, navigate) {
 }
 
 export function updateNotification(id, item, navigate) {
-    return axios.put(`http://localhost:5000/api/notification/update/${id}`, item, {
+    return axios.put(`${URL_PATH}/api/notification/update/${id}`, item, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'

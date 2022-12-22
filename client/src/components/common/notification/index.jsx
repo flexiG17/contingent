@@ -82,7 +82,7 @@ function Row(props) {
                         </button>
                     </TableCell>
                     <TableCell align="right">{row.students_id !== null && row.students_id.length}</TableCell>
-                    <TableCell align="right">{row.date}</TableCell>
+                    <TableCell align="right">{moment(row.date).locale('ru').format("ll")}</TableCell>
                     <TableCell sx={{maxWidth: '130px'}} align="right">{row.comment}</TableCell>
                 </TableRow>
                 <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
@@ -107,7 +107,7 @@ export default function CollapsibleTable() {
 
     notifications = notificationList
     notifications.map(item => {
-        item.date = moment(item.date).locale('ru').format("ll")
+        item.date = moment(item.date).format("YYYY-MM-DD")
     })
 
     return (
