@@ -128,8 +128,28 @@
 
 .send_with_other_mail{
     margin-left: 3px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     color: black;
     font-size: 16px;
     font-family: Montserrat, serif;
     font-width: 400
+}
+
+.file_input{
+    height: 18px;
+    justify-content: space-between;
+    align-items: center;
+    width: 140px;
+    background-color: #FA7A45;
+    border-radius: 5px;
+    padding: 6px 12px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    margin-top: 25px;
+}
+
+.button_message_position{
+    display: flex;
 }

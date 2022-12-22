@@ -4,7 +4,16 @@ import '../../../Pages/Account/Account.css';
 import TextField from "@mui/material/TextField";
 import jwt_decode from "jwt-decode";
 import {sendMessage} from "../../../actions/student";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
+import {
+    Badge,
+    Button, CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    ListItemButton, ListItemText
+} from "@mui/material";
 import Select from 'react-select';
 import {getToken} from "../../../utils/token";
 import {LetterTemplates} from "../../../utils/consts";
@@ -12,6 +21,9 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {Link} from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import iziToast from "izitoast";
+import Box from "@mui/material/Box";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
     let options = []
@@ -26,24 +38,27 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 fontWeight: '450'
             }
     }
-    const destination = Array(studentEmail)
     const [openDialog, setOpenDialog] = useState(false)
-    //const [destination, setDestination] =  useState()
     const [subject, setSubject] = useState()
     const [text, setText] = useState()
     const [sender, setSender] = useState()
+    const [openEmailList, setOpenEmailList] = useState()
     const [template, setTemplate] = useState()
+    const [file, setFile] = useState(null);
 
     const data = {
-        to: destination,
+        to: studentEmail,
         subject: subject,
         text: text
     }
+
+    const dataToSave = new FormData()
+
     const handleTypeSelect = e => {
         setTemplate(e.value);
         setText(e.value)
     }
-    const mailtoHref = `mailto:${destination}?subject=${subject}&body`
+    const mailtoHref = `mailto:${studentEmail}?subject=${subject}&body`
 
     return (
         <>
@@ -59,13 +74,55 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                        onChange={e => setSender(e.target.value)}
                                        size="small" sx={{width: "530px", marginTop: "25px"}}
                             />
-                            <a className='send_with_other_mail' href={mailtoHref}>Отправить с другой почты</a>
 
-                            <TextField label="Кому" variant="outlined" color="warning" type="text"
-                                       inputProps={propsStyle}
-                                       margin='normal' InputLabelProps={propsStyle} value={studentEmail} disabled
-                                       size="small" sx={{width: "300px", marginTop: "25px"}}
-                            />
+                            <Box
+                                sx={{
+                                    bgcolor: openEmailList ? '#FFB953' : '#FFAA2D',
+                                    borderRadius: '5px',
+                                    maxHeight: 170,
+                                    maxWidth: 300,
+                                    overflowY: openEmailList ? 'scroll' : 'visible',
+                                    marginTop: "8px"
+                                }}
+                            >
+                                <ListItemButton
+                                    alignItems="flex-start"
+                                    onClick={() => setOpenEmailList(!openEmailList)}
+                                    sx={{
+                                        px: 1,
+                                        pl: -10,
+                                        pb: openEmailList ? 0 : 2.5,
+                                        '&:hover, &:focus': {'& svg': {opacity: openEmailList ? 1 : 0}},
+                                        height: '40px',
+                                    }}
+                                >
+                                    <ListItemText
+                                        primary={`Список почт при рассылке (${studentEmail.length})`}
+                                        primaryTypographyProps={propsStyle}
+                                        sx={{my: 0, mt: 0.3}}
+                                    />
+                                </ListItemButton>
+                                {openEmailList &&
+                                    studentEmail.map((item) => (
+                                        <ListItemButton
+                                            key={item}
+                                            sx={{
+                                                background: '#FFD89D',
+                                                pt: '5px',
+                                                pb: '5px'
+                                            }}
+                                        >
+                                            <ListItemText
+                                                primary={item}
+                                                primaryTypographyProps={{
+                                                    fontSize: 14,
+                                                    fontFamily: ['Montserrat'],
+                                                    fontWeight: '450'
+                                                }}
+                                            />
+                                        </ListItemButton>
+                                    ))}
+                            </Box>
                             <div className={'template_in_row_with_icon'}>
                                 <Select className="message_type" placeholder="Шаблоны письма" options={options}
                                         onChange={handleTypeSelect}
@@ -92,6 +149,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
                         </div>
+                        <a className='send_with_other_mail' href={mailtoHref}>Отправить с другой почты</a>
                         <TextField
                             className="input_message_sms"
                             label="Текст письма"
@@ -110,6 +168,15 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                             color="warning"
                         />
                         <div className="button_message_position">
+                            <label htmlFor="input_students" className='file_input'>
+                                {file === null ? 'Выбрать файл' : file.name}
+                                <input className='file_input' type="file" name='input_students' id='input_students'
+                                       onChange={e => {
+                                           setFile(e.target.files[0]);
+                                       }}/>
+                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
+                            </label>
+
                             <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение
                             </button>
                         </div>
@@ -129,7 +196,15 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        sendMessage(data)
+                        dataToSave.append('to', studentEmail)
+                        dataToSave.append('from', 'Подготовительное отделение для иностранных учащихся УрФУ')
+                        dataToSave.append('subject', subject)
+                        dataToSave.append('text', text)
+                        dataToSave.append('files', file)
+                        sendMessage(dataToSave)
+                            .then(() => {
+                                window.location.reload()
+                            })
                         setOpenDialog(false)
                         setActive(false)
                     }

@@ -58,6 +58,7 @@ export default function EnhancedTable() {
     const [orderBy, setOrderBy] = useState('calories');
 
     const [selected, setSelected] = useState([]);
+    const [selectedEmail, setSelectedEmail] = useState([]);
 
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(true);
@@ -111,6 +112,7 @@ export default function EnhancedTable() {
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
             setSelected(filteredValues.map((n) => n.id));
+            setSelectedEmail(filteredValues.map((n) => n.student_email))
             return;
         }
         setSelected([]);
@@ -235,7 +237,7 @@ export default function EnhancedTable() {
                     borderRadius: '0px',
                     borderTop: '1px solid #FA7A45'
                 }}>
-                    <TableToolbar numSelected={selected.length} selectedRows={selected}/>
+                    <TableToolbar numSelected={selected.length} selectedRows={selected} selectedEmails={selectedEmail}/>
                     <TableContainer>
                         <Table
                             sx={{minWidth: 750}}
