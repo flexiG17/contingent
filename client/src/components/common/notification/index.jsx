@@ -74,9 +74,8 @@ function Row(props) {
                             handleOpen()
                         }}/>
                     </TableCell>
-                    <TableCell component="th" scope="row">
-                        {row.type}
-                    </TableCell>
+                    <TableCell component="th" scope="row">{row.type}</TableCell>
+                    <TableCell component="th" scope="row">{row.completed}</TableCell>
                     <TableCell align="right">
                         <button onClick={() => setActiveTaskCardModel(true)}
                         >Ссылка
@@ -84,7 +83,7 @@ function Row(props) {
                     </TableCell>
                     <TableCell align="right">{row.students_id !== null && row.students_id.length}</TableCell>
                     <TableCell align="right">{row.date}</TableCell>
-                    <TableCell align="right">{row.comment}</TableCell>
+                    <TableCell sx={{maxWidth: '130px'}} align="right">{row.comment}</TableCell>
                 </TableRow>
                 <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
                     <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -108,7 +107,7 @@ export default function CollapsibleTable() {
 
     notifications = notificationList
     notifications.map(item => {
-        item.date = moment(item.date).format("YYYY-MM-DD")
+        item.date = moment(item.date).locale('ru').format("ll")
     })
 
     return (
@@ -127,7 +126,8 @@ export default function CollapsibleTable() {
                         <TableRow>
                             <TableCell/>
                             <TableCell>Тип</TableCell>
-                            <TableCell align="right">Задача</TableCell>
+                            <TableCell align="left">Статус</TableCell>
+                            <TableCell align="left">Задача</TableCell>
                             <TableCell align="right">Cтуденты</TableCell>
                             <TableCell align="right">Дата</TableCell>
                             <TableCell align="right">Комментарий</TableCell>

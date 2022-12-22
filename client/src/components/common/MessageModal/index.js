@@ -26,9 +26,8 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 fontWeight: '450'
             }
     }
-    const destination = Array(studentEmail)
     const [openDialog, setOpenDialog] = useState(false)
-    //const [destination, setDestination] =  useState()
+    const [destination, setDestination] =  useState(studentEmail)
     const [subject, setSubject] = useState()
     const [text, setText] = useState()
     const [sender, setSender] = useState()
@@ -45,6 +44,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
     }
     const mailtoHref = `mailto:${destination}?subject=${subject}&body`
 
+    console.log(studentEmail);
     return (
         <>
             <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
@@ -61,9 +61,9 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                             />
                             <a className='send_with_other_mail' href={mailtoHref}>Отправить с другой почты</a>
 
-                            <TextField label="Кому" variant="outlined" color="warning" type="text"
+                            <TextField variant="outlined" color="warning" type="text"
                                        inputProps={propsStyle}
-                                       margin='normal' InputLabelProps={propsStyle} value={studentEmail} disabled
+                                       margin='normal' InputLabelProps={propsStyle} value={destination} disabled
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
                             <div className={'template_in_row_with_icon'}>

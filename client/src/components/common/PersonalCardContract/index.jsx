@@ -782,7 +782,7 @@ export default function PersonalCardContract() {
                         />
                     ))}
                 </SpeedDial>}
-                <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={student_email}/>
+                <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={[student_email]}/>
                 <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} singleId={rows.id}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
             </Box>

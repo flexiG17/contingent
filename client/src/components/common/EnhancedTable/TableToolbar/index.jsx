@@ -19,10 +19,13 @@ import DoNotDisturbIcon from '@mui/icons-material/DoNotDisturb';
 import CreateTaskModalWindow from "../../CreateTaskModal";
 import {useState} from "react";
 import TaskIcon from '@mui/icons-material/Task';
+import EmailIcon from '@mui/icons-material/Email';
+import ModalMessage from "../../MessageModal";
 
-export default function TableToolbar({numSelected, selectedRows}) {
+export default function TableToolbar({numSelected, selectedRows, selectedEmails}) {
     const [file, setFile] = useState(null);
     const [modalActive, setModalActive] = useState(false)
+    const [modalMessageActive, setModalMessageActive] = useState(false);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -57,6 +60,14 @@ export default function TableToolbar({numSelected, selectedRows}) {
                 )}
 
                 {numSelected > 0 ? (<>
+                        <Tooltip title={`Рассылка ${selectedEmails.length} указанным студентам`}>
+                            <IconButton onClick={() => {
+                                setModalMessageActive(true)
+                            }}>
+                                <EmailIcon sx={{cursor: 'pointer'}}
+                                />
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title="Создать задачу">
                             <IconButton onClick={() => {
                                 setModalActive(true)
@@ -110,7 +121,8 @@ export default function TableToolbar({numSelected, selectedRows}) {
                         {!READER_ACCESS && file !== null &&
                             <>
                                 <DoNotDisturbIcon sx={{cursor: 'pointer', marginRight: '10px'}} onClick={() => {
-                                    setFile(null)}
+                                    setFile(null)
+                                }
                                 }/>
                                 <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
                                     <UploadIcon fontSize='medium' onClick={() => {
@@ -150,6 +162,7 @@ export default function TableToolbar({numSelected, selectedRows}) {
                 )}
             </Toolbar>
             <CreateTaskModalWindow active={modalActive} setActive={setModalActive} idArray={selectedRows}/>
+            <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={selectedEmails}/>
 
             {/* Диалоговое окно для подтверждения удаления*/}
             <Dialog
