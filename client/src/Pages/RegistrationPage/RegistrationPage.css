@@ -1,29 +1,6 @@
-.form_container{
-    max-width: 1200px;
-    display: flex;
-    justify-content: center;
-    margin: auto;
-}
-
-.header_greeting{
-    width: 500px;
-    position: absolute;
-    top:15%;
-}
-
-.Register_Logo{
-    display: flex;
-    padding: 40px 120px;
-}
-
 .form_style{
-    display: flex;
-    flex-direction: column;
-    padding: 90px 110px;
-    background-color: #FFF2ED;
-    border-radius: 8px;
+    background-color: #fff;
 }
-
 .label_style{
     display: block;
     margin-bottom: 0.25rem;

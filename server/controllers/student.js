@@ -72,20 +72,19 @@ module.exports.remove = async function (req, res) {
 }
 
 
-module.exports.getById = async function (req, res) {
-    const student = await getStudent(req.params.id)
+module.exports.getByIds = async function (req, res) {
+    const ids = [].concat(req.body)
+    const students = await getStudents(ids)
 
-    if (!student)
-        return res.status(401).json({message: "Студента не существует"})
-
-    return res.status(200).json(student)
+    return res.status(200).json(students)
 }
 
 
 module.exports.importXlsxData = async function (req, res) {
-    if (!req.file)
+    if (!req.files[0])
         return res.status(404).json({message: "Файл не найден"})
 
+    req.file = req.files[0]
     const workbook = XLSX.readFile(req.file.path);
     const sheetNames = workbook.SheetNames;
     const sheet = workbook.Sheets[sheetNames[0]]

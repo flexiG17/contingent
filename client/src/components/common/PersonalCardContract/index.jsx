@@ -24,7 +24,7 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/Edit';
 import jwt_decode from "jwt-decode";
 import ModalMessage from "../MessageModal";
-import Modal from "../ModalWindow";
+import CreateTaskModalWindow from "../CreateTaskModal";
 import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
 
@@ -35,8 +35,8 @@ export default function PersonalCardContract() {
     const [active, setActive] = useState(false);
     const [modalActive, setModalActive] = useState(false);
     const [editMode, setEditMode] = useState(true);
-    const [modalMessageActive, setModalMessageActive] = useState(false);
     const [modalFileActive,setModalFileActive] = useState(false);
+    const [modalMessageActive, setModalMessageActive] = useState(false);
 
     const handleClickContract = () => {
         setActive(!active)
@@ -191,7 +191,7 @@ export default function PersonalCardContract() {
     const actions = !READER_ACCESS ? [
             {
                 icon: <NotificationsNoneIcon/>,
-                name: 'Создать уведомление',
+                name: 'Создать задачу',
                 runFunction: () => {
                     handleModalMessage()
                 }
@@ -241,7 +241,7 @@ export default function PersonalCardContract() {
         [
             {
                 icon: <NotificationsNoneIcon/>,
-                name: 'Создать уведомление',
+                name: 'Создать задачу',
                 runFunction: () => {
                     handleModalMessage()
                 }
@@ -783,7 +783,7 @@ export default function PersonalCardContract() {
                     ))}
                 </SpeedDial>}
                 <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={student_email}/>
-                <Modal active={modalMessageActive} setActive={setModalMessageActive} studentData={rows}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} singleId={rows.id}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
             </Box>
         </>

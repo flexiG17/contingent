@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import '../ModalWindow/Modal.css'
+import '../CreateTaskModal/Modal.css'
 import '../../../Pages/Account/Account.css';
 import TextField from "@mui/material/TextField";
 import jwt_decode from "jwt-decode";
@@ -131,6 +131,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                     <Button onClick={() => {
                         sendMessage(data)
                         setOpenDialog(false)
+                        setActive(false)
                     }
                     }>Да</Button>
                     <Button onClick={() => {
