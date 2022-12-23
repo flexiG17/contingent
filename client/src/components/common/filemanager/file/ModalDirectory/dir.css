@@ -26,6 +26,7 @@
 .dir__button {
     width: 200px;
     padding: 10px;
+    margin: 0 10px;
     
     border:2px solid #FF6347;
     border-radius: 10px;

@@ -1,19 +1,22 @@
 import React, {useState} from 'react';
 import './File.css';
+import '../../../../CreateTaskModal/Modal.css';
+import '../../ModalDirectory/dir.css';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import FolderIcon from '@mui/icons-material/Folder';
 import DeleteIcon from "@mui/icons-material/Delete";
 import Download from "@mui/icons-material/Download";
 import {useDispatch} from "react-redux";
 import {pushDirStack, setCurrentDir} from "../../../../../../store/slices/ManagerData/manager-data";
-import {deleteDir} from "../../../../../../store/api-actions";
 import {downloadFile} from "../../../../../../actions/fileManager";
 import {fileSizes} from "../../../../../../utils/consts";
+import {deleteDir} from "../../../../../../store/api-actions";
 
 const File = ({file}) => {
     const dispatch = useDispatch();
 
     const [active, setActive] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const calculateFileSize = (fSize) => {
         if (fSize === null || fSize === undefined) {
@@ -86,12 +89,24 @@ const File = ({file}) => {
                             }
                             }><Download/></div>
                             <div className="file_size" onClick={(e) => {
-                                e.stopPropagation()
-                                handleDeleteFile()
+                                e.stopPropagation();
+                                setIsOpen(true);
                             }}><DeleteIcon/></div>
                         </>
                 }
             </div>
+            {
+                isOpen &&
+                <div className={isOpen ? "modal active" : "modal"} onClick={() => setIsOpen(false)}>
+                    <div className="modal_content dir__content" onClick={e => e.stopPropagation()}>
+                        <h2>Вы уверны, что хотите удалить выбранный файл?</h2>
+                        <div>
+                            <button className="dir__button" onClick={handleDeleteFile}>Да</button>
+                            <button className="dir__button" onClick={() => setIsOpen(false)}>Нет</button>
+                        </div>
+                    </div>
+                </div>
+            }
         </>
     )
 }
