@@ -5,16 +5,24 @@ import "izitoast/dist/css/iziToast.css";
 import {useNavigate} from "react-router-dom";
 import {Alert} from "@mui/material";
 import {Login} from "../../actions/user";
+import {useDispatch} from "react-redux";
+import {setAppStatus} from "../../store/slices/AppData/app-data";
+import {HOME_ROUTE} from "../../utils/consts";
 
 function LoginPage() {
-    const [inputEmail, setEmailItemInput] = useState('')
-    const [inputPassword, setPasswordItemInput] = useState('')
+    const [inputEmail, setEmailItemInput] = useState('');
+    const [inputPassword, setPasswordItemInput] = useState('');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        Login(inputEmail, inputPassword, navigate)
+        dispatch(setAppStatus(0));
+        await Login(inputEmail, inputPassword, navigate);
+        navigate(HOME_ROUTE);
+        dispatch(setAppStatus(1));
     };
     return (
         <>
