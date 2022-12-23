@@ -1,0 +1,42 @@
+.dir__content {
+    min-width: 400px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dir__content h2 {
+    margin: 0;
+}
+
+
+.dir__input {
+    width: 250px;
+    padding: 10px;
+
+    border:2px solid #FF6347;
+    border-radius: 10px;
+
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.dir__button {
+    width: 200px;
+    padding: 10px;
+    
+    border:2px solid #FF6347;
+    border-radius: 10px;
+    background-color: #fff;
+    
+    font-size: 15px;
+    font-family: 'Montserrat', sans-serif;
+
+    cursor: pointer;
+}
+
+.dir__button:hover {
+    background-color: #f1f1f1;
+}
