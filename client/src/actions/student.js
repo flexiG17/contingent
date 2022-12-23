@@ -9,21 +9,22 @@ export function getStudents() {
     }).then(resp => resp.data)
 }
 
-export function removeStudent(id) {
+export function removeStudent(id, navigate) {
     return axios.delete(`${URL_PATH}/api/student/remove/${id}`, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
         }
     }).then(({statusText, data}) => {
+        setTimeout(() => {
+            navigate(HOME_ROUTE)
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
             message: e.response.data.message,
             position: "topRight",
             color: "#FFF2ED"
@@ -31,7 +32,7 @@ export function removeStudent(id) {
     })
 }
 
-export function removeArrayOfStudents(data) {
+export function removeArrayOfStudents(data, navigate) {
     return axios.delete(`${URL_PATH}/api/student/removeStudents`, {
         headers: {
             'Authorization': getToken(),
@@ -39,14 +40,15 @@ export function removeArrayOfStudents(data) {
         },
         data: data
     }).then(({statusText, data}) => {
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
             message: e.response.data.message,
             position: "topRight",
             color: "#FFF2ED"
@@ -54,7 +56,7 @@ export function removeArrayOfStudents(data) {
     })
 }
 
-export function changeStudentData(item, id) {
+export function changeStudentData(item, id, navigate) {
     return axios.put(
         `${URL_PATH}/api/student/update/${id}`, item, {
             headers: {
@@ -62,14 +64,15 @@ export function changeStudentData(item, id) {
                 'Content-Type': 'application/json;charset=utf-8'
             }
         }).then(({statusText, data}) => {
+            setTimeout(() => {
+                navigate(HOME_ROUTE)
+            }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
             message: e.response.data.message,
             position: "topRight",
             color: "#FFF2ED"
@@ -92,15 +95,16 @@ export function addStudent(item, navigate) {
             'Content-Type': 'multipart/form-data;'
         },
     }).then(({statusText, data}) => {
+        setTimeout(() => {
+            navigate(HOME_ROUTE)
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
         navigate(HOME_ROUTE);
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
             message: e.response.data.message,
             position: "topRight",
             color: "#FFF2ED"
@@ -118,21 +122,22 @@ export function createXlsx(item) {
     })
 }
 
-export function importXlsx(data) {
+export function importXlsx(data, navigate) {
     return axios.post(`${URL_PATH}/api/student/importXlsxFile`, data, {
         'content-type': 'multipart/form-data',
         headers: {
             'Authorization': getToken()
         },
     }).then(({statusText, data}) => {
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
             message: e.response.data.message,
             position: "topRight",
             color: "#FFF2ED"
@@ -148,7 +153,7 @@ export function sendMessage(data) {
         },
     }).then(({statusText, data}) => {
         iziToast.success({
-            title : statusText,
+            title: statusText,
             message: data.message,
             position: 'topRight'
         })

@@ -15,7 +15,6 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
     const [type, setType] = useState()
     const [comment, setComment] = useState()
 
-    const navigate = useNavigate()
     const handleClickContract = () => {
         setActiveClick(!activeClick)
     }
@@ -39,6 +38,7 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
     else if (idArray === undefined)
         studentIdToSave = singleId
 
+    const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -50,9 +50,6 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
             user_id: userId
         }
         createNotification(data, navigate)
-            .then(() => {
-                window.location.reload()
-            })
     }
 
 

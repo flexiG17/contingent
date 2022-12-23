@@ -142,30 +142,7 @@ export default function PersonalCardQuota() {
             visa_validity: visa_validity,
             comments: comments
         }
-        changeStudentData(data, rows.id)
-            .then((res) => {
-                switch (res.status) {
-                    case 200: {
-                        iziToast.success({
-                            title: res.statusText,
-                            message: 'Данные студента успешно обновлены',
-                            position: "topRight"
-                        });
-                        setTimeout(() => {
-                            navigate(HOME_ROUTE)
-                        }, 2000)
-                        break
-                    }
-                    default: {
-                        iziToast.error({
-                            title: res.statusText,
-                            message: 'Попробуйте ещё раз',
-                            position: "topRight",
-                            color: "#FFF2ED"
-                        });
-                    }
-                }
-            })
+        changeStudentData(data, rows.id, navigate)
     };
 
 
@@ -254,7 +231,7 @@ export default function PersonalCardQuota() {
                                        onChange={event => setLatinName(event.target.value)} value={latin_name}/>
                             <TextField label="Ф.И.О. (кир.)" variant="outlined" color="warning" type="text"
                                        margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setRussianName(event.target.value)} value={russian_name}/>
                             <TextField label="Контактный телефон студента" variant="outlined" color="warning" type="tel"
                                        margin='normal' size="small" disabled={editMode}
@@ -266,11 +243,11 @@ export default function PersonalCardQuota() {
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
                             <TextField label="Страна" type="text" variant="outlined" color="warning" margin='normal'
-                                       required size="small" sx={{width: "325px"}} disabled={editMode}
+                                       size="small" sx={{width: "325px"}} disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setCountry(event.target.value)} value={country}/>
                             <TextField label="Дата рождения" type="date" color="warning"
-                                       margin='normal' size="small" disabled={editMode}
+                                       required margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
                             <TextField label="Место рождения" type="text" variant="outlined" color="warning"
@@ -421,7 +398,7 @@ export default function PersonalCardQuota() {
                         <div className="column_style_contract">
                             <p className="tytle_contract_education"> Уровень получаемого образования </p>
                             <TextField label="Статус зачисления" type="text" variant="outlined" color="warning"
-                                       margin='normal' required size="small" select sx={{width: "325px"}}
+                                       margin='normal' size="small" select sx={{width: "325px"}}
                                        InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setEnrollment(event.target.value)} value={enrollment}>
                                 <MenuItem sx={propsStyle.style} value="Зачислен">
@@ -453,7 +430,7 @@ export default function PersonalCardQuota() {
                                 </MenuItem>
                             </TextField>
                             <TextField label="Тип обучения" type="text" variant="outlined" color="error" margin='normal'
-                                       required size="small" select focused disabled={editMode}
+                                       size="small" required select focused disabled={editMode}
                                        InputLabelProps={propsStyle}
                                        onChange={event => setEducationType(event.target.value)} value={education_type}>
                                 <MenuItem sx={propsStyle} value="Контракт">
@@ -464,7 +441,7 @@ export default function PersonalCardQuota() {
                                 </MenuItem>
                             </TextField>
                             <TextField label="Номер приказа о зачислении" type="text" variant="outlined" color="warning"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEnrollmentOrder(event.target.value)}
                                        value={enrollment_order}/>
@@ -580,31 +557,8 @@ export default function PersonalCardQuota() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        removeStudent(rows.id)
-                            .then((res) => {
-                                switch (res.status) {
-                                    case 200: {
-                                        iziToast.success({
-                                            title: res.statusText,
-                                            message: 'Студент успешно удалены из базы. Обновляю страницу :)',
-                                            position: "topRight",
-                                        });
-                                        setTimeout(() => {
-                                        }, 1000)
-                                        break
-                                    }
-                                    default: {
-                                        iziToast.error({
-                                            title: res.statusText,
-                                            message: 'Ошибка. Попробуйте снова.',
-                                            position: "topRight",
-                                            color: "#FFF2ED"
-                                        });
-                                    }
-                                }
-                            })
+                        removeStudent(rows.id, navigate)
                         setOpen(false)
-                        navigate(HOME_ROUTE);
                     }
                     }>Да</Button>
                     <Button onClick={() => {

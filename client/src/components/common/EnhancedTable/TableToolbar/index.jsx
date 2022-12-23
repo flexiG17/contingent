@@ -21,6 +21,7 @@ import {useState} from "react";
 import TaskIcon from '@mui/icons-material/Task';
 import EmailIcon from '@mui/icons-material/Email';
 import ModalMessage from "../../MessageModal";
+import {useNavigate} from "react-router-dom";
 
 export default function TableToolbar({numSelected, selectedRows, selectedEmails}) {
     const [file, setFile] = useState(null);
@@ -32,6 +33,7 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
         setOpen(true);
     };
 
+    const navigate = useNavigate()
     let decodedToken = jwt_decode(getToken());
     const READER_ACCESS = decodedToken.role === 'Читатель';
     const handleClose = () => {
@@ -128,30 +130,7 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                                     <UploadIcon fontSize='medium' onClick={() => {
                                         const data = new FormData()
                                         data.append('fileToImport', file)
-                                        importXlsx(data)
-                                            .then(res => {
-                                                switch (res.status) {
-                                                    case 201: {
-                                                        iziToast.success({
-                                                            title: res.statusText,
-                                                            message: 'Студенты успешно импортированы в базу. Обновляю страницу :)',
-                                                            position: "topRight"
-                                                        });
-                                                        setTimeout(() => {
-                                                            window.location.reload()
-                                                        }, 2000)
-                                                        break
-                                                    }
-                                                    default: {
-                                                        iziToast.error({
-                                                            title: res.statusText,
-                                                            message: 'Ошибка. Попробуйте снова.',
-                                                            position: "topRight",
-                                                            color: "#FFF2ED"
-                                                        });
-                                                    }
-                                                }
-                                            })
+                                        importXlsx(data, navigate)
                                     }}>
                                         <FilterListIcon/>
                                     </UploadIcon>
@@ -179,30 +158,7 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        removeArrayOfStudents(selectedRows)
-                            .then((res) => {
-                                switch (res.status) {
-                                    case 200: {
-                                        iziToast.success({
-                                            title: res.statusText,
-                                            message: 'Студенты успешно удалены из базы. Обновляю страницу :)',
-                                            position: "topRight"
-                                        });
-                                        setTimeout(() => {
-                                            window.location.reload()
-                                        }, 2000);
-                                        break;
-                                    }
-                                    default: {
-                                        iziToast.error({
-                                            title: res.statusText,
-                                            message: 'Ошибка. Попробуйте снова.',
-                                            position: "topRight",
-                                            color: "#FFF2ED"
-                                        });
-                                    }
-                                }
-                            });
+                        removeArrayOfStudents(selectedRows, navigate)
                         setOpen(false);
                     }
                     }>Да</Button>

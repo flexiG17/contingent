@@ -41,7 +41,7 @@ const TaskCard = ({active, setActive, taskData}) => {
     const userId = jwt_decode(getToken()).userId
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
+        const dataToUpdate = {
             type: type,
             students_id: taskData.students_id,
             date: date,
@@ -49,10 +49,7 @@ const TaskCard = ({active, setActive, taskData}) => {
             completed: status,
             user_id: userId
         }
-        createNotification(data, navigate)
-            .then(() => {
-                window.location.reload()
-            })
+        updateNotification(taskData.id, dataToUpdate, navigate)
     }
 
     useEffect(() => {
