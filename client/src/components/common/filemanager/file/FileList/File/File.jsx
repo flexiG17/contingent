@@ -36,7 +36,7 @@ const File = ({file}) => {
     const handleFileClick = () => {
         if (file.type === 'dir') {
             dispatch(setCurrentDir(file.id));
-            dispatch(pushDirStack(file.parent_id));
+            dispatch(pushDirStack({name: file.name, id: file.parent_id}));
         }
     };
 

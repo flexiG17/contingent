@@ -7,6 +7,7 @@ disk {
     flex-direction: row;
     width: 400px;
     justify-content: space-between;
+    margin-bottom: 10px;
 }
 
 .disk_style_btns{
@@ -27,4 +28,9 @@ disk {
 
 .disk_style_btns:hover{
     color: #FF4B00;
+}
+
+.disk_style_bread {
+    font-size: 15px;
+    color: #FF6347;
 }
