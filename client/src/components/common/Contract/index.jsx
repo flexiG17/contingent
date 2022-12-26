@@ -50,7 +50,7 @@ export default function Contract() {
                                    inputProps={propsStyle} InputLabelProps={propsStyle}/>
 
                         <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
-                                   color="warning"
+                                   color="warning" defaultValue=''
                                    margin='normal' select size="small"
                                    InputLabelProps={propsStyle}>
                             <MenuItem sx={propsStyle} value="Да">
@@ -72,7 +72,6 @@ export default function Contract() {
                                    type="email"
                                    margin='normal'
                                    size="small"
-
                                    inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <p className="title_contract_doc"> Контактные данные агента</p>
                         <TextField name='agent_name' label="Ф.И.О." variant="outlined" color="warning" type="text"
@@ -107,7 +106,6 @@ export default function Contract() {
                                    margin='normal'
                                    size="small"
                                    sx={{width: "325px"}}
-
                                    inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='birth_place' label="Место рождения" type="text" variant="outlined"
                                    color="warning" margin='normal'
@@ -126,7 +124,7 @@ export default function Contract() {
                                    inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='gender' label="Пол" type="text" variant="outlined" color="warning"
                                    margin='normal' required
-                                   size="small" select
+                                   size="small" select defaultValue=''
                                    InputLabelProps={propsStyle}>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
                                       value="Мужской">
@@ -180,7 +178,7 @@ export default function Contract() {
                         <p className="tytle_contract_education"> Нынешнее образование </p>
 
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
-                                   color="warning"
+                                   color="warning" defaultValue=''
                                    margin='normal' size="small" select
                                    InputLabelProps={propsStyle}>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
@@ -229,7 +227,7 @@ export default function Contract() {
                             </MenuItem>
                         </TextField>
                         <TextField name='form_study' label="Форма обучения" type="text" variant="outlined"
-                                   color="warning" margin='normal'
+                                   color="warning" margin='normal' defaultValue=''
                                    size="small" select
                                    InputLabelProps={{
                                        style: {
@@ -272,7 +270,7 @@ export default function Contract() {
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Статус </p>
                         <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
-                                   color="warning"
+                                   color="warning" defaultValue=''
                                    margin='normal' size="small" select sx={{width: "325px"}}
                                    InputLabelProps={{
                                        style: {
@@ -308,7 +306,7 @@ export default function Contract() {
                                    inputProps={propsStyle} InputLabelProps={propsStyle}/>
 
                         <TextField name='status_1C' label="Статус 1C" type="text" variant="outlined" color="warning"
-                                   margin='normal'
+                                   margin='normal' defaultValue=''
                                     size="small" select
                                    InputLabelProps={{
                                        style: {

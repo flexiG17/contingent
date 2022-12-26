@@ -101,7 +101,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             borderRadius: '5px',
                                             maxHeight: 170,
                                             maxWidth: 220,
-                                            overflowY: 'scroll'
+                                            overflowY: openListStudents ? 'scroll' : 'visible',
                                         }}
                                     >
                                         <ListItemButton
@@ -116,7 +116,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             }}
                                         >
                                             <ListItemText
-                                                primary={`Список студентов в задаче`}
+                                                primary={`Список студентов в задаче (${studentsInCard.length} чел.)`}
                                                 primaryTypographyProps={propsStyle}
                                                 sx={{my: 0}}
                                             />
@@ -132,7 +132,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                     }}
                                                 >
                                                     <ListItemText
-                                                        primary={item.russian_name}
+                                                        primary={item.latin_name}
                                                         primaryTypographyProps={{
                                                             fontSize: 14,
                                                             fontFamily: ['Montserrat'],

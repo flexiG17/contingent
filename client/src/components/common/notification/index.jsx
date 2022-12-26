@@ -42,10 +42,7 @@ function Row(props) {
 
     return (
         <>
-            {
-                activeTaskCardModel &&
-                <TaskCard active={activeTaskCardModel} setActive={setActiveTaskCardModel} taskData={row}/>
-            }
+            <TaskCard active={activeTaskCardModel} setActive={setActiveTaskCardModel} taskData={row}/>
             <Dialog
                 open={open}
                 onClose={handleClose}

@@ -11,9 +11,9 @@ import {useNavigate} from "react-router-dom";
 
 const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
     const [activeClick, setActiveClick] = useState(true);
-    const [date, setDate] = useState()
-    const [type, setType] = useState()
-    const [comment, setComment] = useState()
+    const [date, setDate] = useState('')
+    const [type, setType] = useState('')
+    const [comment, setComment] = useState('')
 
     const handleClickContract = () => {
         setActiveClick(!activeClick)

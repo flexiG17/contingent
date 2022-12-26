@@ -511,7 +511,7 @@ export default function PersonalCardContract() {
                     </div>
                 </div>
                 <div className="info_and_education_container">
-                    <p className="title_quota"> Образование </p>
+                    <p className="title_quota"> Документы </p>
                     <div className="columns_position">
                         <div className="column_style_contract">
                             <p className="title_contract_doc"> Паспортные данные</p>

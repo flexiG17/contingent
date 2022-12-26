@@ -102,7 +102,6 @@ export function addStudent(item, navigate) {
             message: data.message,
             position: 'topRight'
         })
-        navigate(HOME_ROUTE);
     }).catch((e) => {
         iziToast.error({
             message: internalServerError(e),

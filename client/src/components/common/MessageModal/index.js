@@ -131,7 +131,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                                      }}/>
                                 </Tooltip>
                             </div>
-                            <TextField label="Тема пиьсма" variant="outlined" color="warning" type="text"
+                            <TextField label="Тема письма" variant="outlined" color="warning" type="text"
                                        inputProps={propsStyle} value={subject}
                                        onChange={e => setSubject(e.target.value)}
                                        margin='normal' InputLabelProps={propsStyle}

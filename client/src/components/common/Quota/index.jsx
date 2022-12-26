@@ -51,9 +51,8 @@ export default function Quota() {
                                    size="small"
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
-
                         <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
-                                   color="warning"
+                                   color="warning" defaultValue=''
                                    margin='normal' select size="small"
                                    InputLabelProps={propsStyle}>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}} value="Да">
@@ -149,7 +148,7 @@ export default function Quota() {
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
                         <TextField name='gender' label="Пол" type="text" variant="outlined" color="warning"
-                                   margin='normal'
+                                   margin='normal' defaultValue=''
                                    required size="small" select
                                    InputLabelProps={propsStyle}>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
@@ -216,7 +215,7 @@ export default function Quota() {
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
                         <TextField name='form_study' label="Форма обучения" type="text" variant="outlined"
-                                   color="warning" margin='normal'
+                                   color="warning" margin='normal' defaultValue=''
                                    size="small" select
                                    InputLabelProps={{
                                        style: {
@@ -252,7 +251,7 @@ export default function Quota() {
                         </TextField>
                         <p className="title_contract_doc"> Дополнительно </p>
                         <TextField name='scholarship' label="Стипендия" type="text" variant="outlined" color="warning"
-                                   margin='normal' select size="small"
+                                   margin='normal' select size="small" defaultValue=''
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -279,7 +278,7 @@ export default function Quota() {
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Статус </p>
                         <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
-                                   color="warning"
+                                   color="warning" defaultValue=''
                                    margin='normal' size="small" select sx={{width: "325px"}}
                                    InputLabelProps={{
                                        style: {
