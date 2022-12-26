@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import './Modal.css'
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {ListItemButton, ListItemText, MenuItem} from "@mui/material";
+import {CircularProgress, ListItemButton, ListItemText, MenuItem} from "@mui/material";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../../../utils/token";
 import {updateNotification} from "../../../actions/notification";
@@ -14,14 +14,15 @@ import {getStudentsByIdArray} from "../../../actions/student";
 
 const TaskCard = ({active, setActive, taskData}) => {
     const [activeClick, setActiveClick] = useState(true);
-    const [type, setType] = useState(taskData.type)
-    const [date, setDate] = useState(taskData.date)
-    const [comment, setComment] = useState(taskData.comment)
-    const [status, setStatus] = useState(taskData.completed)
+    const [type, setType] = useState(taskData.type);
+    const [date, setDate] = useState(taskData.date);
+    const [comment, setComment] = useState(taskData.comment);
+    const [status, setStatus] = useState(taskData.completed);
     const [openListStudents, setOpenListStudents] = useState(false);
     const [modalMessageActive, setModalMessageActive] = useState(false);
-    const [studentsInCard, setStudentsInCard] = useState([])
-    const [studentEmails, setStudentEmails] = useState([])
+    const [studentsInCard, setStudentsInCard] = useState([]);
+    const [studentEmails, setStudentEmails] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate()
     const handleClickContract = () => {
@@ -50,8 +51,10 @@ const TaskCard = ({active, setActive, taskData}) => {
         }
         updateNotification(taskData.id, dataToUpdate, navigate)
     }
+
     useEffect(() => {
         if (active && taskData.students_id !== null) {
+            setLoading(true);
             getStudentsByIdArray(taskData.students_id)
                 .then(students => {
                     setStudentsInCard(students)
@@ -60,8 +63,11 @@ const TaskCard = ({active, setActive, taskData}) => {
                         studentEmails.push(student.student_email)
                     })
                 })
+                .finally(() => {
+                    setLoading(false);
+                })
         }
-    }, [studentsInCard])
+    }, [active])
 
     return (
         <>
@@ -136,15 +142,20 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                 </ListItemButton>
                                             ))}
                                     </Box>
-                                    <Tooltip title="Рассылка указанным студентам">
-                                        <MailOutlineIcon
-                                            sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
-                                            onClick={() => {
-                                                setModalMessageActive(true)
-                                                setActive(false)
-                                            }}
-                                        />
-                                    </Tooltip>
+
+                                    {loading ?
+                                        <CircularProgress color="warning" sx={{ml: '10px', mt: '10px'}}/>
+                                        :
+                                        <Tooltip title="Рассылка указанным студентам">
+                                            <MailOutlineIcon
+                                                sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
+                                                onClick={() => {
+                                                    setModalMessageActive(true)
+                                                    setActive(false)
+                                                }}
+                                            />
+                                        </Tooltip>
+                                    }
                                 </div>
                             }
                             <TextField

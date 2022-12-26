@@ -21,6 +21,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                 <Select className="first_parameter" placeholder="Описание" options={columns}
                         value={item.param}
                         onChange={(e) => {
+                            window.scrollTo(0, 0);
                             setInputType(e.type);
                             changeFilterProp(item.id, e, 'param');
                         }
