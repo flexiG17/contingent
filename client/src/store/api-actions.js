@@ -1,6 +1,7 @@
 import {addFile, deleteFile, setFiles, setIsLoading} from "./slices/ManagerData/manager-data";
 import iziToast from "izitoast";
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {internalServerError} from "../utils/consts";
 
 export const fetchFilesAction = createAsyncThunk(
     'files/getFiles',
@@ -13,8 +14,7 @@ export const fetchFilesAction = createAsyncThunk(
                 dispatch(setIsLoading(false));
             } catch (e) {
                 iziToast.error({
-                    title: e.response.statusText,
-                    message: e.response.data.message,
+                    message: internalServerError(e),
                     position: "topRight",
                     color: "#FFF2ED"
                 });
@@ -25,8 +25,7 @@ export const fetchFilesAction = createAsyncThunk(
                 dispatch(setFiles(data));
             } catch (e) {
                 iziToast.error({
-                    title: e.response.statusText,
-                    message: e.response.data.message,
+                    message: internalServerError(e),
                     position: "topRight",
                     color: "#FFF2ED"
                 });
@@ -49,8 +48,7 @@ export const createDir = createAsyncThunk(
             dispatch(setIsLoading(false));
         } catch (e) {
             iziToast.error({
-                title: e.response.statusText,
-                message: e.response.data.message,
+                message: internalServerError(e),
                 position: "topRight",
                 color: "#FFF2ED"
             });
@@ -71,8 +69,7 @@ export const deleteDir = createAsyncThunk(
             dispatch(setIsLoading(false));
         } catch (e) {
             iziToast.error({
-                title: e.response.statusText,
-                message: e.response.data.message,
+                message: internalServerError(e),
                 position: "topRight",
                 color: "#FFF2ED"
             });
@@ -109,8 +106,7 @@ export const uploadFile = createAsyncThunk(
             dispatch(setIsLoading(false));
         } catch (e) {
             iziToast.error({
-                title: e.response.statusText,
-                message: e.response.data.message,
+                message: internalServerError(e),
                 position: "topRight",
                 color: "#FFF2ED"
             });

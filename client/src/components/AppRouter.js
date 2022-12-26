@@ -1,6 +1,6 @@
 import React from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom'
-import {adminRoutes, editorRoutes, publicRoutes, readerRoutes} from "../routes";
+import {editorRoutes, publicRoutes, readerRoutes} from "../routes";
 import {START_ROUTE} from "../utils/consts";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../utils/token";
@@ -26,9 +26,6 @@ const AppRouter = () => {
     return (
         <Routes>
             {(readerAccess || editorAccess || adminAccess) && readerRoutes.map(({path, Component}) =>
-                <Route key={path} path={path} element={<Component/>} exact/>
-            )}
-            {adminAccess && adminRoutes.map(({path, Component}) =>
                 <Route key={path} path={path} element={<Component/>} exact/>
             )}
             {editorAccess && editorRoutes.map(({path, Component}) =>

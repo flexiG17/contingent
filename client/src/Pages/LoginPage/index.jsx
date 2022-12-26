@@ -31,7 +31,6 @@ function LoginPage() {
                     <div className="Login_Logo"><img src={Logo} width="220px" height="160px" alt=""/></div>
 
                     <form className="form_style" onSubmit={handleSubmit}>
-
                         <label className="label_style" htmlFor="email">Email</label>
                         <input className="input_style" name="email" type="email" placeholder="Введите свой email"
                                onChange={event => setEmailItemInput(event.target.value)} value={inputEmail}/>

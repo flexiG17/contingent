@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import axios from "axios";
 import './Search.css';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -7,7 +6,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AddIcon from '@mui/icons-material/Add';
 import {FilterItem} from "../../FilterItem";
 import {Badge} from "@mui/material";
-import {getToken} from "../../../../utils/token";
+import {getColumns} from "../../../../actions/student";
 
 const ITEM_HEIGHT = 50;
 
@@ -38,18 +37,14 @@ export default function LongMenu({filters, setFilters}) {
     };
 
     useEffect(() => {
-        let result = axios.get('http://localhost:5000/api/student/columns', {
-            headers: {
-                'Authorization': getToken(),
-                'Content-Type': 'application/json;charset=utf-8'
-            }
-        }).then(res => setColumns(res.data.map((item) => {
-            return {
-                value: item.name,
-                label: item.ru,
-                type: item.type
-            }
-        })));
+        getColumns()
+            .then(res => setColumns(res.data.map((item) => {
+                return {
+                    value: item.name,
+                    label: item.ru,
+                    type: item.type
+                }
+            })));
     }, []);
 
     return (

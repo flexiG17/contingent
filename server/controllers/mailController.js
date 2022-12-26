@@ -5,8 +5,9 @@ module.exports.send = async function (req, res) {
     req.body.to = [].concat(req.body.to)
 
     for (let to of req.body.to) {
+        // from: req.user.email,
         const dto = new SendMailDto({
-            from: req.user.email,
+            from: req.body.from,
             to: to,
             subject: req.body.subject,
             text: req.body.text,

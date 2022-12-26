@@ -21,7 +21,7 @@
     display: flex;
     flex-direction: column;
     padding: 90px 110px;
-    background-color: #FFF2ED;
+    background-color: #FA7A45;
     border-radius: 8px;
 }
 
@@ -47,7 +47,6 @@
     border: 1px solid #FA7A45;
     border-radius: 10px;
     height: 35px;
-    outline: none;
 }
 
 .button_style_login{
@@ -77,9 +76,7 @@
     font-family: 'Montserrat', sans-serif
 }
 
-
 .checkbox_style_login input{
     margin-top: 3px;
     margin-right: 7px;
 }
-

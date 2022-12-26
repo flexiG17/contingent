@@ -12,17 +12,14 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle, List, ListItem, ListItemAvatar,
-    ListItemText
+    ListItemText, MenuItem
 } from "@mui/material";
-import {changeUserData, getUsers} from "../../actions/user";
-import IconButton from "@mui/material/IconButton";
+import {changeUserData, getUsers, removeUserById} from "../../actions/user";
+import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import ModalRegistration from "../../components/common/ModalRegistration";
 import {getToken} from "../../utils/token";
-
-function DeleteIcon() {
-    return null;
-}
+import Tooltip from "@mui/material/Tooltip";
 
 function Index() {
     const [editMode, setEditMode] = useState(true)
@@ -33,8 +30,11 @@ function Index() {
     const [userName, setUserName] = useState(jwt_decode(getToken()).name)
     const [userEmail, setUserEmail] = useState(jwt_decode(getToken()).email)
     const [userRole, setUserRole] = useState(jwt_decode(getToken()).role)
-    const [userId, setUserId] = useState(jwt_decode(getToken()).id)
+    const [userId, setUserId] = useState(jwt_decode(getToken()).userId)
     const [userPassword, setUserPassword] = useState()
+    const [titleDialog, setTitleDialog] = useState()
+    const [textDialog, setTextDialog] = useState()
+    const [actionDialog, setActionDialog] = useState()
 
     const dataToChange = {
         name: userName,
@@ -59,9 +59,7 @@ function Index() {
         ADMIN_ACCESS && getUsers()
             .then(users => setUserList(users))
     }, [])
-
-    const currentUser = decodedToken.id === userId
-
+    const currentUser = decodedToken.userId === userId
     return (
         <>
             <Header/>
@@ -70,17 +68,37 @@ function Index() {
                     <div className="container_information">
                         <div
                             className="title_container_information">{currentUser ? 'Ваши данные' : `Данные пользователя ${userName}`}</div>
+
+                        {ADMIN_ACCESS &&
+                            <Tooltip title='Удалить сотрудника'>
+
+                                <PersonRemoveOutlinedIcon sx={{ml: '87%', cursor: 'pointer'}} onClick={() => {
+                                    setTitleDialog('Удаление сотрудника')
+                                    setTextDialog(`Вы уверены, что хотите удалить сотрудника ${userName}?`)
+                                    setActionDialog('delete')
+                                    setOpenDialog(true)
+                                }}/>
+                            </Tooltip>}
                         <TextField label="Ф.И.О." variant="outlined" color="warning" type="text" inputProps={propsStyle}
                                    margin='normal' InputLabelProps={propsStyle} value={userName}
                                    size="small" sx={{width: "400px", marginTop: "30px"}} disabled={editMode}
                                    onChange={event => setUserName(event.target.value)}
                         />
-                        <TextField label="Роль в системе" variant="outlined" color="warning" type="text"
+                        <TextField type="text" label='Роль в системе' variant="outlined" color="warning" margin='normal'
                                    disabled={(ADMIN_ACCESS && editMode) || !ADMIN_ACCESS}
-                                   margin='normal' InputLabelProps={propsStyle} value={userRole}
-                                   size="small" sx={{width: "400px", marginTop: "30px"}}
-                                   inputProps={propsStyle} onChange={event => setUserRole(event.target.value)}
-                        />
+                                   size="small" select InputLabelProps={propsStyle} focused
+                                   sx={{width: "400px", marginTop: "30px"}}
+                                   onChange={event => setUserRole(event.target.value)} value={userRole}>
+                            <MenuItem sx={propsStyle} value="Администратор">
+                                <span style={propsStyle.style}>Администратор</span>
+                            </MenuItem>
+                            <MenuItem sx={propsStyle} value="Редактор">
+                                <span style={propsStyle.style}>Редактор</span>
+                            </MenuItem>
+                            <MenuItem sx={propsStyle} value="Читатель">
+                                <span style={propsStyle.style}>Читатель</span>
+                            </MenuItem>
+                        </TextField>
                         <TextField label="Логин" variant="outlined" color="warning" type="text" disabled={editMode}
                                    margin='normal' InputLabelProps={propsStyle} value={userEmail}
                                    size="small" sx={{width: "400px", marginTop: "30px"}}
@@ -98,15 +116,22 @@ function Index() {
                                 setEditMode(!editMode)
                             }}>Редактировать профиль*
                             </button>
-                            {!editMode && <button className="change_password"
-                                                  onClick={() => setOpenDialog(true)}>Изменить</button>}
+                            {!editMode &&
+                                <button className="change_password"
+                                        onClick={() => {
+                                            setTitleDialog('Изменение данных')
+                                            setTextDialog(`Вы уверены, что хотите изменить данные сотрудника?`)
+                                            setActionDialog('update')
+                                            setOpenDialog(true)
+                                        }}>Изменить</button>}
                         </div>
                     </div>
 
                     {ADMIN_ACCESS &&
                         <div className="users_table">
                             <div className="title_container_information">Список пользователей</div>
-                            <button className="add_account" onClick={()=> setModalRegistrationActive(true)} > Добавить пользователя   <AddIcon/></button>
+                            <button className="add_account" onClick={() => setModalRegistrationActive(true)}> Добавить
+                                пользователя <AddIcon/></button>
                             <ModalRegistration active={modalRegistrationActive} setActive={setModalRegistrationActive}/>
                             {userList.map(user => {
                                 return (
@@ -118,16 +143,9 @@ function Index() {
                                             setUserRole(user.role)
                                             setUserId(user.id)
                                         }}>
-                                        <ListItem
-                                            secondaryAction={
-                                                <IconButton edge="end" aria-label="delete">
-                                                    <DeleteIcon/>
-                                                </IconButton>
-                                            }
-                                        >
+                                        <ListItem>
                                             <ListItemAvatar>
-                                                <Avatar>
-                                                </Avatar>
+                                                <Avatar/>
                                             </ListItemAvatar>
                                             <ListItemText
                                                 primary={user.name}
@@ -152,15 +170,17 @@ function Index() {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Изменение информации</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{titleDialog}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Вы уверены, что хотите изменить данные пользователя?
-                    </DialogContentText>
+                    <DialogContentText id="alert-dialog-description">{textDialog}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        changeUserData(dataToChange, userId)
+                        if (actionDialog === 'update')
+                            changeUserData(dataToChange, userId)
+                        else if (actionDialog === 'delete')
+                            removeUserById(userId)
+
                         setOpenDialog(false)
                     }
                     }>Да</Button>

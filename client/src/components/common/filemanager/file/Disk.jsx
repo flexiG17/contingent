@@ -46,7 +46,7 @@ const Disk = ({studentId}) => {
                             <button className="disk_style_btns" onClick={backClickHandler}>Назад</button>
                             <button className="disk_style_btns" onClick={openCreateDir}>Добавить папку</button>
                             <div className="disk_style_btns">
-                                <label htmlFor="disk_upload_id">Выберете файл</label>
+                                <label htmlFor="disk_upload_id">Выберите файл</label>
                                 <input type="file" id="disk_upload_id" style={{display: "none"}}
                                        onChange={uploadFileHandler} multiple={true}/>
                             </div>

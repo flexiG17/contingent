@@ -3,7 +3,6 @@ import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutl
 import {changeStudentData, removeStudent} from '../../../actions/student'
 import {useLocation, useNavigate} from 'react-router-dom';
 import iziToast from "izitoast";
-import {ADD_STUDENT_NOTIFICATION_ROUTE, HOME_ROUTE} from "../../../utils/consts";
 import TextField from "@mui/material/TextField";
 import {
     Button, Dialog,
@@ -390,7 +389,7 @@ export default function PersonalCardContract() {
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalInstitution(event.target.value)}
                                        value={name_educational_institution}/>
-                            <TextField label="Год окончания" type="date" color="warning"
+                            <TextField label="Год окончания" type="text" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} disabled={editMode}
                                        InputLabelProps={{

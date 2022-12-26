@@ -15,6 +15,12 @@ const ModalRegistration = ({active,setActive}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         Registration(inputName, inputRole, inputEmail, inputPassword)
+            .then(() => {
+                setActive(false)
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1500)
+            })
     };
 
     const propsStyle = {
@@ -35,8 +41,8 @@ const ModalRegistration = ({active,setActive}) => {
                         <input className="input_style" name="name" type="text" placeholder="Введите имя сотрудника"
                                onChange={event => setNameItemInput(event.target.value)} value={inputName}/>
                         <label className="label_style" htmlFor="name">Роль</label>
-                        <TextField type="text" variant="outlined" color="warning" margin='normal'
-                                   size="small" select InputLabelProps={propsStyle}
+                        <TextField type="text" label='Роль' variant="outlined" color="warning" margin='normal'
+                                   size="small" select InputLabelProps={propsStyle} focused sx={{width: 305, color: '#FA7A45'}}
                                    onChange={event => setRoleItemInput(event.target.value)} value={inputRole}>
                             <MenuItem sx={propsStyle} value="Администратор">
                                 <span style={propsStyle.style}>Администратор</span>
@@ -55,10 +61,7 @@ const ModalRegistration = ({active,setActive}) => {
                         <input className="input_style" name="password" type="password"
                                placeholder="Введите пароль сотрудника"
                                onChange={event => setPasswordItemInput(event.target.value)} value={inputPassword}/>
-                        <label className="checkbox_style_register">
-                            <input type="checkbox" placeholder="Запомните меня"/> Запомните меня
-                        </label>
-                        <button type="submit" className="button_style_register" onClick={()=> setActive(false)}>Зарегистрировать</button>
+                        <button type="submit" className="button_style_registration">Зарегистрировать</button>
                     </form>
                 </div>
             </div>

@@ -41,7 +41,7 @@ module.exports.create = async function (req, res) {
     }
 
     return res.status(201).json({
-        message: `'${model.russian_name}' добавлен(а) в базу данных`
+        message: `${model.latin_name} добавлен(а) в базу данных`
     })
 }
 
@@ -55,7 +55,7 @@ module.exports.update = async function (req, res) {
     const model = new Student(req.body)
 
     await getStudent(req.params.id).update(model)
-    return res.status(200).json({message: `Студент ${model.russian_name} был изменён`})
+    return res.status(200).json({message: `Студент ${model.latin_name} был изменён`})
 }
 
 
@@ -78,7 +78,10 @@ module.exports.removeStudents = async function (req, res) {
     await FileService.deleteStudentDirs(students_id)
 
     await getStudents(req.body).delete()
-    return res.status(200).json({message: "Студенты удалены"})
+    return res.status(200).json(
+        {
+            message: req.body.length === 1 ? "Студент удален" : "Студенты удалены"
+        })
 }
 
 module.exports.getByIds = async function (req, res) {

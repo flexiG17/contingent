@@ -10,7 +10,6 @@ import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import UploadIcon from "@mui/icons-material/Upload";
-import iziToast from "izitoast";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from "@mui/material";
 import {getToken} from "../../../../utils/token";
@@ -22,6 +21,7 @@ import TaskIcon from '@mui/icons-material/Task';
 import EmailIcon from '@mui/icons-material/Email';
 import ModalMessage from "../../MessageModal";
 import {useNavigate} from "react-router-dom";
+import './toolbar.css'
 
 export default function TableToolbar({numSelected, selectedRows, selectedEmails}) {
     const [file, setFile] = useState(null);
@@ -62,14 +62,14 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                 )}
 
                 {numSelected > 0 ? (<>
-                        <Tooltip title={`Рассылка ${selectedEmails.length} указанным студентам`}>
+                        {!READER_ACCESS && <Tooltip title={`Рассылка ${selectedEmails.length} указанным студентам`}>
                             <IconButton onClick={() => {
                                 setModalMessageActive(true)
                             }}>
                                 <EmailIcon sx={{cursor: 'pointer'}}
                                 />
                             </IconButton>
-                        </Tooltip>
+                        </Tooltip>}
                         <Tooltip title="Создать задачу">
                             <IconButton onClick={() => {
                                 setModalActive(true)

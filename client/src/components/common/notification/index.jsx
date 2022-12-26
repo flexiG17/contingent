@@ -76,7 +76,7 @@ function Row(props) {
                     </TableCell>
                     <TableCell component="th" scope="row">{row.type}</TableCell>
                     <TableCell component="th" scope="row">{row.completed}</TableCell>
-                    <TableCell align="right">
+                    <TableCell align="left">
                         <button onClick={() => setActiveTaskCardModel(true)}
                         >Ссылка
                         </button>
@@ -96,13 +96,11 @@ function Row(props) {
 
 export default function CollapsibleTable() {
     const [notificationList, setNotificationList] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [modalActive, setModalActive] = useState(false)
 
     useEffect(() => {
         getNotifications()
             .then(items => setNotificationList(items.reverse()))
-            .finally(() => setLoading(false))
     }, [])
 
     notifications = notificationList
