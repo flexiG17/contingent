@@ -20,9 +20,12 @@ function LoginPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         dispatch(setAppStatus(0));
-        await Login(inputEmail, inputPassword, navigate);
-        navigate(HOME_ROUTE);
-        dispatch(setAppStatus(1));
+        Login(inputEmail, inputPassword, navigate)
+            .then(() => {
+                navigate(HOME_ROUTE);
+                dispatch(setAppStatus(1));
+            })
+
     };
     return (
         <>
