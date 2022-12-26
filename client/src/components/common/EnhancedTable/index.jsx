@@ -162,7 +162,7 @@ export default function EnhancedTable() {
         for (let i = 0; i < filters.length; i++) {
             let filter = filters[i];
             if (item[filter.param.value] === undefined) return false;
-            switch (filter.operator.value) {
+            switch (filter.operator) {
                 case "coincidence":
                     if (
                         !String(item[filter.param.value])
