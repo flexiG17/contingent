@@ -17,7 +17,6 @@ const mailRoutes = require('./routes/mail')
 const fileRoutes = require('./routes/fileManager')
 
 const errorHandler = require('./utils/errorHandler')
-const {join} = require("path");
 
 const app = express()
 
@@ -28,9 +27,6 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
-
-if (process.env.NODE_ENV === 'production')
-    app.use(express.static(join(__dirname, "..", "client", "build")))
 
 app.use('/api/auth', authRoutes)
 app.use('/api/student', studentRoutes)

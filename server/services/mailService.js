@@ -20,7 +20,7 @@ module.exports = new class MailService {
             text: message.text,
             attachments: message.files.map(file => new Object({
                 filename: file.originalname,
-                content: file.buffer
+                path: file.path
             }))
         }
 
