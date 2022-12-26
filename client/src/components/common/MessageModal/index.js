@@ -39,6 +39,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
     const [openEmailList, setOpenEmailList] = useState()
     const [template, setTemplate] = useState()
     const [filesToSend, setFilesToSend] = useState(null);
+    const [sender, setSender] = useState('Подготовительное отделение для иностранных учащихся УрФУ')
 
     const dataToSave = new FormData()
 
@@ -57,7 +58,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                         <div className="input_position_message">
                             <TextField label="От кого" variant="outlined" color="warning" type="text"
                                        inputProps={propsStyle}
-                                       value='Подготовительное отделение для иностранных учащихся УрФУ'
+                                       value={sender}
                                        margin='normal' InputLabelProps={propsStyle}
                                        onChange={e => setSender(e.target.value)}
                                        size="small" sx={{width: "530px", marginTop: "25px"}}
@@ -183,7 +184,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 <DialogActions>
                     <Button onClick={() => {
                         dataToSave.append('to', studentEmail)
-                        dataToSave.append('from', 'Подготовительное отделение для иностранных учащихся УрФУ')
+                        dataToSave.append('from', sender)
                         dataToSave.append('subject', subject)
                         dataToSave.append('text', text)
                         Object.values(filesToSend).map(file => {
