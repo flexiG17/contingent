@@ -5,7 +5,8 @@ const initialState = {
     files: [],
     currentDir: null,
     popupDisplay: false,
-    dirStack: []
+    dirStack: [],
+    isLoading: false
 };
 
 export const managerData = createSlice({
@@ -37,7 +38,10 @@ export const managerData = createSlice({
         popDirStack: (state) => {
             state.dirStack = [...state.dirStack.slice(0, state.dirStack.length - 1)];
         },
+        setIsLoading: (state, action) => {
+            state.isLoading = action.payload;
+        }
     }
 })
 
-export const {setFiles, setCurrentDir, addFile, deleteFile, pushDirStack, popDirStack} = managerData.actions;
+export const {setFiles, setCurrentDir, addFile, deleteFile, pushDirStack, popDirStack, setIsLoading} = managerData.actions;

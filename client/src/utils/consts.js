@@ -9,9 +9,14 @@ export const CARD_QUOTA_ROUTE = '/quota'
 export const ACCOUNT_ROUTE = '/account'
 export const ADD_STUDENT_ROUTE = '/createStudent'
 
+export const internalServerError = (e) => {
+    return e.response.status ? 'Ошибка сервера, попробуйте снова' : e.response.data.message
+}
+
 export const NameSpace = {
     User: 'USER',
-    FileManager: 'MANAGER'
+    App: 'APP',
+    FileManager: 'MANAGER',
 }
 
 export const fileSizes = {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import iziToast from "izitoast";
-import {HOME_ROUTE, URL_PATH} from '../utils/consts'
+import {HOME_ROUTE, internalServerError, URL_PATH} from '../utils/consts'
 import {getToken} from "../utils/token";
 
 export function getStudents() {
@@ -9,22 +9,23 @@ export function getStudents() {
     }).then(resp => resp.data)
 }
 
-export function removeStudent(id) {
+export function removeStudent(id, navigate) {
     return axios.delete(`${URL_PATH}/api/student/remove/${id}`, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
         }
-    }).then(({statusText, data}) => {
+    }).then(({data}) => {
+        setTimeout(() => {
+            navigate(HOME_ROUTE)
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
@@ -38,39 +39,41 @@ export function removeArrayOfStudents(data) {
             'Content-Type': 'application/json;charset=utf-8'
         },
         data: data
-    }).then(({statusText, data}) => {
+    }).then(({data}) => {
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
     })
 }
 
-export function changeStudentData(item, id) {
+export function changeStudentData(item, id, navigate) {
     return axios.put(
         `${URL_PATH}/api/student/update/${id}`, item, {
             headers: {
                 'Authorization': getToken(),
                 'Content-Type': 'application/json;charset=utf-8'
             }
-        }).then(({statusText, data}) => {
+        }).then(({data}) => {
+            setTimeout(() => {
+                navigate(HOME_ROUTE)
+            }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
@@ -91,17 +94,18 @@ export function addStudent(item, navigate) {
             'Authorization': getToken(),
             'Content-Type': 'multipart/form-data;'
         },
-    }).then(({statusText, data}) => {
+    }).then(({data}) => {
+        setTimeout(() => {
+            navigate(HOME_ROUTE)
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
         navigate(HOME_ROUTE);
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
@@ -124,16 +128,17 @@ export function importXlsx(data) {
         headers: {
             'Authorization': getToken()
         },
-    }).then(({statusText, data}) => {
+    }).then(({data}) => {
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500)
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
@@ -146,18 +151,28 @@ export function sendMessage(data) {
             'Authorization': getToken(),
             'Content-Type': 'multipart/form-data'
         },
-    }).then(({statusText, data}) => {
+    }).then(({data}) => {
         iziToast.success({
-            title : statusText,
             message: data.message,
             position: 'topRight'
         })
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500)
     }).catch((e) => {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
+    })
+}
+
+export function getColumns(){
+    return axios.get(`${URL_PATH}/api/student/columns`, {
+        headers: {
+            'Authorization': getToken(),
+            'Content-Type': 'application/json;charset=utf-8'
+        }
     })
 }

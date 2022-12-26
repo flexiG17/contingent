@@ -57,7 +57,7 @@ module.exports.register = async function (req, res) {
     await db.users.insert(model)
 
     return res.status(201).json({
-        message: `Пользователь '${model.name}' успешно зарегистрирован`
+        message: `Пользователь ${model.name} успешно зарегистрирован`
     })
 }
 

@@ -2,11 +2,9 @@ import React, {useState} from "react"
 import '../CreateTaskModal/Modal.css'
 import '../../../Pages/Account/Account.css';
 import TextField from "@mui/material/TextField";
-import jwt_decode from "jwt-decode";
 import {sendMessage} from "../../../actions/student";
 import {
-    Badge,
-    Button, CircularProgress,
+    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -15,14 +13,11 @@ import {
     ListItemButton, ListItemText
 } from "@mui/material";
 import Select from 'react-select';
-import {getToken} from "../../../utils/token";
 import {LetterTemplates} from "../../../utils/consts";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {Link} from "react-router-dom";
 import Tooltip from "@mui/material/Tooltip";
 import iziToast from "izitoast";
 import Box from "@mui/material/Box";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
@@ -39,18 +34,12 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
             }
     }
     const [openDialog, setOpenDialog] = useState(false)
-    const [subject, setSubject] = useState()
-    const [text, setText] = useState()
-    const [sender, setSender] = useState()
+    const [subject, setSubject] = useState('')
+    const [text, setText] = useState('')
     const [openEmailList, setOpenEmailList] = useState()
     const [template, setTemplate] = useState()
-    const [file, setFile] = useState(null);
-
-    const data = {
-        to: studentEmail,
-        subject: subject,
-        text: text
-    }
+    const [filesToSend, setFilesToSend] = useState(null);
+    const [sender, setSender] = useState('Подготовительное отделение для иностранных учащихся УрФУ')
 
     const dataToSave = new FormData()
 
@@ -69,7 +58,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                         <div className="input_position_message">
                             <TextField label="От кого" variant="outlined" color="warning" type="text"
                                        inputProps={propsStyle}
-                                       value='Подготовительное отделение для иностранных учащихся УрФУ'
+                                       value={sender}
                                        margin='normal' InputLabelProps={propsStyle}
                                        onChange={e => setSender(e.target.value)}
                                        size="small" sx={{width: "530px", marginTop: "25px"}}
@@ -167,19 +156,17 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                             inputProps={propsStyle} InputLabelProps={propsStyle}
                             color="warning"
                         />
-                        <div className="button_message_position">
-                            <label htmlFor="input_students" className='file_input'>
-                                {file === null ? 'Выбрать файл' : file.name}
-                                <input className='file_input' type="file" name='input_students' id='input_students'
-                                       onChange={e => {
-                                           setFile(e.target.files[0]);
-                                       }}/>
-                                <InsertDriveFileIcon sx={{fontSize: 15}}/>
-                            </label>
+                        <label htmlFor="input_students" className='file_input_message'>
+                            {filesToSend === null ? 'Выбрать файл' : `Добавлено ${filesToSend.length} файла`}
+                            <input type="file" name='input_students' id='input_students' hidden multiple
+                                   onChange={e => {
+                                       setFilesToSend(e.target.files);
+                                   }}/>
+                            <InsertDriveFileIcon sx={{ml: 1, fontSize: 15}}/>
+                        </label>
 
-                            <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение
-                            </button>
-                        </div>
+                        <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение
+                        </button>
                     </div>
                 </div>
             </div>
@@ -197,16 +184,17 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 <DialogActions>
                     <Button onClick={() => {
                         dataToSave.append('to', studentEmail)
-                        dataToSave.append('from', 'Подготовительное отделение для иностранных учащихся УрФУ')
+                        dataToSave.append('from', sender)
                         dataToSave.append('subject', subject)
                         dataToSave.append('text', text)
-                        dataToSave.append('files', file)
+                        Object.values(filesToSend).map(file => {
+                            dataToSave.append('files', file)
+                        })
                         sendMessage(dataToSave)
                             .then(() => {
-                                window.location.reload()
+                                setActive(false)
                             })
                         setOpenDialog(false)
-                        setActive(false)
                     }
                     }>Да</Button>
                     <Button onClick={() => {

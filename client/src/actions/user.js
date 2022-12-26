@@ -1,9 +1,9 @@
 import axios from 'axios'
 import iziToast from "izitoast";
-import {ACCOUNT_ROUTE, LOAD_ROUTE, LOGIN_ROUTE, NOTIFICATION_ROUTE, URL_PATH} from "../utils/consts";
+import {HOME_ROUTE, internalServerError, URL_PATH} from "../utils/consts";
 import {getToken, setToken} from "../utils/token";
 
-export const Registration = async (name, role, email, password, navigate) => {
+export const Registration = async (name, role, email, password) => {
     try {
         const response = await axios.post(`${URL_PATH}/api/auth/register`, {
             name: name,
@@ -17,15 +17,12 @@ export const Registration = async (name, role, email, password, navigate) => {
             }
         });
         iziToast.success({
-            title: response.statusText,
             message: response.data.message,
             position: "topRight"
         });
-        navigate(ACCOUNT_ROUTE);
     } catch (e) {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
@@ -40,15 +37,13 @@ export const Login = async (email, password, navigate) => {
         });
         setToken(response.data.token);
         iziToast.success({
-            title: response.statusText,
             message: response.data.message,
             position: "topRight"
         });
-        navigate(LOAD_ROUTE);
+        navigate(HOME_ROUTE);
     } catch (e) {
         iziToast.error({
-            title: e.response.statusText,
-            message: e.response.data.message,
+            message: internalServerError(e),
             position: "topRight",
             color: "#FFF2ED"
         });
@@ -70,18 +65,43 @@ export function changeUserData(data, id) {
             'Content-Type': 'application/json;charset=utf-8'
         }
     })
-        .then(({statusText, data}) => {
+        .then(({data}) => {
             iziToast.success({
-                title: statusText,
                 message: data.message,
                 position: 'topRight'
             })
+            setTimeout(() => {
+                window.location.reload()
+            }, 1500)
         }).catch((e) => {
             iziToast.error({
-                title: e.response.statusText,
-                message: e.response.data.message,
+                message: internalServerError(e),
                 position: "topRight",
                 color: "#FFF2ED"
             });
         })
+}
+
+export function removeUserById(id) {
+    return axios.delete(`${URL_PATH}/api/user/remove/${id}`, {
+        headers: {
+            'Authorization': getToken(),
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    }).then(({data}) => {
+        iziToast.success({
+            message: data.message,
+            position: 'topRight'
+        })
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500)
+    }).catch((e) => {
+        iziToast.error({
+            message: internalServerError(e),
+            position: "topRight",
+            color: "#FFF2ED"
+        });
+    })
+
 }

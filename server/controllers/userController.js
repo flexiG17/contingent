@@ -24,7 +24,7 @@ module.exports.change = async function (req, res) {
 
     await user.update(model)
 
-    return res.status(201).json({message: `Данные '${model.name}' обновлены`})
+    return res.status(201).json({message: `Данные ${model.name} обновлены`})
 }
 
 module.exports.remove = async function (req, res) {

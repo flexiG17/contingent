@@ -5,16 +5,27 @@ import "izitoast/dist/css/iziToast.css";
 import {useNavigate} from "react-router-dom";
 import {Alert} from "@mui/material";
 import {Login} from "../../actions/user";
+import {useDispatch} from "react-redux";
+import {setAppStatus} from "../../store/slices/AppData/app-data";
+import {HOME_ROUTE} from "../../utils/consts";
 
 function LoginPage() {
-    const [inputEmail, setEmailItemInput] = useState('')
-    const [inputPassword, setPasswordItemInput] = useState('')
+    const [inputEmail, setEmailItemInput] = useState('');
+    const [inputPassword, setPasswordItemInput] = useState('');
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        dispatch(setAppStatus(0));
         Login(inputEmail, inputPassword, navigate)
+            .then(() => {
+                navigate(HOME_ROUTE);
+                dispatch(setAppStatus(1));
+            })
+
     };
     return (
         <>
@@ -23,7 +34,6 @@ function LoginPage() {
                     <div className="Login_Logo"><img src={Logo} width="220px" height="160px" alt=""/></div>
 
                     <form className="form_style" onSubmit={handleSubmit}>
-
                         <label className="label_style" htmlFor="email">Email</label>
                         <input className="input_style" name="email" type="email" placeholder="Введите свой email"
                                onChange={event => setEmailItemInput(event.target.value)} value={inputEmail}/>

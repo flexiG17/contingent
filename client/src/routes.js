@@ -4,12 +4,10 @@ import {
     CARD_QUOTA_ROUTE,
     HOME_ROUTE,
     LOGIN_ROUTE,
-    REGISTRATION_ROUTE,
     START_ROUTE,
     ACCOUNT_ROUTE, LOAD_ROUTE
 } from "./utils/consts";
 import HomePage from './Pages/HomePage'
-import RegistrationPage from './Pages/RegistrationPage'
 import StartPage from './Pages/StartPage';
 import LoginPage from "./Pages/LoginPage";
 import PersonalCardContract from "./Pages/PersonalCardContract";
@@ -49,13 +47,6 @@ export const publicRoutes = [
     {
         path: LOAD_ROUTE,
         Component: LoadingPage
-    }
-]
-
-export const adminRoutes = [
-    {
-        path: REGISTRATION_ROUTE,
-        Component: RegistrationPage
     }
 ]
 

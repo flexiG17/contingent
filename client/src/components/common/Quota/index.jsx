@@ -48,7 +48,7 @@ export default function Quota() {
                                    InputLabelProps={propsStyle}/>
                         <TextField name='russian_name' label="Ф.И.О. (кир.)" variant="outlined" color="warning"
                                    type="text" margin='normal'
-                                   required size="small"
+                                   size="small"
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
 
@@ -125,7 +125,7 @@ export default function Quota() {
                         <p className="title_contract_doc"> Паспортные данные </p>
                         <TextField name='country' label="Страна" type="text" variant="outlined" color="warning"
                                    margin='normal'
-                                   required size="small"
+                                   size="small"
                                    sx={{width: "325px"}}
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
@@ -134,9 +134,9 @@ export default function Quota() {
                                    size="small"
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
-                        <TextField name='birth_date' label="Дата рождения" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={propsStyle}
+                        <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
+                                   required margin='normal' size="small"
+                                   inputProps={propsStyle} focused
                                    InputLabelProps={propsStyle}/>
                         <TextField name='residence_place' label="Место проживания" type="text" variant="outlined"
                                    color="warning"
@@ -175,7 +175,7 @@ export default function Quota() {
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
                         <TextField name='passport_expiration' label="Срок действия паспорта" type="date" color="warning"
-                                   margin='normal' size="small"
+                                   margin='normal' size="small" focused
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
                         <TextField name='passport_issued' label="Кем выдан" type="text" variant="outlined"
@@ -184,22 +184,9 @@ export default function Quota() {
                                    inputProps={propsStyle}
                                    InputLabelProps={propsStyle}/>
                         <TextField name='passport_issue_date' label="Дата выдачи" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" focused
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                     </div>
                 </div>
             </div>
@@ -213,57 +200,21 @@ export default function Quota() {
                                    variant="outlined"
                                    color="warning" margin='normal'
                                    size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                         <TextField name='name_educational_institution' label="Наименование учебного заведения"
                                    type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                         <p className="title_contract_doc"> Нынешнее образование </p>
                         <TextField name='direction_number' label="Рег. номер направления" type="text" variant="outlined"
                                    color="warning"
                                    margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                         <TextField name='form_study' label="Форма обучения" type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    size="small" select
@@ -322,26 +273,14 @@ export default function Quota() {
                         <TextField name='comments' label="Примечания" type="text" variant="outlined" color="warning"
                                    margin='normal'
                                    size="small" multiline rows={3}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Статус </p>
                         <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
                                    color="warning"
-                                   margin='normal' required size="small" select sx={{width: "325px"}}
+                                   margin='normal' size="small" select sx={{width: "325px"}}
                                    InputLabelProps={{
                                        style: {
                                            fontSize: "14px",
@@ -364,55 +303,19 @@ export default function Quota() {
                         </TextField>
                         <TextField name='enrollment_order' label="Номер приказа о зачислении" type="text"
                                    variant="outlined" color="warning"
-                                   margin='normal' required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   margin='normal' size="small"
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                         <TextField name='expulsion_order' label="Номер приказа об отчислении" type="text"
                                    variant="outlined" color="warning"
                                    margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                         <TextField name='tutor_name' label="Куратор" type="text" variant="outlined" color="warning"
                                    margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                     </div>
                 </div>
             </div>
@@ -423,39 +326,13 @@ export default function Quota() {
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Даты</p>
                         <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
-                                   margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" sx={{width: "325px"}} focused
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                         <TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
-                                   margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" sx={{width: "325px"}} focused
+                                   inputProps={propsStyle}
+                                   InputLabelProps={propsStyle}/>
                     </div>
                 </div>
             </div>

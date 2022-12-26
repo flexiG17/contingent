@@ -1,16 +1,24 @@
 import React, {useState, useRef} from 'react';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import {addStudent} from '../../../actions/student';
 import {useNavigate} from "react-router-dom";
-import './Contract.css';
 import TextField from "@mui/material/TextField";
 import {MenuItem} from "@mui/material";
+import './Contract.css';
 
 export default function Contract() {
     const [active, setActive] = useState(true);
     const handleClickContract = () => {
         setActive(!active);
     };
+
+    const propsStyle = {
+        style:
+            {
+                fontSize: "14.5px",
+                fontFamily: ['Montserrat'],
+                fontWeight: '450'
+            }
+    }
 
     const navigate = useNavigate();
 
@@ -31,56 +39,23 @@ export default function Contract() {
                 <div className="title_contract_section">Основные данные студента</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="title_contract_info"> Личные данные</p>
-
-                        <TextField name='latin_name' label="Ф.И.О. (лат.)" variant="outlined" color="warning"
+                        <p className="title_contract_doc"> Личные данные</p>
+                        <TextField label="Ф.И.О. (лат.)" name='latin_name' variant="outlined" color="warning"
                                    type="text" margin='normal'
                                    required size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='russian_name' label="Ф.И.О. (кир.)" variant="outlined" color="warning"
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                        <TextField label="Ф.И.О. (кир.)" name='russian_name' variant="outlined" color="warning"
                                    type="text" margin='normal'
-                                   required size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   size="small"
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
 
                         <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
                                    color="warning"
                                    margin='normal' select size="small"
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}>
-                            <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}} value="Да">
+                                   InputLabelProps={propsStyle}>
+                            <MenuItem sx={propsStyle} value="Да">
                                 <span
-                                    style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Да</span>
+                                    style={propsStyle}>Да</span>
                             </MenuItem>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
                                       value="Нет">
@@ -88,245 +63,71 @@ export default function Contract() {
                                     style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>Нет</span>
                             </MenuItem>
                         </TextField>
-                        <p className="title_contract_info"> Контактные данные</p>
+                        <p className="title_contract_doc"> Контактные данные</p>
                         <TextField name='contact_phone_number' label="Контактный телефон студента" variant="outlined"
                                    color="warning" type="tel"
                                    margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='student_email' label="E-mail студента" variant="outlined" color="warning"
                                    type="email"
                                    margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <p className="title_contract_info"> Контактные данные агента</p>
+
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                        <p className="title_contract_doc"> Контактные данные агента</p>
                         <TextField name='agent_name' label="Ф.И.О." variant="outlined" color="warning" type="text"
                                    margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='agent_phone_number' label="Телефон" variant="outlined" color="warning"
                                    type="tel" margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='agent_email' label="E-mail" variant="outlined" color="warning" type="email"
                                    margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <p className="title_contract_info"> Контактные данные представителя</p>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                        <p className="title_contract_doc"> Контактные данные представителя</p>
                         <TextField name='representative_name' label="Ф.И.О." type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='representative_phone_number' label="Телефон" type="tel" variant="outlined"
                                    color="warning" margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='representative_email' label="E-mail" type="email" variant="outlined"
                                    color="warning" margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                     </div>
                     <div className="column_style_contract">
-                        <p className="title_contract_info"> Паспортные данные </p>
-                        <TextField name='country' label="Страна" type="text" variant="outlined" color="warning"
-                                   margin='normal' required
+                        <p className="title_contract_doc"> Паспортные данные </p>
+                        <TextField label="Страна" name='country' type="text" variant="outlined" color="warning"
+                                   margin='normal'
                                    size="small"
                                    sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='birth_place' label="Место рождения" type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
-                        <TextField name='birth_date' label="Дата рождения" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                        <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
+                                   required focused margin='normal' size="small"
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='residence_place' label="Место проживания" type="text" variant="outlined"
                                    color="warning"
                                    margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='citizenship' label="Гражданство" type="text" variant="outlined" color="warning"
                                    margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='gender' label="Пол" type="text" variant="outlined" color="warning"
                                    margin='normal' required
                                    size="small" select
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}>
+                                   InputLabelProps={propsStyle}>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
                                       value="Мужской">
                                 <span style={{
@@ -347,71 +148,17 @@ export default function Contract() {
                         <TextField name='passport_number' label="Номер паспорта" type="text" variant="outlined"
                                    color="warning" margin='normal' required
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='passport_expiration' label="Срок действия паспорта" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='passport_issued' label="Кем выдан" type="text" variant="outlined"
                                    color="warning" margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='passport_issue_date' label="Дата выдачи" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                     </div>
                 </div>
             </div>
@@ -425,49 +172,17 @@ export default function Contract() {
                                    variant="outlined"
                                    color="warning" margin='normal' sx={{width: "325px"}}
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='name_educational_institution' label="Наименование учебного заведения"
                                    type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <p className="tytle_contract_education"> Нынешнее образование </p>
 
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
-                                   color="warning" required
+                                   color="warning"
                                    margin='normal' size="small" select
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}>
+                                   InputLabelProps={propsStyle}>
                             <MenuItem sx={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '450'}}
                                       value="1008 ак.ч. (1 год)">
                                 <span style={{fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>1008 ак.ч. (1 год)</span>
@@ -552,25 +267,12 @@ export default function Contract() {
                         <TextField name='comments' label="Примечания" type="text" variant="outlined" color="warning"
                                    margin='normal'
                                    size="small" multiline rows={3}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_education"> Статус </p>
                         <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
-                                   color="warning" required
+                                   color="warning"
                                    margin='normal' size="small" select sx={{width: "325px"}}
                                    InputLabelProps={{
                                        style: {
@@ -593,56 +295,17 @@ export default function Contract() {
                             </MenuItem>
                         </TextField>
                         <TextField name='enrollment_order' label="Номер приказа о зачислении" type="text"
-                                   variant="outlined" color="warning" required
+                                   variant="outlined" color="warning"
                                    margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='expulsion_order' label="Номер приказа об отчислении" type="text"
                                    variant="outlined" color="warning"
                                    margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='contract_number' label="Номер договора" type="text" variant="outlined"
                                    color="warning" margin='normal'
-                                   size="small" required
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   size="small"
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
 
                         <TextField name='status_1C' label="Статус 1C" type="text" variant="outlined" color="warning"
                                    margin='normal'
@@ -670,88 +333,19 @@ export default function Contract() {
                         <TextField name='tutor_name' label="Куратор" type="text" variant="outlined" color="warning"
                                    margin='normal'
                                    size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='first_payment' label="Платеж 1" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='second_payment' label="Платеж 2" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='third_payment' label="Платеж 3" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='fourth_payment' label="Платеж 4" type="date" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                     </div>
                 </div>
             </div>
@@ -762,112 +356,28 @@ export default function Contract() {
                         <p className="title_contract_doc"> Даты </p>
 
                         <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
-                                   margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" sx={{width: "325px"}} focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
-                                   margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" sx={{width: "325px"}} focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='transfer_to_international_service' label="Дата передачи в международную службу"
-                                   type="date" color="warning"
+                                   type="date" color="warning" focused
                                    margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                         <TextField name='transfer_to_MVD' label="Дата передачи в МВД" type="date" color="warning"
-                                   margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   margin='normal' size="small" sx={{width: "325px"}} focused
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
 
                         <TextField name='estimated_receipt_date' label="Ориентировочная дата получения" type="date"
-                                   color="warning"
+                                   color="warning" focused
                                    margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
 
                         <TextField name='actual_receipt_date_invitation' label="Фактическая дата получения приглашения"
-                                   type="date" color="warning"
+                                   type="date" color="warning" focused
                                    margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       }
-                                   }}
-                                   InputLabelProps={{
-                                       style: {
-                                           fontSize: "14px",
-                                           fontFamily: ['Montserrat'],
-                                           fontWeight: '450'
-                                       },
-                                       shrink: true
-                                   }}/>
+                                   inputProps={propsStyle} InputLabelProps={propsStyle}/>
                     </div>
                 </div>
             </div>

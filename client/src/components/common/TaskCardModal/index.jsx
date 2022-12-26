@@ -2,10 +2,10 @@ import React, {useEffect, useState} from "react"
 import './Modal.css'
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {CircularProgress, List, ListItemButton, ListItemIcon, ListItemText, MenuItem} from "@mui/material";
+import {ListItemButton, ListItemText, MenuItem} from "@mui/material";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../../../utils/token";
-import {createNotification, updateNotification} from "../../../actions/notification";
+import {updateNotification} from "../../../actions/notification";
 import {useNavigate} from "react-router-dom";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Tooltip from "@mui/material/Tooltip";
@@ -18,9 +18,8 @@ const TaskCard = ({active, setActive, taskData}) => {
     const [date, setDate] = useState(taskData.date)
     const [comment, setComment] = useState(taskData.comment)
     const [status, setStatus] = useState(taskData.completed)
-    const [open, setOpen] = useState(false);
+    const [openListStudents, setOpenListStudents] = useState(false);
     const [modalMessageActive, setModalMessageActive] = useState(false);
-    const [loading, setLoading] = useState(true)
     const [studentsInCard, setStudentsInCard] = useState([])
     const [studentEmails, setStudentEmails] = useState([])
 
@@ -41,7 +40,7 @@ const TaskCard = ({active, setActive, taskData}) => {
     const userId = jwt_decode(getToken()).userId
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
+        const dataToUpdate = {
             type: type,
             students_id: taskData.students_id,
             date: date,
@@ -49,17 +48,12 @@ const TaskCard = ({active, setActive, taskData}) => {
             completed: status,
             user_id: userId
         }
-        createNotification(data, navigate)
-            .then(() => {
-                window.location.reload()
-            })
+        updateNotification(taskData.id, dataToUpdate, navigate)
     }
-
     useEffect(() => {
         if (active && taskData.students_id !== null) {
             getStudentsByIdArray(taskData.students_id)
                 .then(students => {
-                    setLoading(false)
                     setStudentsInCard(students)
 
                     students.map(student => {
@@ -67,9 +61,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                     })
                 })
         }
-        else
-            setLoading(false)
-    }, [loading])
+    }, [studentsInCard])
 
     return (
         <>
@@ -96,10 +88,10 @@ const TaskCard = ({active, setActive, taskData}) => {
                                 </MenuItem>
                             </TextField>
                             {taskData.students_id !== null &&
-                                <div className={'template_in_row_with_icon'}>
+                                <div className='template_in_row_with_icon'>
                                     <Box
                                         sx={{
-                                            bgcolor: open ? '#FFB953' : '#FFAA2D',
+                                            bgcolor: openListStudents ? '#FFB953' : '#FFAA2D',
                                             borderRadius: '5px',
                                             maxHeight: 170,
                                             maxWidth: 220,
@@ -108,12 +100,12 @@ const TaskCard = ({active, setActive, taskData}) => {
                                     >
                                         <ListItemButton
                                             alignItems="flex-start"
-                                            onClick={() => setOpen(!open)}
+                                            onClick={() => setOpenListStudents(!openListStudents)}
                                             sx={{
                                                 px: 3,
                                                 pl: -10,
-                                                pb: open ? 0 : 2.5,
-                                                '&:hover, &:focus': {'& svg': {opacity: open ? 1 : 0}},
+                                                pb: openListStudents ? 0 : 2.5,
+                                                '&:hover, &:focus': {'& svg': {opacity: openListStudents ? 1 : 0}},
                                                 height: '55px',
                                             }}
                                         >
@@ -123,7 +115,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                 sx={{my: 0}}
                                             />
                                         </ListItemButton>
-                                        {open &&
+                                        {openListStudents &&
                                             studentsInCard.map((item) => (
                                                 <ListItemButton
                                                     key={item.id}
@@ -144,24 +136,21 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                 </ListItemButton>
                                             ))}
                                     </Box>
-                                    {loading
-                                        ?
-                                        <CircularProgress color="warning" sx={{cursor: 'pointer', marginTop: '7px', marginLeft: '13px'}}/>
-                                        :
-                                        <Tooltip title="Рассылка указанным студентам">
-                                            <MailOutlineIcon
-                                                sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
-                                                onClick={() => {
-                                                    setModalMessageActive(true)
-                                                    setActive(false)
-                                                }}
-                                            />
-                                        </Tooltip>}
+                                    <Tooltip title="Рассылка указанным студентам">
+                                        <MailOutlineIcon
+                                            sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
+                                            onClick={() => {
+                                                setModalMessageActive(true)
+                                                setActive(false)
+                                            }}
+                                        />
+                                    </Tooltip>
                                 </div>
                             }
                             <TextField
                                 label="Дата" type="date" color="warning" focused inputProps={propsStyle}
-                                InputLabelProps={propsStyle} onChange={event => setDate(event.target.value)} value={date}
+                                InputLabelProps={propsStyle} onChange={event => setDate(event.target.value)}
+                                value={date}
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
                             <TextField
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}

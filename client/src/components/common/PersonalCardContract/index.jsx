@@ -3,7 +3,6 @@ import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutl
 import {changeStudentData, removeStudent} from '../../../actions/student'
 import {useLocation, useNavigate} from 'react-router-dom';
 import iziToast from "izitoast";
-import {ADD_STUDENT_NOTIFICATION_ROUTE, HOME_ROUTE} from "../../../utils/consts";
 import TextField from "@mui/material/TextField";
 import {
     Button, Dialog,
@@ -32,7 +31,7 @@ import {getToken} from "../../../utils/token";
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
 
 export default function PersonalCardContract() {
-    const [active, setActive] = useState(false);
+    const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
     const [editMode, setEditMode] = useState(true);
     const [modalFileActive,setModalFileActive] = useState(false);
@@ -157,27 +156,7 @@ export default function PersonalCardContract() {
             estimated_receipt_date: estimated_receipt_date,
             actual_receipt_date_invitation: actual_receipt_date_invitation
         }
-        changeStudentData(data, rows.id)
-            .then((res) => {
-                switch (res.status) {
-                    case 200: {
-                        iziToast.success({
-                            title: res.statusText,
-                            message: 'Данные студента успешно обновлены',
-                            position: "topRight"
-                        });
-                        break;
-                    }
-                    default: {
-                        iziToast.error({
-                            title: res.statusText,
-                            message: 'Попробуйте ещё раз',
-                            position: "topRight",
-                            color: "#FFF2ED"
-                        });
-                    }
-                }
-            })
+        changeStudentData(data, rows.id, navigate)
     };
 
     const propsStyle = {
@@ -263,7 +242,7 @@ export default function PersonalCardContract() {
                                        onChange={event => setLatinName(event.target.value)} value={latin_name}/>
                             <TextField label="Ф.И.О. (кир.)" variant="outlined" color="warning" type="text"
                                        margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setRussianName(event.target.value)} value={russian_name}/>
                             <TextField label="Контактный телефон студента" variant="outlined" color="warning" type="tel"
                                        margin='normal' size="small" disabled={editMode}
@@ -275,11 +254,11 @@ export default function PersonalCardContract() {
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
                             <TextField label="Страна" type="text" variant="outlined" color="warning" margin='normal'
-                                       required size="small" sx={{width: "325px"}} disabled={editMode}
+                                       size="small" sx={{width: "325px"}} disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setCountry(event.target.value)} value={country}/>
                             <TextField label="Дата рождения" type="date" color="warning"
-                                       margin='normal' size="small" disabled={editMode}
+                                       required margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
                             <TextField label="Место рождения" type="text" variant="outlined" color="warning"
@@ -410,7 +389,7 @@ export default function PersonalCardContract() {
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalInstitution(event.target.value)}
                                        value={name_educational_institution}/>
-                            <TextField label="Год окончания" type="date" color="warning"
+                            <TextField label="Год окончания" type="text" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} disabled={editMode}
                                        InputLabelProps={{
@@ -431,7 +410,7 @@ export default function PersonalCardContract() {
                         <div className="column_style_contract">
                             <p className="tytle_contract_education"> Уровень получаемого образования  </p>
                             <TextField label="Статус зачисления" type="text" variant="outlined" color="warning"
-                                       margin='normal' required size="small" select sx={{width: "325px"}}
+                                       margin='normal' size="small" select sx={{width: "325px"}}
                                        InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setEnrollment(event.target.value)} value={enrollment}>
                                 <MenuItem sx={propsStyle} value="Зачислен">
@@ -442,7 +421,7 @@ export default function PersonalCardContract() {
                                 </MenuItem>
                             </TextField>
                             <TextField label="Количество часов" type="text" variant="outlined" color="warning"
-                                       margin='normal' required size="small" select
+                                       margin='normal' size="small" select
                                        InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setHoursNumber(event.target.value)} value={hours_number}>
                                 <MenuItem sx={propsStyle} value="1008 ак.ч. (1 год)">
@@ -507,7 +486,7 @@ export default function PersonalCardContract() {
                                 </MenuItem>
                             </TextField>
                             <TextField label="Номер приказа о зачислении" type="text" variant="outlined" color="warning"
-                                       margin='normal' required size="small" disabled={editMode}
+                                       margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEnrollmentOrder(event.target.value)}
                                        value={enrollment_order}/>
@@ -565,7 +544,7 @@ export default function PersonalCardContract() {
                                        value={passport_issue_date}/>
                             <p className="title_contract_doc"> Дополнительные документы </p>
                             <TextField label="Срок действия визы" type="date" color="warning" disabled={editMode}
-                                       margin='normal' required size="small" inputProps={propsStyle}
+                                       margin='normal' size="small" inputProps={propsStyle}
                                        InputLabelProps={{
                                            style: {
                                                fontSize: "14px",
@@ -631,7 +610,7 @@ export default function PersonalCardContract() {
                             <p className="tytle_contract_doc_contaner"> Документы оплаты </p>
                             <TextField label="Номер договора" type="text" variant="outlined" color="warning"
                                        margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setContractNumber(event.target.value)}
                                        value={contract_number}/>
                             {/*Нужно привязать*/}
@@ -723,31 +702,8 @@ export default function PersonalCardContract() {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        removeStudent(rows.id)
-                            .then((res) => {
-                                switch (res.status) {
-                                    case 200: {
-                                        iziToast.success({
-                                            title: res.statusText,
-                                            message: 'Студент успешно удалены из базы. Обновляю страницу :)',
-                                            position: "topRight",
-                                        });
-                                        setTimeout(() => {
-                                        }, 1000)
-                                        break
-                                    }
-                                    default: {
-                                        iziToast.error({
-                                            title: res.statusText,
-                                            message: 'Ошибка. Попробуйте снова.',
-                                            position: "topRight",
-                                            color: "#FFF2ED"
-                                        });
-                                    }
-                                }
-                            })
+                        removeStudent(rows.id, navigate)
                         setOpen(false)
-                        navigate(HOME_ROUTE);
                     }
                     }>Да</Button>
                     <Button onClick={() => {
