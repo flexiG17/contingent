@@ -3,7 +3,6 @@ import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutl
 import {changeStudentData, removeStudent} from '../../../actions/student'
 import {useLocation, useNavigate} from 'react-router-dom';
 import iziToast from "izitoast";
-import {HOME_ROUTE} from "../../../utils/consts";
 import TextField from "@mui/material/TextField";
 import {
     Button,
@@ -26,6 +25,7 @@ import ModalMessage from '../MessageModal/index'
 import CreateTaskModalWindow from "../CreateTaskModal";
 import {getToken} from "../../../utils/token";
 import ModalFile from "../filemanager/ModalFile";
+import {propsStyle, propsDataStyle, listItemStyle} from "../../../utils/consts/styles";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
@@ -35,7 +35,7 @@ export default function PersonalCardQuota() {
     const [modalActive, setModalActive] = useState(false);
     const [editMode, setEditMode] = useState(true)
     const [modalMessageActive, setModalMessageActive] = useState(false)
-    const [modalFileActive,setModalFileActive] = useState(false);
+    const [modalFileActive, setModalFileActive] = useState(false);
     const handleClickContract = () => {
         setActive(!active)
     }
@@ -45,7 +45,7 @@ export default function PersonalCardQuota() {
         setOpen(true);
     };
 
-    const handleFileModal = () =>{
+    const handleFileModal = () => {
         setModalFileActive(true);
     }
 
@@ -146,7 +146,8 @@ export default function PersonalCardQuota() {
     };
 
 
-    const actions = !READER_ACCESS ? [
+    const actions = !READER_ACCESS ?
+        [
             {
                 icon: <NotificationsNoneIcon/>,
                 name: 'Создать задачу',
@@ -206,15 +207,6 @@ export default function PersonalCardQuota() {
             }
         ]
 
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
-    }
-
     return (
         <>
             <form onSubmit={handleSubmit}>
@@ -248,7 +240,7 @@ export default function PersonalCardQuota() {
                                        onChange={event => setCountry(event.target.value)} value={country}/>
                             <TextField label="Дата рождения" type="date" color="warning"
                                        required margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle}
                                        onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
                             <TextField label="Место рождения" type="text" variant="outlined" color="warning"
                                        margin='normal' disabled={editMode}
@@ -260,8 +252,7 @@ export default function PersonalCardQuota() {
                                        onChange={event => setResidencePlace(event.target.value)}
                                        value={residence_place}/>
                             <TextField label="Гражданство" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small"
+                                       margin='normal' disabled={editMode} size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setCitizenship(event.target.value)} value={citizenship}/>
                             <TextField label="Пол" type="text" variant="outlined" color="warning" margin='normal'
@@ -321,27 +312,17 @@ export default function PersonalCardQuota() {
                                        margin='normal' select size="small" InputLabelProps={propsStyle}
                                        onChange={event => setLocation(event.target.value)} value={RF_location}
                                        disabled={editMode}>
-                                <MenuItem sx={propsStyle} value="Да">
-                                <span
-                                    style={propsStyle.style}>Да</span>
+                                <MenuItem value="Да">
+                                    <span style={listItemStyle}>Да</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle}
-                                          value="Нет">
-                                <span
-                                    style={propsStyle.style}>Нет</span>
+                                <MenuItem value="Нет">
+                                    <span style={listItemStyle}>Нет</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Дата въезда" type="date" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
                         </div>
                     </div>
@@ -360,8 +341,7 @@ export default function PersonalCardQuota() {
                                        value={level_education}/>
                             {/*Нужно привязать*/}
                             <TextField label="Образовательная организация" type="text" variant="outlined"
-                                       color="warning" disabled={editMode}
-                                       margin='normal' size="small"
+                                       color="warning" disabled={editMode} margin='normal' size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalOrganization(event.target.value)}
                                        value={educational_organization}/>
@@ -401,11 +381,11 @@ export default function PersonalCardQuota() {
                                        margin='normal' size="small" select sx={{width: "325px"}}
                                        InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setEnrollment(event.target.value)} value={enrollment}>
-                                <MenuItem sx={propsStyle.style} value="Зачислен">
-                                    <span style={propsStyle.style}>Зачислен</span>
+                                <MenuItem value="Зачислен">
+                                    <span style={listItemStyle}>Зачислен</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Не зачислен">
-                                    <span style={propsStyle.style}>Не зачислен</span>
+                                <MenuItem value="Не зачислен">
+                                    <span style={listItemStyle}>Не зачислен</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Уровень желаемого образования" type="text" variant="outlined"
@@ -415,29 +395,28 @@ export default function PersonalCardQuota() {
                                        onChange={event => setDesiredEducationLevel(event.target.value)}
                                        value={desired_education_level}/>
                             <TextField label="Форма обучения" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small" select
+                                       margin='normal' disabled={editMode} size="small" select
                                        InputLabelProps={propsStyle}
                                        onChange={event => setFormStudy(event.target.value)} value={form_study}>
-                                <MenuItem sx={propsStyle} value="Очная">
-                                    <span style={propsStyle.style}>Очная</span>
+                                <MenuItem value="Очная">
+                                    <span style={listItemStyle}>Очная</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Гибрид">
-                                    <span style={propsStyle.style}>Гибрид</span>
+                                <MenuItem value="Гибрид">
+                                    <span style={listItemStyle}>Гибрид</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Онлайн">
-                                    <span style={propsStyle.style}>Онлайн</span>
+                                <MenuItem value="Онлайн">
+                                    <span style={listItemStyle}>Онлайн</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Тип обучения" type="text" variant="outlined" color="error" margin='normal'
                                        size="small" required select focused disabled={editMode}
                                        InputLabelProps={propsStyle}
                                        onChange={event => setEducationType(event.target.value)} value={education_type}>
-                                <MenuItem sx={propsStyle} value="Контракт">
-                                    <span style={propsStyle.style}>Контракт</span>
+                                <MenuItem value="Контракт">
+                                    <span style={listItemStyle}>Контракт</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Квота">
-                                    <span style={propsStyle.style}>Квота</span>
+                                <MenuItem value="Квота">
+                                    <span style={listItemStyle}>Квота</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Номер приказа о зачислении" type="text" variant="outlined" color="warning"
@@ -446,8 +425,7 @@ export default function PersonalCardQuota() {
                                        onChange={event => setEnrollmentOrder(event.target.value)}
                                        value={enrollment_order}/>
                             <TextField label="Номер приказа об отчислении" type="text" variant="outlined"
-                                       color="warning" disabled={editMode}
-                                       margin='normal' size="small"
+                                       color="warning" disabled={editMode} margin='normal' size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setExpulsionOrder(event.target.value)}
                                        value={expulsion_order}/>
@@ -465,11 +443,11 @@ export default function PersonalCardQuota() {
                                        margin='normal' select size="small" disabled={editMode}
                                        InputLabelProps={propsStyle}
                                        onChange={event => setScholarship(event.target.value)} value={scholarship}>
-                                <MenuItem sx={propsStyle} value="Да">
-                                    <span style={propsStyle.style}>Да</span>
+                                <MenuItem value="Да">
+                                    <span style={listItemStyle}>Да</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Нет">
-                                    <span style={propsStyle.style}>Нет</span>
+                                <MenuItem value="Нет">
+                                    <span style={listItemStyle}>Нет</span>
                                 </MenuItem>
                             </TextField>
                         </div>
@@ -487,24 +465,16 @@ export default function PersonalCardQuota() {
                                        value={passport_number}/>
                             <TextField label="Срок действия паспорта" type="date" color="warning"
                                        margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle}
                                        onChange={event => setPassportExpiration(event.target.value)}
                                        value={passport_expiration}/>
                             <TextField label="Кем выдан" type="text" variant="outlined" color="warning" margin='normal'
                                        size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle}
                                        onChange={event => setPassportIssued(event.target.value)}
                                        value={passport_issued}/>
-                            <TextField label="Дата выдачи" type="date" color="warning" margin='normal'                                        size="small" disabled={editMode}
-                                       inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                            <TextField label="Дата выдачи" type="date" color="warning" margin='normal' size="small"
+                                       disabled={editMode} inputProps={propsStyle} InputLabelProps={propsDataStyle}
                                        onChange={event => setPassportIssueDate(event.target.value)}
                                        value={passport_issue_date}/>
                         </div>
@@ -513,23 +483,23 @@ export default function PersonalCardQuota() {
                             {/*Здесь нужно прописать так же как и для контракта, для квоты, почему-то, не прописано...*/}
                             <TextField label="Срок действия визы" type="date" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Дата передачи в международную службу" type="date" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Дата передачи в МВД" type="date" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Ориентировочная дата получения" type="date" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Фактическая дата получения приглашения" type="date" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle} disabled={editMode}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle} disabled={editMode}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                         </div>
                     </div>
@@ -570,33 +540,34 @@ export default function PersonalCardQuota() {
             <Box>
                 {modalActive || modalMessageActive || modalFileActive ||
                     <SpeedDial
-                    ariaLabel="SpeedDial openIcon example"
-                    sx={{position: 'fixed', bottom: 20, right: 20}}
-                    icon={<SpeedDialIcon/>}
+                        ariaLabel="SpeedDial openIcon example"
+                        sx={{position: 'fixed', bottom: 20, right: 20}}
+                        icon={<SpeedDialIcon/>}
 
-                    FabProps={{
-                        sx: {
-                            bgcolor: '#FA7A45',
-                            '&:hover': {
+                        FabProps={{
+                            sx: {
                                 bgcolor: '#FA7A45',
+                                '&:hover': {
+                                    bgcolor: '#FA7A45',
+                                }
                             }
-                        }
-                    }}
-                >
-                    {actions.map((action) => (
-                        <SpeedDialAction
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                            onClick={() => {
-                                action.runFunction()
-                            }}
+                        }}
+                    >
+                        {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                onClick={() => {
+                                    action.runFunction()
+                                }}
 
-                        />
-                    ))}
-                </SpeedDial>}
+                            />
+                        ))}
+                    </SpeedDial>}
                 <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={[student_email]}/>
-                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} singleId={rows.id}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
+                                       singleId={rows.id}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
             </Box>
         </>
