@@ -2,7 +2,7 @@ import React from 'react';
 import {Navbar} from '../../common';
 import './Header.css';
 import Logo from '../Header/full_logo.png';
-import {HOME_ROUTE} from "../../../utils/consts";
+import {HOME_ROUTE} from "../../../utils/consts/pathRoutes";
 
 
 export default function Header() {

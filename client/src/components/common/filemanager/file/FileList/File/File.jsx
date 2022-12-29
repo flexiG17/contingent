@@ -9,7 +9,7 @@ import Download from "@mui/icons-material/Download";
 import {useDispatch} from "react-redux";
 import {pushDirStack, setCurrentDir} from "../../../../../../store/slices/ManagerData/manager-data";
 import {downloadFile} from "../../../../../../actions/fileManager";
-import {fileSizes} from "../../../../../../utils/consts";
+import {fileSizes} from "../../../../../../utils/consts/file";
 import {deleteDir} from "../../../../../../store/api-actions";
 
 const File = ({file}) => {

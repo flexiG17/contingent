@@ -1,5 +1,5 @@
 import {combineReducers} from "redux";
-import {NameSpace} from "../utils/consts";
+import {NameSpace} from "../utils/consts/file";
 import {managerData} from "./slices/ManagerData/manager-data";
 import {appData} from "./slices/AppData/app-data";
 

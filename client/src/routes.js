@@ -6,7 +6,7 @@ import {
     LOGIN_ROUTE,
     START_ROUTE,
     ACCOUNT_ROUTE, LOAD_ROUTE
-} from "./utils/consts";
+} from "./utils/consts/pathRoutes";
 import HomePage from './Pages/HomePage'
 import StartPage from './Pages/StartPage';
 import LoginPage from "./Pages/LoginPage";

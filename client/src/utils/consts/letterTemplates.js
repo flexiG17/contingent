@@ -1,31 +1,3 @@
-export const URL_PATH = 'http://localhost:5000'
-export const START_ROUTE = '/start'
-export const LOGIN_ROUTE = '/login'
-export const LOAD_ROUTE = '/loading'
-export const HOME_ROUTE = '/'
-export const REGISTRATION_ROUTE = '/registration'
-export const CARD_CONTRACT_ROUTE = '/contract'
-export const CARD_QUOTA_ROUTE = '/quota'
-export const ACCOUNT_ROUTE = '/account'
-export const ADD_STUDENT_ROUTE = '/createStudent'
-
-export const internalServerError = (e) => {
-    return e.response.status ? 'Ошибка сервера, попробуйте снова' : e.response.data.message
-}
-
-export const NameSpace = {
-    User: 'USER',
-    App: 'APP',
-    FileManager: 'MANAGER',
-}
-
-export const fileSizes = {
-    0: 'byte',
-    1: 'KB',
-    2: 'MB',
-    3: 'GB'
-}
-
 export const LetterTemplates = [
     {
         'title': 'Приветствие студента-квотника',
