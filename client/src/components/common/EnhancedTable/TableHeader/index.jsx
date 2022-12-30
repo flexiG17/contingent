@@ -6,6 +6,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
 import {visuallyHidden} from "@mui/utils";
 import * as React from "react";
+import {lineStyleInTable} from "../../../../utils/consts/styles";
 
 const headCells = [
     {
@@ -64,14 +65,6 @@ const headCells = [
     }
 ];
 
-const studentStyleInTable = {
-    textDecoration: 'none',
-    color: 'black',
-    fontSize: "14px",
-    fontFamily: ['Montserrat'],
-    fontWeight: '400'
-}
-
 export default function TableHeader({onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort}) {
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -93,7 +86,7 @@ export default function TableHeader({onSelectAllClick, order, orderBy, numSelect
                 </TableCell>
                 {headCells.map((headCell) => (
                     <TableCell
-                        sx={studentStyleInTable}
+                        sx={lineStyleInTable}
                         key={headCell.id}
                         align={'center'}
                         padding={headCell.disablePadding ? 'none' : 'normal'}

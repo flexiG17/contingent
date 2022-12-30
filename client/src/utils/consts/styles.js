@@ -22,3 +22,11 @@ export const listItemStyle = {
     fontFamily: ['Montserrat'],
     fontWeight: '450'
 }
+
+export const lineStyleInTable = {
+    textDecoration: 'none',
+    color: 'black',
+    fontSize: "14px",
+    fontFamily: ['Montserrat'],
+    fontWeight: '400'
+}

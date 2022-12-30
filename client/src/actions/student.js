@@ -56,7 +56,7 @@ export function removeArrayOfStudents(data) {
     })
 }
 
-export function changeStudentData(item, id, navigate) {
+export function changeStudentData(item, id) {
     return axios.put(
         `${URL_PATH}/api/student/update/${id}`, item, {
             headers: {
@@ -65,7 +65,7 @@ export function changeStudentData(item, id, navigate) {
             }
         }).then(({data}) => {
             setTimeout(() => {
-                navigate(HOME_ROUTE)
+                window.location.reload()
             }, 1500)
         iziToast.success({
             message: data.message,
