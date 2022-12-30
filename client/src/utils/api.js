@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {getToken} from './token';
-import {URL_PATH} from "./consts";
+import {URL_PATH} from "./consts/pathRoutes";
 
 const BACKEND_URL = `${URL_PATH}/api/`;
 const REQUEST_TIMEOUT = 5000;

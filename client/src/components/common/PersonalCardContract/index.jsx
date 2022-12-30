@@ -26,6 +26,7 @@ import ModalMessage from "../MessageModal";
 import CreateTaskModalWindow from "../CreateTaskModal";
 import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
+import {listItemStyle, propsDataStyle, propsStyle} from '../../../utils/consts/styles'
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
@@ -34,7 +35,7 @@ export default function PersonalCardContract() {
     const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
     const [editMode, setEditMode] = useState(true);
-    const [modalFileActive,setModalFileActive] = useState(false);
+    const [modalFileActive, setModalFileActive] = useState(false);
     const [modalMessageActive, setModalMessageActive] = useState(false);
 
     const handleClickContract = () => {
@@ -46,15 +47,15 @@ export default function PersonalCardContract() {
         setOpen(true);
     };
 
-    const handleFileModal = () =>{
+    const handleFileModal = () => {
         setModalFileActive(true);
     }
 
-    const handleModal = () =>{
+    const handleModal = () => {
         setModalActive(true);
     }
 
-    const handleModalMessage = () =>{
+    const handleModalMessage = () => {
         setModalMessageActive(true);
     }
 
@@ -159,15 +160,8 @@ export default function PersonalCardContract() {
         changeStudentData(data, rows.id, navigate)
     };
 
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
-    }
-    const actions = !READER_ACCESS ? [
+    const actions = !READER_ACCESS ?
+        [
             {
                 icon: <NotificationsNoneIcon/>,
                 name: 'Создать задачу',
@@ -236,8 +230,7 @@ export default function PersonalCardContract() {
                         <div className="column_style_contract">
                             <p className="tytle_contract_info"> Личные данные</p>
                             <TextField label="Ф.И.О. (лат.)" variant="outlined" color="warning" type="text"
-                                       margin='normal' disabled={editMode}
-                                       required size="small" sx={{width: "325px"}}
+                                       margin='normal' disabled={editMode} required size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setLatinName(event.target.value)} value={latin_name}/>
                             <TextField label="Ф.И.О. (кир.)" variant="outlined" color="warning" type="text"
@@ -271,8 +264,7 @@ export default function PersonalCardContract() {
                                        onChange={event => setResidencePlace(event.target.value)}
                                        value={residence_place}/>
                             <TextField label="Гражданство" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small"
+                                       margin='normal' disabled={editMode} size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setCitizenship(event.target.value)} value={citizenship}/>
                             <TextField label="Пол" type="text" variant="outlined" color="warning" margin='normal'
@@ -285,41 +277,34 @@ export default function PersonalCardContract() {
                                     <span style={propsStyle.style}>Женский</span>
                                 </MenuItem>
                             </TextField>
-                            <TextField label="Куратор" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" disabled={editMode}
+                            <TextField label="Куратор" type="text" variant="outlined" color="warning"
+                                       size="small" disabled={editMode} margin='normal'
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
                         </div>
                         <div className="column_style_contract">
                             <p className="tytle_contract_info"> Контактные данные агента</p>
-                            {/*Нужно привязать*/}
                             <TextField label="Ф.И.О." variant="outlined" color="warning" type="text"
                                        margin='normal' disabled={editMode}
                                        size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                            {/*Нужно привязать*/}
                             <TextField label="Телефон" variant="outlined" color="warning" type="tel"
                                        margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setPhoneNumber(event.target.value)}
                                        value={contact_phone_number}/>
-                            {/*Нужно привязать*/}
                             <TextField label="E-mail" variant="outlined" color="warning" type="email"
                                        margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
-
                             <p className="tytle_contract_info"> Контактные данные представителя</p>
-                            {/*Нужно привязать*/}
                             <TextField label="Ф.И.О." variant="outlined" color="warning" type="text"
                                        margin='normal' disabled={editMode}
                                        size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                            {/*Нужно привязать*/}
                             <TextField label="Телефон" variant="outlined" color="warning" type="tel"
                                        margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setPhoneNumber(event.target.value)}
                                        value={contact_phone_number}/>
-                            {/*Нужно привязать*/}
                             <TextField label="E-mail" variant="outlined" color="warning" type="email"
                                        margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
@@ -329,27 +314,16 @@ export default function PersonalCardContract() {
                                        margin='normal' select size="small" InputLabelProps={propsStyle}
                                        onChange={event => setLocation(event.target.value)} value={RF_location}
                                        disabled={editMode}>
-                                <MenuItem sx={propsStyle} value="Да">
-                                <span
-                                    style={propsStyle.style}>Да</span>
+                                <MenuItem value="Да">
+                                    <span style={propsStyle.style}>Да</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle}
-                                          value="Нет">
-                                <span
-                                    style={propsStyle.style}>Нет</span>
+                                <MenuItem value="Нет">
+                                    <span style={propsStyle.style}>Нет</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Дата въезда" type="date" color="warning" disabled={editMode}
                                        margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       inputProps={propsStyle} InputLabelProps={propsDataStyle}
                                        onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
                         </div>
                     </div>
@@ -365,25 +339,21 @@ export default function PersonalCardContract() {
                                        size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setLevelEducation(event.target.value)}
                                        value={level_education}/>
-                            {/*Нужно привязать*/}
                             <TextField label="Образовательная организация" type="text" variant="outlined"
                                        color="warning" margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalInstitution(event.target.value)}
                                        value={name_educational_institution}/>
-                            {/*Нужно привязать*/}
                             <TextField label="Наименование учебного заведения" type="text" variant="outlined"
                                        color="warning" margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalInstitution(event.target.value)}
                                        value={name_educational_institution}/>
-                            {/*Нужно привязать*/}
                             <TextField label="Местонахождение учебного заведения" type="text" variant="outlined"
                                        color="warning" margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setEducationalInstitution(event.target.value)}
                                        value={name_educational_institution}/>
-                            {/*Нужно привязать*/}
                             <TextField label="Область образования" type="text" variant="outlined"
                                        color="warning" margin='normal' size="small" disabled={editMode}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
@@ -392,14 +362,7 @@ export default function PersonalCardContract() {
                             <TextField label="Год окончания" type="text" color="warning"
                                        margin='normal' size="small" sx={{width: "325px"}}
                                        inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
                             <p className="tytle_contract_education"> Дополнительно </p>
                             <TextField label="Примечания" type="text" variant="outlined" color="warning" margin='normal'
@@ -408,15 +371,15 @@ export default function PersonalCardContract() {
                                        onChange={event => setComments(event.target.value)} value={comments}/>
                         </div>
                         <div className="column_style_contract">
-                            <p className="tytle_contract_education"> Уровень получаемого образования  </p>
+                            <p className="tytle_contract_education"> Уровень получаемого образования </p>
                             <TextField label="Статус зачисления" type="text" variant="outlined" color="warning"
                                        margin='normal' size="small" select sx={{width: "325px"}}
                                        InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setEnrollment(event.target.value)} value={enrollment}>
-                                <MenuItem sx={propsStyle} value="Зачислен">
+                                <MenuItem value="Зачислен">
                                     <span style={propsStyle.style}>Зачислен</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Не зачислен">
+                                <MenuItem value="Не зачислен">
                                     <span style={propsStyle.style}>Не зачислен</span>
                                 </MenuItem>
                             </TextField>
@@ -424,35 +387,35 @@ export default function PersonalCardContract() {
                                        margin='normal' size="small" select
                                        InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => setHoursNumber(event.target.value)} value={hours_number}>
-                                <MenuItem sx={propsStyle} value="1008 ак.ч. (1 год)">
-                                    <span style={propsStyle.style}>1008 ак.ч. (1 год)</span>
+                                <MenuItem value="1008 ак.ч. (1 год)">
+                                    <span style={listItemStyle}>1008 ак.ч. (1 год)</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="1008 ак.ч. (1.5 год)">
-                                    <span style={propsStyle.style}>1008 ак.ч. (1.5 год)</span>
+                                <MenuItem value="1008 ак.ч. (1.5 год)">
+                                    <span style={listItemStyle}>1008 ак.ч. (1.5 год)</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="868 ак.ч.">
-                                    <span style={propsStyle.style}>868 ак.ч.</span>
+                                <MenuItem value="868 ак.ч.">
+                                    <span style={listItemStyle}>868 ак.ч.</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="728 ак.ч.">
-                                    <span style={propsStyle.style}>728 ак.ч.</span>
+                                <MenuItem value="728 ак.ч.">
+                                    <span style={listItemStyle}>728 ак.ч.</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="588 ак.ч.">
-                                    <span style={propsStyle.style}>588 ак.ч.</span>
+                                <MenuItem value="588 ак.ч.">
+                                    <span style={listItemStyle}>588 ак.ч.</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="504 ак.ч.">
-                                    <span style={propsStyle.style}>504 ак.ч.</span>
+                                <MenuItem value="504 ак.ч.">
+                                    <span style={listItemStyle}>504 ак.ч.</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="288 ак.ч.">
-                                    <span style={propsStyle.style}>588 ак.ч.</span>
+                                <MenuItem value="288 ак.ч.">
+                                    <span style={listItemStyle}>588 ак.ч.</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="144 ак.ч.">
-                                    <span style={propsStyle.style}>144 ак.ч.</span>
+                                <MenuItem value="144 ак.ч.">
+                                    <span style={listItemStyle}>144 ак.ч.</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="108 ак.ч.">
-                                    <span style={propsStyle.style}>108 ак.ч.</span>
+                                <MenuItem value="108 ак.ч.">
+                                    <span style={listItemStyle}>108 ак.ч.</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="588 ак.ч.">
-                                    <span style={propsStyle.style}>72 ак.ч.</span>
+                                <MenuItem value="588 ак.ч.">
+                                    <span style={listItemStyle}>72 ак.ч.</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Уровень желаемого образования" type="text" variant="outlined"
@@ -464,25 +427,25 @@ export default function PersonalCardContract() {
                                        margin='normal' disabled={editMode}
                                        size="small" select InputLabelProps={propsStyle}
                                        onChange={event => setFormStudy(event.target.value)} value={form_study}>
-                                <MenuItem sx={propsStyle} value="Очная">
-                                    <span style={propsStyle.style}>Очная</span>
+                                <MenuItem value="Очная">
+                                    <span style={listItemStyle}>Очная</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Гибрид">
-                                    <span style={propsStyle.style}>Гибрид</span>
+                                <MenuItem value="Гибрид">
+                                    <span style={listItemStyle}>Гибрид</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Онлайн">
-                                    <span style={propsStyle.style}>Онлайн</span>
+                                <MenuItem value="Онлайн">
+                                    <span style={listItemStyle}>Онлайн</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Тип обучения" type="text" variant="outlined" color="error" margin='normal'
                                        required size="small" select focused InputLabelProps={propsStyle}
                                        disabled={editMode}
                                        onChange={event => setEducationType(event.target.value)} value={education_type}>
-                                <MenuItem sx={propsStyle} value="Контракт">
-                                    <span style={propsStyle.style}>Контракт</span>
+                                <MenuItem value="Контракт">
+                                    <span style={listItemStyle}>Контракт</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Квота">
-                                    <span style={propsStyle.style}>Квота</span>
+                                <MenuItem value="Квота">
+                                    <span style={listItemStyle}>Квота</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Номер приказа о зачислении" type="text" variant="outlined" color="warning"
@@ -491,21 +454,14 @@ export default function PersonalCardContract() {
                                        onChange={event => setEnrollmentOrder(event.target.value)}
                                        value={enrollment_order}/>
                             <TextField label="Номер приказа об отчислении" type="text" variant="outlined"
-                                       color="warning" disabled={editMode}
-                                       margin='normal' size="small"
+                                       color="warning" disabled={editMode} margin='normal' size="small"
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
                                        onChange={event => setExpulsionOrder(event.target.value)}
                                        value={expulsion_order}/>
                             {/*Нужно привязать*/}
                             <TextField label="Куратор" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           }
-                                       }}
+                                       size="small" disabled={editMode}
+                                       InputLabelProps={propsStyle} inputProps={propsStyle}
                                        onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
                         </div>
                     </div>
@@ -526,86 +482,42 @@ export default function PersonalCardContract() {
                                        onChange={event => setPassportExpiration(event.target.value)}
                                        value={passport_expiration}/>
                             <TextField label="Кем выдан" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" disabled={editMode}
+                                       size="small" disabled={editMode} value={passport_issued}
                                        inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setPassportIssued(event.target.value)}
-                                       value={passport_issued}/>
+                                       onChange={event => setPassportIssued(event.target.value)}/>
                             <TextField label="Дата выдачи" type="date" color="warning" margin='normal'
                                        inputProps={propsStyle} size="small" disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setPassportIssueDate(event.target.value)}
                                        value={passport_issue_date}/>
                             <p className="title_contract_doc"> Дополнительные документы </p>
                             <TextField label="Срок действия визы" type="date" color="warning" disabled={editMode}
                                        margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
                             <TextField label="Дата передачи в международную службу" type="date" color="warning"
                                        margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setDateOfTransfer(event.target.value)}
                                        value={transfer_to_international_service}/>
                             <TextField label="Дата передачи в МВД" type="date" color="warning" disabled={editMode}
                                        margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setDateOfMvdTransfer(event.target.value)}
                                        value={transfer_to_MVD}/>
 
                             <TextField label="Ориентировочная дата получения" type="date" color="warning"
                                        margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setDateOfReceiving(event.target.value)}
                                        value={estimated_receipt_date}/>
 
                             <TextField label="Фактическая дата получения приглашения" type="date" color="warning"
                                        margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setDateOfReceipt(event.target.value)}
                                        value={actual_receipt_date_invitation}/>
                         </div>
-                        {/*Тупо тесовый код ниже, можно удалять. Я пытался понять, как работать с файлами*/}
                         <div className="column_style_contract">
                             <p className="tytle_contract_doc_contaner"> Документы оплаты </p>
                             <TextField label="Номер договора" type="text" variant="outlined" color="warning"
@@ -622,60 +534,29 @@ export default function PersonalCardContract() {
                             <TextField label="Статус 1C" type="text" variant="outlined" color="warning" margin='normal'
                                        size="small" select InputLabelProps={propsStyle} disabled={editMode}
                                        onChange={event => set1CStatus(event.target.value)} value={status_1C}>
-                                <MenuItem sx={propsStyle} value="Прикреплен">
-                                    <span style={propsStyle.style}>Прикреплен</span>
+                                <MenuItem value="Прикреплен">
+                                    <span style={listItemStyle}>Прикреплен</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle}
-                                          value="Не прикреплен">
-                                    <span style={propsStyle.style}>Не прикреплен</span>
+                                <MenuItem value="Не прикреплен">
+                                    <span style={listItemStyle}>Не прикреплен</span>
                                 </MenuItem>
                             </TextField>
                             <TextField label="Платеж 1" type="date" color="warning" disabled={editMode}
                                        margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setFirstPayment(event.target.value)} value={first_payment}/>
                             <TextField label="Платеж 2" type="date" color="warning" disabled={editMode}
                                        margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setSecondPayment(event.target.value)} value={second_payment}/>
                             <TextField label="Платеж 3" type="date" color="warning" disabled={editMode}
                                        margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setThirdPayment(event.target.value)} value={third_payment}/>
                             <TextField label="Платеж 4" type="date" color="warning" disabled={editMode}
                                        margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
+                                       InputLabelProps={propsDataStyle}
                                        onChange={event => setFourthPayment(event.target.value)} value={fourth_payment}/>
-
-
                         </div>
                     </div>
                 </div>
@@ -715,31 +596,32 @@ export default function PersonalCardContract() {
             <Box>
                 {modalActive || modalMessageActive || modalFileActive ||
                     <SpeedDial
-                    ariaLabel="SpeedDial openIcon example"
-                    sx={{position: 'fixed', bottom: 20, right: 20}}
-                    icon={<SpeedDialIcon/>}
-                    FabProps={{
-                        sx: {
-                            bgcolor: '#FA7A45',
-                            '&:hover': {
+                        ariaLabel="SpeedDial openIcon example"
+                        sx={{position: 'fixed', bottom: 20, right: 20}}
+                        icon={<SpeedDialIcon/>}
+                        FabProps={{
+                            sx: {
                                 bgcolor: '#FA7A45',
+                                '&:hover': {
+                                    bgcolor: '#FA7A45',
+                                }
                             }
-                        }
-                    }}
-                >
-                    {actions.map((action) => (
-                        <SpeedDialAction
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                            onClick={() => {
-                                action.runFunction()
-                            }}
-                        />
-                    ))}
-                </SpeedDial>}
+                        }}
+                    >
+                        {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                onClick={() => {
+                                    action.runFunction()
+                                }}
+                            />
+                        ))}
+                    </SpeedDial>}
                 <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={[student_email]}/>
-                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} singleId={rows.id}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
+                                       singleId={rows.id}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
             </Box>
         </>

@@ -1,4 +1,4 @@
-import {NameSpace} from "../../../utils/consts";
+import {NameSpace} from "../../../utils/consts/file";
 
 export const getFiles = (state) => state[NameSpace.FileManager].files;
 

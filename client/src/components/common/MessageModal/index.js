@@ -13,7 +13,7 @@ import {
     ListItemButton, ListItemText
 } from "@mui/material";
 import Select from 'react-select';
-import {LetterTemplates} from "../../../utils/consts";
+import {LetterTemplates} from "../../../utils/consts/letterTemplates";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Tooltip from "@mui/material/Tooltip";
 import iziToast from "izitoast";

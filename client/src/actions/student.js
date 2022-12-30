@@ -1,6 +1,6 @@
 import axios from "axios";
 import iziToast from "izitoast";
-import {HOME_ROUTE, internalServerError, URL_PATH} from '../utils/consts'
+import {HOME_ROUTE, internalServerError, URL_PATH} from '../utils/consts/pathRoutes'
 import {getToken} from "../utils/token";
 
 export function getStudents() {

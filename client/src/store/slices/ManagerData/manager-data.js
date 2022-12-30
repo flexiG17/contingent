@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {NameSpace} from "../../../utils/consts";
+import {NameSpace} from "../../../utils/consts/file";
 
 const initialState = {
     files: [],
