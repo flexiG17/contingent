@@ -17,13 +17,14 @@ import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import {CircularProgress} from "@mui/material";
-import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts/pathRoutes";
+import {ADD_STUDENT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts/pathRoutes";
 import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
 import TableToolbar from "./TableToolbar";
 import TableHeader from "./TableHeader";
 import {getToken} from "../../../utils/token";
 import './TableHeader/HeaderTable.css';
+import {lineStyleInTable} from "../../../utils/consts/styles";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -68,14 +69,6 @@ export default function EnhancedTable() {
     const [filters, setFilters] = useState([]);
 
     const [list, setList] = useState([]);
-
-    const studentStyleInTable = {
-        textDecoration: 'none',
-        color: 'black',
-        fontSize: "14px",
-        fontFamily: ['Montserrat'],
-        fontWeight: '400'
-    }
 
     useEffect(() => {
         getStudents()
@@ -278,74 +271,63 @@ export default function EnhancedTable() {
                                                     />
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.education_type}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.hours_number}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
-                                                    >
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}>
                                                         {row.latin_name}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.russian_name}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.country}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.gender}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.contract_number}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="center" >
-                                                    <Link
-                                                        className = "margin_table"
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link className = "margin_table" state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.enrollment_order}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link state={row} style={lineStyleInTable}
+                                                        to={row.education_type === "Контракт" ? `/contract/${row.id}` : CARD_QUOTA_ROUTE}
                                                     >
                                                         {row.enrollment}
                                                     </Link>
