@@ -165,9 +165,11 @@ export default function EnhancedTable() {
                         return false;
                     break;
                 case "equals":
-                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) !== new Date(filter.value)) {
+                    const tmp1 = new Date(item[filter.param.value]);
+                    const tmp2 = new Date(filter.value);
+                    if (filter.param.type === 'date' && tmp1.getTime() !== tmp2.getTime()) {
                         return false;
-                    } else if (item[filter.param.value] !== Number(filter.value)) {
+                    } else if (item[filter.param.value] === Number(filter.value)) {
                         return false;
                     }
                     break;
