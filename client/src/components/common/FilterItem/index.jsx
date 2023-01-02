@@ -27,9 +27,9 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             changeFilterProp(item.id, tmp[0], 'param');
                         }
                         }>
-                    <option>Выберите поле</option>
+                    <option hidden>Выберите поле</option>
                     {
-                        columns.map((item) => {
+                        columns.filter(item => item.value !== 'id').map((item) => {
                             return <option value={item.value}>{item.label}</option>
                         })
                     }
@@ -40,7 +40,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             changeFilterProp(item.id, e.target.value, 'operator');
                         }
                         }>
-                    <option>Выберите оператор</option>
+                    <option hidden>Выберите оператор</option>
                     {
                         operators.map((item) => {
                             return <option value={item.value}>{item.label}</option>
