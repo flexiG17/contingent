@@ -16,7 +16,7 @@ import {
     SpeedDialAction,
     SpeedDialIcon
 } from "@mui/material";
-import "./PersonalCardContract.css";
+import '../Contract/Contract.css';
 import Box from "@mui/material/Box";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
@@ -27,7 +27,7 @@ import ModalMessage from "../MessageModal";
 import CreateTaskModalWindow from "../CreateTaskModal";
 import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
-import {listItemStyle, propsDataStyle, propsStyle} from '../../../utils/consts/styles'
+import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles'
 import moment from "moment/moment";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
@@ -95,13 +95,12 @@ export default function PersonalCardContract() {
                     item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
                     item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
                 });
-                console.log(result[0]);
                 setStudentData(result[0])
             })
             .finally(() => {
                 setTimeout(() => {
                     setLoading(false)
-                }, 500)
+                }, 250)
             })
     }, [loading])
     const formRef = useRef(null);
@@ -111,48 +110,6 @@ export default function PersonalCardContract() {
         let formData = new FormData(formRef.current)
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
-        console.log(dataToSave);
-        /*const data = {
-            education_type: education_type,
-            latin_name: latin_name,
-            russian_name: russian_name,
-            RF_location: RF_location,
-            contact_phone_number: contact_phone_number,
-            student_email: student_email,
-            agent_name: agent_name,
-            agent_phone_number: agent_phone_number,
-            agent_email: agent_email,
-            country: country,
-            birth_place: birth_place,
-            birth_date: birth_date,
-            residence_place: residence_place,
-            citizenship: citizenship,
-            gender: gender,
-            passport_number: passport_number,
-            passport_expiration: passport_expiration,
-            passport_issued: passport_issued,
-            passport_issue_date: passport_issue_date,
-            level_education: level_education,
-            name_educational_institution: name_educational_institution,
-            form_study: form_study,
-            enrollment: enrollment,
-            enrollment_order: enrollment_order,
-            expulsion_order: expulsion_order,
-            contract_number: contract_number,
-            status_1C: status_1C,
-            tutor_name: tutor_name,
-            first_payment: first_payment,
-            second_payment: second_payment,
-            third_payment: third_payment,
-            fourth_payment: fourth_payment,
-            entry_date: entry_date,
-            visa_validity: visa_validity,
-            document_path: '',
-            transfer_to_international_service: transfer_to_international_service,
-            transfer_to_MVD: transfer_to_MVD,
-            estimated_receipt_date: estimated_receipt_date,
-            actual_receipt_date_invitation: actual_receipt_date_invitation
-        }*/
         changeStudentData(dataToSave, rows.id)
     };
 
@@ -228,93 +185,112 @@ export default function PersonalCardContract() {
                 <form ref={formRef} onSubmit={handleSubmit}>
                     <p className="title_studentName">Личная карточка {rows.russian_name}</p>
                     <div className="info_and_education_container">
-                        <p className="title_quota"> Личная информация студента </p>
+                        <p className="title_contract_section"> Основные данные студента </p>
                         <div className="columns_position">
                             <div className="column_style_contract">
-                                <p className="tytle_contract_info"> Личные данные</p>
+                                <p className="title_contract_doc"> Личные данные</p>
                                 <TextField label="Ф.И.О. (лат.)" type="text" defaultValue={studentData.latin_name}
                                            name='latin_name' variant="outlined" color="warning"
                                            margin='normal' disabled={editMode} required size="small"
                                            sx={{width: "325px"}}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Ф.И.О. (кир.)" type="text" defaultValue={studentData.russian_name}
                                            name='russian_name' variant="outlined" color="warning"
                                            margin='normal' disabled={editMode}
-                                           size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc"> Контактные данные</p>
                                 <TextField label="Контактный телефон студента" type="tel" defaultValue={studentData.contact_phone_number}
                                            name='contact_phone_number' variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="E-mail студента" variant="outlined" defaultValue={studentData.student_email}
                                            name='student_email' color="warning" type="email"
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Страна" type="text" defaultValue={studentData.country}
-                                           name='country' margin='normal' variant="outlined" color="warning"
-                                           size="small" sx={{width: "325px"}} disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Дата рождения" type="date" color="warning" defaultValue={studentData.birth_date}
-                                           name='birth_date' required margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsDataStyle}/>
-                                <TextField label="Место рождения"
-                                           name='birth_place' color="warning" type="text" variant="outlined"
-                                           margin='normal' disabled={editMode} defaultValue={studentData.birth_place}
-                                           size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Место проживания" type="text" defaultValue={studentData.residence_place}
-                                           name='residence_place' variant="outlined" color="warning"
-                                           margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Гражданство" defaultValue={studentData.citizenship} type="text"
-                                           name='citizenship' color="warning" variant="outlined"
-                                           margin='normal' disabled={editMode} size="small"
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Пол" defaultValue={studentData.gender} type="text"
-                                           name='gender' margin='normal' variant="outlined" color="warning"
-                                           required size="small" select InputLabelProps={propsStyle}
-                                           disabled={editMode}>
-                                    <MenuItem sx={propsStyle} value="Мужской">
-                                        <span style={listItemStyle}>Мужской</span>
-                                    </MenuItem>
-                                    <MenuItem sx={propsStyle} value="Женский">
-                                        <span style={listItemStyle}>Женский</span>
-                                    </MenuItem>
-                                </TextField>
-                                <TextField label="Куратор" defaultValue={studentData.tutor_name} type="text"
-                                           name='tutor_name' color="warning" variant="outlined"
-                                           size="small" disabled={editMode} margin='normal'
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                            </div>
-                            <div className="column_style_contract">
-                                <p className="tytle_contract_info"> Контактные данные агента</p>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc"> Контактные данные агента</p>
                                 <TextField label="Ф.И.О." defaultValue={studentData.agent_name} type="text"
                                            name='agent_name' variant="outlined" color="warning"
                                            margin='normal' disabled={editMode}
-                                           size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Телефон" defaultValue={studentData.agent_phone_number} type="tel"
                                            name='agent_phone_number' variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="E-mail" defaultValue={studentData.agent_email}
                                            name='agent_email' type="email" variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <p className="tytle_contract_info"> Контактные данные представителя</p>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc"> Контактные данные представителя</p>
                                 <TextField label="Ф.И.О." defaultValue={studentData.representative_name}
                                            name='representative_name' variant="outlined" color="warning" type="text"
                                            margin='normal' disabled={editMode}
-                                           size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Телефон" defaultValue={studentData.representative_phone_number} variant="outlined"
                                            name='representative_phone_number' color="warning" type="tel"
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="E-mail" defaultValue={studentData.representative_email} variant="outlined"
                                            name='representative_email' type="email" color="warning"
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <p className="tytle_contract_info"> Данные о местоположении </p>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc">Куратор</p>
+                                <TextField label="Куратор" name='tutor_name' type="text" variant="outlined"
+                                           color="warning" margin='normal' defaultValue={studentData.tutor_name}
+                                           size="small" disabled={editMode}
+                                           InputLabelProps={textFieldStyle} inputProps={textFieldStyle}/>
+                            </div>
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Паспортные данные</p>
+                                <TextField label="Страна" type="text" defaultValue={studentData.country}
+                                           name='country' margin='normal' variant="outlined" color="warning"
+                                           size="small" sx={{width: "325px"}} disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Место рождения"
+                                           name='birth_place' color="warning" type="text" variant="outlined"
+                                           margin='normal' disabled={editMode} defaultValue={studentData.birth_place}
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Дата рождения" type="date" color="warning" defaultValue={studentData.birth_date}
+                                           name='birth_date' required margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Место проживания" type="text" defaultValue={studentData.residence_place}
+                                           name='residence_place' variant="outlined" color="warning"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Гражданство" defaultValue={studentData.citizenship} type="text"
+                                           name='citizenship' color="warning" variant="outlined"
+                                           margin='normal' disabled={editMode} size="small"
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Пол" defaultValue={studentData.gender} type="text"
+                                           name='gender' margin='normal' variant="outlined" color="warning"
+                                           required size="small" select InputLabelProps={textFieldStyle}
+                                           disabled={editMode}>
+                                    <MenuItem sx={textFieldStyle} value="Мужской">
+                                        <span style={listItemStyle}>Мужской</span>
+                                    </MenuItem>
+                                    <MenuItem sx={textFieldStyle} value="Женский">
+                                        <span style={listItemStyle}>Женский</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
+                                           color="warning" defaultValue={studentData.passport_number}
+                                           margin='normal' disabled={editMode}
+                                           required size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Срок действия паспорта" name='passport_expiration' type="date"
+                                           color="warning" defaultValue={studentData.passport_expiration}
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
+                                           color="warning" margin='normal' defaultValue={studentData.passport_issued}
+                                           size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
+                                           margin='normal' defaultValue={studentData.passport_issue_date}
+                                           inputProps={textFieldStyle} size="small" disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle}/>
+                                <p className="title_contract_doc"> Данные о местоположении </p>
                                 <TextField label="Нахождение в РФ" defaultValue={studentData.RF_location} type="text"
                                            name='RF_location' color="warning" variant="outlined"
-                                           margin='normal' select size="small" InputLabelProps={propsStyle}
+                                           margin='normal' select size="small" InputLabelProps={textFieldStyle}
                                            disabled={editMode}>
                                     <MenuItem value="Да">
                                         <span style={listItemStyle}>Да</span>
@@ -326,63 +302,29 @@ export default function PersonalCardContract() {
                                 <TextField label="Дата въезда" defaultValue={studentData.entry_date} type="date"
                                            name='entry_date' disabled={editMode} color="warning"
                                            margin='normal' size="small" sx={{width: "325px"}}
-                                           inputProps={propsStyle} InputLabelProps={propsDataStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                             </div>
                         </div>
                     </div>
 
                     <div className="info_and_education_container">
-                        <p className="title_quota"> Образование </p>
+                        <p className="title_contract_section">Образование студента</p>
                         <div className="columns_position">
                             <div className="column_style_contract">
-                                <p className="tytle_contract_education"> Полученный уровень образования </p>
+                                <p className="title_contract_doc"> Полученный уровень образования </p>
                                 <TextField label="Уровень полученного образования" name='level_education' type="text"
                                            variant="outlined" defaultValue={studentData.level_education}
                                            color="warning" margin='normal' sx={{width: "325px"}} disabled={editMode}
-                                           size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Образовательная организация" name='educational_organization'
-                                           type="text" variant="outlined" defaultValue={studentData.educational_organization}
-                                           color="warning" margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Наименование учебного заведения" name='name_educational_institution'
                                            type="text" variant="outlined" defaultValue={studentData.name_educational_institution}
                                            color="warning" margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Местонахождение учебного заведения" defaultValue={studentData.location_educational_institution}
-                                           name='location_educational_institution' type="text" variant="outlined"
-                                           color="warning" margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Область образования" name='education_field' type="text"
-                                           variant="outlined" defaultValue={studentData.education_field}
-                                           color="warning" margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Год окончания" name='graduation_year' type="text" color="warning"
-                                           margin='normal' size="small" sx={{width: "325px"}}
-                                           inputProps={propsStyle} disabled={editMode} defaultValue={studentData.graduation_year}
-                                           InputLabelProps={propsDataStyle}/>
-                                <p className="tytle_contract_education"> Дополнительно </p>
-                                <TextField label="Примечания" name='comments' type="text" variant="outlined"
-                                           color="warning" margin='normal' defaultValue={studentData.comments}
-                                           size="small" multiline rows={5} disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                            </div>
-                            <div className="column_style_contract">
-                                <p className="tytle_contract_education"> Уровень получаемого образования </p>
-                                <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
-                                           color="warning" defaultValue={studentData.enrollment}
-                                           margin='normal' size="small" select sx={{width: "325px"}}
-                                           InputLabelProps={propsStyle} disabled={editMode}>
-                                    <MenuItem value="Зачислен">
-                                        <span style={listItemStyle}>Зачислен</span>
-                                    </MenuItem>
-                                    <MenuItem value="Не зачислен">
-                                        <span style={listItemStyle}>Не зачислен</span>
-                                    </MenuItem>
-                                </TextField>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc">Нынешнее образование</p>
                                 <TextField label="Количество часов" name='hours_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.hours_number}
                                            margin='normal' size="small" select
-                                           InputLabelProps={propsStyle} disabled={editMode}>
+                                           InputLabelProps={textFieldStyle} disabled={editMode}>
                                     <MenuItem value="1008 ак.ч. (1 год)">
                                         <span style={listItemStyle}>1008 ак.ч. (1 год)</span>
                                     </MenuItem>
@@ -414,14 +356,10 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>72 ак.ч.</span>
                                     </MenuItem>
                                 </TextField>
-                                <TextField label="Уровень желаемого образования" name='desired_education_level'
-                                           type="text" variant="outlined" defaultValue={studentData.desired_education_level}
-                                           color="warning" margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
                                 <TextField label="Форма обучения" name='form_study' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.form_study}
                                            margin='normal' disabled={editMode}
-                                           size="small" select InputLabelProps={propsStyle}>
+                                           size="small" select InputLabelProps={textFieldStyle}>
                                     <MenuItem value="Очная">
                                         <span style={listItemStyle}>Очная</span>
                                     </MenuItem>
@@ -432,9 +370,17 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Онлайн</span>
                                     </MenuItem>
                                 </TextField>
+                                <p className="title_contract_doc"> Дополнительно </p>
+                                <TextField label="Примечания" name='comments' type="text" variant="outlined"
+                                           color="warning" margin='normal' defaultValue={studentData.comments}
+                                           size="small" multiline rows={5} disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                            </div>
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Статус</p>
                                 <TextField label="Тип обучения" name='education_type' type="text" variant="outlined"
                                            color="error" margin='normal' defaultValue={studentData.education_type}
-                                           required size="small" select focused InputLabelProps={propsStyle}
+                                           required size="small" select focused InputLabelProps={textFieldStyle}
                                            disabled={editMode}>
                                     <MenuItem value="Контракт">
                                         <span style={listItemStyle}>Контракт</span>
@@ -443,78 +389,32 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Квота</span>
                                     </MenuItem>
                                 </TextField>
+                                <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
+                                           color="warning" defaultValue={studentData.enrollment}
+                                           margin='normal' size="small" select sx={{width: "325px"}}
+                                           InputLabelProps={textFieldStyle} disabled={editMode}>
+                                    <MenuItem value="Зачислен">
+                                        <span style={listItemStyle}>Зачислен</span>
+                                    </MenuItem>
+                                    <MenuItem value="Не зачислен">
+                                        <span style={listItemStyle}>Не зачислен</span>
+                                    </MenuItem>
+                                </TextField>
                                 <TextField label="Номер приказа о зачислении" name='enrollment_order' type="text"
                                            variant="outlined" color="warning" defaultValue={studentData.enrollment_order}
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Номер приказа об отчислении" name='expulsion_order' type="text"
                                            variant="outlined" defaultValue={studentData.expulsion_order}
                                            color="warning" disabled={editMode} margin='normal' size="small"
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                {/*Нужно привязать*/}
-                                <TextField label="Куратор" name='tutor_name' type="text" variant="outlined"
-                                           color="warning" margin='normal' defaultValue={studentData.tutor_name}
-                                           size="small" disabled={editMode}
-                                           InputLabelProps={propsStyle} inputProps={propsStyle}/>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="info_and_education_container">
-                        <p className="title_quota"> Документы </p>
-                        <div className="columns_position">
-                            <div className="column_style_contract">
-                                <p className="title_contract_doc"> Паспортные данные</p>
-                                <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
-                                           color="warning" defaultValue={studentData.passport_number}
-                                           margin='normal' disabled={editMode}
-                                           required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Срок действия паспорта" name='passport_expiration' type="date"
-                                           color="warning" defaultValue={studentData.passport_expiration}
-                                           margin='normal' size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsDataStyle}/>
-                                <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
-                                           color="warning" margin='normal' defaultValue={studentData.passport_issued}
-                                           size="small" disabled={editMode}
-                                           inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
-                                           margin='normal' defaultValue={studentData.passport_issue_date}
-                                           inputProps={propsStyle} size="small" disabled={editMode}
-                                           InputLabelProps={propsDataStyle}/>
-                                <p className="title_contract_doc"> Дополнительные документы </p>
-                                <TextField label="Срок действия визы" name='visa_validity' type="date" color="warning"
-                                           disabled={editMode} defaultValue={studentData.visa_validity}
-                                           margin='normal' size="small" inputProps={propsStyle}
-                                           InputLabelProps={propsDataStyle}/>
-                                <TextField label="Дата передачи в международную службу"
-                                           name='transfer_to_international_service' type="date" color="warning"
-                                           margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                           InputLabelProps={propsDataStyle} defaultValue={studentData.transfer_to_international_service}/>
-                                <TextField label="Дата передачи в МВД" name='transfer_to_MVD' type="date"
-                                           color="warning" disabled={editMode}
-                                           margin='normal' size="small" inputProps={propsStyle}
-                                           InputLabelProps={propsDataStyle} defaultValue={studentData.transfer_to_MVD}/>
-                                <TextField label="Ориентировочная дата получения" name='estimated_receipt_date'
-                                           type="date" color="warning" defaultValue={studentData.estimated_receipt_date}
-                                           margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                           InputLabelProps={propsDataStyle}/>
-                                <TextField label="Фактическая дата получения приглашения"
-                                           name='actual_receipt_date_invitation' type="date" color="warning"
-                                           margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                           InputLabelProps={propsDataStyle} defaultValue={studentData.actual_receipt_date_invitation}/>
-                            </div>
-                            <div className="column_style_contract">
-                                <p className="tytle_contract_doc_contaner"> Документы оплаты </p>
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Номер договора" name='contract_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.contract_number}
                                            margin='normal' disabled={editMode}
-                                           size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                                <TextField label="Рег. номер направления" name='direction_number' type="text"
-                                           variant="outlined" color="warning" defaultValue={studentData.direction_number}
-                                           margin='normal' disabled={editMode}
-                                           size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Статус 1C" name='status_1c' type="text" variant="outlined"
                                            color="warning" margin='normal' defaultValue={studentData.status_1c}
-                                           size="small" select InputLabelProps={propsStyle} disabled={editMode}>
+                                           size="small" select InputLabelProps={textFieldStyle} disabled={editMode}>
                                     <MenuItem value="Прикреплен">
                                         <span style={listItemStyle}>Прикреплен</span>
                                     </MenuItem>
@@ -522,22 +422,53 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Не прикреплен</span>
                                     </MenuItem>
                                 </TextField>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="info_and_education_container">
+                        <p className="title_contract_section">Даты и оплата</p>
+                        <div className="columns_position">
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Даты</p>
+                                <TextField label="Срок действия визы" name='visa_validity' type="date" color="warning"
+                                           disabled={editMode} defaultValue={studentData.visa_validity}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>
+                                <TextField label="Дата передачи в международную службу"
+                                           name='transfer_to_international_service' type="date" color="warning"
+                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle} defaultValue={studentData.transfer_to_international_service}/>
+                                <TextField label="Дата передачи в МВД" name='transfer_to_MVD' type="date"
+                                           color="warning" disabled={editMode}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle} defaultValue={studentData.transfer_to_MVD}/>
+                                <TextField label="Ориентировочная дата получения" name='estimated_receipt_date'
+                                           type="date" color="warning" defaultValue={studentData.estimated_receipt_date}
+                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Фактическая дата получения приглашения"
+                                           name='actual_receipt_date_invitation' type="date" color="warning"
+                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle} defaultValue={studentData.actual_receipt_date_invitation}/>
+                            </div>
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Оплата</p>
                                 <TextField label="Платеж 1" name='first_payment' type="date" color="warning"
                                            disabled={editMode} defaultValue={studentData.first_payment}
-                                           margin='normal' size="small" inputProps={propsStyle}
-                                           InputLabelProps={propsDataStyle}/>
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>
                                 <TextField label="Платеж 2" name='second_payment' type="date" color="warning"
                                            disabled={editMode} defaultValue={studentData.second_payment}
-                                           margin='normal' size="small" inputProps={propsStyle}
-                                           InputLabelProps={propsDataStyle}/>
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle}/>
                                 <TextField label="Платеж 3" name='third_payment' type="date" color="warning"
                                            disabled={editMode} defaultValue={studentData.third_payment}
-                                           margin='normal' size="small" inputProps={propsStyle}
-                                           InputLabelProps={propsDataStyle}/>
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle}/>
                                 <TextField label="Платеж 4" name='fourth_payment' type="date" color="warning"
                                            disabled={editMode} defaultValue={studentData.fourth_payment}
-                                           margin='normal' size="small" inputProps={propsStyle}
-                                           InputLabelProps={propsDataStyle}/>
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle}/>
                             </div>
                         </div>
                     </div>
