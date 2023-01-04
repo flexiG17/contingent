@@ -5,7 +5,7 @@ export const LOGIN_ROUTE = '/login'
 export const LOAD_ROUTE = '/loading'
 export const HOME_ROUTE = '/'
 export const CARD_CONTRACT_ROUTE = '/contract/:id'
-export const CARD_QUOTA_ROUTE = '/quota'
+export const CARD_QUOTA_ROUTE = '/quota/:id'
 export const ACCOUNT_ROUTE = '/account'
 export const ADD_STUDENT_ROUTE = '/createStudent'
 
