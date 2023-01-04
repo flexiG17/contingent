@@ -20,6 +20,7 @@ import AddIcon from '@mui/icons-material/Add';
 import ModalRegistration from "../../components/common/ModalRegistration";
 import {getToken} from "../../utils/token";
 import Tooltip from "@mui/material/Tooltip";
+import {listItemStyle, textFieldStyle} from "../../utils/consts/styles";
 
 function Index() {
     const [editMode, setEditMode] = useState(true)
@@ -41,15 +42,6 @@ function Index() {
         email: userEmail,
         password: userPassword,
         role: userRole
-    }
-
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
     }
 
     const decodedToken = jwt_decode(getToken())
@@ -79,36 +71,36 @@ function Index() {
                                     setOpenDialog(true)
                                 }}/>
                             </Tooltip>}
-                        <TextField label="Ф.И.О." variant="outlined" color="warning" type="text" inputProps={propsStyle}
-                                   margin='normal' InputLabelProps={propsStyle} value={userName}
+                        <TextField label="Ф.И.О." variant="outlined" color="warning" type="text" inputProps={textFieldStyle}
+                                   margin='normal' InputLabelProps={textFieldStyle} value={userName}
                                    size="small" sx={{width: "400px", marginTop: "30px"}} disabled={editMode}
                                    onChange={event => setUserName(event.target.value)}
                         />
                         <TextField type="text" label='Роль в системе' variant="outlined" color="warning" margin='normal'
                                    disabled={(ADMIN_ACCESS && editMode) || !ADMIN_ACCESS}
-                                   size="small" select InputLabelProps={propsStyle} focused
+                                   size="small" select InputLabelProps={textFieldStyle} focused
                                    sx={{width: "400px", marginTop: "30px"}}
                                    onChange={event => setUserRole(event.target.value)} value={userRole}>
-                            <MenuItem sx={propsStyle} value="Администратор">
-                                <span style={propsStyle.style}>Администратор</span>
+                            <MenuItem value="Администратор">
+                                <span style={listItemStyle}>Администратор</span>
                             </MenuItem>
-                            <MenuItem sx={propsStyle} value="Редактор">
-                                <span style={propsStyle.style}>Редактор</span>
+                            <MenuItem value="Редактор">
+                                <span style={listItemStyle}>Редактор</span>
                             </MenuItem>
-                            <MenuItem sx={propsStyle} value="Читатель">
-                                <span style={propsStyle.style}>Читатель</span>
+                            <MenuItem value="Читатель">
+                                <span style={listItemStyle}>Читатель</span>
                             </MenuItem>
                         </TextField>
                         <TextField label="Логин" variant="outlined" color="warning" type="text" disabled={editMode}
-                                   margin='normal' InputLabelProps={propsStyle} value={userEmail}
+                                   margin='normal' InputLabelProps={textFieldStyle} value={userEmail}
                                    size="small" sx={{width: "400px", marginTop: "30px"}}
-                                   inputProps={propsStyle} onChange={event => setUserEmail(event.target.value)}
+                                   inputProps={textFieldStyle} onChange={event => setUserEmail(event.target.value)}
                         />
                         {!editMode && <TextField label="Новый пароль" variant="outlined" color="warning" type="text"
                                                  disabled={editMode} value={userPassword}
-                                                 margin='normal' InputLabelProps={propsStyle}
+                                                 margin='normal' InputLabelProps={textFieldStyle}
                                                  size="small" sx={{width: "400px", marginTop: "30px"}}
-                                                 inputProps={propsStyle}
+                                                 inputProps={textFieldStyle}
                                                  onChange={event => setUserPassword(event.target.value)}
                         />}
                         <div className="button_container_information_position">

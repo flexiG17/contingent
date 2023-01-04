@@ -11,6 +11,7 @@ import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Tooltip from "@mui/material/Tooltip";
 import ModalMessage from "../MessageModal";
 import {getStudentsByIdArray} from "../../../actions/student";
+import {listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 
 const TaskCard = ({active, setActive, taskData}) => {
     const [activeClick, setActiveClick] = useState(true);
@@ -27,15 +28,6 @@ const TaskCard = ({active, setActive, taskData}) => {
     const navigate = useNavigate()
     const handleClickContract = () => {
         setActiveClick(!activeClick)
-    }
-
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
     }
 
     const userId = jwt_decode(getToken()).userId
@@ -81,16 +73,16 @@ const TaskCard = ({active, setActive, taskData}) => {
                             <TextField
                                 sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
                                 label="Тип задачи" type="text" variant="outlined" color="warning"
-                                focused select InputLabelProps={propsStyle}
+                                focused select InputLabelProps={textFieldStyle}
                                 onChange={event => setType(event.target.value)} value={type}>
-                                <MenuItem sx={propsStyle} value="Звонок">
-                                    <span style={propsStyle.style}>Звонок</span>
+                                <MenuItem value="Звонок">
+                                    <span style={listItemStyle}>Звонок</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="E-mail">
-                                    <span style={propsStyle.style}>E-mail</span>
+                                <MenuItem value="E-mail">
+                                    <span style={listItemStyle}>E-mail</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Напоминание">
-                                    <span style={propsStyle.style}>Напоминание</span>
+                                <MenuItem value="Напоминание">
+                                    <span style={listItemStyle}>Напоминание</span>
                                 </MenuItem>
                             </TextField>
                             {taskData.students_id !== null &&
@@ -117,7 +109,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                         >
                                             <ListItemText
                                                 primary={`Список студентов в задаче (${studentsInCard.length} чел.)`}
-                                                primaryTypographyProps={propsStyle}
+                                                primaryTypographyProps={textFieldStyle}
                                                 sx={{my: 0}}
                                             />
                                         </ListItemButton>
@@ -159,35 +151,35 @@ const TaskCard = ({active, setActive, taskData}) => {
                                 </div>
                             }
                             <TextField
-                                label="Дата" type="date" color="warning" focused inputProps={propsStyle}
-                                InputLabelProps={propsStyle} onChange={event => setDate(event.target.value)}
+                                label="Дата" type="date" color="warning" focused inputProps={textFieldStyle}
+                                InputLabelProps={textFieldStyle} onChange={event => setDate(event.target.value)}
                                 value={date}
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
                             <TextField
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
                                 label="Статус" type="text" variant="outlined" color="warning"
-                                focused select InputLabelProps={propsStyle}
+                                focused select InputLabelProps={textFieldStyle}
                                 onChange={event => setStatus(event.target.value)} value={status}>
-                                <MenuItem sx={propsStyle} value="Запланировано">
-                                    <span style={propsStyle.style}>Запланировано</span>
+                                <MenuItem sx={textFieldStyle} value="Запланировано">
+                                    <span style={textFieldStyle.style}>Запланировано</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="В работе"> <span
-                                    style={propsStyle.style}>В работе</span>
+                                <MenuItem sx={textFieldStyle} value="В работе"> <span
+                                    style={textFieldStyle.style}>В работе</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Отложено"> <span
-                                    style={propsStyle.style}>Отложено</span>
+                                <MenuItem sx={textFieldStyle} value="Отложено"> <span
+                                    style={textFieldStyle.style}>Отложено</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Просрочено"> <span
-                                    style={propsStyle.style}>Просрочено</span>
+                                <MenuItem sx={textFieldStyle} value="Просрочено"> <span
+                                    style={textFieldStyle.style}>Просрочено</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Выполнено"> <span
-                                    style={propsStyle.style}>Выполнено</span>
+                                <MenuItem sx={textFieldStyle} value="Выполнено"> <span
+                                    style={textFieldStyle.style}>Выполнено</span>
                                 </MenuItem>
                             </TextField>
                             <TextField
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
                                 label="Примечания" variant="outlined" color="warning" multiline rows={3}
-                                focused inputProps={propsStyle} InputLabelProps={propsStyle}
+                                focused inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                 onChange={event => setComment(event.target.value)} value={comment}/>
                         </Box>
                         <label className="checkbox_style_notification">

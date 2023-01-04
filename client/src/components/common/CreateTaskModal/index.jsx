@@ -7,6 +7,7 @@ import jwt_decode from "jwt-decode";
 import {getToken} from "../../../utils/token";
 import {createNotification, updateNotification} from "../../../actions/notification";
 import {useNavigate} from "react-router-dom";
+import {listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 
 
 const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
@@ -17,15 +18,6 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
 
     const handleClickContract = () => {
         setActiveClick(!activeClick)
-    }
-
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
     }
 
     const userId = jwt_decode(getToken()).userId
@@ -65,27 +57,27 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
                             <TextField
                                 sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
                                 label="Тип задачи" type="text" variant="outlined" color="warning"
-                                focused select InputLabelProps={propsStyle}
+                                focused select InputLabelProps={textFieldStyle}
                                 onChange={event => setType(event.target.value)} value={type}>
-                                <MenuItem sx={propsStyle} value="Звонок">
-                                    <span style={propsStyle.style}>Звонок</span>
+                                <MenuItem value="Звонок">
+                                    <span style={listItemStyle}>Звонок</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="E-mail">
-                                    <span style={propsStyle.style}>E-mail</span>
+                                <MenuItem value="E-mail">
+                                    <span style={listItemStyle}>E-mail</span>
                                 </MenuItem>
-                                <MenuItem sx={propsStyle} value="Напоминание">
-                                    <span style={propsStyle.style}>Напоминание</span>
+                                <MenuItem value="Напоминание">
+                                    <span style={listItemStyle}>Напоминание</span>
                                 </MenuItem>
                             </TextField>
                             <TextField
-                                label="Дата" type="date" color="warning" focused inputProps={propsStyle}
-                                InputLabelProps={propsStyle} onChange={event => setDate(event.target.value)}
+                                label="Дата" type="date" color="warning" focused inputProps={textFieldStyle}
+                                InputLabelProps={textFieldStyle} onChange={event => setDate(event.target.value)}
                                 value={date}
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
                             <TextField
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
                                 label="Примечания" variant="outlined" color="warning" multiline rows={3}
-                                focused inputProps={propsStyle} InputLabelProps={propsStyle}
+                                focused inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                 onChange={event => setComment(event.target.value)} value={comment}/>
                         </Box>
                         <label className="checkbox_style_notification">

@@ -1,4 +1,4 @@
-export const propsStyle = {
+export const textFieldStyle = {
     style:
         {
             fontSize: "14.5px",
@@ -7,7 +7,7 @@ export const propsStyle = {
         },
 }
 
-export const propsDataStyle = {
+export const dateTextFieldStyle = {
     style:
         {
             fontSize: "14.5px",
