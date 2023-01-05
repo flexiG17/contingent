@@ -17,7 +17,7 @@ import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import {CircularProgress} from "@mui/material";
-import {ADD_STUDENT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts/pathRoutes";
+import {ADD_STUDENT_ROUTE} from "../../../utils/consts/pathRoutes";
 import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
 import TableToolbar from "./TableToolbar";
@@ -273,63 +273,63 @@ export default function EnhancedTable() {
                                                     />
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.education_type}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.hours_number}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.latin_name}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.russian_name}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.country}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.gender}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.contract_number}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="center">
-                                                    <Link className="margin_table" state={row} style={lineStyleInTable}
+                                                    <Link className="margin_table" style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.enrollment_order}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link state={row} style={lineStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.enrollment}
