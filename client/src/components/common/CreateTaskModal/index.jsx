@@ -5,12 +5,12 @@ import TextField from "@mui/material/TextField";
 import {Badge, MenuItem} from "@mui/material";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../../../utils/token";
-import {createNotification, updateNotification} from "../../../actions/notification";
+import {createNotification} from "../../../actions/notification";
 import {useNavigate} from "react-router-dom";
-import {listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
+import {dateTextFieldStyle, listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 
 
-const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
+const CreateTaskModalWindow = ({active, setActive, singleId, idArray, emails}) => {
     const [activeClick, setActiveClick] = useState(true);
     const [date, setDate] = useState('')
     const [type, setType] = useState('')
@@ -44,7 +44,6 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
         createNotification(data, navigate)
     }
 
-
     return (
         <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
             <Badge badgeContent={idArray !== undefined && idArray.length} color="warning">
@@ -55,9 +54,9 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
                         <Box component="form" sx={{'& > :not(style)': {mt: 1, ml: 2, width: '25ch'}}} noValidate
                              autoComplete="off">
                             <TextField
-                                sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
+                                sx={{'& > :not(style)': {mb: "5px", width: '30ch'}}}
                                 label="Тип задачи" type="text" variant="outlined" color="warning"
-                                focused select InputLabelProps={textFieldStyle}
+                                select required InputLabelProps={textFieldStyle}
                                 onChange={event => setType(event.target.value)} value={type}>
                                 <MenuItem value="Звонок">
                                     <span style={listItemStyle}>Звонок</span>
@@ -69,15 +68,24 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
                                     <span style={listItemStyle}>Напоминание</span>
                                 </MenuItem>
                             </TextField>
+                            {
+                                type === 'E-mail' && studentIdToSave !== null
+                                    ? <TextField
+                                        sx={{'& > :not(style)': {mt: "10px", width: '30ch'}}}
+                                        label="E-mail студента" disabled variant="outlined" color="warning"
+                                        inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
+                                        value={studentIdToSave.length === 1 ? [emails] : `Кол-во почт: ${emails.length}`}/>
+                                    : ''
+                            }
                             <TextField
-                                label="Дата" type="date" color="warning" focused inputProps={textFieldStyle}
-                                InputLabelProps={textFieldStyle} onChange={event => setDate(event.target.value)}
-                                value={date}
+                                label="Дата" type="date" color="warning" inputProps={textFieldStyle}
+                                InputLabelProps={dateTextFieldStyle} onChange={event => setDate(event.target.value)}
+                                value={date} required
                                 sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
                             <TextField
-                                sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
+                                sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
                                 label="Примечания" variant="outlined" color="warning" multiline rows={3}
-                                focused inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
+                                inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                 onChange={event => setComment(event.target.value)} value={comment}/>
                         </Box>
                         <label className="checkbox_style_notification">
