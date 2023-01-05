@@ -24,9 +24,6 @@ import CreateTaskModalWindow from "../CreateTaskModal";
 import TaskCard from "../TaskCardModal";
 
 let notifications = []
-
-// страница для отображения задач и работы с ними. Никак не рализован поиск и пагинация
-
 function Row(props) {
     const {row} = props;
     const [open, setOpen] = React.useState(false);
@@ -141,17 +138,3 @@ export default function CollapsibleTable() {
         </>
     );
 }
-
-/*
-
-<Link
-    to={row.russian_name !== '' ? ADD_STUDENT_NOTIFICATION_ROUTE : ADD_NOTIFICATION_ROUTE}
-    state={[row, {
-        type: 'update',
-        button: 'Изменить',
-        message: 'Вы уверены, что хотите изменить уведомление?',
-    }]}
-    style={{textDecoration: 'none', color: 'black'}}
-
-> <button onClick={()=> setModalActive(true)}>Ссылка </button>
-</Link>*/
