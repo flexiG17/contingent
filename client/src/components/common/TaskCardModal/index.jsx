@@ -2,19 +2,30 @@ import React, {useEffect, useState} from "react"
 import './Modal.css'
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import {CircularProgress, ListItemButton, ListItemText, MenuItem} from "@mui/material";
+import {
+    Button,
+    CircularProgress, Dialog, DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    ListItemButton,
+    ListItemText,
+    MenuItem
+} from "@mui/material";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../../../utils/token";
 import {updateNotification} from "../../../actions/notification";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Tooltip from "@mui/material/Tooltip";
 import ModalMessage from "../MessageModal";
 import {getStudentsByIdArray} from "../../../actions/student";
-import {listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
+import {lineStyleInTable, listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
+import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 
 const TaskCard = ({active, setActive, taskData}) => {
     const [activeClick, setActiveClick] = useState(true);
+    const [firstRender, setFirstRender] = useState(false)
     const [type, setType] = useState(taskData.type);
     const [date, setDate] = useState(taskData.date);
     const [comment, setComment] = useState(taskData.comment);
@@ -23,19 +34,26 @@ const TaskCard = ({active, setActive, taskData}) => {
     const [modalMessageActive, setModalMessageActive] = useState(false);
     const [studentsInCard, setStudentsInCard] = useState([]);
     const [studentEmails, setStudentEmails] = useState([]);
+    const [studentsToSave, setStudentsToSave] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentStudent, setCurrentStudent] = useState(null)
 
     const navigate = useNavigate()
     const handleClickContract = () => {
         setActiveClick(!activeClick)
     }
 
+    const [open, setOpen] = React.useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     const userId = jwt_decode(getToken()).userId
     const handleSubmit = (e) => {
         e.preventDefault();
         const dataToUpdate = {
             type: type,
-            students_id: taskData.students_id,
+            students_id: studentsToSave.map(std => std.id),
             date: date,
             comment: comment,
             completed: status,
@@ -45,14 +63,19 @@ const TaskCard = ({active, setActive, taskData}) => {
     }
 
     useEffect(() => {
-        if (active && taskData.students_id !== null) {
+        if (active && taskData.students_id !== null && !firstRender) {
             setLoading(true);
+            setFirstRender(true)
             getStudentsByIdArray(taskData.students_id)
                 .then(students => {
                     setStudentsInCard(students)
 
                     students.map(student => {
-                        studentEmails.push(student.student_email)
+                        studentsToSave.push({
+                            id: student.id,
+                            latin_name: student.latin_name,
+                            student_email: student.student_email
+                        })
                     })
                 })
                 .finally(() => {
@@ -92,7 +115,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             bgcolor: openListStudents ? '#FFB953' : '#FFAA2D',
                                             borderRadius: '5px',
                                             maxHeight: 170,
-                                            maxWidth: 220,
+                                            maxWidth: taskData.type === 'E-mail' ? 220 : 270,
                                             overflowY: openListStudents ? 'scroll' : 'visible',
                                         }}
                                     >
@@ -108,46 +131,59 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             }}
                                         >
                                             <ListItemText
-                                                primary={`Список студентов в задаче (${studentsInCard.length} чел.)`}
+                                                primary={`Список студентов в задаче (${studentsToSave.length} чел.)`}
                                                 primaryTypographyProps={textFieldStyle}
                                                 sx={{my: 0}}
                                             />
                                         </ListItemButton>
                                         {openListStudents &&
-                                            studentsInCard.map((item) => (
+                                            studentsToSave.map((item) => (
                                                 <ListItemButton
                                                     key={item.id}
                                                     sx={{
                                                         background: '#FFD89D',
-                                                        pt: '5px',
-                                                        pb: '5px'
+                                                        pt: '10px',
+                                                        pb: '10px'
                                                     }}
                                                 >
-                                                    <ListItemText
-                                                        primary={item.latin_name}
-                                                        primaryTypographyProps={{
-                                                            fontSize: 14,
-                                                            fontFamily: ['Montserrat'],
-                                                            fontWeight: '450'
-                                                        }}
-                                                    />
+                                                    <Link
+                                                        to={`/${item.education_type === "Контракт" ? 'contract' : 'quota'}/${item.id}`}
+                                                        target="_blank" style={lineStyleInTable}
+                                                    >
+                                                        {item.latin_name}
+                                                    </Link>
+
+                                                    <Tooltip title='Убрать студента из списка'>
+                                                        <DoDisturbAltIcon
+                                                            sx={{ml: 'auto', cursor: 'pointer'}}
+                                                            onClick={() => {
+                                                                setCurrentStudent(item)
+                                                                setOpen(true)
+                                                            }}/>
+                                                    </Tooltip>
                                                 </ListItemButton>
                                             ))}
                                     </Box>
 
-                                    {loading ?
-                                        <CircularProgress color="warning" sx={{ml: '10px', mt: '10px'}}/>
-                                        :
-                                        <Tooltip title="Рассылка указанным студентам">
-                                            <MailOutlineIcon
-                                                sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
-                                                onClick={() => {
-                                                    setModalMessageActive(true)
-                                                    setActive(false)
-                                                }}
-                                            />
-                                        </Tooltip>
-                                    }
+                                    {taskData.type === 'E-mail'
+                                        ?
+                                        loading
+                                            ?
+                                            <CircularProgress color="warning" sx={{ml: '10px', mt: '10px'}}/>
+                                            :
+                                            <Tooltip title="Рассылка указанным студентам">
+                                                <MailOutlineIcon
+                                                    sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
+                                                    onClick={() => {
+                                                        studentsToSave.map(student => {
+                                                            studentEmails.push(student.student_email)
+                                                        })
+                                                        setModalMessageActive(true)
+                                                        setActive(false)
+                                                    }}
+                                                />
+                                            </Tooltip>
+                                        : ''}
                                 </div>
                             }
                             <TextField
@@ -191,6 +227,32 @@ const TaskCard = ({active, setActive, taskData}) => {
                             </button>
                         </div>
                     </form>
+
+                    <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">Редактирование списка</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Вы уверены, что хотите убрать выбранного студента из списка задачи?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => {
+                                const index = studentsToSave.map(std => std.id).indexOf(currentStudent.id)
+                                studentsToSave.splice(index, 1)
+                                setOpen(false)
+                            }
+                            }>Да</Button>
+                            <Button onClick={() => {
+                                setOpen(false)
+                            }
+                            }>Нет</Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
             </div>
         </>
