@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import {changeStudentData, getStudentsByIdArray, removeStudent} from '../../../actions/student'
-import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import iziToast from "izitoast";
 import TextField from "@mui/material/TextField";
 import {
@@ -52,7 +52,14 @@ export default function PersonalCardQuota() {
     }
 
     const handleModal = () => {
-        setModalActive(true);
+        if (studentData.student_email !== '')
+            setModalActive(true)
+        else
+            iziToast.error({
+                message: 'Почта студента не выбрана',
+                position: "topRight",
+                color: "#FFF2ED"
+            })
     }
     const handleModalMessage = () => {
         setModalMessageActive(true);
@@ -60,9 +67,6 @@ export default function PersonalCardQuota() {
     const handleClose = () => {
         setOpen(false);
     };
-
-    const location = useLocation();
-    const rows = location.state;
 
     const role = jwt_decode(getToken()).role
     const READER_ACCESS = role === 'Читатель'
@@ -72,9 +76,9 @@ export default function PersonalCardQuota() {
 
     const navigate = useNavigate()
 
-    const studentId = useParams()
+    const studentId = useParams().id
     useEffect(() => {
-        getStudentsByIdArray([studentId.id])
+        getStudentsByIdArray([studentId])
             .then(result => {
                 result.map(item => {
                     item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
@@ -100,13 +104,27 @@ export default function PersonalCardQuota() {
             })
     }, [loading])
 
+    useEffect(() => {
+        const handleTabClose = event => {
+            event.preventDefault();
+            console.log(event);
+            return (event.returnValue = 'Вы уверены, что хотите выйти? Изменения не сохранятся');
+        };
+
+        window.addEventListener('beforeunload', handleTabClose);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleTabClose);
+        };
+    }, [])
+
     const formRef = useRef(null);
     const handleSubmit = (e) => {
         e.preventDefault();
         let formData = new FormData(formRef.current)
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
-        changeStudentData(dataToSave, rows.id, navigate)
+        changeStudentData(dataToSave, studentId, navigate)
     };
 
     const actions = !READER_ACCESS ?
@@ -180,7 +198,7 @@ export default function PersonalCardQuota() {
             :
             <>
                 <form ref={formRef} onSubmit={handleSubmit}>
-                    <p className="title_studentName">Личная карточка {rows.russian_name}</p>
+                    <p className="title_studentName">Личная карточка {studentData.russian_name}</p>
                     <div className="info_and_education_container">
                         <p className="title_contract_section"> Основные данные студента </p>
                         <div className="columns_position">
@@ -483,7 +501,7 @@ export default function PersonalCardQuota() {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            removeStudent(rows.id, navigate)
+                            removeStudent(studentId, navigate)
                             setOpen(false)
                         }
                         }>Да</Button>
@@ -524,8 +542,8 @@ export default function PersonalCardQuota() {
                     <ModalMessage active={modalActive} setActive={setModalActive}
                                   studentEmail={[studentData.student_email]}/>
                     <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
-                                           singleId={rows.id}/>
-                    <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
+                                           singleId={[studentId]} emails={[studentData.student_email]}/>
+                    <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
                 </Box>
             </>
     )

@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
 import {changeStudentData, getStudentsByIdArray, removeStudent} from '../../../actions/student'
-import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import iziToast from "izitoast";
 import TextField from "@mui/material/TextField";
 import {
@@ -34,6 +34,7 @@ import moment from "moment/moment";
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
 
 export default function PersonalCardContract() {
+
     const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
     const [editMode, setEditMode] = useState(true);
@@ -54,7 +55,14 @@ export default function PersonalCardContract() {
     }
 
     const handleModal = () => {
-        setModalActive(true);
+        if (studentData.student_email !== '')
+            setModalActive(true)
+        else
+            iziToast.error({
+                message: 'Почта студента не выбрана',
+                position: "topRight",
+                color: "#FFF2ED"
+            })
     }
 
     const handleModalMessage = () => {
@@ -65,9 +73,6 @@ export default function PersonalCardContract() {
         setOpen(false);
     };
 
-    const location = useLocation();
-    const rows = location.state;
-
     const role = jwt_decode(getToken()).role
     const READER_ACCESS = role === 'Читатель'
 
@@ -76,9 +81,9 @@ export default function PersonalCardContract() {
 
     const navigate = useNavigate()
 
-    const studentId = useParams()
+    const studentId = useParams().id
     useEffect(() => {
-        getStudentsByIdArray([studentId.id])
+        getStudentsByIdArray([studentId])
             .then(result => {
                 result.map(item => {
                     item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
@@ -103,14 +108,28 @@ export default function PersonalCardContract() {
                 }, 250)
             })
     }, [loading])
-    const formRef = useRef(null);
 
+    useEffect(() => {
+        const handleTabClose = event => {
+            event.preventDefault();
+            console.log(event);
+            return (event.returnValue = 'Вы уверены, что хотите выйти? Изменения не сохранятся');
+        };
+
+        window.addEventListener('beforeunload', handleTabClose);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleTabClose);
+        };
+    }, [])
+
+    const formRef = useRef(null);
     const handleSubmit = (e) => {
         e.preventDefault();
         let formData = new FormData(formRef.current)
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
-        changeStudentData(dataToSave, rows.id)
+        changeStudentData(dataToSave, studentId)
     };
 
     const actions = !READER_ACCESS ?
@@ -183,7 +202,7 @@ export default function PersonalCardContract() {
             :
             <>
                 <form ref={formRef} onSubmit={handleSubmit}>
-                    <p className="title_studentName">Личная карточка {rows.russian_name}</p>
+                    <p className="title_studentName">Личная карточка {studentData.russian_name}</p>
                     <div className="info_and_education_container">
                         <p className="title_contract_section"> Основные данные студента </p>
                         <div className="columns_position">
@@ -497,7 +516,7 @@ export default function PersonalCardContract() {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={() => {
-                            removeStudent(rows.id, navigate)
+                            removeStudent(studentId, navigate)
                             setOpen(false)
                         }
                         }>Да</Button>
@@ -535,8 +554,8 @@ export default function PersonalCardContract() {
                         </SpeedDial>}
                     <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={[studentData.student_email]}/>
                     <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
-                                           singleId={rows.id}/>
-                    <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
+                                           singleId={[studentId]} emails={[studentData.student_email]}/>
+                    <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
                 </Box>
             </>
     )
