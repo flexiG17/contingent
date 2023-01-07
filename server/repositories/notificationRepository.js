@@ -26,6 +26,28 @@ module.exports = class NotificationRepository {
 
         return result
     }
+    async getAllNotificationsAsync() {
+        let data = await db.notifications
+            .select('notifications.id', 'type', 'date', 'comment', 'completed', 'user_id', 'student_id')
+            .leftJoin('student_notification', {'notification_id': 'notifications.id'})
+
+        let result = []
+        for (let notification of data) {
+            if (result.some(element => notification.id === element.id))
+                continue
+
+            notification.students_id = data
+                .filter(element => element.id === notification.id)
+                .map(element => element.student_id)
+
+            if (notification.students_id[0] === null)
+                notification.students_id = null
+
+            result.push(new GetNotificationDto(notification))
+        }
+
+        return result
+    }
 
 
     async createAsync(createNotificationDto, userId) {

@@ -165,7 +165,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             ))}
                                     </Box>
 
-                                    {taskData.type === 'E-mail'
+                                    {type === 'E-mail'
                                         ?
                                         loading
                                             ?
