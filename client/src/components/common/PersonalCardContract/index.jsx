@@ -123,6 +123,30 @@ export default function PersonalCardContract() {
         };
     }, [])
 
+    const decodedToken = jwt_decode(getToken())
+    let socket = ''
+    useEffect(() => {
+        socket = new WebSocket(`ws://localhost:5000/student/${studentId}`)
+        // в случае подключения
+        socket.onopen = () => {
+            // отправляем сообщение на сервер
+            socket.send(JSON.stringify({
+                method: 'connection',
+                userId: decodedToken.userId,
+                userName: decodedToken.name,
+                studentId: studentId
+            }))
+        }
+
+        socket.onmessage = (message) => {
+            let msg = JSON.parse(message.data)
+            switch (msg.method){
+                case "connection":
+                    console.log(`Пользователь "${msg.userName}" с id = ${msg.userId} подключился`);
+            }
+        }
+    }, [])
+
     const formRef = useRef(null);
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -218,11 +242,13 @@ export default function PersonalCardContract() {
                                            margin='normal' disabled={editMode}
                                            size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <p className="title_contract_doc"> Контактные данные</p>
-                                <TextField label="Контактный телефон студента" type="tel" defaultValue={studentData.contact_phone_number}
+                                <TextField label="Контактный телефон студента" type="tel"
+                                           defaultValue={studentData.contact_phone_number}
                                            name='contact_phone_number' variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="E-mail студента" variant="outlined" defaultValue={studentData.student_email}
+                                <TextField label="E-mail студента" variant="outlined"
+                                           defaultValue={studentData.student_email}
                                            name='student_email' color="warning" type="email"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
@@ -244,11 +270,13 @@ export default function PersonalCardContract() {
                                            name='representative_name' variant="outlined" color="warning" type="text"
                                            margin='normal' disabled={editMode}
                                            size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Телефон" defaultValue={studentData.representative_phone_number} variant="outlined"
+                                <TextField label="Телефон" defaultValue={studentData.representative_phone_number}
+                                           variant="outlined"
                                            name='representative_phone_number' color="warning" type="tel"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="E-mail" defaultValue={studentData.representative_email} variant="outlined"
+                                <TextField label="E-mail" defaultValue={studentData.representative_email}
+                                           variant="outlined"
                                            name='representative_email' type="email" color="warning"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
@@ -268,10 +296,12 @@ export default function PersonalCardContract() {
                                            name='birth_place' color="warning" type="text" variant="outlined"
                                            margin='normal' disabled={editMode} defaultValue={studentData.birth_place}
                                            size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Дата рождения" type="date" color="warning" defaultValue={studentData.birth_date}
+                                <TextField label="Дата рождения" type="date" color="warning"
+                                           defaultValue={studentData.birth_date}
                                            name='birth_date' required margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Место проживания" type="text" defaultValue={studentData.residence_place}
+                                <TextField label="Место проживания" type="text"
+                                           defaultValue={studentData.residence_place}
                                            name='residence_place' variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
@@ -293,7 +323,8 @@ export default function PersonalCardContract() {
                                 <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.passport_number}
                                            margin='normal' disabled={editMode}
-                                           required size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                           required size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={textFieldStyle}/>
                                 <TextField label="Срок действия паспорта" name='passport_expiration' type="date"
                                            color="warning" defaultValue={studentData.passport_expiration}
                                            margin='normal' size="small" disabled={editMode}
@@ -336,7 +367,8 @@ export default function PersonalCardContract() {
                                            color="warning" margin='normal' sx={{width: "325px"}} disabled={editMode}
                                            size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Наименование учебного заведения" name='name_educational_institution'
-                                           type="text" variant="outlined" defaultValue={studentData.name_educational_institution}
+                                           type="text" variant="outlined"
+                                           defaultValue={studentData.name_educational_institution}
                                            color="warning" margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <p className="title_contract_doc">Нынешнее образование</p>
@@ -420,7 +452,8 @@ export default function PersonalCardContract() {
                                     </MenuItem>
                                 </TextField>
                                 <TextField label="Номер приказа о зачислении" name='enrollment_order' type="text"
-                                           variant="outlined" color="warning" defaultValue={studentData.enrollment_order}
+                                           variant="outlined" color="warning"
+                                           defaultValue={studentData.enrollment_order}
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Номер приказа об отчислении" name='expulsion_order' type="text"
@@ -456,11 +489,13 @@ export default function PersonalCardContract() {
                                 <TextField label="Дата передачи в международную службу"
                                            name='transfer_to_international_service' type="date" color="warning"
                                            margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle} defaultValue={studentData.transfer_to_international_service}/>
+                                           InputLabelProps={dateTextFieldStyle}
+                                           defaultValue={studentData.transfer_to_international_service}/>
                                 <TextField label="Дата передачи в МВД" name='transfer_to_MVD' type="date"
                                            color="warning" disabled={editMode}
                                            margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle} defaultValue={studentData.transfer_to_MVD}/>
+                                           InputLabelProps={dateTextFieldStyle}
+                                           defaultValue={studentData.transfer_to_MVD}/>
                                 <TextField label="Ориентировочная дата получения" name='estimated_receipt_date'
                                            type="date" color="warning" defaultValue={studentData.estimated_receipt_date}
                                            margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
@@ -468,7 +503,8 @@ export default function PersonalCardContract() {
                                 <TextField label="Фактическая дата получения приглашения"
                                            name='actual_receipt_date_invitation' type="date" color="warning"
                                            margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle} defaultValue={studentData.actual_receipt_date_invitation}/>
+                                           InputLabelProps={dateTextFieldStyle}
+                                           defaultValue={studentData.actual_receipt_date_invitation}/>
                             </div>
                             <div className="column_style_contract">
                                 <p className="title_contract_doc">Оплата</p>
@@ -552,7 +588,8 @@ export default function PersonalCardContract() {
                                 />
                             ))}
                         </SpeedDial>}
-                    <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={[studentData.student_email]}/>
+                    <ModalMessage active={modalActive} setActive={setModalActive}
+                                  studentEmail={[studentData.student_email]}/>
                     <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
                                            singleId={[studentId]} emails={[studentData.student_email]}/>
                     <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
