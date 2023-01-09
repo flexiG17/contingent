@@ -37,13 +37,6 @@ function Index() {
     const [textDialog, setTextDialog] = useState()
     const [actionDialog, setActionDialog] = useState()
 
-    const dataToChange = {
-        name: userName,
-        email: userEmail,
-        password: userPassword,
-        role: userRole
-    }
-
     const decodedToken = jwt_decode(getToken())
     const ADMIN_ACCESS = decodedToken.role === 'Администратор'
 
@@ -129,6 +122,7 @@ function Index() {
                                 return (
                                     <List
                                         sx={{cursor: 'pointer', marginBottom: '10px'}}
+                                        key={user.id}
                                         onClick={() => {
                                             setUserName(user.name)
                                             setUserEmail(user.email)
@@ -169,7 +163,12 @@ function Index() {
                 <DialogActions>
                     <Button onClick={() => {
                         if (actionDialog === 'update')
-                            changeUserData(dataToChange, userId)
+                            changeUserData({
+                                name: userName,
+                                email: userEmail,
+                                password: userPassword,
+                                role: userRole
+                            }, userId)
                         else if (actionDialog === 'delete')
                             removeUserById(userId)
 

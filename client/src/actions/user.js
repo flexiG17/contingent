@@ -66,6 +66,7 @@ export function changeUserData(data, id) {
         }
     })
         .then(({data}) => {
+            setToken(data.token);
             iziToast.success({
                 message: data.message,
                 position: 'topRight'

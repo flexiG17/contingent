@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 
 const db = require('../db')
+const jwt = require("jsonwebtoken");
 
 
 module.exports.getAll = async function (req, res) {
@@ -24,7 +25,16 @@ module.exports.change = async function (req, res) {
 
     await user.update(model)
 
-    return res.status(201).json({message: `Данные ${model.name} обновлены`})
+    const token = jwt.sign({
+        userId: req.params.id,
+        email: email,
+        name: name,
+        role: role
+    }, process.env.TOKEN_SECRET, {})
+
+    return res.status(201).json({
+        message: `Данные ${model.name} обновлены`,
+        token: `Bearer ${token}`})
 }
 
 module.exports.remove = async function (req, res) {
