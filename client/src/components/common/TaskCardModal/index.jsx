@@ -92,9 +92,9 @@ const TaskCard = ({active, setActive, taskData}) => {
                 <div className="modal_content" onClick={e => e.stopPropagation()}>
                     <p className="title_addNotification">Карточка задачи</p>
                     <form className="container_addNotification" onSubmit={handleSubmit}>
-                        <Box sx={{'& > :not(style)': {mt: 1, ml: 2, width: '25ch'}}}>
+                        <div className='textfields_position'>
                             <TextField
-                                sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
+                                sx={{'& > :not(style)': {mb: 2, width: '30ch'}}}
                                 label="Тип задачи" type="text" variant="outlined" color="warning"
                                 focused select InputLabelProps={textFieldStyle}
                                 onChange={event => setType(event.target.value)} value={type}>
@@ -117,6 +117,8 @@ const TaskCard = ({active, setActive, taskData}) => {
                                             maxHeight: 170,
                                             maxWidth: taskData.type === 'E-mail' ? 220 : 270,
                                             overflowY: openListStudents ? 'scroll' : 'visible',
+                                            mt: 0.5,
+                                            mb: 1
                                         }}
                                     >
                                         <ListItemButton
@@ -127,7 +129,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                 pl: -10,
                                                 pb: openListStudents ? 0 : 2.5,
                                                 '&:hover, &:focus': {'& svg': {opacity: openListStudents ? 1 : 0}},
-                                                height: '55px',
+                                                height: '55px'
                                             }}
                                         >
                                             <ListItemText
@@ -190,9 +192,9 @@ const TaskCard = ({active, setActive, taskData}) => {
                                 label="Дата" type="date" color="warning" focused inputProps={textFieldStyle}
                                 InputLabelProps={textFieldStyle} onChange={event => setDate(event.target.value)}
                                 value={date}
-                                sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
+                                sx={{'& > :not(style)': {mt: 2, mb: 2, width: '30ch'}}}/>
                             <TextField
-                                sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
+                                sx={{'& > :not(style)': {mt: 2, mb: 2, width: '30ch'}}}
                                 label="Статус" type="text" variant="outlined" color="warning"
                                 focused select InputLabelProps={textFieldStyle}
                                 onChange={event => setStatus(event.target.value)} value={status}>
@@ -213,11 +215,11 @@ const TaskCard = ({active, setActive, taskData}) => {
                                 </MenuItem>
                             </TextField>
                             <TextField
-                                sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
+                                sx={{'& > :not(style)': {mt: 2, mb: 2, width: '30ch'}}}
                                 label="Примечания" variant="outlined" color="warning" multiline rows={3}
                                 focused inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                 onChange={event => setComment(event.target.value)} value={comment}/>
-                        </Box>
+                        </div>
                         <label className="checkbox_style_notification">
                             <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите изменить?
                         </label>

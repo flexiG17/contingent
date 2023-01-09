@@ -20,7 +20,6 @@
     padding: 20px;
     border-radius: 12px;
     background-color: #fff;
-
 }
 
 .container_addNotification{
@@ -29,18 +28,23 @@
     margin-right: auto;
 }
 
+.textfields_position{
+    margin-top: 15%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 26ch
+}
+
 .container_position{
     display: flex;
     flex-direction: column;
     width: 800px;
     margin: 25px;
-
 }
 
 .input_position_message{
     display: flex;
     flex-direction: column;
-
 }
 
 .message_input_style{
