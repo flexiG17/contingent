@@ -85,21 +85,20 @@ export default function PersonalCardContract() {
     useEffect(() => {
         getStudentsByIdArray([studentId])
             .then(result => {
-                result.map(item => {
-                    item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
-                    item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
-                    item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
-                    item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
-                    item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
-                    item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
-                    item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
-                    item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
-                    item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
-                    item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
-                    item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
-                    item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
-                    item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
-                });
+                const student = result[0]
+                student.birth_date = moment(student.birth_date).format("YYYY-MM-DD");
+                student.passport_issue_date = moment(student.passport_issue_date).format("YYYY-MM-DD");
+                student.passport_expiration = moment(student.passport_expiration).format("YYYY-MM-DD");
+                student.entry_date = moment(student.entry_date).format("YYYY-MM-DD");
+                student.visa_validity = moment(student.visa_validity).format("YYYY-MM-DD");
+                student.first_payment = moment(student.first_payment).format("YYYY-MM-DD");
+                student.second_payment = moment(student.second_payment).format("YYYY-MM-DD");
+                student.third_payment = moment(student.third_payment).format("YYYY-MM-DD");
+                student.fourth_payment = moment(student.fourth_payment).format("YYYY-MM-DD");
+                student.transfer_to_international_service = moment(student.transfer_to_international_service).format("YYYY-MM-DD");
+                student.transfer_to_MVD = moment(student.transfer_to_MVD).format("YYYY-MM-DD");
+                student.estimated_receipt_date = moment(student.estimated_receipt_date).format("YYYY-MM-DD");
+                student.actual_receipt_date_invitation = moment(student.actual_receipt_date_invitation).format("YYYY-MM-DD");
                 setStudentData(result[0])
             })
             .finally(() => {
@@ -140,7 +139,7 @@ export default function PersonalCardContract() {
 
         socket.onmessage = (message) => {
             let msg = JSON.parse(message.data)
-            switch (msg.method){
+            switch (msg.method) {
                 case "connection":
                     console.log(`Пользователь "${msg.userName}" с id = ${msg.userId} подключился`);
             }

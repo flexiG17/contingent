@@ -217,7 +217,7 @@ export default function Contract() {
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <TextField name='status_1c' label="Статус 1C" type="text"
-                                   variant="outlined" color="warning"
+                                   variant="outlined" color="warning" defaultValue=''
                                    margin='normal' size="small" select
                                    InputLabelProps={textFieldStyle}>
                             <MenuItem value="Прикреплен">
