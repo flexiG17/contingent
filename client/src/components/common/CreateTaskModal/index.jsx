@@ -1,6 +1,5 @@
 import React, {useState} from "react"
 import './Modal.css'
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {Badge, MenuItem} from "@mui/material";
 import jwt_decode from "jwt-decode";
