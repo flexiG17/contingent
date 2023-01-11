@@ -143,11 +143,9 @@ function Index() {
                             })}
                         </div>}
                 </div>
-                <div className="right_side_container_account">
                     <div className="container_table_notification">
                         <div className="title_container_information">Список задач</div>
                         <div className="table_notification"><CollapsibleTable/></div>
-                    </div>
                 </div>
             </div>
 

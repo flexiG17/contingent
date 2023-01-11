@@ -22,6 +22,7 @@ import moment from "moment";
 import './Calls.css'
 import CreateTaskModalWindow from "../CreateTaskModal";
 import TaskCard from "../TaskCardModal";
+import {lineStyleInTable, textFieldStyle} from "../../../utils/consts/styles";
 
 function Row(props) {
     const {row} = props;
@@ -64,17 +65,19 @@ function Row(props) {
                 </DialogActions>
             </Dialog>
             <React.Fragment>
-                <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                <TableRow>
                     <TableCell>
                         <CheckIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
                             handleOpen()
                         }}/>
                     </TableCell>
-                    <TableCell scope="row">{row.type} </TableCell>
+                    <TableCell scope="row" sx={lineStyleInTable}>{row.type} </TableCell>
                     <TableCell
                         scope="row"
                         align='center'
-                        sx={{borderRadius: '10px', ...(row.completed === 'Просрочено' && {backgroundColor: '#FFF2ED'})}}>
+                        sx={{borderRadius: '10px', ...(row.completed === 'Просрочено' && {backgroundColor: '#FFF2ED'}),
+                            fontFamily: ['Montserrat'], fontSize: '14px'
+                        }}>
                         {row.completed}
                     </TableCell>
                     <TableCell align="center">
@@ -84,9 +87,13 @@ function Row(props) {
                             size='small'
                             onClick={() => setActiveTaskCardModel(true)}>Ссылка</Button>
                     </TableCell>
-                    <TableCell align="right">{row.students_id !== null && row.students_id.length}</TableCell>
-                    <TableCell align="right">{moment(row.date).locale('ru').format("ll")}</TableCell>
-                    <TableCell sx={{maxWidth: '130px'}} align="right">{row.comment}</TableCell>
+                    <TableCell align="right" sx={lineStyleInTable}>{row.students_id !== null && row.students_id.length}</TableCell>
+                    <TableCell align="left" sx={lineStyleInTable}>
+                        {moment(row.date).locale('ru').format("ll")}
+                    </TableCell>
+                    <TableCell sx={{maxWidth: '130px'}} align="right" sx={lineStyleInTable}>
+                        {row.comment}
+                    </TableCell>
                 </TableRow>
                 <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
                     <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
@@ -107,9 +114,9 @@ export default function CollapsibleTable() {
                 items.map(item => {
                     item.date = new Date(item.date)
                 })
-                items.sort((a, b) => (a.date.getTime() < b.date.getTime()) ? 1 : ((b.date.getTime() < a.date.getTime()) ? -1 : 0))
+                items.sort((a, b) => (a.date.getTime() < b.date.getTime()) ? 1 : ((b.date.getTime() < a.date.getTime()) ? -1 : 0)).reverse()
 
-                setNotificationList(items.reverse())
+                setNotificationList(items)
             })
     }, [])
 
@@ -118,22 +125,22 @@ export default function CollapsibleTable() {
             <div className="notification_navbar">
                 <button
                     onClick={() => setModalActive(true)}
-                    className="add_notification_button"> Добавить
-                    задачу <AddIcon/></button>
+                    className="add_notification_button"> Добавить задачу <AddIcon/>
+                </button>
             </div>
             <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>
             <TableContainer component={Paper}
-                            sx={{width: '800px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
+                            sx={{width: '850px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
                             <TableCell/>
-                            <TableCell>Тип</TableCell>
-                            <TableCell align="center">Статус</TableCell>
-                            <TableCell align="center">Задача</TableCell>
-                            <TableCell align="right">Cтуденты</TableCell>
-                            <TableCell align="right">Дата</TableCell>
-                            <TableCell align="right">Комментарий</TableCell>
+                            <TableCell sx={textFieldStyle.style}>Тип</TableCell>
+                            <TableCell align="center" sx={textFieldStyle.style}>Статус</TableCell>
+                            <TableCell align="center" sx={textFieldStyle.style}>Задача</TableCell>
+                            <TableCell align="right" sx={textFieldStyle.style}>Cтуденты</TableCell>
+                            <TableCell align="left" sx={textFieldStyle.style}>Дата</TableCell>
+                            <TableCell align="right" sx={textFieldStyle.style}>Комментарий</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
