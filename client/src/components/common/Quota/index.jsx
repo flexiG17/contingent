@@ -21,6 +21,8 @@ export default function Quota() {
 
         let data = new FormData(formRef.current);
         data.append('education_type', 'Квота');
+        data.append('hours_number', '');
+        data.append('status_1c', '');
 
         addStudent(data, navigate);
     };

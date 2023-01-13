@@ -102,7 +102,7 @@ export default function PersonalCardQuota() {
                     setLoading(false)
                 }, 250)
             })
-    }, [loading])
+    }, [loading, studentId])
 
     useEffect(() => {
         const handleTabClose = event => {
@@ -434,8 +434,7 @@ export default function PersonalCardQuota() {
                                            name='passport_expiration' margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                                 <TextField label="Кем выдан" type="text" variant="outlined" color="warning"
-                                           margin='normal'
-                                           name='passport_issued' size="small" disabled={editMode}
+                                           margin='normal' name='passport_issued' size="small" disabled={editMode}
                                            defaultValue={studentData.passport_issued}
                                            inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                                 <TextField label="Дата выдачи" type="date" color="warning" margin='normal' size="small"

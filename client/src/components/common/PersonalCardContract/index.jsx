@@ -106,7 +106,7 @@ export default function PersonalCardContract() {
                     setLoading(false)
                 }, 250)
             })
-    }, [loading])
+    }, [loading, studentId])
 
     useEffect(() => {
         const handleTabClose = event => {
