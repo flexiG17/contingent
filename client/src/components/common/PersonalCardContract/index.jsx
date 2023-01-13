@@ -122,7 +122,7 @@ export default function PersonalCardContract() {
         };
     }, [])
 
-    const decodedToken = jwt_decode(getToken())
+   /* const decodedToken = jwt_decode(getToken())
     let socket = ''
     useEffect(() => {
         socket = new WebSocket(`ws://localhost:5000/student/${studentId}`)
@@ -144,7 +144,7 @@ export default function PersonalCardContract() {
                     console.log(`Пользователь "${msg.userName}" с id = ${msg.userId} подключился`);
             }
         }
-    }, [])
+    }, [])*/
 
     const formRef = useRef(null);
     const handleSubmit = (e) => {

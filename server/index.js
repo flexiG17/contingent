@@ -36,10 +36,10 @@ cron.schedule(everyDayMidnight, async () => {
     console.log(`Статус задач обновлён ${resultDate} в ${resultTime}`);
 });
 
-
-const WSServer = require('express-ws')(app)
-const aWss = WSServer.getWss()
 const port = process.env.PORT || 5000
+
+/*const WSServer = require('express-ws')(app)
+const aWss = WSServer.getWss()
 app.ws('/student/:id', (ws, req) => {
     // отправляем на клиента с типом message
     ws.on('message', (msg) => {
@@ -50,9 +50,9 @@ app.ws('/student/:id', (ws, req) => {
                 break
         }
     })
-})
+})*/
 
-const connectionHandler = (ws, msg) => {
+/*const connectionHandler = (ws, msg) => {
     ws.id = msg.studentId
     broadcastConnection(ws, msg)
 }
@@ -68,7 +68,7 @@ const broadcastConnection = (ws, msg) => {
             }))
         }
     })
-}
+}*/
 
 app.listen(port, (err) => {
     if (err) throw err;
