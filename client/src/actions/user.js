@@ -58,7 +58,7 @@ export function getUsers() {
     }).then(resp => resp.data)
 }
 
-export function changeUserData(data, id) {
+export function changeUserData(data, id, isCurrentUserChanged) {
     return axios.put(`${URL_PATH}/api/user/change/${id}`, data, {
         headers: {
             'Authorization': getToken(),
@@ -66,7 +66,8 @@ export function changeUserData(data, id) {
         }
     })
         .then(({data}) => {
-            setToken(data.token);
+            if (data.token !== undefined)
+                setToken(data.token);
             iziToast.success({
                 message: data.message,
                 position: 'topRight'

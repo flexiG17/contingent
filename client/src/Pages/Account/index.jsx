@@ -38,6 +38,8 @@ function Index() {
     const [actionDialog, setActionDialog] = useState()
 
     const decodedToken = jwt_decode(getToken())
+    const currentUserId = decodedToken.userId
+    const isCurrentUserChanged = currentUserId === userId
     const ADMIN_ACCESS = decodedToken.role === 'Администратор'
 
     useEffect(() => {
@@ -165,7 +167,8 @@ function Index() {
                                 name: userName,
                                 email: userEmail,
                                 password: userPassword,
-                                role: userRole
+                                role: userRole,
+                                isCurrentUserChanged: isCurrentUserChanged
                             }, userId)
                         else if (actionDialog === 'delete')
                             removeUserById(userId)

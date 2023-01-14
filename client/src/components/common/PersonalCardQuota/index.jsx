@@ -38,6 +38,7 @@ export default function PersonalCardQuota() {
     const [editMode, setEditMode] = useState(true)
     const [modalMessageActive, setModalMessageActive] = useState(false)
     const [modalFileActive, setModalFileActive] = useState(false);
+    const [isEditModeWasOn, setIsEditModeWasOn] = useState(false)
     const handleClickContract = () => {
         setActive(!active)
     }
@@ -111,11 +112,13 @@ export default function PersonalCardQuota() {
             return (event.returnValue = 'Вы уверены, что хотите выйти? Изменения не сохранятся');
         };
 
-        window.addEventListener('beforeunload', handleTabClose);
+        if(isEditModeWasOn){
+            window.addEventListener('beforeunload', handleTabClose);
 
-        return () => {
-            window.removeEventListener('beforeunload', handleTabClose);
-        };
+            return () => {
+                window.removeEventListener('beforeunload', handleTabClose);
+            }
+        }
     }, [])
 
     const formRef = useRef(null);
@@ -161,6 +164,7 @@ export default function PersonalCardQuota() {
                 icon: <EditIcon/>,
                 name: 'Редактировать карточку',
                 runFunction: () => {
+                    setIsEditModeWasOn(true)
                     setEditMode(!editMode)
                     editMode ?
                         iziToast.success({
@@ -198,7 +202,7 @@ export default function PersonalCardQuota() {
             :
             <>
                 <form ref={formRef} onSubmit={handleSubmit}>
-                    <p className="title_studentName">Личная карточка {studentData.russian_name}</p>
+                    <p className="title_studentName">Личная карточка {studentData.latin_name}</p>
                     <div className="info_and_education_container">
                         <p className="title_contract_section"> Основные данные студента </p>
                         <div className="columns_position">
@@ -510,7 +514,6 @@ export default function PersonalCardQuota() {
                         }>Нет</Button>
                     </DialogActions>
                 </Dialog>
-                <Box>
                     {modalActive || modalMessageActive || modalFileActive ||
                         <SpeedDial
                             ariaLabel="SpeedDial openIcon example"
@@ -543,7 +546,6 @@ export default function PersonalCardQuota() {
                     <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
                                            singleId={[studentId]} emails={[studentData.student_email]}/>
                     <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
-                </Box>
             </>
     )
 }

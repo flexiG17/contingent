@@ -40,12 +40,13 @@ export default function PersonalCardContract() {
     const [editMode, setEditMode] = useState(true);
     const [modalFileActive, setModalFileActive] = useState(false);
     const [modalMessageActive, setModalMessageActive] = useState(false);
+    const [isEditModeWasOn, setIsEditModeWasOn] = useState(false)
 
     const handleClickContract = () => {
         setActive(!active)
     }
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -107,7 +108,7 @@ export default function PersonalCardContract() {
                 }, 250)
             })
     }, [loading, studentId])
-
+    console.log(isEditModeWasOn);
     useEffect(() => {
         const handleTabClose = event => {
             event.preventDefault();
@@ -115,36 +116,38 @@ export default function PersonalCardContract() {
             return (event.returnValue = 'Вы уверены, что хотите выйти? Изменения не сохранятся');
         };
 
-        window.addEventListener('beforeunload', handleTabClose);
+        if(isEditModeWasOn){
+            window.addEventListener('beforeunload', handleTabClose);
 
-        return () => {
-            window.removeEventListener('beforeunload', handleTabClose);
-        };
-    }, [])
-
-   /* const decodedToken = jwt_decode(getToken())
-    let socket = ''
-    useEffect(() => {
-        socket = new WebSocket(`ws://localhost:5000/student/${studentId}`)
-        // в случае подключения
-        socket.onopen = () => {
-            // отправляем сообщение на сервер
-            socket.send(JSON.stringify({
-                method: 'connection',
-                userId: decodedToken.userId,
-                userName: decodedToken.name,
-                studentId: studentId
-            }))
-        }
-
-        socket.onmessage = (message) => {
-            let msg = JSON.parse(message.data)
-            switch (msg.method) {
-                case "connection":
-                    console.log(`Пользователь "${msg.userName}" с id = ${msg.userId} подключился`);
+            return () => {
+                window.removeEventListener('beforeunload', handleTabClose);
             }
         }
-    }, [])*/
+    }, [])
+
+    /* const decodedToken = jwt_decode(getToken())
+     let socket = ''
+     useEffect(() => {
+         socket = new WebSocket(`ws://localhost:5000/student/${studentId}`)
+         // в случае подключения
+         socket.onopen = () => {
+             // отправляем сообщение на сервер
+             socket.send(JSON.stringify({
+                 method: 'connection',
+                 userId: decodedToken.userId,
+                 userName: decodedToken.name,
+                 studentId: studentId
+             }))
+         }
+
+         socket.onmessage = (message) => {
+             let msg = JSON.parse(message.data)
+             switch (msg.method) {
+                 case "connection":
+                     console.log(`Пользователь "${msg.userName}" с id = ${msg.userId} подключился`);
+             }
+         }
+     }, [])*/
 
     const formRef = useRef(null);
     const handleSubmit = (e) => {
@@ -189,6 +192,7 @@ export default function PersonalCardContract() {
                 icon: <EditIcon/>,
                 name: 'Редактировать карточку',
                 runFunction: () => {
+                    setIsEditModeWasOn(true)
                     setEditMode(!editMode)
                     editMode ?
                         iziToast.success({
@@ -225,7 +229,7 @@ export default function PersonalCardContract() {
             :
             <>
                 <form ref={formRef} onSubmit={handleSubmit}>
-                    <p className="title_studentName">Личная карточка {studentData.russian_name}</p>
+                    <p className="title_studentName">Личная карточка {studentData.latin_name}</p>
                     <div className="info_and_education_container">
                         <p className="title_contract_section"> Основные данные студента </p>
                         <div className="columns_position">
@@ -561,38 +565,36 @@ export default function PersonalCardContract() {
                         }>Нет</Button>
                     </DialogActions>
                 </Dialog>
-                <Box>
-                    {modalActive || modalMessageActive || modalFileActive ||
-                        <SpeedDial
-                            ariaLabel="SpeedDial openIcon example"
-                            sx={{position: 'fixed', bottom: 20, right: 20}}
-                            icon={<SpeedDialIcon/>}
-                            FabProps={{
-                                sx: {
+                {modalActive || modalMessageActive || modalFileActive ||
+                    <SpeedDial
+                        ariaLabel="SpeedDial openIcon example"
+                        sx={{position: 'fixed', bottom: 20, right: 20}}
+                        icon={<SpeedDialIcon/>}
+                        FabProps={{
+                            sx: {
+                                bgcolor: '#FA7A45',
+                                '&:hover': {
                                     bgcolor: '#FA7A45',
-                                    '&:hover': {
-                                        bgcolor: '#FA7A45',
-                                    }
                                 }
-                            }}
-                        >
-                            {actions.map((action) => (
-                                <SpeedDialAction
-                                    key={action.name}
-                                    icon={action.icon}
-                                    tooltipTitle={action.name}
-                                    onClick={() => {
-                                        action.runFunction()
-                                    }}
-                                />
-                            ))}
-                        </SpeedDial>}
-                    <ModalMessage active={modalActive} setActive={setModalActive}
-                                  studentEmail={[studentData.student_email]}/>
-                    <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
-                                           singleId={[studentId]} emails={[studentData.student_email]}/>
-                    <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
-                </Box>
+                            }
+                        }}
+                    >
+                        {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                onClick={() => {
+                                    action.runFunction()
+                                }}
+                            />
+                        ))}
+                    </SpeedDial>}
+                <ModalMessage active={modalActive} setActive={setModalActive}
+                              studentEmail={[studentData.student_email]}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
+                                       singleId={[studentId]} emails={[studentData.student_email]}/>
+                <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
             </>
     )
 }

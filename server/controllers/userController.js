@@ -25,16 +25,21 @@ module.exports.change = async function (req, res) {
 
     await user.update(model)
 
-    const token = jwt.sign({
-        userId: req.params.id,
-        email: email,
-        name: name,
-        role: role
-    }, process.env.TOKEN_SECRET, {})
+    if (req.body.isCurrentUserChanged){
+        const token = jwt.sign({
+            userId: req.params.id,
+            email: email,
+            name: name,
+            role: role
+        }, process.env.TOKEN_SECRET, {})
+
+        return res.status(201).json({
+            message: `Ваши данные обновлены`,
+            token: `Bearer ${token}`})
+    }
 
     return res.status(201).json({
-        message: `Данные ${model.name} обновлены`,
-        token: `Bearer ${token}`})
+        message: `Данные ${model.name} обновлены`})
 }
 
 module.exports.remove = async function (req, res) {

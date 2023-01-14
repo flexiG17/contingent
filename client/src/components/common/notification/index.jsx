@@ -64,42 +64,49 @@ function Row(props) {
                     }>Нет</Button>
                 </DialogActions>
             </Dialog>
-            <React.Fragment>
-                <TableRow>
-                    <TableCell>
-                        <CheckIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
-                            handleOpen()
-                        }}/>
-                    </TableCell>
-                    <TableCell scope="row" sx={lineStyleInTable}>{row.type} </TableCell>
-                    <TableCell
-                        scope="row"
-                        align='center'
-                        sx={{borderRadius: '10px', ...(row.completed === 'Просрочено' && {backgroundColor: '#FFF2ED'}),
-                            fontFamily: ['Montserrat'], fontSize: '14px'
-                        }}>
-                        {row.completed}
-                    </TableCell>
-                    <TableCell align="center">
-                        <Button
-                            style={{borderRadius: 35, color: 'black', borderColor: "#FA7A45", fontSize: "12px", fontFamily: ['Montserrat'], fontWeight: '450'}}
-                            variant="outlined"
-                            size='small'
-                            onClick={() => setActiveTaskCardModel(true)}>Ссылка</Button>
-                    </TableCell>
-                    <TableCell align="right" sx={lineStyleInTable}>{row.students_id !== null && row.students_id.length}</TableCell>
-                    <TableCell align="left" sx={lineStyleInTable}>
-                        {moment(row.date).locale('ru').format("ll")}
-                    </TableCell>
-                    <TableCell sx={{maxWidth: '130px'}} align="right" sx={lineStyleInTable}>
-                        {row.comment}
-                    </TableCell>
-                </TableRow>
-                <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
-                    <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-                    </TableCell>
-                </TableRow>
-            </React.Fragment>
+            <TableRow>
+                <TableCell>
+                    <CheckIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
+                        handleOpen()
+                    }}/>
+                </TableCell>
+                <TableCell scope="row" sx={lineStyleInTable}>{row.type} </TableCell>
+                <TableCell
+                    scope="row"
+                    align='center'
+                    sx={{
+                        borderRadius: '10px', ...(row.completed === 'Просрочено' && {backgroundColor: '#FFF2ED'}),
+                        fontFamily: ['Montserrat'], fontSize: '14px'
+                    }}>
+                    {row.completed}
+                </TableCell>
+                <TableCell align="center">
+                    <Button
+                        style={{
+                            borderRadius: 35,
+                            color: 'black',
+                            borderColor: "#FA7A45",
+                            fontSize: "12px",
+                            fontFamily: ['Montserrat'],
+                            fontWeight: '450'
+                        }}
+                        variant="outlined"
+                        size='small'
+                        onClick={() => setActiveTaskCardModel(true)}>Ссылка</Button>
+                </TableCell>
+                <TableCell align="left" sx={{whiteSpace: 'nowrap', fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>
+                    {moment(row.date).locale('ru').format("ll")}
+                </TableCell>
+                <TableCell align="right"
+                           sx={lineStyleInTable}>{row.students_id !== null && row.students_id.length}</TableCell>
+                <TableCell sx={{maxWidth: '130px'}} align="right" sx={lineStyleInTable}>
+                    {row.comment}
+                </TableCell>
+            </TableRow>
+            <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+                </TableCell>
+            </TableRow>
         </>
     );
 }
@@ -115,20 +122,22 @@ export default function CollapsibleTable() {
                     item.date = new Date(item.date)
                 })
                 items.sort((a, b) => (a.date.getTime() < b.date.getTime()) ? 1 : ((b.date.getTime() < a.date.getTime()) ? -1 : 0)).reverse()
-
+                items.map(item => {
+                    item.date = new Date(item.date).toISOString().split('T')[0]
+                })
                 setNotificationList(items)
             })
     }, [])
 
     return (
         <>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>
             <div className="notification_navbar">
                 <button
                     onClick={() => setModalActive(true)}
                     className="add_notification_button"> Добавить задачу <AddIcon/>
                 </button>
             </div>
-            <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>
             <TableContainer component={Paper}
                             sx={{width: '850px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
                 <Table aria-label="collapsible table">
@@ -138,8 +147,8 @@ export default function CollapsibleTable() {
                             <TableCell sx={textFieldStyle.style}>Тип</TableCell>
                             <TableCell align="center" sx={textFieldStyle.style}>Статус</TableCell>
                             <TableCell align="center" sx={textFieldStyle.style}>Задача</TableCell>
-                            <TableCell align="right" sx={textFieldStyle.style}>Cтуденты</TableCell>
                             <TableCell align="left" sx={textFieldStyle.style}>Дата</TableCell>
+                            <TableCell align="right" sx={textFieldStyle.style}>Cтуденты</TableCell>
                             <TableCell align="right" sx={textFieldStyle.style}>Комментарий</TableCell>
                         </TableRow>
                     </TableHead>
