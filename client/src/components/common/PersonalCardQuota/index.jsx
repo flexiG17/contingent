@@ -16,7 +16,6 @@ import {
     SpeedDial, SpeedDialAction, SpeedDialIcon
 } from "@mui/material";
 import '../Contract/Contract.css';
-import Box from "@mui/material/Box";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
@@ -74,6 +73,7 @@ export default function PersonalCardQuota() {
 
     const [studentData, setStudentData] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [studentEducationType, setStudentEducationType] = useState(null)
 
     const navigate = useNavigate()
 
@@ -81,6 +81,8 @@ export default function PersonalCardQuota() {
     useEffect(() => {
         getStudentsByIdArray([studentId])
             .then(result => {
+                setStudentEducationType(result[0].education_type)
+
                 result.map(item => {
                     item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
                     item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
@@ -119,7 +121,7 @@ export default function PersonalCardQuota() {
                 window.removeEventListener('beforeunload', handleTabClose);
             }
         }
-    }, [])
+    }, [isEditModeWasOn])
 
     const formRef = useRef(null);
     const handleSubmit = (e) => {
@@ -127,7 +129,8 @@ export default function PersonalCardQuota() {
         let formData = new FormData(formRef.current)
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
-        changeStudentData(dataToSave, studentId, navigate)
+
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType)
     };
 
     const actions = !READER_ACCESS ?

@@ -17,7 +17,6 @@ import {
     SpeedDialIcon
 } from "@mui/material";
 import '../Contract/Contract.css';
-import Box from "@mui/material/Box";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -79,13 +78,14 @@ export default function PersonalCardContract() {
 
     const [studentData, setStudentData] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [studentEducationType, setStudentEducationType] = useState(null)
 
-    const navigate = useNavigate()
 
     const studentId = useParams().id
     useEffect(() => {
         getStudentsByIdArray([studentId])
             .then(result => {
+                setStudentEducationType(result[0].education_type)
                 const student = result[0]
                 student.birth_date = moment(student.birth_date).format("YYYY-MM-DD");
                 student.passport_issue_date = moment(student.passport_issue_date).format("YYYY-MM-DD");
@@ -108,7 +108,7 @@ export default function PersonalCardContract() {
                 }, 250)
             })
     }, [loading, studentId])
-    console.log(isEditModeWasOn);
+
     useEffect(() => {
         const handleTabClose = event => {
             event.preventDefault();
@@ -123,7 +123,7 @@ export default function PersonalCardContract() {
                 window.removeEventListener('beforeunload', handleTabClose);
             }
         }
-    }, [])
+    }, [isEditModeWasOn])
 
     /* const decodedToken = jwt_decode(getToken())
      let socket = ''
@@ -150,12 +150,14 @@ export default function PersonalCardContract() {
      }, [])*/
 
     const formRef = useRef(null);
+    const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault();
         let formData = new FormData(formRef.current)
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
-        changeStudentData(dataToSave, studentId)
+
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType)
     };
 
     const actions = !READER_ACCESS ?

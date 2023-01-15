@@ -56,7 +56,7 @@ export function removeArrayOfStudents(data) {
     })
 }
 
-export function changeStudentData(item, id) {
+export function changeStudentData(item, id, navigate, startEducationType) {
     return axios.put(
         `${URL_PATH}/api/student/update/${id}`, item, {
             headers: {
@@ -64,9 +64,12 @@ export function changeStudentData(item, id) {
                 'Content-Type': 'application/json;charset=utf-8'
             }
         }).then(({data}) => {
-            setTimeout(() => {
-                window.location.reload()
-            }, 1500)
+
+        setTimeout(() => {
+            item.education_type === startEducationType
+                ? window.location.reload()
+                : navigate(`/${item.education_type === 'Контракт' ? `contract` : `quota`}/${id}`)
+        }, 1500)
         iziToast.success({
             message: data.message,
             position: 'topRight'
@@ -167,7 +170,7 @@ export function sendMessage(data) {
     })
 }
 
-export function getColumns(){
+export function getColumns() {
     return axios.get(`${URL_PATH}/api/student/columns`, {
         headers: {
             'Authorization': getToken(),
