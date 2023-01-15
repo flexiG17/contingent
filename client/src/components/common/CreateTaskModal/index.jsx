@@ -49,7 +49,7 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray, emails}) =
                 <p className="title_addNotification">Добавить задачу</p>
 
                 <form className="container_addNotification" onSubmit={handleSubmit}>
-                    <div className='textfields_position'>
+                    <div className='textFields_position'>
                         <TextField
                             sx={{'& > :not(style)': {mb: 2, width: '30ch'}}}
                             label="Тип задачи" type="text" variant="outlined" color="warning"

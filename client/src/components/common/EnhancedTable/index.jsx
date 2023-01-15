@@ -11,7 +11,6 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {useEffect, useState} from "react"
-import moment from 'moment'
 import {getStudents} from '../../../actions/student'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
@@ -58,9 +57,6 @@ export default function EnhancedTable() {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
 
-    const [selected, setSelected] = useState([]);
-    const [selectedEmail, setSelectedEmail] = useState([]);
-
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(true);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -73,21 +69,6 @@ export default function EnhancedTable() {
     useEffect(() => {
         getStudents()
             .then(items => {
-                items.map(item => {
-                    item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
-                    item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
-                    item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
-                    item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
-                    item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
-                    item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
-                    item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
-                    item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
-                    item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
-                    item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
-                    item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
-                    item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
-                    item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
-                });
                 setList(items.reverse());
             })
             .finally(() => setLoading(false))
@@ -102,6 +83,9 @@ export default function EnhancedTable() {
         setOrderBy(property);
     };
 
+    const [selected, setSelected] = useState([]);
+    const [selectedEmail, setSelectedEmail] = useState([]);
+
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
             setSelected(filteredValues.map((n) => n.id));
@@ -113,6 +97,7 @@ export default function EnhancedTable() {
 
     const handleClick = (userID) => {
         const selectedIndex = selected.indexOf(userID);
+
         let newSelected = [];
 
         if (selectedIndex === -1) {
@@ -133,7 +118,11 @@ export default function EnhancedTable() {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -146,7 +135,6 @@ export default function EnhancedTable() {
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
-
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - list.length) : 0;

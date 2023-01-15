@@ -33,9 +33,9 @@ function Index() {
     const [userRole, setUserRole] = useState(jwt_decode(getToken()).role)
     const [userId, setUserId] = useState(jwt_decode(getToken()).userId)
     const [userPassword, setUserPassword] = useState()
-    const [titleDialog, setTitleDialog] = useState()
-    const [textDialog, setTextDialog] = useState()
-    const [actionDialog, setActionDialog] = useState()
+    const [titleDialog, setTitleDialog] = useState(null)
+    const [textDialog, setTextDialog] = useState(null)
+    const [actionDialog, setActionDialog] = useState(null)
 
     const decodedToken = jwt_decode(getToken())
     const currentUserId = decodedToken.userId
@@ -130,6 +130,11 @@ function Index() {
                                             setUserEmail(user.email)
                                             setUserRole(user.role)
                                             setUserId(user.id)
+                                            window.scrollTo({
+                                                top: 0,
+                                                left: 0,
+                                                behavior: 'smooth'
+                                            });
                                         }}>
                                         <ListItem>
                                             <ListItemAvatar>

@@ -20,7 +20,7 @@
     padding: 19px 25px;
 
     background-color: #fff;
-    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    box-shadow: 0 8px 24px rgba(129, 135, 189, 0.15);
     border-radius: 15px;
     width: 430px;
 }
@@ -42,7 +42,7 @@
 }
 
 .change_parameters_button{
-    font-family: 'Montserrat';
+    font-family: 'Montserrat', serif;
     font-style: normal;
     font-weight: 400;
     font-size: 14px;
@@ -66,7 +66,7 @@
     bottom: -7px;
     left: 0;
     position: absolute;
-    width: 0%;
+    width: 0;
     height: 2px;
     background-color: #1A3BE8;
     transition: 0.7s;
@@ -102,7 +102,7 @@
     bottom: -7px;
     left: 0;
     position: absolute;
-    width: 0%;
+    width: 0;
     height: 2px;
     background-color: #FF4B00;
     transition: 0.7s;
@@ -118,12 +118,11 @@
     padding: 19px 25px;
 
     background-color: #fff;
-    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    box-shadow: 0 8px 24px rgba(129, 135, 189, 0.15);
     border-radius: 15px;
     width: 430px;
     margin-top: 30px;
 }
-
 
 /*Правая часть блока*/
 
@@ -136,7 +135,8 @@
     margin-left: 50px;
 
     background-color: #fff;
-    box-shadow: 0px 8px 24px rgba(129, 135, 189, 0.15);
+    height: 100%;
+    box-shadow: 0 8px 24px rgba(129, 135, 189, 0.15);
     border-radius: 15px;
     width: 900px;
 }

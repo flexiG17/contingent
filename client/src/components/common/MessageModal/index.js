@@ -29,7 +29,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
     const [openDialog, setOpenDialog] = useState(false)
     const [subject, setSubject] = useState('')
     const [text, setText] = useState('')
-    const [openEmailList, setOpenEmailList] = useState()
+    const [openEmailList, setOpenEmailList] = useState(false)
     const [template, setTemplate] = useState()
     const [filesToSend, setFilesToSend] = useState(null);
     const [sender, setSender] = useState('Подготовительное отделение для иностранных учащихся УрФУ')

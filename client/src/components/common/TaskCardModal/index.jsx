@@ -74,7 +74,8 @@ const TaskCard = ({active, setActive, taskData}) => {
                         studentsToSave.push({
                             id: student.id,
                             latin_name: student.latin_name,
-                            student_email: student.student_email
+                            student_email: student.student_email,
+                            education_type: student.education_type
                         })
                     })
                 })
@@ -92,7 +93,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                 <div className="modal_content" onClick={e => e.stopPropagation()}>
                     <p className="title_addNotification">Карточка задачи</p>
                     <form className="container_addNotification" onSubmit={handleSubmit}>
-                        <div className='textfields_position'>
+                        <div className='textFields_position'>
                             <TextField
                                 sx={{'& > :not(style)': {mb: 2, width: '30ch'}}}
                                 label="Тип задачи" type="text" variant="outlined" color="warning"
