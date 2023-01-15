@@ -5,7 +5,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import EmailIcon from '@mui/icons-material/Email';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import jwt_decode from 'jwt-decode'
-import {HOME_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts";
+import {HOME_ROUTE, ACCOUNT_ROUTE} from "../../../utils/consts/pathRoutes";
 import {getCountNotifications} from "../../../actions/notification";
 import IconButton from "@mui/material/IconButton";
 import {Badge} from "@mui/material";

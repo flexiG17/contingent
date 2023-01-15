@@ -1,5 +1,5 @@
 import {useNavigate} from 'react-router-dom';
-import {HOME_ROUTE} from "../../utils/consts";
+import {HOME_ROUTE} from "../../utils/consts/pathRoutes";
 import {useEffect} from "react";
 
 export default function LoadingPage() {

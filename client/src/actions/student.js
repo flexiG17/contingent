@@ -1,6 +1,6 @@
 import axios from "axios";
 import iziToast from "izitoast";
-import {HOME_ROUTE, internalServerError, URL_PATH} from '../utils/consts'
+import {HOME_ROUTE, internalServerError, URL_PATH} from '../utils/consts/pathRoutes'
 import {getToken} from "../utils/token";
 
 export function getStudents() {
@@ -56,7 +56,7 @@ export function removeArrayOfStudents(data) {
     })
 }
 
-export function changeStudentData(item, id, navigate) {
+export function changeStudentData(item, id, navigate, startEducationType) {
     return axios.put(
         `${URL_PATH}/api/student/update/${id}`, item, {
             headers: {
@@ -64,9 +64,12 @@ export function changeStudentData(item, id, navigate) {
                 'Content-Type': 'application/json;charset=utf-8'
             }
         }).then(({data}) => {
-            setTimeout(() => {
-                navigate(HOME_ROUTE)
-            }, 1500)
+
+        setTimeout(() => {
+            item.education_type === startEducationType
+                ? window.location.reload()
+                : navigate(`/${item.education_type === 'Контракт' ? `contract` : `quota`}/${id}`)
+        }, 1500)
         iziToast.success({
             message: data.message,
             position: 'topRight'
@@ -102,7 +105,6 @@ export function addStudent(item, navigate) {
             message: data.message,
             position: 'topRight'
         })
-        navigate(HOME_ROUTE);
     }).catch((e) => {
         iziToast.error({
             message: internalServerError(e),
@@ -168,7 +170,7 @@ export function sendMessage(data) {
     })
 }
 
-export function getColumns(){
+export function getColumns() {
     return axios.get(`${URL_PATH}/api/student/columns`, {
         headers: {
             'Authorization': getToken(),

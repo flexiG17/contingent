@@ -1,7 +1,7 @@
 import {addFile, deleteFile, setFiles, setIsLoading} from "./slices/ManagerData/manager-data";
 import iziToast from "izitoast";
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {internalServerError} from "../utils/consts";
+import {internalServerError} from "../utils/consts/pathRoutes";
 
 export const fetchFilesAction = createAsyncThunk(
     'files/getFiles',

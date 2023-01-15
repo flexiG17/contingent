@@ -1,7 +1,7 @@
 import React from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom'
 import {editorRoutes, publicRoutes, readerRoutes} from "../routes";
-import {START_ROUTE} from "../utils/consts";
+import {START_ROUTE} from "../utils/consts/pathRoutes";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../utils/token";
 import {useSelector} from "react-redux";

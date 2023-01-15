@@ -18,19 +18,36 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     return (
         <MenuItem>
             <div className="filter_container">
-                <Select className="first_parameter" placeholder="Описание" options={columns}
-                        value={item.param}
+
+                <select name="" id="" className="first_parameter search_filter" value={item.param.value}
                         onChange={(e) => {
-                            setInputType(e.type);
-                            changeFilterProp(item.id, e, 'param');
+                            window.scrollTo(0, 0);
+                            let tmp = columns.filter((item) => e.target.value === item.value);
+                            setInputType(tmp[0].type);
+                            changeFilterProp(item.id, tmp[0], 'param');
                         }
-                        }/>
-                <Select className="second_parameter" placeholder="Оператор" options={operators}
-                        value={item.operator}
+                        }>
+                    <option hidden>Выберите поле</option>
+                    {
+                        columns.filter(item => item.value !== 'id').map((item) => {
+                            return <option value={item.value}>{item.label}</option>
+                        })
+                    }
+                </select>
+
+                <select name="" id="" className="second_parameter search_filter" value={item.operator}
                         onChange={(e) => {
-                            changeFilterProp(item.id, e, 'operator');
+                            changeFilterProp(item.id, e.target.value, 'operator');
                         }
-                        }/>
+                        }>
+                    <option hidden>Выберите оператор</option>
+                    {
+                        operators.map((item) => {
+                            return <option value={item.value}>{item.label}</option>
+                        })
+                    }
+                </select>
+
                 <div className="third_parameter">
                     <input className="search_filter" type={inputType} onChange={(e) => {
                         changeFilterProp(item.id, e.target.value, 'value');

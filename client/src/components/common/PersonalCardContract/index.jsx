@@ -1,11 +1,12 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
-import {changeStudentData, removeStudent} from '../../../actions/student'
-import {useLocation, useNavigate} from 'react-router-dom';
+import {changeStudentData, getStudentsByIdArray, removeStudent} from '../../../actions/student'
+import {useNavigate, useParams} from 'react-router-dom';
 import iziToast from "izitoast";
 import TextField from "@mui/material/TextField";
 import {
-    Button, Dialog,
+    Backdrop,
+    Button, CircularProgress, Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
@@ -15,8 +16,7 @@ import {
     SpeedDialAction,
     SpeedDialIcon
 } from "@mui/material";
-import "./PersonalCardContract.css";
-import Box from "@mui/material/Box";
+import '../Contract/Contract.css';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
@@ -26,35 +26,46 @@ import ModalMessage from "../MessageModal";
 import CreateTaskModalWindow from "../CreateTaskModal";
 import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
+import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles'
+import moment from "moment/moment";
 
 // файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
 // отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
 
 export default function PersonalCardContract() {
+
     const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
     const [editMode, setEditMode] = useState(true);
-    const [modalFileActive,setModalFileActive] = useState(false);
+    const [modalFileActive, setModalFileActive] = useState(false);
     const [modalMessageActive, setModalMessageActive] = useState(false);
+    const [isEditModeWasOn, setIsEditModeWasOn] = useState(false)
 
     const handleClickContract = () => {
         setActive(!active)
     }
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => {
         setOpen(true);
     };
 
-    const handleFileModal = () =>{
+    const handleFileModal = () => {
         setModalFileActive(true);
     }
 
-    const handleModal = () =>{
-        setModalActive(true);
+    const handleModal = () => {
+        if (studentData.student_email !== '')
+            setModalActive(true)
+        else
+            iziToast.error({
+                message: 'Почта студента не выбрана',
+                position: "topRight",
+                color: "#FFF2ED"
+            })
     }
 
-    const handleModalMessage = () =>{
+    const handleModalMessage = () => {
         setModalMessageActive(true);
     }
 
@@ -62,112 +73,95 @@ export default function PersonalCardContract() {
         setOpen(false);
     };
 
-    const location = useLocation();
-    const rows = location.state;
-
     const role = jwt_decode(getToken()).role
     const READER_ACCESS = role === 'Читатель'
 
-    const [latin_name, setLatinName] = useState(rows.latin_name)
-    const [education_type, setEducationType] = useState(rows.education_type)
-    const [russian_name, setRussianName] = useState(rows.russian_name)
-    const [RF_location, setLocation] = useState(rows.RF_location)
-    const [contact_phone_number, setPhoneNumber] = useState(rows.contact_phone_number)
-    const [representative_name, setRepresentativeName] = useState(rows.representative_name)
-    const [representative_phone_number, setRepresentativePhoneNumber] = useState(rows.representative_phone_number)
-    const [representative_email, setRepresentativeEmail] = useState(rows.representative_email)
-    const [hours_number, setHoursNumber] = useState(rows.hours_number)
-    const [student_email, setStudentEmail] = useState(rows.student_email)
-    const [agent_name, setAgentName] = useState(rows.agent_name)
-    const [agent_phone_number, setAgentPhone] = useState(rows.agent_phone_number)
-    const [agent_email, setAgentEmail] = useState(rows.agent_email)
-    const [country, setCountry] = useState(rows.country)
-    const [birth_place, setBirthPlace] = useState(rows.birth_place)
-    const [birth_date, setBirthDate] = useState(rows.birth_date)
-    const [residence_place, setResidencePlace] = useState(rows.residence_place)
-    const [citizenship, setCitizenship] = useState(rows.citizenship)
-    const [gender, setGender] = useState(rows.gender)
-    const [passport_number, setPassportNumber] = useState(rows.passport_number)
-    const [passport_expiration, setPassportExpiration] = useState(rows.passport_expiration)
-    const [passport_issued, setPassportIssued] = useState(rows.passport_issued)
-    const [passport_issue_date, setPassportIssueDate] = useState(rows.passport_issue_date)
-    const [level_education, setLevelEducation] = useState(rows.level_education)
-    const [name_educational_institution, setEducationalInstitution] = useState(rows.name_educational_institution)
-    const [form_study, setFormStudy] = useState(rows.form_study)
-    const [enrollment, setEnrollment] = useState(rows.enrollment)
-    const [enrollment_order, setEnrollmentOrder] = useState(rows.enrollment_order)
-    const [expulsion_order, setExpulsionOrder] = useState(rows.expulsion_order)
-    const [contract_number, setContractNumber] = useState(rows.contract_number)
-    const [status_1C, set1CStatus] = useState(rows.status_1c)
-    const [tutor_name, setTutorName] = useState(rows.tutor_name)
-    const [first_payment, setFirstPayment] = useState(rows.first_payment)
-    const [second_payment, setSecondPayment] = useState(rows.second_payment)
-    const [third_payment, setThirdPayment] = useState(rows.third_payment)
-    const [fourth_payment, setFourthPayment] = useState(rows.fourth_payment)
-    const [entry_date, setEntryDate] = useState(rows.entry_date)
-    const [visa_validity, setVisaValidity] = useState(rows.visa_validity)
-    const [transfer_to_international_service, setDateOfTransfer] = useState(rows.transfer_to_international_service)
-    const [transfer_to_MVD, setDateOfMvdTransfer] = useState(rows.transfer_to_MVD)
-    const [estimated_receipt_date, setDateOfReceiving] = useState(rows.estimated_receipt_date)
-    const [actual_receipt_date_invitation, setDateOfReceipt] = useState(rows.actual_receipt_date_invitation)
-    const [comments, setComments] = useState(rows.comments)
+    const [studentData, setStudentData] = useState(null)
+    const [loading, setLoading] = useState(true)
+    const [studentEducationType, setStudentEducationType] = useState(null)
 
+
+    const studentId = useParams().id
+    useEffect(() => {
+        getStudentsByIdArray([studentId])
+            .then(result => {
+                setStudentEducationType(result[0].education_type)
+                const student = result[0]
+                student.birth_date = moment(student.birth_date).format("YYYY-MM-DD");
+                student.passport_issue_date = moment(student.passport_issue_date).format("YYYY-MM-DD");
+                student.passport_expiration = moment(student.passport_expiration).format("YYYY-MM-DD");
+                student.entry_date = moment(student.entry_date).format("YYYY-MM-DD");
+                student.visa_validity = moment(student.visa_validity).format("YYYY-MM-DD");
+                student.first_payment = moment(student.first_payment).format("YYYY-MM-DD");
+                student.second_payment = moment(student.second_payment).format("YYYY-MM-DD");
+                student.third_payment = moment(student.third_payment).format("YYYY-MM-DD");
+                student.fourth_payment = moment(student.fourth_payment).format("YYYY-MM-DD");
+                student.transfer_to_international_service = moment(student.transfer_to_international_service).format("YYYY-MM-DD");
+                student.transfer_to_MVD = moment(student.transfer_to_MVD).format("YYYY-MM-DD");
+                student.estimated_receipt_date = moment(student.estimated_receipt_date).format("YYYY-MM-DD");
+                student.actual_receipt_date_invitation = moment(student.actual_receipt_date_invitation).format("YYYY-MM-DD");
+                setStudentData(result[0])
+            })
+            .finally(() => {
+                setTimeout(() => {
+                    setLoading(false)
+                }, 250)
+            })
+    }, [loading, studentId])
+
+    useEffect(() => {
+        const handleTabClose = event => {
+            event.preventDefault();
+            console.log(event);
+            return (event.returnValue = 'Вы уверены, что хотите выйти? Изменения не сохранятся');
+        };
+
+        if(isEditModeWasOn){
+            window.addEventListener('beforeunload', handleTabClose);
+
+            return () => {
+                window.removeEventListener('beforeunload', handleTabClose);
+            }
+        }
+    }, [isEditModeWasOn])
+
+    /* const decodedToken = jwt_decode(getToken())
+     let socket = ''
+     useEffect(() => {
+         socket = new WebSocket(`ws://localhost:5000/student/${studentId}`)
+         // в случае подключения
+         socket.onopen = () => {
+             // отправляем сообщение на сервер
+             socket.send(JSON.stringify({
+                 method: 'connection',
+                 userId: decodedToken.userId,
+                 userName: decodedToken.name,
+                 studentId: studentId
+             }))
+         }
+
+         socket.onmessage = (message) => {
+             let msg = JSON.parse(message.data)
+             switch (msg.method) {
+                 case "connection":
+                     console.log(`Пользователь "${msg.userName}" с id = ${msg.userId} подключился`);
+             }
+         }
+     }, [])*/
+
+    const formRef = useRef(null);
     const navigate = useNavigate()
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
-            education_type: education_type,
-            latin_name: latin_name,
-            russian_name: russian_name,
-            RF_location: RF_location,
-            contact_phone_number: contact_phone_number,
-            student_email: student_email,
-            agent_name: agent_name,
-            agent_phone_number: agent_phone_number,
-            agent_email: agent_email,
-            country: country,
-            birth_place: birth_place,
-            birth_date: birth_date,
-            residence_place: residence_place,
-            citizenship: citizenship,
-            gender: gender,
-            passport_number: passport_number,
-            passport_expiration: passport_expiration,
-            passport_issued: passport_issued,
-            passport_issue_date: passport_issue_date,
-            level_education: level_education,
-            name_educational_institution: name_educational_institution,
-            form_study: form_study,
-            enrollment: enrollment,
-            enrollment_order: enrollment_order,
-            expulsion_order: expulsion_order,
-            contract_number: contract_number,
-            status_1C: status_1C,
-            tutor_name: tutor_name,
-            first_payment: first_payment,
-            second_payment: second_payment,
-            third_payment: third_payment,
-            fourth_payment: fourth_payment,
-            entry_date: entry_date,
-            visa_validity: visa_validity,
-            document_path: '',
-            transfer_to_international_service: transfer_to_international_service,
-            transfer_to_MVD: transfer_to_MVD,
-            estimated_receipt_date: estimated_receipt_date,
-            actual_receipt_date_invitation: actual_receipt_date_invitation
-        }
-        changeStudentData(data, rows.id, navigate)
+        let formData = new FormData(formRef.current)
+        const dataToSave = {};
+        formData.forEach((value, key) => (dataToSave[key] = value))
+
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType)
     };
 
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
-    }
-    const actions = !READER_ACCESS ? [
+    const actions = !READER_ACCESS ?
+        [
             {
                 icon: <NotificationsNoneIcon/>,
                 name: 'Создать задачу',
@@ -200,6 +194,7 @@ export default function PersonalCardContract() {
                 icon: <EditIcon/>,
                 name: 'Редактировать карточку',
                 runFunction: () => {
+                    setIsEditModeWasOn(true)
                     setEditMode(!editMode)
                     editMode ?
                         iziToast.success({
@@ -227,521 +222,381 @@ export default function PersonalCardContract() {
             }
         ]
     return (
-        <>
-            <form onSubmit={handleSubmit}>
-                <p className="title_studentName">Личная карточка {rows.russian_name}</p>
-                <div className="info_and_education_container">
-                    <p className="title_quota"> Личная информация студента </p>
-                    <div className="columns_position">
-                        <div className="column_style_contract">
-                            <p className="tytle_contract_info"> Личные данные</p>
-                            <TextField label="Ф.И.О. (лат.)" variant="outlined" color="warning" type="text"
-                                       margin='normal' disabled={editMode}
-                                       required size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setLatinName(event.target.value)} value={latin_name}/>
-                            <TextField label="Ф.И.О. (кир.)" variant="outlined" color="warning" type="text"
-                                       margin='normal' disabled={editMode}
-                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setRussianName(event.target.value)} value={russian_name}/>
-                            <TextField label="Контактный телефон студента" variant="outlined" color="warning" type="tel"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setPhoneNumber(event.target.value)}
-                                       value={contact_phone_number}/>
-                            <TextField label="E-mail студента" variant="outlined" color="warning" type="email"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
-                            <TextField label="Страна" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" sx={{width: "325px"}} disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setCountry(event.target.value)} value={country}/>
-                            <TextField label="Дата рождения" type="date" color="warning"
-                                       required margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setBirthDate(event.target.value)} value={birth_date}/>
-                            <TextField label="Место рождения" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setBirthPlace(event.target.value)} value={birth_place}/>
-                            <TextField label="Место проживания" type="text" variant="outlined" color="warning"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setResidencePlace(event.target.value)}
-                                       value={residence_place}/>
-                            <TextField label="Гражданство" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small"
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setCitizenship(event.target.value)} value={citizenship}/>
-                            <TextField label="Пол" type="text" variant="outlined" color="warning" margin='normal'
-                                       required size="small" select InputLabelProps={propsStyle} disabled={editMode}
-                                       onChange={event => setGender(event.target.value)} value={gender}>
-                                <MenuItem sx={propsStyle} value="Мужской">
-                                    <span style={propsStyle.style}>Мужской</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="Женский">
-                                    <span style={propsStyle.style}>Женский</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Куратор" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
-                        </div>
-                        <div className="column_style_contract">
-                            <p className="tytle_contract_info"> Контактные данные агента</p>
-                            {/*Нужно привязать*/}
-                            <TextField label="Ф.И.О." variant="outlined" color="warning" type="text"
-                                       margin='normal' disabled={editMode}
-                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Телефон" variant="outlined" color="warning" type="tel"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setPhoneNumber(event.target.value)}
-                                       value={contact_phone_number}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="E-mail" variant="outlined" color="warning" type="email"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
-
-                            <p className="tytle_contract_info"> Контактные данные представителя</p>
-                            {/*Нужно привязать*/}
-                            <TextField label="Ф.И.О." variant="outlined" color="warning" type="text"
-                                       margin='normal' disabled={editMode}
-                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Телефон" variant="outlined" color="warning" type="tel"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setPhoneNumber(event.target.value)}
-                                       value={contact_phone_number}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="E-mail" variant="outlined" color="warning" type="email"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setStudentEmail(event.target.value)} value={student_email}/>
-                            <p className="tytle_contract_info"> Данные о местоположении </p>
-                            <TextField label="Нахождение в РФ" type="text" variant="outlined" color="warning"
-                                       margin='normal' select size="small" InputLabelProps={propsStyle}
-                                       onChange={event => setLocation(event.target.value)} value={RF_location}
-                                       disabled={editMode}>
-                                <MenuItem sx={propsStyle} value="Да">
-                                <span
-                                    style={propsStyle.style}>Да</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle}
-                                          value="Нет">
-                                <span
-                                    style={propsStyle.style}>Нет</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Дата въезда" type="date" color="warning" disabled={editMode}
-                                       margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="info_and_education_container">
-                    <p className="title_quota"> Образование </p>
-                    <div className="columns_position">
-                        <div className="column_style_contract">
-                            <p className="tytle_contract_education"> Полученный уровень образования </p>
-                            <TextField label="Уровень полученного образования" type="text" variant="outlined"
-                                       color="warning" margin='normal' sx={{width: "325px"}} disabled={editMode}
-                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setLevelEducation(event.target.value)}
-                                       value={level_education}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Образовательная организация" type="text" variant="outlined"
-                                       color="warning" margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setEducationalInstitution(event.target.value)}
-                                       value={name_educational_institution}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Наименование учебного заведения" type="text" variant="outlined"
-                                       color="warning" margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setEducationalInstitution(event.target.value)}
-                                       value={name_educational_institution}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Местонахождение учебного заведения" type="text" variant="outlined"
-                                       color="warning" margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setEducationalInstitution(event.target.value)}
-                                       value={name_educational_institution}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Область образования" type="text" variant="outlined"
-                                       color="warning" margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setEducationalInstitution(event.target.value)}
-                                       value={name_educational_institution}/>
-                            <TextField label="Год окончания" type="text" color="warning"
-                                       margin='normal' size="small" sx={{width: "325px"}}
-                                       inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setEntryDate(event.target.value)} value={entry_date}/>
-                            <p className="tytle_contract_education"> Дополнительно </p>
-                            <TextField label="Примечания" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" multiline rows={5} disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setComments(event.target.value)} value={comments}/>
-                        </div>
-                        <div className="column_style_contract">
-                            <p className="tytle_contract_education"> Уровень получаемого образования  </p>
-                            <TextField label="Статус зачисления" type="text" variant="outlined" color="warning"
-                                       margin='normal' size="small" select sx={{width: "325px"}}
-                                       InputLabelProps={propsStyle} disabled={editMode}
-                                       onChange={event => setEnrollment(event.target.value)} value={enrollment}>
-                                <MenuItem sx={propsStyle} value="Зачислен">
-                                    <span style={propsStyle.style}>Зачислен</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="Не зачислен">
-                                    <span style={propsStyle.style}>Не зачислен</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Количество часов" type="text" variant="outlined" color="warning"
-                                       margin='normal' size="small" select
-                                       InputLabelProps={propsStyle} disabled={editMode}
-                                       onChange={event => setHoursNumber(event.target.value)} value={hours_number}>
-                                <MenuItem sx={propsStyle} value="1008 ак.ч. (1 год)">
-                                    <span style={propsStyle.style}>1008 ак.ч. (1 год)</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="1008 ак.ч. (1.5 год)">
-                                    <span style={propsStyle.style}>1008 ак.ч. (1.5 год)</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="868 ак.ч.">
-                                    <span style={propsStyle.style}>868 ак.ч.</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="728 ак.ч.">
-                                    <span style={propsStyle.style}>728 ак.ч.</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="588 ак.ч.">
-                                    <span style={propsStyle.style}>588 ак.ч.</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="504 ак.ч.">
-                                    <span style={propsStyle.style}>504 ак.ч.</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="288 ак.ч.">
-                                    <span style={propsStyle.style}>588 ак.ч.</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="144 ак.ч.">
-                                    <span style={propsStyle.style}>144 ак.ч.</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="108 ак.ч.">
-                                    <span style={propsStyle.style}>108 ак.ч.</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="588 ак.ч.">
-                                    <span style={propsStyle.style}>72 ак.ч.</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Уровень желаемого образования" type="text" variant="outlined"
-                                       color="warning" margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setEducationalInstitution(event.target.value)}
-                                       value={name_educational_institution}/>
-                            <TextField label="Форма обучения" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small" select InputLabelProps={propsStyle}
-                                       onChange={event => setFormStudy(event.target.value)} value={form_study}>
-                                <MenuItem sx={propsStyle} value="Очная">
-                                    <span style={propsStyle.style}>Очная</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="Гибрид">
-                                    <span style={propsStyle.style}>Гибрид</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="Онлайн">
-                                    <span style={propsStyle.style}>Онлайн</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Тип обучения" type="text" variant="outlined" color="error" margin='normal'
-                                       required size="small" select focused InputLabelProps={propsStyle}
-                                       disabled={editMode}
-                                       onChange={event => setEducationType(event.target.value)} value={education_type}>
-                                <MenuItem sx={propsStyle} value="Контракт">
-                                    <span style={propsStyle.style}>Контракт</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="Квота">
-                                    <span style={propsStyle.style}>Квота</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Номер приказа о зачислении" type="text" variant="outlined" color="warning"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setEnrollmentOrder(event.target.value)}
-                                       value={enrollment_order}/>
-                            <TextField label="Номер приказа об отчислении" type="text" variant="outlined"
-                                       color="warning" disabled={editMode}
-                                       margin='normal' size="small"
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setExpulsionOrder(event.target.value)}
-                                       value={expulsion_order}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Куратор" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           }
-                                       }}
-                                       onChange={event => setTutorName(event.target.value)} value={tutor_name}/>
+        loading
+            ?
+            <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}
+                      open={true} invisible={true}>
+                <CircularProgress style={{'color': '#FA7A45'}}/>
+            </Backdrop>
+            :
+            <>
+                <form ref={formRef} onSubmit={handleSubmit}>
+                    <p className="title_studentName">Личная карточка {studentData.latin_name}</p>
+                    <div className="info_and_education_container">
+                        <p className="title_contract_section"> Основные данные студента </p>
+                        <div className="columns_position">
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc"> Личные данные</p>
+                                <TextField label="Ф.И.О. (лат.)" type="text" defaultValue={studentData.latin_name}
+                                           name='latin_name' variant="outlined" color="warning"
+                                           margin='normal' disabled={editMode} required size="small"
+                                           sx={{width: "325px"}}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Ф.И.О. (кир.)" type="text" defaultValue={studentData.russian_name}
+                                           name='russian_name' variant="outlined" color="warning"
+                                           margin='normal' disabled={editMode}
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc"> Контактные данные</p>
+                                <TextField label="Контактный телефон студента" type="tel"
+                                           defaultValue={studentData.contact_phone_number}
+                                           name='contact_phone_number' variant="outlined" color="warning"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="E-mail студента" variant="outlined"
+                                           defaultValue={studentData.student_email}
+                                           name='student_email' color="warning" type="email"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc"> Контактные данные агента</p>
+                                <TextField label="Ф.И.О." defaultValue={studentData.agent_name} type="text"
+                                           name='agent_name' variant="outlined" color="warning"
+                                           margin='normal' disabled={editMode}
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Телефон" defaultValue={studentData.agent_phone_number} type="tel"
+                                           name='agent_phone_number' variant="outlined" color="warning"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="E-mail" defaultValue={studentData.agent_email}
+                                           name='agent_email' type="email" variant="outlined" color="warning"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc"> Контактные данные представителя</p>
+                                <TextField label="Ф.И.О." defaultValue={studentData.representative_name}
+                                           name='representative_name' variant="outlined" color="warning" type="text"
+                                           margin='normal' disabled={editMode}
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Телефон" defaultValue={studentData.representative_phone_number}
+                                           variant="outlined"
+                                           name='representative_phone_number' color="warning" type="tel"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="E-mail" defaultValue={studentData.representative_email}
+                                           variant="outlined"
+                                           name='representative_email' type="email" color="warning"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc">Куратор</p>
+                                <TextField label="Куратор" name='tutor_name' type="text" variant="outlined"
+                                           color="warning" margin='normal' defaultValue={studentData.tutor_name}
+                                           size="small" disabled={editMode}
+                                           InputLabelProps={textFieldStyle} inputProps={textFieldStyle}/>
+                            </div>
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Паспортные данные</p>
+                                <TextField label="Страна" type="text" defaultValue={studentData.country}
+                                           name='country' margin='normal' variant="outlined" color="warning"
+                                           size="small" sx={{width: "325px"}} disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Место рождения"
+                                           name='birth_place' color="warning" type="text" variant="outlined"
+                                           margin='normal' disabled={editMode} defaultValue={studentData.birth_place}
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Дата рождения" type="date" color="warning"
+                                           defaultValue={studentData.birth_date}
+                                           name='birth_date' required margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Место проживания" type="text"
+                                           defaultValue={studentData.residence_place}
+                                           name='residence_place' variant="outlined" color="warning"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Гражданство" defaultValue={studentData.citizenship} type="text"
+                                           name='citizenship' color="warning" variant="outlined"
+                                           margin='normal' disabled={editMode} size="small"
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Пол" defaultValue={studentData.gender} type="text"
+                                           name='gender' margin='normal' variant="outlined" color="warning"
+                                           required size="small" select InputLabelProps={textFieldStyle}
+                                           disabled={editMode}>
+                                    <MenuItem sx={textFieldStyle} value="Мужской">
+                                        <span style={listItemStyle}>Мужской</span>
+                                    </MenuItem>
+                                    <MenuItem sx={textFieldStyle} value="Женский">
+                                        <span style={listItemStyle}>Женский</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
+                                           color="warning" defaultValue={studentData.passport_number}
+                                           margin='normal' disabled={editMode}
+                                           required size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={textFieldStyle}/>
+                                <TextField label="Срок действия паспорта" name='passport_expiration' type="date"
+                                           color="warning" defaultValue={studentData.passport_expiration}
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
+                                           color="warning" margin='normal' defaultValue={studentData.passport_issued}
+                                           size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
+                                           margin='normal' defaultValue={studentData.passport_issue_date}
+                                           inputProps={textFieldStyle} size="small" disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle}/>
+                                <p className="title_contract_doc"> Данные о местоположении </p>
+                                <TextField label="Нахождение в РФ" defaultValue={studentData.RF_location} type="text"
+                                           name='RF_location' color="warning" variant="outlined"
+                                           margin='normal' select size="small" InputLabelProps={textFieldStyle}
+                                           disabled={editMode}>
+                                    <MenuItem value="Да">
+                                        <span style={listItemStyle}>Да</span>
+                                    </MenuItem>
+                                    <MenuItem value="Нет">
+                                        <span style={listItemStyle}>Нет</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Дата въезда" defaultValue={studentData.entry_date} type="date"
+                                           name='entry_date' disabled={editMode} color="warning"
+                                           margin='normal' size="small" sx={{width: "325px"}}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="info_and_education_container">
-                    <p className="title_quota"> Образование </p>
-                    <div className="columns_position">
-                        <div className="column_style_contract">
-                            <p className="title_contract_doc"> Паспортные данные</p>
-                            <TextField label="Номер паспорта" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       required size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setPassportNumber(event.target.value)}
-                                       value={passport_number}/>
-                            <TextField label="Срок действия паспорта" type="date" color="warning"
-                                       margin='normal' size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setPassportExpiration(event.target.value)}
-                                       value={passport_expiration}/>
-                            <TextField label="Кем выдан" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" disabled={editMode}
-                                       inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setPassportIssued(event.target.value)}
-                                       value={passport_issued}/>
-                            <TextField label="Дата выдачи" type="date" color="warning" margin='normal'
-                                       inputProps={propsStyle} size="small" disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setPassportIssueDate(event.target.value)}
-                                       value={passport_issue_date}/>
-                            <p className="title_contract_doc"> Дополнительные документы </p>
-                            <TextField label="Срок действия визы" type="date" color="warning" disabled={editMode}
-                                       margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setVisaValidity(event.target.value)} value={visa_validity}/>
-                            <TextField label="Дата передачи в международную службу" type="date" color="warning"
-                                       margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setDateOfTransfer(event.target.value)}
-                                       value={transfer_to_international_service}/>
-                            <TextField label="Дата передачи в МВД" type="date" color="warning" disabled={editMode}
-                                       margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setDateOfMvdTransfer(event.target.value)}
-                                       value={transfer_to_MVD}/>
 
-                            <TextField label="Ориентировочная дата получения" type="date" color="warning"
-                                       margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setDateOfReceiving(event.target.value)}
-                                       value={estimated_receipt_date}/>
-
-                            <TextField label="Фактическая дата получения приглашения" type="date" color="warning"
-                                       margin='normal' size="small" inputProps={propsStyle} disabled={editMode}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setDateOfReceipt(event.target.value)}
-                                       value={actual_receipt_date_invitation}/>
-                        </div>
-                        {/*Тупо тесовый код ниже, можно удалять. Я пытался понять, как работать с файлами*/}
-                        <div className="column_style_contract">
-                            <p className="tytle_contract_doc_contaner"> Документы оплаты </p>
-                            <TextField label="Номер договора" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setContractNumber(event.target.value)}
-                                       value={contract_number}/>
-                            {/*Нужно привязать*/}
-                            <TextField label="Рег. номер направления" type="text" variant="outlined" color="warning"
-                                       margin='normal' disabled={editMode}
-                                       size="small" inputProps={propsStyle} InputLabelProps={propsStyle}
-                                       onChange={event => setContractNumber(event.target.value)}
-                                       value={contract_number}/>
-                            <TextField label="Статус 1C" type="text" variant="outlined" color="warning" margin='normal'
-                                       size="small" select InputLabelProps={propsStyle} disabled={editMode}
-                                       onChange={event => set1CStatus(event.target.value)} value={status_1C}>
-                                <MenuItem sx={propsStyle} value="Прикреплен">
-                                    <span style={propsStyle.style}>Прикреплен</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle}
-                                          value="Не прикреплен">
-                                    <span style={propsStyle.style}>Не прикреплен</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField label="Платеж 1" type="date" color="warning" disabled={editMode}
-                                       margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setFirstPayment(event.target.value)} value={first_payment}/>
-                            <TextField label="Платеж 2" type="date" color="warning" disabled={editMode}
-                                       margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setSecondPayment(event.target.value)} value={second_payment}/>
-                            <TextField label="Платеж 3" type="date" color="warning" disabled={editMode}
-                                       margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setThirdPayment(event.target.value)} value={third_payment}/>
-                            <TextField label="Платеж 4" type="date" color="warning" disabled={editMode}
-                                       margin='normal' size="small" inputProps={propsStyle}
-                                       InputLabelProps={{
-                                           style: {
-                                               fontSize: "14px",
-                                               fontFamily: ['Montserrat'],
-                                               fontWeight: '450'
-                                           },
-                                           shrink: true
-                                       }}
-                                       onChange={event => setFourthPayment(event.target.value)} value={fourth_payment}/>
-
-
+                    <div className="info_and_education_container">
+                        <p className="title_contract_section">Образование студента</p>
+                        <div className="columns_position">
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc"> Полученный уровень образования </p>
+                                <TextField label="Уровень полученного образования" name='level_education' type="text"
+                                           variant="outlined" defaultValue={studentData.level_education}
+                                           color="warning" margin='normal' sx={{width: "325px"}} disabled={editMode}
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Наименование учебного заведения" name='name_educational_institution'
+                                           type="text" variant="outlined"
+                                           defaultValue={studentData.name_educational_institution}
+                                           color="warning" margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <p className="title_contract_doc">Нынешнее образование</p>
+                                <TextField label="Количество часов" name='hours_number' type="text" variant="outlined"
+                                           color="warning" defaultValue={studentData.hours_number}
+                                           margin='normal' size="small" select
+                                           InputLabelProps={textFieldStyle} disabled={editMode}>
+                                    <MenuItem value="1008 ак.ч. (1 год)">
+                                        <span style={listItemStyle}>1008 ак.ч. (1 год)</span>
+                                    </MenuItem>
+                                    <MenuItem value="1008 ак.ч. (1.5 год)">
+                                        <span style={listItemStyle}>1008 ак.ч. (1.5 год)</span>
+                                    </MenuItem>
+                                    <MenuItem value="868 ак.ч.">
+                                        <span style={listItemStyle}>868 ак.ч.</span>
+                                    </MenuItem>
+                                    <MenuItem value="728 ак.ч.">
+                                        <span style={listItemStyle}>728 ак.ч.</span>
+                                    </MenuItem>
+                                    <MenuItem value="588 ак.ч.">
+                                        <span style={listItemStyle}>588 ак.ч.</span>
+                                    </MenuItem>
+                                    <MenuItem value="504 ак.ч.">
+                                        <span style={listItemStyle}>504 ак.ч.</span>
+                                    </MenuItem>
+                                    <MenuItem value="288 ак.ч.">
+                                        <span style={listItemStyle}>588 ак.ч.</span>
+                                    </MenuItem>
+                                    <MenuItem value="144 ак.ч.">
+                                        <span style={listItemStyle}>144 ак.ч.</span>
+                                    </MenuItem>
+                                    <MenuItem value="108 ак.ч.">
+                                        <span style={listItemStyle}>108 ак.ч.</span>
+                                    </MenuItem>
+                                    <MenuItem value="588 ак.ч.">
+                                        <span style={listItemStyle}>72 ак.ч.</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Форма обучения" name='form_study' type="text" variant="outlined"
+                                           color="warning" defaultValue={studentData.form_study}
+                                           margin='normal' disabled={editMode}
+                                           size="small" select InputLabelProps={textFieldStyle}>
+                                    <MenuItem value="Очная">
+                                        <span style={listItemStyle}>Очная</span>
+                                    </MenuItem>
+                                    <MenuItem value="Гибрид">
+                                        <span style={listItemStyle}>Гибрид</span>
+                                    </MenuItem>
+                                    <MenuItem value="Онлайн">
+                                        <span style={listItemStyle}>Онлайн</span>
+                                    </MenuItem>
+                                </TextField>
+                                <p className="title_contract_doc"> Дополнительно </p>
+                                <TextField label="Примечания" name='comments' type="text" variant="outlined"
+                                           color="warning" margin='normal' defaultValue={studentData.comments}
+                                           size="small" multiline rows={5} disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                            </div>
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Статус</p>
+                                <TextField label="Тип обучения" name='education_type' type="text" variant="outlined"
+                                           color="error" margin='normal' defaultValue={studentData.education_type}
+                                           required size="small" select focused InputLabelProps={textFieldStyle}
+                                           disabled={editMode}>
+                                    <MenuItem value="Контракт">
+                                        <span style={listItemStyle}>Контракт</span>
+                                    </MenuItem>
+                                    <MenuItem value="Квота">
+                                        <span style={listItemStyle}>Квота</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
+                                           color="warning" defaultValue={studentData.enrollment}
+                                           margin='normal' size="small" select sx={{width: "325px"}}
+                                           InputLabelProps={textFieldStyle} disabled={editMode}>
+                                    <MenuItem value="Зачислен">
+                                        <span style={listItemStyle}>Зачислен</span>
+                                    </MenuItem>
+                                    <MenuItem value="Не зачислен">
+                                        <span style={listItemStyle}>Не зачислен</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Номер приказа о зачислении" name='enrollment_order' type="text"
+                                           variant="outlined" color="warning"
+                                           defaultValue={studentData.enrollment_order}
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Номер приказа об отчислении" name='expulsion_order' type="text"
+                                           variant="outlined" defaultValue={studentData.expulsion_order}
+                                           color="warning" disabled={editMode} margin='normal' size="small"
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Номер договора" name='contract_number' type="text" variant="outlined"
+                                           color="warning" defaultValue={studentData.contract_number}
+                                           margin='normal' disabled={editMode}
+                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Статус 1C" name='status_1c' type="text" variant="outlined"
+                                           color="warning" margin='normal' defaultValue={studentData.status_1c}
+                                           size="small" select InputLabelProps={textFieldStyle} disabled={editMode}>
+                                    <MenuItem value="Прикреплен">
+                                        <span style={listItemStyle}>Прикреплен</span>
+                                    </MenuItem>
+                                    <MenuItem value="Не прикреплен">
+                                        <span style={listItemStyle}>Не прикреплен</span>
+                                    </MenuItem>
+                                </TextField>
+                            </div>
                         </div>
                     </div>
-                </div>
-                {!editMode && <div>
-                    <label className="checkbox_style_contract">
-                        <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите изменить данные?
-                    </label>
-                    <div className="button_position_contract_doc">
-                        <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить</button>
+                    <div className="info_and_education_container">
+                        <p className="title_contract_section">Даты и оплата</p>
+                        <div className="columns_position">
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Даты</p>
+                                <TextField label="Срок действия визы" name='visa_validity' type="date" color="warning"
+                                           disabled={editMode} defaultValue={studentData.visa_validity}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>
+                                <TextField label="Дата передачи в международную службу"
+                                           name='transfer_to_international_service' type="date" color="warning"
+                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle}
+                                           defaultValue={studentData.transfer_to_international_service}/>
+                                <TextField label="Дата передачи в МВД" name='transfer_to_MVD' type="date"
+                                           color="warning" disabled={editMode}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle}
+                                           defaultValue={studentData.transfer_to_MVD}/>
+                                <TextField label="Ориентировочная дата получения" name='estimated_receipt_date'
+                                           type="date" color="warning" defaultValue={studentData.estimated_receipt_date}
+                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Фактическая дата получения приглашения"
+                                           name='actual_receipt_date_invitation' type="date" color="warning"
+                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle}
+                                           defaultValue={studentData.actual_receipt_date_invitation}/>
+                            </div>
+                            <div className="column_style_contract">
+                                <p className="title_contract_doc">Оплата</p>
+                                <TextField label="Платеж 1" name='first_payment' type="date" color="warning"
+                                           disabled={editMode} defaultValue={studentData.first_payment}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>
+                                <TextField label="Платеж 2" name='second_payment' type="date" color="warning"
+                                           disabled={editMode} defaultValue={studentData.second_payment}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Платеж 3" name='third_payment' type="date" color="warning"
+                                           disabled={editMode} defaultValue={studentData.third_payment}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle}/>
+                                <TextField label="Платеж 4" name='fourth_payment' type="date" color="warning"
+                                           disabled={editMode} defaultValue={studentData.fourth_payment}
+                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={dateTextFieldStyle}/>
+                            </div>
+                        </div>
                     </div>
-                </div>}
-            </form>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Вы уверены, что хотите удалить выбранного студента?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => {
-                        removeStudent(rows.id, navigate)
-                        setOpen(false)
-                    }
-                    }>Да</Button>
-                    <Button onClick={() => {
-                        setOpen(false)
-                    }
-                    }>Нет</Button>
-                </DialogActions>
-            </Dialog>
-            <Box>
+                    {!editMode && <div>
+                        <label className="checkbox_style_contract">
+                            <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите изменить
+                            данные?
+                        </label>
+                        <div className="button_position_contract_doc">
+                            <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить
+                            </button>
+                        </div>
+                    </div>}
+                </form>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Вы уверены, что хотите удалить выбранного студента?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => {
+                            removeStudent(studentId, navigate)
+                            setOpen(false)
+                        }
+                        }>Да</Button>
+                        <Button onClick={() => {
+                            setOpen(false)
+                        }
+                        }>Нет</Button>
+                    </DialogActions>
+                </Dialog>
                 {modalActive || modalMessageActive || modalFileActive ||
                     <SpeedDial
-                    ariaLabel="SpeedDial openIcon example"
-                    sx={{position: 'fixed', bottom: 20, right: 20}}
-                    icon={<SpeedDialIcon/>}
-                    FabProps={{
-                        sx: {
-                            bgcolor: '#FA7A45',
-                            '&:hover': {
+                        ariaLabel="SpeedDial openIcon example"
+                        sx={{position: 'fixed', bottom: 20, right: 20}}
+                        icon={<SpeedDialIcon/>}
+                        FabProps={{
+                            sx: {
                                 bgcolor: '#FA7A45',
+                                '&:hover': {
+                                    bgcolor: '#FA7A45',
+                                }
                             }
-                        }
-                    }}
-                >
-                    {actions.map((action) => (
-                        <SpeedDialAction
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                            onClick={() => {
-                                action.runFunction()
-                            }}
-                        />
-                    ))}
-                </SpeedDial>}
-                <ModalMessage active={modalActive} setActive={setModalActive} studentEmail={[student_email]}/>
-                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive} singleId={rows.id}/>
-                <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={rows.id}/>
-            </Box>
-        </>
+                        }}
+                    >
+                        {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                onClick={() => {
+                                    action.runFunction()
+                                }}
+                            />
+                        ))}
+                    </SpeedDial>}
+                <ModalMessage active={modalActive} setActive={setModalActive}
+                              studentEmail={[studentData.student_email]}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
+                                       singleId={[studentId]} emails={[studentData.student_email]}/>
+                <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
+            </>
     )
 }

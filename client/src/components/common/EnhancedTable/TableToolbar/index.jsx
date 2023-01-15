@@ -24,7 +24,7 @@ import {useNavigate} from "react-router-dom";
 import './toolbar.css'
 
 export default function TableToolbar({numSelected, selectedRows, selectedEmails}) {
-    const [file, setFile] = useState(null);
+    const [file, setFile] = useState(undefined);
     const [modalActive, setModalActive] = useState(false)
     const [modalMessageActive, setModalMessageActive] = useState(false);
 
@@ -53,11 +53,11 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                 }}
             >
                 {numSelected > 0 ? (
-                    <Typography sx={{flex: '1 1 100%'}} color="inherit" variant="subtitle1" component="div">
+                    <Typography sx={{flex: '1 1 100%'}}>
                         {numSelected} выбрано
                     </Typography>
                 ) : (
-                    <Typography sx={{flex: '1 1 100%'}} variant="h6" id="tableTitle" component="div">
+                    <Typography sx={{flex: '1 1 100%'}}>
                     </Typography>
                 )}
 
@@ -112,7 +112,7 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                     <>
                         {!READER_ACCESS &&
                             <label htmlFor="input_students" className='file_input'>
-                                {file === null ? 'Выбрать файл' : file.name}
+                                {file === undefined ? 'Выбрать файл' : file.name}
                                 <input className='file_input' type="file" name='input_students' id='input_students'
                                        onChange={e => {
                                            setFile(e.target.files[0]);
@@ -120,10 +120,10 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                                 <InsertDriveFileIcon sx={{fontSize: 15}}/>
                             </label>}
 
-                        {!READER_ACCESS && file !== null &&
+                        {!READER_ACCESS && file !== undefined &&
                             <>
                                 <DoNotDisturbIcon sx={{cursor: 'pointer', marginRight: '10px'}} onClick={() => {
-                                    setFile(null)
+                                    setFile(undefined)
                                 }
                                 }/>
                                 <Tooltip sx={{cursor: "pointer"}} color='inherit' title="Загрузить студентов">
@@ -140,10 +140,9 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                     </>
                 )}
             </Toolbar>
-            <CreateTaskModalWindow active={modalActive} setActive={setModalActive} idArray={selectedRows}/>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive} idArray={selectedRows} emails={selectedEmails}/>
             <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={selectedEmails}/>
 
-            {/* Диалоговое окно для подтверждения удаления*/}
             <Dialog
                 open={open}
                 onClose={handleClose}

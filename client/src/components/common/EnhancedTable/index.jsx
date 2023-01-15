@@ -11,19 +11,19 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {useEffect, useState} from "react"
-import moment from 'moment'
 import {getStudents} from '../../../actions/student'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import {CircularProgress} from "@mui/material";
-import {ADD_STUDENT_ROUTE, CARD_CONTRACT_ROUTE, CARD_QUOTA_ROUTE} from "../../../utils/consts";
+import {ADD_STUDENT_ROUTE} from "../../../utils/consts/pathRoutes";
 import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
 import TableToolbar from "./TableToolbar";
 import TableHeader from "./TableHeader";
 import {getToken} from "../../../utils/token";
 import './TableHeader/HeaderTable.css';
+import {lineStyleInTable} from "../../../utils/consts/styles";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -57,9 +57,6 @@ export default function EnhancedTable() {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
 
-    const [selected, setSelected] = useState([]);
-    const [selectedEmail, setSelectedEmail] = useState([]);
-
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(true);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -69,32 +66,9 @@ export default function EnhancedTable() {
 
     const [list, setList] = useState([]);
 
-    const studentStyleInTable = {
-        textDecoration: 'none',
-        color: 'black',
-        fontSize: "14px",
-        fontFamily: ['Montserrat'],
-        fontWeight: '400'
-    }
-
     useEffect(() => {
         getStudents()
             .then(items => {
-                items.map(item => {
-                    item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
-                    item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
-                    item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
-                    item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
-                    item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
-                    item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
-                    item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
-                    item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
-                    item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
-                    item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
-                    item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
-                    item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");
-                    item.actual_receipt_date_invitation = moment(item.actual_receipt_date_invitation).format("YYYY-MM-DD");
-                });
                 setList(items.reverse());
             })
             .finally(() => setLoading(false))
@@ -109,6 +83,9 @@ export default function EnhancedTable() {
         setOrderBy(property);
     };
 
+    const [selected, setSelected] = useState([]);
+    const [selectedEmail, setSelectedEmail] = useState([]);
+
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
             setSelected(filteredValues.map((n) => n.id));
@@ -120,6 +97,7 @@ export default function EnhancedTable() {
 
     const handleClick = (userID) => {
         const selectedIndex = selected.indexOf(userID);
+
         let newSelected = [];
 
         if (selectedIndex === -1) {
@@ -140,7 +118,11 @@ export default function EnhancedTable() {
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-        window.scrollTo(0, 0);
+        window.scrollTo({
+            top: 0,
+            left: 0,
+            behavior: 'smooth'
+        });
     };
 
     const handleChangeRowsPerPage = (event) => {
@@ -154,7 +136,6 @@ export default function EnhancedTable() {
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
-
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - list.length) : 0;
 
@@ -162,7 +143,7 @@ export default function EnhancedTable() {
         for (let i = 0; i < filters.length; i++) {
             let filter = filters[i];
             if (item[filter.param.value] === undefined) return false;
-            switch (filter.operator.value) {
+            switch (filter.operator) {
                 case "coincidence":
                     if (
                         !String(item[filter.param.value])
@@ -172,9 +153,11 @@ export default function EnhancedTable() {
                         return false;
                     break;
                 case "equals":
-                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) !== new Date(filter.value)) {
+                    const tmp1 = new Date(item[filter.param.value]);
+                    const tmp2 = new Date(filter.value);
+                    if (filter.param.type === 'date' && tmp1.getTime() !== tmp2.getTime()) {
                         return false;
-                    } else if (item[filter.param.value] !== Number(filter.value)) {
+                    } else if (item[filter.param.value] === Number(filter.value)) {
                         return false;
                     }
                     break;
@@ -278,74 +261,64 @@ export default function EnhancedTable() {
                                                     />
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.education_type}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.hours_number}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.latin_name}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.russian_name}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.country}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.gender}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.contract_number}
                                                     </Link>
                                                 </TableCell>
-                                                <TableCell align="center" >
-                                                    <Link
-                                                        className = "margin_table"
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                <TableCell align="center">
+                                                    <Link className="margin_table" style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.enrollment_order}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
-                                                    <Link
-                                                        to={row.education_type === "Контракт" ? CARD_CONTRACT_ROUTE : CARD_QUOTA_ROUTE}
-                                                        state={row} style={studentStyleInTable}
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.enrollment}
                                                     </Link>

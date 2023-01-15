@@ -13,30 +13,23 @@ import {
     ListItemButton, ListItemText
 } from "@mui/material";
 import Select from 'react-select';
-import {LetterTemplates} from "../../../utils/consts";
+import {LetterTemplates} from "../../../utils/consts/letterTemplates";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Tooltip from "@mui/material/Tooltip";
 import iziToast from "izitoast";
 import Box from "@mui/material/Box";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import {textFieldStyle} from "../../../utils/consts/styles";
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
     let options = []
     LetterTemplates.map((template) => {
         options.push({value: template.message, label: template.title})
     })
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
-    }
     const [openDialog, setOpenDialog] = useState(false)
     const [subject, setSubject] = useState('')
     const [text, setText] = useState('')
-    const [openEmailList, setOpenEmailList] = useState()
+    const [openEmailList, setOpenEmailList] = useState(false)
     const [template, setTemplate] = useState()
     const [filesToSend, setFilesToSend] = useState(null);
     const [sender, setSender] = useState('Подготовительное отделение для иностранных учащихся УрФУ')
@@ -57,9 +50,8 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                         <div className="title_message_container">Новое письмо</div>
                         <div className="input_position_message">
                             <TextField label="От кого" variant="outlined" color="warning" type="text"
-                                       inputProps={propsStyle}
-                                       value={sender}
-                                       margin='normal' InputLabelProps={propsStyle}
+                                       inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
+                                       value={sender} margin='normal'
                                        onChange={e => setSender(e.target.value)}
                                        size="small" sx={{width: "530px", marginTop: "25px"}}
                             />
@@ -87,7 +79,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                 >
                                     <ListItemText
                                         primary={`Список почт при рассылке (${studentEmail.length})`}
-                                        primaryTypographyProps={propsStyle}
+                                        primaryTypographyProps={textFieldStyle}
                                         sx={{my: 0, mt: 0.3}}
                                     />
                                 </ListItemButton>
@@ -131,10 +123,10 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                                      }}/>
                                 </Tooltip>
                             </div>
-                            <TextField label="Тема пиьсма" variant="outlined" color="warning" type="text"
-                                       inputProps={propsStyle} value={subject}
+                            <TextField label="Тема письма" variant="outlined" color="warning" type="text"
+                                       inputProps={textFieldStyle} value={subject}
                                        onChange={e => setSubject(e.target.value)}
-                                       margin='normal' InputLabelProps={propsStyle}
+                                       margin='normal' InputLabelProps={textFieldStyle}
                                        size="small" sx={{width: "300px", marginTop: "25px"}}
                             />
                         </div>
@@ -153,7 +145,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                 marginRight: "auto",
                                 marginLeft: "auto"
                             }}
-                            inputProps={propsStyle} InputLabelProps={propsStyle}
+                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                             color="warning"
                         />
                         <label htmlFor="input_students" className='file_input_message'>

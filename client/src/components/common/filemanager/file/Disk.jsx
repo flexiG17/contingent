@@ -27,7 +27,7 @@ const Disk = ({studentId}) => {
     const backClickHandler = () => {
         const b = dirStack[dirStack.length - 1];
         dispatch(popDirStack());
-        dispatch(setCurrentDir(b));
+        dispatch(setCurrentDir(b.id));
     };
 
     const uploadFileHandler = (event) => {
@@ -51,6 +51,11 @@ const Disk = ({studentId}) => {
                                        onChange={uploadFileHandler} multiple={true}/>
                             </div>
                         </div>
+                        {
+                            dirStack.map((item) => {
+                                return <> <span className='disk_style_bread'>{item.name}</span> /</>
+                            })
+                        }
                         <FileList/>
                         {
                             active && <ModalDirectory active={active} setActive={setActive} studentId={studentId}/>

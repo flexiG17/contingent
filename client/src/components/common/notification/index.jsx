@@ -22,10 +22,7 @@ import moment from "moment";
 import './Calls.css'
 import CreateTaskModalWindow from "../CreateTaskModal";
 import TaskCard from "../TaskCardModal";
-
-let notifications = []
-
-// страница для отображения задач и работы с ними. Никак не рализован поиск и пагинация
+import {lineStyleInTable, textFieldStyle} from "../../../utils/consts/styles";
 
 function Row(props) {
     const {row} = props;
@@ -67,29 +64,49 @@ function Row(props) {
                     }>Нет</Button>
                 </DialogActions>
             </Dialog>
-            <React.Fragment>
-                <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                    <TableCell>
-                        <CheckIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
-                            handleOpen()
-                        }}/>
-                    </TableCell>
-                    <TableCell component="th" scope="row">{row.type}</TableCell>
-                    <TableCell component="th" scope="row">{row.completed}</TableCell>
-                    <TableCell align="left">
-                        <button onClick={() => setActiveTaskCardModel(true)}
-                        >Ссылка
-                        </button>
-                    </TableCell>
-                    <TableCell align="right">{row.students_id !== null && row.students_id.length}</TableCell>
-                    <TableCell align="right">{moment(row.date).locale('ru').format("ll")}</TableCell>
-                    <TableCell sx={{maxWidth: '130px'}} align="right">{row.comment}</TableCell>
-                </TableRow>
-                <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
-                    <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
-                    </TableCell>
-                </TableRow>
-            </React.Fragment>
+            <TableRow>
+                <TableCell>
+                    <CheckIcon className="icon_button" aria-label="expand row" size="small" onClick={() => {
+                        handleOpen()
+                    }}/>
+                </TableCell>
+                <TableCell scope="row" sx={lineStyleInTable}>{row.type} </TableCell>
+                <TableCell
+                    scope="row"
+                    align='center'
+                    sx={{
+                        borderRadius: '10px', ...(row.completed === 'Просрочено' && {backgroundColor: '#FFF2ED'}),
+                        fontFamily: ['Montserrat'], fontSize: '14px'
+                    }}>
+                    {row.completed}
+                </TableCell>
+                <TableCell align="center">
+                    <Button
+                        style={{
+                            borderRadius: 35,
+                            color: 'black',
+                            borderColor: "#FA7A45",
+                            fontSize: "12px",
+                            fontFamily: ['Montserrat'],
+                            fontWeight: '450'
+                        }}
+                        variant="outlined"
+                        size='small'
+                        onClick={() => setActiveTaskCardModel(true)}>Ссылка</Button>
+                </TableCell>
+                <TableCell align="left" sx={{whiteSpace: 'nowrap', fontSize: "14px", fontFamily: ['Montserrat'], fontWeight: '400'}}>
+                    {moment(row.date).locale('ru').format("ll")}
+                </TableCell>
+                <TableCell align="right"
+                           sx={lineStyleInTable}>{row.students_id !== null && row.students_id.length}</TableCell>
+                <TableCell align="right" sx={lineStyleInTable}>
+                    {row.comment}
+                </TableCell>
+            </TableRow>
+            <TableRow sx={{'& > *': {background: "#FFF2ED"}}}>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+                </TableCell>
+            </TableRow>
         </>
     );
 }
@@ -100,39 +117,45 @@ export default function CollapsibleTable() {
 
     useEffect(() => {
         getNotifications()
-            .then(items => setNotificationList(items.reverse()))
+            .then(items => {
+                items.map(item => {
+                    item.date = new Date(item.date)
+                })
+                items.sort((a, b) => (a.date.getTime() < b.date.getTime()) ? 1 : ((b.date.getTime() < a.date.getTime()) ? -1 : 0)).reverse()
+                items.map(item => {
+                    const date = new Date(item.date)
+                    const offset = date.getTimezoneOffset()
+                    item.date = new Date(date.getTime() - (offset*60*1000)).toISOString().split('T')[0]
+                })
+                setNotificationList(items)
+            })
     }, [])
-
-    notifications = notificationList
-    notifications.map(item => {
-        item.date = moment(item.date).format("YYYY-MM-DD")
-    })
 
     return (
         <>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>
             <div className="notification_navbar">
                 <button
                     onClick={() => setModalActive(true)}
-                    className="add_notification_button"> Добавить
-                    задачу <AddIcon/></button>
+                    className="add_notification_button"> Добавить задачу <AddIcon/>
+                </button>
             </div>
-            <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>
             <TableContainer component={Paper}
-                            sx={{width: '800px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
+                            sx={{width: '850px', ml: 'auto', mr: 'auto', mt: '30px', mb: '30px'}}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
                             <TableCell/>
-                            <TableCell>Тип</TableCell>
-                            <TableCell align="left">Статус</TableCell>
-                            <TableCell align="left">Задача</TableCell>
-                            <TableCell align="right">Cтуденты</TableCell>
-                            <TableCell align="right">Дата</TableCell>
-                            <TableCell align="right">Комментарий</TableCell>
+                            <TableCell sx={textFieldStyle.style}>Тип</TableCell>
+                            <TableCell align="center" sx={textFieldStyle.style}>Статус</TableCell>
+                            <TableCell align="center" sx={textFieldStyle.style}>Задача</TableCell>
+                            <TableCell align="left" sx={textFieldStyle.style}>Дата</TableCell>
+                            <TableCell align="right" sx={textFieldStyle.style}>Cтуденты</TableCell>
+                            <TableCell align="right" sx={textFieldStyle.style}>Комментарий</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {notifications.map((row) => (
+                        {notificationList.map((row) => (
                             <Row key={row.id} row={row}/>
                         ))}
                     </TableBody>
@@ -141,17 +164,3 @@ export default function CollapsibleTable() {
         </>
     );
 }
-
-/*
-
-<Link
-    to={row.russian_name !== '' ? ADD_STUDENT_NOTIFICATION_ROUTE : ADD_NOTIFICATION_ROUTE}
-    state={[row, {
-        type: 'update',
-        button: 'Изменить',
-        message: 'Вы уверены, что хотите изменить уведомление?',
-    }]}
-    style={{textDecoration: 'none', color: 'black'}}
-
-> <button onClick={()=> setModalActive(true)}>Ссылка </button>
-</Link>*/

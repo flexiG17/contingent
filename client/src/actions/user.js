@@ -1,6 +1,6 @@
 import axios from 'axios'
 import iziToast from "izitoast";
-import {HOME_ROUTE, internalServerError, URL_PATH} from "../utils/consts";
+import {HOME_ROUTE, internalServerError, URL_PATH} from "../utils/consts/pathRoutes";
 import {getToken, setToken} from "../utils/token";
 
 export const Registration = async (name, role, email, password) => {
@@ -58,7 +58,7 @@ export function getUsers() {
     }).then(resp => resp.data)
 }
 
-export function changeUserData(data, id) {
+export function changeUserData(data, id, isCurrentUserChanged) {
     return axios.put(`${URL_PATH}/api/user/change/${id}`, data, {
         headers: {
             'Authorization': getToken(),
@@ -66,6 +66,8 @@ export function changeUserData(data, id) {
         }
     })
         .then(({data}) => {
+            if (data.token !== undefined)
+                setToken(data.token);
             iziToast.success({
                 message: data.message,
                 position: 'topRight'

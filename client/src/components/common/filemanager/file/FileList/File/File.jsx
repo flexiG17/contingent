@@ -9,7 +9,7 @@ import Download from "@mui/icons-material/Download";
 import {useDispatch} from "react-redux";
 import {pushDirStack, setCurrentDir} from "../../../../../../store/slices/ManagerData/manager-data";
 import {downloadFile} from "../../../../../../actions/fileManager";
-import {fileSizes} from "../../../../../../utils/consts";
+import {fileSizes} from "../../../../../../utils/consts/file";
 import {deleteDir} from "../../../../../../store/api-actions";
 
 const File = ({file}) => {
@@ -36,7 +36,7 @@ const File = ({file}) => {
     const handleFileClick = () => {
         if (file.type === 'dir') {
             dispatch(setCurrentDir(file.id));
-            dispatch(pushDirStack(file.parent_id));
+            dispatch(pushDirStack({name: file.name, id: file.parent_id}));
         }
     };
 
@@ -99,7 +99,7 @@ const File = ({file}) => {
                 isOpen &&
                 <div className={isOpen ? "modal active" : "modal"} onClick={() => setIsOpen(false)}>
                     <div className="modal_content dir__content" onClick={e => e.stopPropagation()}>
-                        <h2>Вы уверны, что хотите удалить выбранный файл?</h2>
+                        <h2>Вы уверены, что хотите удалить выбранный файл?</h2>
                         <div>
                             <button className="dir__button" onClick={handleDeleteFile}>Да</button>
                             <button className="dir__button" onClick={() => setIsOpen(false)}>Нет</button>

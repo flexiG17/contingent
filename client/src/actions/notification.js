@@ -1,9 +1,9 @@
 import axios from "axios";
 import iziToast from "izitoast";
-import {internalServerError, URL_PATH} from "../utils/consts";
+import {ACCOUNT_ROUTE, internalServerError, URL_PATH} from "../utils/consts/pathRoutes";
 import {getToken} from "../utils/token";
 
-export function createNotification(item) {
+export function createNotification(item, navigate) {
     return axios.post(`${URL_PATH}/api/notification/create`, item, {
         headers: {
             'Authorization': getToken(),
@@ -15,7 +15,7 @@ export function createNotification(item) {
             position: 'topRight'
         });
         setTimeout(() => {
-            window.location.reload()
+            navigate(ACCOUNT_ROUTE)
         }, 1500);
     }).catch((e) => {
         iziToast.error({

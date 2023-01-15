@@ -2,7 +2,7 @@ import React from "react";
 import './StartPage.css';
 import Logo from '.././full_logo.png';
 import {NavLink} from "react-router-dom";
-import {HOME_ROUTE, LOGIN_ROUTE} from "../../utils/consts";
+import {LOGIN_ROUTE} from "../../utils/consts/pathRoutes";
 
 
 function StartPage() {

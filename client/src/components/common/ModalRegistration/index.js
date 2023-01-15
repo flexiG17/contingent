@@ -3,6 +3,7 @@ import './ModalRegistration.css';
 import {Registration} from "../../../actions/user";
 import TextField from "@mui/material/TextField";
 import {MenuItem} from "@mui/material";
+import {listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 
 
 const ModalRegistration = ({active,setActive}) => {
@@ -23,15 +24,6 @@ const ModalRegistration = ({active,setActive}) => {
             })
     };
 
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
-    }
-
     return(
         <>
             <div className={active ? "modal active" : "modal"} onClick={()=> setActive(false)}>
@@ -42,16 +34,16 @@ const ModalRegistration = ({active,setActive}) => {
                                onChange={event => setNameItemInput(event.target.value)} value={inputName}/>
                         <label className="label_style" htmlFor="name">Роль</label>
                         <TextField type="text" label='Роль' variant="outlined" color="warning" margin='normal'
-                                   size="small" select InputLabelProps={propsStyle} focused sx={{width: 305, color: '#FA7A45'}}
+                                   size="small" select InputLabelProps={textFieldStyle} focused sx={{width: 305, color: '#FA7A45'}}
                                    onChange={event => setRoleItemInput(event.target.value)} value={inputRole}>
-                            <MenuItem sx={propsStyle} value="Администратор">
-                                <span style={propsStyle.style}>Администратор</span>
+                            <MenuItem value="Администратор">
+                                <span style={listItemStyle}>Администратор</span>
                             </MenuItem>
-                            <MenuItem sx={propsStyle} value="Редактор">
-                                <span style={propsStyle.style}>Редактор</span>
+                            <MenuItem value="Редактор">
+                                <span style={listItemStyle}>Редактор</span>
                             </MenuItem>
-                            <MenuItem sx={propsStyle} value="Читатель">
-                                <span style={propsStyle.style}>Читатель</span>
+                            <MenuItem value="Читатель">
+                                <span style={listItemStyle}>Читатель</span>
                             </MenuItem>
                         </TextField>
                         <label className="label_style" htmlFor="email">Email</label>

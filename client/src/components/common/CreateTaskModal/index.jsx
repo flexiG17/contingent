@@ -1,31 +1,22 @@
 import React, {useState} from "react"
 import './Modal.css'
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import {Badge, MenuItem} from "@mui/material";
 import jwt_decode from "jwt-decode";
 import {getToken} from "../../../utils/token";
-import {createNotification, updateNotification} from "../../../actions/notification";
+import {createNotification} from "../../../actions/notification";
 import {useNavigate} from "react-router-dom";
+import {dateTextFieldStyle, listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 
 
-const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
+const CreateTaskModalWindow = ({active, setActive, singleId, idArray, emails}) => {
     const [activeClick, setActiveClick] = useState(true);
-    const [date, setDate] = useState()
-    const [type, setType] = useState()
-    const [comment, setComment] = useState()
+    const [date, setDate] = useState('')
+    const [type, setType] = useState('')
+    const [comment, setComment] = useState('')
 
     const handleClickContract = () => {
         setActiveClick(!activeClick)
-    }
-
-    const propsStyle = {
-        style:
-            {
-                fontSize: "14.5px",
-                fontFamily: ['Montserrat'],
-                fontWeight: '450'
-            }
     }
 
     const userId = jwt_decode(getToken()).userId
@@ -52,53 +43,60 @@ const CreateTaskModalWindow = ({active, setActive, singleId, idArray}) => {
         createNotification(data, navigate)
     }
 
-
     return (
         <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
-            <Badge badgeContent={idArray !== undefined && idArray.length} color="warning">
-                <div className="modal_content" onClick={e => e.stopPropagation()}>
-                    <p className="title_addNotification">Добавить задачу</p>
+            <div className="modal_content" onClick={e => e.stopPropagation()}>
+                <p className="title_addNotification">Добавить задачу</p>
 
-                    <form className="container_addNotification" onSubmit={handleSubmit}>
-                        <Box component="form" sx={{'& > :not(style)': {mt: 1, ml: 2, width: '25ch'}}} noValidate
-                             autoComplete="off">
-                            <TextField
-                                sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
-                                label="Тип задачи" type="text" variant="outlined" color="warning"
-                                focused select InputLabelProps={propsStyle}
-                                onChange={event => setType(event.target.value)} value={type}>
-                                <MenuItem sx={propsStyle} value="Звонок">
-                                    <span style={propsStyle.style}>Звонок</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="E-mail">
-                                    <span style={propsStyle.style}>E-mail</span>
-                                </MenuItem>
-                                <MenuItem sx={propsStyle} value="Напоминание">
-                                    <span style={propsStyle.style}>Напоминание</span>
-                                </MenuItem>
-                            </TextField>
-                            <TextField
-                                label="Дата" type="date" color="warning" focused inputProps={propsStyle}
-                                InputLabelProps={propsStyle} onChange={event => setDate(event.target.value)}
-                                value={date}
-                                sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}/>
-                            <TextField
-                                sx={{'& > :not(style)': {mt: "15px", mb: "15px", width: '30ch'}}}
-                                label="Примечания" variant="outlined" color="warning" multiline rows={3}
-                                focused inputProps={propsStyle} InputLabelProps={propsStyle}
-                                onChange={event => setComment(event.target.value)} value={comment}/>
-                        </Box>
-                        <label className="checkbox_style_notification">
-                            <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите добавить?
-                        </label>
-                        <div className="button_position_notification">
+                <form className="container_addNotification" onSubmit={handleSubmit}>
+                    <div className='textFields_position'>
+                        <TextField
+                            sx={{'& > :not(style)': {mb: 2, width: '30ch'}}}
+                            label="Тип задачи" type="text" variant="outlined" color="warning"
+                            select required InputLabelProps={textFieldStyle}
+                            onChange={event => setType(event.target.value)} value={type}>
+                            <MenuItem value="Звонок">
+                                <span style={listItemStyle}>Звонок</span>
+                            </MenuItem>
+                            <MenuItem value="E-mail">
+                                <span style={listItemStyle}>E-mail</span>
+                            </MenuItem>
+                            <MenuItem value="Напоминание">
+                                <span style={listItemStyle}>Напоминание</span>
+                            </MenuItem>
+                        </TextField>
+                        {
+                            type === 'E-mail' && studentIdToSave !== null
+                                ? <TextField
+                                    sx={{'& > :not(style)': {mt: 2, mb: 2, width: '30ch'}}}
+                                    label="E-mail студента" disabled variant="outlined" color="warning"
+                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
+                                    value={studentIdToSave.length === 1 ? [emails] : `Кол-во почт: ${idArray.length}`}/>
+                                : ''
+                        }
+                        <TextField
+                            label="Дата" type="date" color="warning" inputProps={textFieldStyle}
+                            InputLabelProps={dateTextFieldStyle} onChange={event => setDate(event.target.value)}
+                            value={date} required
+                            sx={{'& > :not(style)': {mt: 2, mb: 4, width: '30ch'}}}/>
+                        <TextField
+                            sx={{'& > :not(style)': {mb: "15px", width: '30ch'}}}
+                            label="Примечания" variant="outlined" color="warning" multiline rows={3}
+                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
+                            onChange={event => setComment(event.target.value)} value={comment}/>
+                    </div>
+                    <label className="checkbox_style_notification">
+                        <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите добавить?
+                    </label>
+                    <div className="button_position_notification">
+                        <Badge badgeContent={idArray !== undefined && idArray.length} color="warning">
                             <button type="submit" className="button_style_contract_doc"
                                     disabled={activeClick}>Добавить
                             </button>
-                        </div>
-                    </form>
-                </div>
-            </Badge>
+                        </Badge>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }
