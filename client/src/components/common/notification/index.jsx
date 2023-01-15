@@ -99,7 +99,7 @@ function Row(props) {
                 </TableCell>
                 <TableCell align="right"
                            sx={lineStyleInTable}>{row.students_id !== null && row.students_id.length}</TableCell>
-                <TableCell sx={{maxWidth: '130px'}} align="right" sx={lineStyleInTable}>
+                <TableCell align="right" sx={lineStyleInTable}>
                     {row.comment}
                 </TableCell>
             </TableRow>
@@ -123,7 +123,9 @@ export default function CollapsibleTable() {
                 })
                 items.sort((a, b) => (a.date.getTime() < b.date.getTime()) ? 1 : ((b.date.getTime() < a.date.getTime()) ? -1 : 0)).reverse()
                 items.map(item => {
-                    item.date = new Date(item.date).toISOString().split('T')[0]
+                    const date = new Date(item.date)
+                    const offset = date.getTimezoneOffset()
+                    item.date = new Date(date.getTime() - (offset*60*1000)).toISOString().split('T')[0]
                 })
                 setNotificationList(items)
             })
@@ -139,7 +141,7 @@ export default function CollapsibleTable() {
                 </button>
             </div>
             <TableContainer component={Paper}
-                            sx={{width: '850px', marginLeft: 'auto', marginRight: 'auto', marginTop: '30px'}}>
+                            sx={{width: '850px', ml: 'auto', mr: 'auto', mt: '30px', mb: '30px'}}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow>
