@@ -33,11 +33,16 @@ module.exports.getAll = async function (req, res) {
 
 module.exports.create = async function (req, res) {
     const model = new Student(req.body)
-    let [student_id] = await db.students.insert(model)
-        .catch(err => {
-            if (err.code === 'ER_DUP_ENTRY')
-                throw new Error(`${model.passport_number} - номер паспорта уже существует`)
-        })
+
+    let student_id = 0
+    try {
+        student_id = await db.students.insert(model)
+    } catch (err) {
+        if (err.code === 'ER_DUP_ENTRY')
+            return res.status(409).json({message: `${model.passport_number} - номер паспорта уже существует`})
+
+        throw new Error(err.message)
+    }
 
     if (req.files.length > 0) {
         const studentFile = await FileService.createStudentDir(student_id, req.user.id)
@@ -58,10 +63,7 @@ module.exports.update = async function (req, res) {
 
     const model = new Student(req.body)
 
-    await getStudent(req.params.id).update(model).catch(err => {
-        if (err.code === 'ER_DUP_ENTRY')
-            throw new Error(`${model.passport_number} - номер паспорта уже существует`)
-    })
+    await getStudent(req.params.id).update(model)
 
     return res.status(200).json({message: `Студент ${model.latin_name} был изменён`})
 }
@@ -132,7 +134,7 @@ module.exports.importXlsxData = async function (req, res) {
         const isExist = await db.students.where({passport_number: model.passport_number}).first()
 
         if (isExist)
-            throw new Error(`${model.passport_number} - номер паспорта уже существует`)
+            return res.status(409).json({message: `${model.passport_number} - номер паспорта уже существует`})
     }
 
     await db.students.insert(data)
