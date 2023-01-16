@@ -38,38 +38,6 @@ cron.schedule(everyDayMidnight, async () => {
 
 const port = process.env.PORT || 5000
 
-/*const WSServer = require('express-ws')(app)
-const aWss = WSServer.getWss()
-app.ws('/student/:id', (ws, req) => {
-    // отправляем на клиента с типом message
-    ws.on('message', (msg) => {
-        msg = JSON.parse(msg)
-        switch (msg.method){
-            case 'connection':
-                connectionHandler(ws, msg)
-                break
-        }
-    })
-})*/
-
-/*const connectionHandler = (ws, msg) => {
-    ws.id = msg.studentId
-    broadcastConnection(ws, msg)
-}
-
-const broadcastConnection = (ws, msg) => {
-    aWss.clients.forEach(client => {
-        if (client.id === msg.studentId){
-            client.send(JSON.stringify({
-                method: 'connection',
-                userId: msg.userId,
-                userName: msg.userName,
-                studentId: msg.studentId
-            }))
-        }
-    })
-}*/
-
 app.listen(port, (err) => {
     if (err) throw err;
     console.log(`Server is running at localhost:${port} in ${app.get("env")} mode`)

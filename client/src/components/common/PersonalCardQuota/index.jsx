@@ -28,9 +28,6 @@ import ModalFile from "../filemanager/ModalFile";
 import {textFieldStyle, dateTextFieldStyle, listItemStyle} from "../../../utils/consts/styles";
 import moment from "moment";
 
-// файл с по сути тем же, что на страницах Quota.jsx, index.jsx, index.jsx, index.jsx
-// отличаются они либо кол-вом форм, либо выходными данными. По сути, можно подумать как 4 страница сменить до 2, а мб до 1
-
 export default function PersonalCardQuota() {
     const [active, setActive] = useState(true);
     const [modalActive, setModalActive] = useState(false);
