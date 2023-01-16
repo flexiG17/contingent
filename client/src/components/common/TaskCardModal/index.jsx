@@ -179,7 +179,11 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                     sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
                                                     onClick={() => {
                                                         studentsToSave.map(student => {
-                                                            studentEmails.push(student.student_email)
+                                                            studentEmails.push({
+                                                                id: student.id,
+                                                                education_type: student.education_type,
+                                                                email: student.student_email
+                                                            })
                                                         })
                                                         setModalMessageActive(true)
                                                         setActive(false)

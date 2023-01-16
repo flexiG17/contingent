@@ -89,7 +89,13 @@ export default function EnhancedTable() {
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
             setSelected(filteredValues.map((n) => n.id));
-            setSelectedEmail(filteredValues.map((n) => n.student_email))
+            setSelectedEmail(filteredValues.map((n) => {
+                return {
+                    id: n.id,
+                    education_type: n.education_type,
+                    email: n.student_email
+                }
+            }))
             return;
         }
         setSelected([]);

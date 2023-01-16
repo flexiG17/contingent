@@ -19,7 +19,8 @@ import Tooltip from "@mui/material/Tooltip";
 import iziToast from "izitoast";
 import Box from "@mui/material/Box";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import {textFieldStyle} from "../../../utils/consts/styles";
+import {lineStyleInTable, textFieldStyle} from "../../../utils/consts/styles";
+import {Link} from "react-router-dom";
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
     let options = []
@@ -86,21 +87,17 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                 {openEmailList &&
                                     studentEmail.map((item) => (
                                         <ListItemButton
-                                            key={item}
+                                            key={item.id}
                                             sx={{
                                                 background: '#FFD89D',
                                                 pt: '5px',
                                                 pb: '5px'
                                             }}
                                         >
-                                            <ListItemText
-                                                primary={item}
-                                                primaryTypographyProps={{
-                                                    fontSize: 14,
-                                                    fontFamily: ['Montserrat'],
-                                                    fontWeight: '450'
-                                                }}
-                                            />
+                                            <Link to={`/${item.education_type === "Контракт" ? 'contract' : 'quota'}/${item.id}`}
+                                                  target="_blank" style={lineStyleInTable}>
+                                                {item.email}
+                                            </Link>
                                         </ListItemButton>
                                     ))}
                             </Box>
