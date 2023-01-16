@@ -125,6 +125,7 @@ export default function PersonalCardQuota() {
 
     const formRef = useRef(null);
     const handleSubmit = (e) => {
+        setIsEditModeWasOn(false)
         e.preventDefault();
         let formData = new FormData(formRef.current)
         const dataToSave = {};
@@ -545,7 +546,11 @@ export default function PersonalCardQuota() {
                             ))}
                         </SpeedDial>}
                     <ModalMessage active={modalActive} setActive={setModalActive}
-                                  studentEmail={[studentData.student_email]}/>
+                                  studentEmail={[{
+                                      id: studentData.id,
+                                      education_type: studentData.education_type,
+                                      email: studentData.student_email
+                                  }]}/>
                     <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
                                            singleId={[studentId]} emails={[studentData.student_email]}/>
                     <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>

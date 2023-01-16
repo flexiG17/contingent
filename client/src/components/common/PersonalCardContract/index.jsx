@@ -152,6 +152,7 @@ export default function PersonalCardContract() {
     const formRef = useRef(null);
     const navigate = useNavigate()
     const handleSubmit = (e) => {
+        setIsEditModeWasOn(false)
         e.preventDefault();
         let formData = new FormData(formRef.current)
         const dataToSave = {};
@@ -593,7 +594,11 @@ export default function PersonalCardContract() {
                         ))}
                     </SpeedDial>}
                 <ModalMessage active={modalActive} setActive={setModalActive}
-                              studentEmail={[studentData.student_email]}/>
+                              studentEmail={[{
+                                  id: studentData.id,
+                                  education_type: studentData.education_type,
+                                  email: studentData.student_email
+                              }]}/>
                 <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
                                        singleId={[studentId]} emails={[studentData.student_email]}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
