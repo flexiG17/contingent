@@ -10,5 +10,5 @@ export const ACCOUNT_ROUTE = '/account'
 export const ADD_STUDENT_ROUTE = '/createStudent'
 
 export const internalServerError = (e) => {
-    return e.response.status ? 'Ошибка сервера, попробуйте снова' : e.response.data.message
+    return e.response.status === 500 ? 'Ошибка сервера, попробуйте снова' : e.response.data.message
 }

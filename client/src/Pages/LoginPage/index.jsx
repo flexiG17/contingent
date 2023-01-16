@@ -7,7 +7,6 @@ import {Alert} from "@mui/material";
 import {Login} from "../../actions/user";
 import {useDispatch} from "react-redux";
 import {setAppStatus} from "../../store/slices/AppData/app-data";
-import {HOME_ROUTE} from "../../utils/consts/pathRoutes";
 
 function LoginPage() {
     const [inputEmail, setEmailItemInput] = useState('');
@@ -22,10 +21,8 @@ function LoginPage() {
         dispatch(setAppStatus(0));
         Login(inputEmail, inputPassword, navigate)
             .then(() => {
-                navigate(HOME_ROUTE);
                 dispatch(setAppStatus(1));
             })
-
     };
     return (
         <>
