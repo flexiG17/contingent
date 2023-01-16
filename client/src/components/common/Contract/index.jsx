@@ -146,35 +146,35 @@ export default function Contract() {
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
                                    color="warning" margin='normal' size="small" select defaultValue=''
                                    InputLabelProps={textFieldStyle}>
-                            <MenuItem value="1008 ак.ч. (1 год)">
-                                <span style={listItemStyle}>1008 ак.ч. (1 год)</span>
+                            <MenuItem value="1008 (1 год)">
+                                <span style={listItemStyle}>1008 (1 год)</span>
                             </MenuItem>
-                            <MenuItem value="1008 ак.ч. (1.5 год)">
-                                <span style={listItemStyle}>1008 ак.ч. (1.5 год)</span>
+                            <MenuItem value="1008 (1.5 год)">
+                                <span style={listItemStyle}>1008 (1.5 год)</span>
                             </MenuItem>
-                            <MenuItem value="868 ак.ч.">
-                                <span style={listItemStyle}>868 ак.ч.</span>
+                            <MenuItem value="868">
+                                <span style={listItemStyle}>868</span>
                             </MenuItem>
-                            <MenuItem value="728 ак.ч.">
-                                <span style={listItemStyle}>728 ак.ч.</span>
+                            <MenuItem value="728">
+                                <span style={listItemStyle}>728</span>
                             </MenuItem>
-                            <MenuItem value="588 ак.ч.">
-                                <span style={listItemStyle}>588 ак.ч.</span>
+                            <MenuItem value="588">
+                                <span style={listItemStyle}>588</span>
                             </MenuItem>
-                            <MenuItem value="504 ак.ч.">
-                                <span style={listItemStyle}>504 ак.ч.</span>
+                            <MenuItem value="504">
+                                <span style={listItemStyle}>504</span>
                             </MenuItem>
-                            <MenuItem value="288 ак.ч.">
-                                <span style={listItemStyle}>588 ак.ч.</span>
+                            <MenuItem value="288">
+                                <span style={listItemStyle}>288</span>
                             </MenuItem>
-                            <MenuItem value="144 ак.ч.">
-                                <span style={listItemStyle}>144 ак.ч.</span>
+                            <MenuItem value="144">
+                                <span style={listItemStyle}>144</span>
                             </MenuItem>
-                            <MenuItem value="108 ак.ч.">
-                                <span style={listItemStyle}>108 ак.ч.</span>
+                            <MenuItem value="108">
+                                <span style={listItemStyle}>108</span>
                             </MenuItem>
-                            <MenuItem value="588 ак.ч.">
-                                <span style={listItemStyle}>72 ак.ч.</span>
+                            <MenuItem value="72">
+                                <span style={listItemStyle}>72</span>
                             </MenuItem>
                         </TextField>
                         <TextField name='form_study' label="Форма обучения" type="text" variant="outlined"

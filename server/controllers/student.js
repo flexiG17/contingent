@@ -39,7 +39,7 @@ module.exports.create = async function (req, res) {
         student_id = await db.students.insert(model)
     } catch (err) {
         if (err.code === 'ER_DUP_ENTRY')
-            return res.status(409).json({message: `${model.passport_number} - номер паспорта уже существует`})
+            return res.status(409).json({message: `Студент ${model.latin_name} с номером паспорта ${model.passport_number} уже существует`})
 
         throw new Error(err.message)
     }
@@ -134,7 +134,7 @@ module.exports.importXlsxData = async function (req, res) {
         const isExist = await db.students.where({passport_number: model.passport_number}).first()
 
         if (isExist)
-            return res.status(409).json({message: `${model.passport_number} - номер паспорта уже существует`})
+            return res.status(409).json({message: `Студент ${model.latin_name} с номером паспорта ${model.passport_number} уже существует`})
     }
 
     await db.students.insert(data)
