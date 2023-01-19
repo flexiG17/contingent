@@ -172,17 +172,15 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        dataToSave.append('to', studentEmail)
+                        dataToSave.append('to', studentEmail.map(n => n.email))
                         dataToSave.append('from', sender)
                         dataToSave.append('subject', subject)
                         dataToSave.append('text', text)
-                        Object.values(filesToSend).map(file => {
-                            dataToSave.append('files', file)
-                        })
-                        sendMessage(dataToSave)
-                            .then(() => {
-                                setActive(false)
+                        if (filesToSend)
+                            Object.values(filesToSend).map(file => {
+                                dataToSave.append('files', file)
                             })
+                        sendMessage(dataToSave).then(() => setActive(false))
                         setOpenDialog(false)
                     }
                     }>Да</Button>

@@ -87,7 +87,7 @@ const TaskCard = ({active, setActive, taskData}) => {
 
     return (
         <>
-            <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={studentEmails}/>
+            {modalMessageActive && <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={studentEmails}/>}
 
             <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
                 <div className="modal_content" onClick={e => e.stopPropagation()}>
