@@ -70,14 +70,14 @@ const TaskCard = ({active, setActive, taskData}) => {
                 .then(students => {
                     setStudentsInCard(students)
 
-                    students.map(student => {
-                        studentsToSave.push({
+                    setStudentsToSave(students.map(student => {
+                        return {
                             id: student.id,
                             latin_name: student.latin_name,
                             student_email: student.student_email,
                             education_type: student.education_type
-                        })
-                    })
+                        }
+                    }));
                 })
                 .finally(() => {
                     setLoading(false);
