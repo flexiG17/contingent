@@ -84,30 +84,22 @@ export default function EnhancedTable() {
     };
 
     const [selected, setSelected] = useState([]);
-    const [selectedEmail, setSelectedEmail] = useState([]);
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            setSelected(filteredValues.map((n) => n.id));
-            setSelectedEmail(filteredValues.map((n) => {
-                return {
-                    id: n.id,
-                    education_type: n.education_type,
-                    email: n.student_email
-                }
-            }))
+            setSelected(filteredValues);
             return;
         }
         setSelected([]);
     };
 
-    const handleClick = (userID) => {
-        const selectedIndex = selected.indexOf(userID);
+    const handleClick = (studentId, student) => {
+        const selectedIndex = selected.findIndex(el => el.id === student.id);
 
         let newSelected = [];
 
         if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, userID);
+            newSelected = newSelected.concat(selected, student);
         } else if (selectedIndex === 0) {
             newSelected = newSelected.concat(selected.slice(1));
         } else if (selectedIndex === selected.length - 1) {
@@ -140,7 +132,7 @@ export default function EnhancedTable() {
         setDense(event.target.checked);
     };
 
-    const isSelected = (name) => selected.indexOf(name) !== -1;
+    const isSelected = (studentId) => selected.findIndex(student => student.id === studentId) !== -1;
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - list.length) : 0;
@@ -226,7 +218,17 @@ export default function EnhancedTable() {
                     borderRadius: '0px',
                     borderTop: '1px solid #FA7A45'
                 }}>
-                    <TableToolbar numSelected={selected.length} selectedRows={selected} selectedEmails={selectedEmail}/>
+                    <TableToolbar
+                        numSelected={selected.length}
+                        selectedRows={selected.map(student => student.id)}
+                        selectedEmails={selected.map(student => {
+                            return {
+                                id: student.id,
+                                education_type: student.education_type,
+                                email: student.student_email
+                            };
+                        })}
+                    />
                     <TableContainer>
                         <Table
                             sx={{minWidth: 750}}
@@ -260,7 +262,7 @@ export default function EnhancedTable() {
                                             >
                                                 <TableCell padding="checkbox">
                                                     <Checkbox onClick={() => {
-                                                        handleClick(row.id);
+                                                        handleClick(row.id, row);
                                                     }}
                                                               color="primary" checked={isItemSelected}
                                                               inputProps={{'aria-labelledby': labelId,}}
@@ -316,7 +318,8 @@ export default function EnhancedTable() {
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="center">
-                                                    <Link className="margin_table" style={lineStyleInTable} target="_blank"
+                                                    <Link className="margin_table" style={lineStyleInTable}
+                                                          target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
                                                         {row.enrollment_order}
