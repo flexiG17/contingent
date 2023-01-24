@@ -87,7 +87,8 @@ const TaskCard = ({active, setActive, taskData}) => {
 
     return (
         <>
-            {modalMessageActive && <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={studentEmails}/>}
+            {modalMessageActive && <ModalMessage active={modalMessageActive} setActive={setModalMessageActive}
+                                                 studentEmail={studentEmails}/>}
 
             <div className={active ? "modal active" : "modal"} onClick={() => setActive(false)}>
                 <div className="modal_content" onClick={e => e.stopPropagation()}>
@@ -178,15 +179,15 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                 <MailOutlineIcon
                                                     sx={{cursor: 'pointer', marginTop: '15px', marginLeft: '15px'}}
                                                     onClick={() => {
-                                                        studentsToSave.map(student => {
-                                                            studentEmails.push({
+                                                        setStudentEmails(studentsToSave.map(student => {
+                                                            return {
                                                                 id: student.id,
                                                                 education_type: student.education_type,
                                                                 email: student.student_email
-                                                            })
-                                                        })
-                                                        setModalMessageActive(true)
-                                                        setActive(false)
+                                                            }
+                                                        }));
+                                                        setModalMessageActive(true);
+                                                        setActive(false);
                                                     }}
                                                 />
                                             </Tooltip>
