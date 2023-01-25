@@ -199,9 +199,6 @@ export default function CollapsibleTable() {
         return multiFilter(row);
     });
 
-    console.log('Task List', notificationList);
-    console.log('Filters', filters);
-
     return (
         <>
             <CreateTaskModalWindow active={modalActive} setActive={setModalActive}/>

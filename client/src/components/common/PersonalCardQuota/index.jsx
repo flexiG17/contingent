@@ -107,7 +107,6 @@ export default function PersonalCardQuota() {
     useEffect(() => {
         const handleTabClose = event => {
             event.preventDefault();
-            console.log(event);
             return (event.returnValue = 'Вы уверены, что хотите выйти? Изменения не сохранятся');
         };
 
