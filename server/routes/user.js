@@ -7,12 +7,11 @@ const roles = require("../utils/roles")
 
 const router = express.Router()
 router.use(passport.authenticate('jwt', {session: false}, null))
-router.use(access(roles.admin))
 
-router.get('/', controller.getAll)
+router.get('/', access(roles.admin), controller.getAll)
 
 // localhost:5000/api/user/change/{id}
 router.put('/change/:id', controller.change)
-router.delete('/remove/:id', controller.remove)
+router.delete('/remove/:id', access(roles.admin), controller.remove)
 
 module.exports = router
