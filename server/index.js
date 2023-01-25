@@ -2,11 +2,10 @@ require('dotenv').config({
     path: process.env.ENV_PATH === undefined ? '.env' : process.env.ENV_PATH
 });
 
-// const cron = require('./utils/notificationDaemon') // not yet implemented
-
 const app = require('./app')
 
 const cron = require('node-cron');
+const http = require('http')
 const NotificationRepository = require("./repositories/notificationRepository");
 
 function isInThePast(date) {
@@ -38,7 +37,86 @@ cron.schedule(everyDayMidnight, async () => {
 
 const port = process.env.PORT || 5000
 
-app.listen(port, (err) => {
+/*const WSServer = require('express-ws')(app)
+const aWss = WSServer.getWss()
+app.ws('/student/:id', (ws, req) => {
+    // отправляем на клиента с типом message
+    ws.on('message', (msg) => {
+        msg = JSON.parse(msg)
+        switch (msg.method){
+            case 'connection':
+                connectionHandler(ws, msg)
+                break
+        }
+    })
+})*/
+
+/*const connectionHandler = (ws, msg) => {
+    ws.id = msg.studentId
+    broadcastConnection(ws, msg)
+}
+
+const broadcastConnection = (ws, msg) => {
+    aWss.clients.forEach(client => {
+        if (client.id === msg.studentId){
+            client.send(JSON.stringify({
+                method: 'connection',
+                userId: msg.userId,
+                userName: msg.userName,
+                studentId: msg.studentId
+            }))
+        }
+    })
+}*/
+const WebSocket = require("ws")
+const {v4: uuidv4} = require('uuid')
+const server = http.createServer(app)
+const wss = new WebSocket.Server({server})
+
+wss.on('connection', ws => {
+    ws.id = uuidv4()
+
+    ws.on('message', m => {
+        const json = JSON.parse(m)
+
+        if (json.event === 'studentEditAccess') {
+            const student_id = json.student_id
+
+            const message = {
+                id: ws.id,
+                event: json.event,
+                student_id: student_id
+            }
+
+            for (let client of wss.clients) {
+                if (client !== ws)
+                    client.send(JSON.stringify(message))
+            }
+        }
+
+        if (json.event === 'studentEditDecline') {
+            const student_id = json.student_id
+
+            const message = {
+                id: ws.id,
+                event: json.event,
+                student_id: student_id,
+                to: json.to
+            }
+
+            for (const client of wss.clients) {
+                if (client.id === json.to)
+                    client.send(JSON.stringify(message))
+            }
+        }
+    })
+
+    ws.on("error", e => ws.send(e));
+
+    ws.send(ws.id)
+})
+
+server.listen(port, (err) => {
     if (err) throw err;
     console.log(`Server is running at localhost:${port} in ${app.get("env")} mode`)
 })
