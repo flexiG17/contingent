@@ -41,7 +41,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
         setTemplate(e.value);
         setText(e.value)
     }
-    const mailtoHref = `mailto:${studentEmail}?subject=${subject}&body`
+    const mailtoHref = `mailto:${studentEmail.map(student => student.email)}?subject=${subject}&body`
 
     return (
         <>
