@@ -23,6 +23,7 @@ import './Calls.css'
 import CreateTaskModalWindow from "../CreateTaskModal";
 import TaskCard from "../TaskCardModal";
 import {lineStyleInTable, textFieldStyle} from "../../../utils/consts/styles";
+import TaskFilter from "../TaskFilter";
 
 function Row(props) {
     const {row} = props;
@@ -113,7 +114,10 @@ function Row(props) {
 
 export default function CollapsibleTable() {
     const [notificationList, setNotificationList] = useState([]);
-    const [modalActive, setModalActive] = useState(false)
+    const [modalActive, setModalActive] = useState(false);
+
+    const [loading, setLoading] = useState(true);
+    const [filters, setFilters] = useState([]);
 
     useEffect(() => {
         getNotifications()
@@ -129,7 +133,74 @@ export default function CollapsibleTable() {
                 })
                 setNotificationList(items)
             })
+            .finally(() => {
+                setLoading(false);
+            })
     }, [])
+
+    const multiFilter = (item) => {
+        for (let i = 0; i < filters.length; i++) {
+            let filter = filters[i];
+            if (item[filter.param.value] === undefined) return false;
+            switch (filter.operator) {
+                case "coincidence":
+                    if (
+                        !String(item[filter.param.value])
+                            .toLowerCase()
+                            .includes(filter.value.toLowerCase())
+                    )
+                        return false;
+                    break;
+                case "equals":
+                    const tmp1 = new Date(item[filter.param.value]);
+                    const tmp2 = new Date(filter.value);
+                    if (filter.param.type === 'date' && tmp1.getTime() !== tmp2.getTime()) {
+                        return false;
+                    } else if (item[filter.param.value] === Number(filter.value)) {
+                        return false;
+                    }
+                    break;
+                case "less":
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) >= new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] >= Number(filter.value)) {
+                        return false;
+                    }
+                    break;
+                case "lessE":
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) > new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] > Number(filter.value)) {
+                        return false;
+                    }
+                    break;
+                case "more":
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) <= new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] <= Number(filter.value)) {
+                        return false;
+                    }
+                    break;
+                case "moreE":
+                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) < new Date(filter.value)) {
+                        return false;
+                    } else if (item[filter.param.value] < Number(filter.value)) {
+                        return false;
+                    }
+                    break;
+                default:
+                    return false;
+            }
+        }
+        return true;
+    };
+
+    const filteredValues = notificationList.filter(row => {
+        return multiFilter(row);
+    });
+
+    console.log('Task List', notificationList);
+    console.log('Filters', filters);
 
     return (
         <>
@@ -139,6 +210,7 @@ export default function CollapsibleTable() {
                     onClick={() => setModalActive(true)}
                     className="add_notification_button"> Добавить задачу <AddIcon/>
                 </button>
+                {!loading && <TaskFilter filters={filters} setFilters={setFilters}/>}
             </div>
             <TableContainer component={Paper}
                             sx={{width: '850px', ml: 'auto', mr: 'auto', mt: '30px', mb: '30px'}}>
@@ -155,7 +227,7 @@ export default function CollapsibleTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {notificationList.map((row) => (
+                        {filteredValues.map((row) => (
                             <Row key={row.id} row={row}/>
                         ))}
                     </TableBody>
