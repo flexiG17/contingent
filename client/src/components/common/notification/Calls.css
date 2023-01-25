@@ -2,6 +2,7 @@
 .notification_navbar{
     padding-top: 50px;
     display: flex;
+    justify-content: left;
     width: 800px;
     margin-right: auto;
 }
