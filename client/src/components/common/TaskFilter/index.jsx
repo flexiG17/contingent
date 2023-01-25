@@ -4,8 +4,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Menu from "@mui/material/Menu";
 import {FilterItem} from "../FilterItem";
 import AddIcon from "@mui/icons-material/Add";
-import React, {useEffect, useState} from "react";
-import {getColumns} from "../../../actions/student";
+import React, {useState} from "react";
 
 const ITEM_HEIGHT = 50;
 
@@ -53,6 +52,7 @@ export default function TaskFilter({filters, setFilters}) {
     return (
         <div>
             <IconButton
+                sx={{mt: '-60px', mb: '-30px', mr: 69}}
                 aria-label="more"
                 id="long-button"
                 aria-controls={open ? 'long-menu' : undefined}
@@ -60,7 +60,6 @@ export default function TaskFilter({filters, setFilters}) {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-
                 <Badge badgeContent={filters.length} color="info">
                     <FilterAltIcon sx={{color: "#FA7A45"}}/>
                 </Badge>
