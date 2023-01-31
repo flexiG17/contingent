@@ -11,7 +11,8 @@ router.use(passport.authenticate('jwt', {session: false}, null))
 router.get('/', access(roles.admin), controller.getAll)
 
 // localhost:5000/api/user/change/{id}
-router.put('/change/:id', controller.change)
+router.put('/change', controller.changeSelf)
+router.put('/change/:id', access(roles.admin), controller.change)
 router.delete('/remove/:id', access(roles.admin), controller.remove)
 
 module.exports = router

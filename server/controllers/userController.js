@@ -25,21 +25,34 @@ module.exports.change = async function (req, res) {
 
     await user.update(model)
 
-    if (req.body.isCurrentUserChanged){
-        const token = jwt.sign({
-            userId: req.params.id,
-            email: email,
-            name: name,
-            role: role
-        }, process.env.TOKEN_SECRET, {})
+    return res.status(201).json({
+        message: `Данные ${model.name} обновлены`
+    })
+}
 
-        return res.status(201).json({
-            message: `Ваши данные обновлены`,
-            token: `Bearer ${token}`})
-    }
+module.exports.changeSelf = async function (req, res) {
+    const salt = bcrypt.genSaltSync(10)
+
+    const user = db.users.where({id: req.user.id})
+
+    let {name, email, password, role} = req.body
+    password = password ? bcrypt.hashSync(password, salt) : await user.password
+
+    let model = new User(email, password, name, role)
+
+    await user.update(model)
+
+    const token = jwt.sign({
+        id: req.params.id,
+        email: email,
+        name: name,
+        role: role
+    }, process.env.TOKEN_SECRET, {})
 
     return res.status(201).json({
-        message: `Данные ${model.name} обновлены`})
+        message: `Ваши данные обновлены`,
+        token: `Bearer ${token}`
+    })
 }
 
 module.exports.remove = async function (req, res) {
