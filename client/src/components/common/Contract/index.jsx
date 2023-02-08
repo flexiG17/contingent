@@ -68,7 +68,7 @@ export default function Contract() {
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <p className="title_contract_doc">Куратор</p>
-                        <TextField name='tutor_name' label="Куратор" type="text" variant="outlined"
+                        <TextField name='tutor_name' label="Куратор (ФИО, номер телефона)" type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                     </div>
@@ -78,18 +78,9 @@ export default function Contract() {
                                    color="warning" margin='normal' size="small"
                                    sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='birth_place' label="Место рождения" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
                                    required margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='residence_place' label="Место проживания" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='citizenship' label="Гражданство" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <TextField name='gender' label="Пол" type="text" variant="outlined" defaultValue=''
                                    color="warning" margin='normal' size="small" required select
                                    InputLabelProps={textFieldStyle}>
@@ -113,6 +104,9 @@ export default function Contract() {
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                         <p className="title_contract_doc"> Данные о местоположении </p>
+                        <TextField name='residence_place' label="Место проживания в РФ" type="text" variant="outlined"
+                                   color="warning" margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
                                    color="warning" margin='normal' select size="small" defaultValue=''
                                    InputLabelProps={textFieldStyle}>
@@ -231,10 +225,10 @@ export default function Contract() {
                 </div>
             </div>
             <div className="info_and_education_container">
-                <div className="title_contract_section">Даты и оплата</div>
+                <div className="title_contract_section">Приглшание, виза и оплата</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="title_contract_doc"> Даты </p>
+                        <p className="title_contract_doc"> Виза и приглашение </p>
                         <TextField name='visa_validity' label="Срок действия визы"
                                    type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>

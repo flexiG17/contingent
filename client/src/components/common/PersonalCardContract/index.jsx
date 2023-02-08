@@ -259,7 +259,7 @@ export default function PersonalCardContract() {
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <p className="title_contract_doc">Куратор</p>
-                                <TextField label="Куратор" name='tutor_name' type="text" variant="outlined"
+                                <TextField label="Куратор (ФИО, номер телефона)" name='tutor_name' type="text" variant="outlined"
                                            color="warning" margin='normal' defaultValue={studentData.tutor_name}
                                            size="small" disabled={editMode}
                                            InputLabelProps={textFieldStyle} inputProps={textFieldStyle}/>
@@ -270,22 +270,14 @@ export default function PersonalCardContract() {
                                            name='country' margin='normal' variant="outlined" color="warning"
                                            size="small" sx={{width: "325px"}} disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Место рождения"
-                                           name='birth_place' color="warning" type="text" variant="outlined"
-                                           margin='normal' disabled={editMode} defaultValue={studentData.birth_place}
-                                           size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Дата рождения" type="date" color="warning"
                                            defaultValue={studentData.birth_date}
                                            name='birth_date' required margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Место проживания" type="text"
+                                <TextField label="Место проживания в РФ" type="text"
                                            defaultValue={studentData.residence_place}
                                            name='residence_place' variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Гражданство" defaultValue={studentData.citizenship} type="text"
-                                           name='citizenship' color="warning" variant="outlined"
-                                           margin='normal' disabled={editMode} size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Пол" defaultValue={studentData.gender} type="text"
                                            name='gender' margin='normal' variant="outlined" color="warning"
@@ -316,6 +308,10 @@ export default function PersonalCardContract() {
                                            inputProps={textFieldStyle} size="small" disabled={editMode}
                                            InputLabelProps={dateTextFieldStyle}/>
                                 <p className="title_contract_doc"> Данные о местоположении </p>
+                                <TextField name='residence_place' label="Место проживания в РФ" type="text" variant="outlined"
+                                           color="warning" margin='normal' size="small" disabled={editMode}
+                                           defaultValue={studentData.residence_place}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Нахождение в РФ" defaultValue={studentData.RF_location} type="text"
                                            name='RF_location' color="warning" variant="outlined"
                                            margin='normal' select size="small" InputLabelProps={textFieldStyle}
@@ -456,10 +452,10 @@ export default function PersonalCardContract() {
                         </div>
                     </div>
                     <div className="info_and_education_container">
-                        <p className="title_contract_section">Даты и оплата</p>
+                        <p className="title_contract_section">Приглшание, виза и оплата</p>
                         <div className="columns_position">
                             <div className="column_style_contract">
-                                <p className="title_contract_doc">Даты</p>
+                                <p className="title_contract_doc">Виза и приглашение</p>
                                 <TextField label="Срок действия визы" name='visa_validity' type="date" color="warning"
                                            disabled={editMode} defaultValue={studentData.visa_validity}
                                            margin='normal' size="small" inputProps={textFieldStyle}
