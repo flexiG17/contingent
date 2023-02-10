@@ -6,14 +6,20 @@
 .column_style_contract {
     display: flex;
     flex-direction: column;
-
 }
 
 .title_contract_doc {
+    font-size: 16px;
+    color: #FA7A45;
+    font-weight: 500;
+}
+
+.subtitle_payment{
     font-size: 15px;
     color: #FA7A45;
     font-weight: 500;
-
+    display: flex;
+    justify-content: center;
 }
 
 .tytle_contract_doc_contaner {
@@ -148,4 +154,9 @@
     margin-top: 20px;
     color: #FA7A45;
     font-weight: 500;
+}
+
+.elements_in_row{
+    display: flex;
+    cursor: pointer;
 }

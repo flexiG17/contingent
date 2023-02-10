@@ -120,6 +120,9 @@
     margin-top: 35px;
     margin-bottom: 100px;
 }
+.elements_in_line {
+    display: flex;
+}
 
 .template_in_row_with_icon{
     display: flex;
@@ -131,5 +134,5 @@
     color: black;
     font-size: 16px;
     font-family: Montserrat, serif;
-    font-width: 400
+    font-weight: 400
 }

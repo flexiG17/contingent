@@ -86,10 +86,10 @@ export default function PersonalCardQuota() {
                     item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
                     item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
                     item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
-                    item.first_payment = moment(item.first_payment).format("YYYY-MM-DD");
-                    item.second_payment = moment(item.second_payment).format("YYYY-MM-DD");
-                    item.third_payment = moment(item.third_payment).format("YYYY-MM-DD");
-                    item.fourth_payment = moment(item.fourth_payment).format("YYYY-MM-DD");
+                    item.first_payment_contract_date = moment(item.first_payment_contract_date).format("YYYY-MM-DD");
+                    item.second_payment_contract_date = moment(item.second_payment_contract_date).format("YYYY-MM-DD");
+                    item.third_payment_contract_date = moment(item.third_payment_contract_date).format("YYYY-MM-DD");
+                    item.fourth_payment_contract_date = moment(item.fourth_payment_contract_date).format("YYYY-MM-DD");
                     item.transfer_to_international_service = moment(item.transfer_to_international_service).format("YYYY-MM-DD");
                     item.transfer_to_MVD = moment(item.transfer_to_MVD).format("YYYY-MM-DD");
                     item.estimated_receipt_date = moment(item.estimated_receipt_date).format("YYYY-MM-DD");

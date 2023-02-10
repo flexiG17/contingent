@@ -68,7 +68,8 @@ export default function Contract() {
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <p className="title_contract_doc">Куратор</p>
-                        <TextField name='tutor_name' label="Куратор (ФИО, номер телефона)" type="text" variant="outlined"
+                        <TextField name='tutor_name' label="Куратор (ФИО, номер телефона)" type="text"
+                                   variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                     </div>
@@ -247,16 +248,19 @@ export default function Contract() {
                     </div>
                     <div className="column_style_contract">
                         <p className="tytle_contract_doc_contaner">Оплата</p>
-                        <TextField name='first_payment' label="Платеж 1" type="date" sx={{width: "325px"}}
+                        <TextField name='contract_amount' label="Cумма для оплаты по договору" type="text"
+                                   variant="outlined" color="warning" margin='normal' size="small" defaultValue='136000'
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField name='first_payment_contract_date' label="Платеж 1" type="date" sx={{width: "325px"}}
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='second_payment' label="Платеж 2" type="date"
+                        <TextField name='second_payment_contract_date' label="Платеж 2" type="date"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='third_payment' label="Платеж 3" type="date"
+                        <TextField name='third_payment_contract_date' label="Платеж 3" type="date"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='fourth_payment' label="Платеж 4" type="date"
+                        <TextField name='fourth_payment_contract_date' label="Платеж 4" type="date"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                     </div>

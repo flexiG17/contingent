@@ -5,6 +5,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import iziToast from "izitoast";
 import TextField from "@mui/material/TextField";
 import {
+    Accordion, AccordionDetails, AccordionSummary,
     Backdrop,
     Button, CircularProgress, Dialog,
     DialogActions,
@@ -28,6 +29,7 @@ import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
 import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles'
 import moment from "moment/moment";
+import Typography from "@mui/material/Typography";
 
 export default function PersonalCardContract() {
 
@@ -89,10 +91,10 @@ export default function PersonalCardContract() {
                 student.passport_expiration = moment(student.passport_expiration).format("YYYY-MM-DD");
                 student.entry_date = moment(student.entry_date).format("YYYY-MM-DD");
                 student.visa_validity = moment(student.visa_validity).format("YYYY-MM-DD");
-                student.first_payment = moment(student.first_payment).format("YYYY-MM-DD");
-                student.second_payment = moment(student.second_payment).format("YYYY-MM-DD");
-                student.third_payment = moment(student.third_payment).format("YYYY-MM-DD");
-                student.fourth_payment = moment(student.fourth_payment).format("YYYY-MM-DD");
+                student.first_payment_contract_date = moment(student.first_payment_contract_date).format("YYYY-MM-DD");
+                student.second_payment_contract_date = moment(student.second_payment_contract_date).format("YYYY-MM-DD");
+                student.third_payment_contract_date = moment(student.third_payment_contract_date).format("YYYY-MM-DD");
+                student.fourth_payment_contract_date = moment(student.fourth_payment_contract_date).format("YYYY-MM-DD");
                 student.transfer_to_international_service = moment(student.transfer_to_international_service).format("YYYY-MM-DD");
                 student.transfer_to_MVD = moment(student.transfer_to_MVD).format("YYYY-MM-DD");
                 student.estimated_receipt_date = moment(student.estimated_receipt_date).format("YYYY-MM-DD");
@@ -482,22 +484,157 @@ export default function PersonalCardContract() {
                             </div>
                             <div className="column_style_contract">
                                 <p className="title_contract_doc">Оплата</p>
-                                <TextField label="Платеж 1" name='first_payment' type="date" color="warning"
-                                           disabled={editMode} defaultValue={studentData.first_payment}
-                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>
-                                <TextField label="Платеж 2" name='second_payment' type="date" color="warning"
-                                           disabled={editMode} defaultValue={studentData.second_payment}
-                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Платеж 3" name='third_payment' type="date" color="warning"
-                                           disabled={editMode} defaultValue={studentData.third_payment}
-                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Платеж 4" name='fourth_payment' type="date" color="warning"
-                                           disabled={editMode} defaultValue={studentData.fourth_payment}
-                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle}/>
+                                <div className='elements_in_row'>
+                                    <TextField label="Cумма для оплаты" name='expulsion_order' type="text"
+                                               sx={{width: '150px', mr: '25px'}}
+                                               variant="outlined" defaultValue={studentData.contract_amount}
+                                               color="warning" disabled={editMode} margin='normal' size="small"
+                                               inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                    <TextField label="Статус оплаты" name='expulsion_order' type="text"
+                                               sx={{width: '150px'}}
+                                               variant="outlined" defaultValue={studentData.payment_status}
+                                               color="warning" disabled={editMode} margin='normal' size="small"
+                                               inputProps={textFieldStyle} InputLabelProps={textFieldStyle} select>
+                                        <MenuItem value="Оплачено">
+                                            <span style={listItemStyle}>Оплачено</span>
+                                        </MenuItem>
+                                        <MenuItem value="Не оплачено">
+                                            <span style={listItemStyle}>Не оплачено</span>
+                                        </MenuItem>
+                                        <MenuItem value="Оплачено частично">
+                                            <span style={listItemStyle}>Оплачено частично</span>
+                                        </MenuItem>
+                                    </TextField>
+                                </div>
+                                <div style={{width: '325px'}}>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px', mt: '10px'}}>
+                                        <AccordionSummary>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                            >
+                                                Первый платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className='elements_in_row'>
+                                                <TextField label="Платеж 1 (договор)" name='first_payment_contract_date' type="date" color="warning"
+                                                           sx={{width: '150px', mr: '25px'}}
+                                                           disabled={editMode} defaultValue={studentData.first_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+                                                <TextField label="Платеж 1 (факт)" name='first_payment_actual_date' type="date" color="warning"
+                                                           sx={{width: '150px'}}
+                                                           disabled={editMode} defaultValue={studentData.first_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+                                            </div>
+                                            <TextField label="Сумма платежа" name='first_payment_contract_date' type="text" color="warning"
+                                                       sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
+                                                       disabled={editMode} defaultValue={''}
+                                                       size="small" inputProps={textFieldStyle}
+                                                       InputLabelProps={textFieldStyle}/>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px'}}>
+                                        <AccordionSummary
+                                            aria-controls="panel2a-content"
+                                            id="panel2a-header"
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                            >
+                                                Второй платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="elements_in_row">
+                                                <TextField label="Платеж 2 (договор)" name='second_payment_contract_date' type="date" color="warning"
+                                                           sx={{width: '150px', mr: '25px'}}
+                                                           disabled={editMode} defaultValue={studentData.second_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+                                                <TextField label="Платеж 2 (договор)" name='second_payment_actual_date' type="date" color="warning"
+                                                           sx={{width: '150px'}}
+                                                           disabled={editMode} defaultValue={studentData.first_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+                                            </div>
+                                            <TextField label="Сумма платежа" name='first_payment_contract_date' type="text" color="warning"
+                                                       sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
+                                                       disabled={editMode} defaultValue={''}
+                                                       size="small" inputProps={textFieldStyle}
+                                                       InputLabelProps={textFieldStyle}/>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px'}}>
+                                        <AccordionSummary
+                                            aria-controls="panel2a-content"
+                                            id="panel2a-header"
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                            >
+                                                Третий платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="elements_in_row">
+                                                <TextField label="Платеж 3 (договор)" name='third_payment_contract_date' type="date" color="warning"
+                                                           sx={{width: '150px', mr: '25px'}}
+                                                           disabled={editMode} defaultValue={studentData.third_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+
+                                                <TextField label="Платеж 3 (договор)" name='third_payment_actual_date' type="date" color="warning"
+                                                           sx={{width: '150px'}}
+                                                           disabled={editMode} defaultValue={studentData.first_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+                                            </div>
+                                            <TextField label="Сумма платежа" name='first_payment_contract_date' type="text" color="warning"
+                                                       sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
+                                                       disabled={editMode} defaultValue={''}
+                                                       size="small" inputProps={textFieldStyle}
+                                                       InputLabelProps={textFieldStyle}/>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px'}}>
+                                        <AccordionSummary
+                                            aria-controls="panel2a-content"
+                                            id="panel2a-header"
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                            >
+                                                Четвертый платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="elements_in_row">
+                                                <TextField label="Платеж 4 (договор)" name='fourth_payment_contract_date' type="date" color="warning"
+                                                           sx={{width: '150px', mr: '25px'}}
+                                                           disabled={editMode} defaultValue={studentData.fourth_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+
+                                                <TextField label="Платеж 4 (договор)" name='fourth_payment_actual_date' type="date" color="warning"
+                                                           sx={{width: '150px'}}
+                                                           disabled={editMode} defaultValue={studentData.first_payment_contract_date}
+                                                           margin='normal' size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={dateTextFieldStyle}/>
+                                            </div>
+                                            <TextField label="Сумма платежа" name='first_payment_contract_date' type="text" color="warning"
+                                                       sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
+                                                       disabled={editMode} defaultValue={''}
+                                                       size="small" inputProps={textFieldStyle}
+                                                       InputLabelProps={textFieldStyle}/>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </div>
                             </div>
                         </div>
                     </div>
