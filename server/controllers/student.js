@@ -14,22 +14,18 @@ function getStudent(id) {
     return db.students.where({id}).first()
 }
 
-
 function getStudents(ids) {
     return db.students.whereIn('id', ids)
 }
 
-
 module.exports.getColumns = async (req, res) =>
     res.status(200).json(await StudentService.columns())
-
 
 module.exports.getAll = async function (req, res) {
     const data = await db.students
 
     return res.status(200).json(data)
 }
-
 
 module.exports.create = async function (req, res) {
     const model = new Student(req.body)
@@ -54,7 +50,6 @@ module.exports.create = async function (req, res) {
     })
 }
 
-
 module.exports.update = async function (req, res) {
     const student = await getStudent(req.params.id)
 
@@ -67,7 +62,6 @@ module.exports.update = async function (req, res) {
 
     return res.status(200).json({message: `Студент ${model.latin_name} был изменён`})
 }
-
 
 module.exports.remove = async function (req, res) {
     const student = await getStudent(req.params.id)
@@ -100,7 +94,6 @@ module.exports.getByIds = async function (req, res) {
 
     return res.status(200).json(students)
 }
-
 
 module.exports.importXlsxData = async function (req, res) {
     if (!req.files[0])
@@ -141,7 +134,6 @@ module.exports.importXlsxData = async function (req, res) {
 
     return res.status(201).json({message: "Импорт завершён успешно"})
 }
-
 
 module.exports.downloadXlsx = async function (req, res) {
     if (req.body.length === 0)

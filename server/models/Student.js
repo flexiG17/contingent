@@ -44,12 +44,25 @@ module.exports = class Student {
         this.hours_number = other.hours_number
         this.entry_date = new Date(other.entry_date)
         this.visa_validity = new Date(other.visa_validity)
+
         this.payment_status = other.payment_status
         this.contract_amount = other.contract_amount
+
         this.first_payment_contract_date = new Date(other.first_payment_contract_date)
         this.second_payment_contract_date = new Date(other.second_payment_contract_date)
         this.third_payment_contract_date = new Date(other.third_payment_contract_date)
         this.fourth_payment_contract_date = new Date(other.fourth_payment_contract_date)
+
+        this.first_payment_actual_date = new Date(other.first_payment_actual_date)
+        this.second_payment_actual_date = new Date(other.second_payment_actual_date)
+        this.third_payment_actual_date = new Date(other.third_payment_actual_date)
+        this.fourth_payment_actual_date = new Date(other.fourth_payment_actual_date)
+
+        this.amount_first_actual_payment = other.amount_first_actual_payment
+        this.amount_second_actual_payment = other.amount_second_actual_payment
+        this.amount_third_actual_payment = other.amount_third_actual_payment
+        this.amount_fourth_actual_payment = other.amount_fourth_actual_payment
+
         this.scholarship = other.scholarship
         this.transfer_to_international_service = new Date(other.transfer_to_international_service)
         this.transfer_to_MVD = new Date(other.transfer_to_MVD)

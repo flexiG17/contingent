@@ -51,6 +51,12 @@ const headCells = [
         label: '№ договора',
     },
     {
+        id: 'payment_status',
+        numeric: true,
+        disablePadding: true,
+        label: 'Статус оплаты',
+    },
+    {
         id: 'enrollment_order',
         numeric: false,
         disablePadding: true,

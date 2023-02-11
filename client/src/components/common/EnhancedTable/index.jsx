@@ -317,6 +317,13 @@ export default function EnhancedTable() {
                                                         {row.contract_number}
                                                     </Link>
                                                 </TableCell>
+                                                <TableCell align="left">
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
+                                                    >
+                                                        {row.payment_status}
+                                                    </Link>
+                                                </TableCell>
                                                 <TableCell align="center">
                                                     <Link className="margin_table" style={lineStyleInTable}
                                                           target="_blank"
