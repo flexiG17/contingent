@@ -72,7 +72,7 @@ module.exports.remove = async function (req, res) {
     await FileService.deleteStudentDirs([student.id])
 
     await getStudent(req.params.id).delete()
-    return res.status(200).json({message: `${student.russian_name} успешно удалён`})
+    return res.status(200).json({message: `${student.latin_name} успешно удалён`})
 }
 
 module.exports.removeStudents = async function (req, res) {

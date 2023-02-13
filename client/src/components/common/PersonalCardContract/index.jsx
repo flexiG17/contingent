@@ -470,7 +470,7 @@ export default function PersonalCardContract() {
                         </div>
                     </div>
                     <div className="info_and_education_container">
-                        <p className="title_contract_section">Приглшание, виза и оплата</p>
+                        <p className="title_contract_section">Приглашение, виза и оплата</p>
                         <div className="columns_position">
                             <div className="column_style_contract">
                                 <p className="title_contract_doc">Виза и приглашение</p>

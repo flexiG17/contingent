@@ -235,7 +235,7 @@ export default function Contract() {
                 </div>
             </div>
             <div className="info_and_education_container">
-                <div className="title_contract_section">Приглшание, виза и оплата</div>
+                <div className="title_contract_section">Приглашение, виза и оплата</div>
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Виза и приглашение </p>
