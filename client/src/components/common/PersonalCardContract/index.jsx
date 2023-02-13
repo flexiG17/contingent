@@ -297,11 +297,6 @@ export default function PersonalCardContract() {
                                            defaultValue={studentData.birth_date}
                                            name='birth_date' required margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Место проживания в РФ" type="text"
-                                           defaultValue={studentData.residence_place}
-                                           name='residence_place' variant="outlined" color="warning"
-                                           margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Пол" defaultValue={studentData.gender} type="text"
                                            name='gender' margin='normal' variant="outlined" color="warning"
                                            required size="small" select InputLabelProps={textFieldStyle}

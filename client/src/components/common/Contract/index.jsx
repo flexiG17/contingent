@@ -263,7 +263,7 @@ export default function Contract() {
                             <TextField label="Cумма для оплаты" name='contract_amount' type="text"
                                        sx={{width: '150px', mr: '25px'}}
                                        onChange={(e) => {setContractAmount(e.target.value)}}
-                                       variant="outlined"
+                                       variant="outlined" defaultValue={136000}
                                        color="warning" margin='normal' size="small"
                                        inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                             <TextField label="Статус оплаты" name='payment_status' type="text"
