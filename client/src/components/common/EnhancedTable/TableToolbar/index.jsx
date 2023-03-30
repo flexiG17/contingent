@@ -85,7 +85,7 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                                         let a = document.createElement('a');
                                         a.href = url;
                                         const date = moment();
-                                        a.setAttribute('download', `Выгрузка от ${date.format('DD.M.YYYY')}.xlsx`);
+                                        a.setAttribute('download', `Выгрузка от ${date.format('DD.MM.YYYY')}.xlsx`);
 
                                         document.body.appendChild(a);
                                         a.click();
