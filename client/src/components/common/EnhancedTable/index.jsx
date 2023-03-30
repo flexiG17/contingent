@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './mainTable.css'
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,7 +16,7 @@ import {getStudents} from '../../../actions/student'
 import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
-import {CircularProgress} from "@mui/material";
+import {Button, ButtonGroup, CircularProgress, MenuItem} from "@mui/material";
 import {ADD_STUDENT_ROUTE} from "../../../utils/consts/pathRoutes";
 import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
@@ -23,7 +24,8 @@ import TableToolbar from "./TableToolbar";
 import TableHeader from "./TableHeader";
 import {getToken} from "../../../utils/token";
 import './TableHeader/HeaderTable.css';
-import {lineStyleInTable} from "../../../utils/consts/styles";
+import {lineStyleInTable, listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
+import TextField from "@mui/material/TextField";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -54,22 +56,24 @@ function stableSort(array, comparator) {
 }
 
 export default function EnhancedTable() {
+    const linesPerPage = localStorage.getItem('linesPerPage') ? +localStorage.getItem('linesPerPage') : 10
+
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
 
     const [page, setPage] = useState(0);
     const [dense, setDense] = useState(true);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(linesPerPage);
     const [loading, setLoading] = useState(true);
 
     const [filters, setFilters] = useState([]);
 
-    const [list, setList] = useState([]);
+    const [studentList, setStudentList] = useState([]);
 
     useEffect(() => {
         getStudents()
             .then(items => {
-                setList(items.reverse());
+                setStudentList(items.reverse());
             })
             .finally(() => setLoading(false))
     }, []);
@@ -125,6 +129,7 @@ export default function EnhancedTable() {
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
+        localStorage.setItem('linesPerPage', event.target.value)
         setPage(0);
     };
 
@@ -135,7 +140,7 @@ export default function EnhancedTable() {
     const isSelected = (studentId) => selected.findIndex(student => student.id === studentId) !== -1;
 
     const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - list.length) : 0;
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - studentList.length) : 0;
 
     const multiFilter = (item) => {
         for (let i = 0; i < filters.length; i++) {
@@ -194,8 +199,20 @@ export default function EnhancedTable() {
         return true;
     };
 
-    const filteredValues = list.filter(row => {
-        return multiFilter(row);
+    const [searchType, setSearchType] = useState('')
+    const [searchingValue, setSearchingValue] = useState('')
+
+
+    const [filterCondition, setFilteredCondition] = useState('russian_name');
+
+    let filteredValues = studentList.filter(row => {
+        if (searchType === 'filter')
+            return multiFilter(row);
+        else if (searchType === 'search') {
+            return row[filterCondition].toLowerCase().includes(searchingValue.toLowerCase())
+        }
+        else
+            return row
     });
 
     return (
@@ -204,9 +221,85 @@ export default function EnhancedTable() {
                 <div className="filter_position">
                     {!READER_ACCESS &&
                         <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить
-                            студента <AddIcon/></NavLink>}
-                    {!loading && <Filter filters={filters} setFilters={setFilters}/>}
+                            студента <AddIcon/>
+                        </NavLink>}
                 </div>
+                {!loading &&
+                    <>
+                        <ButtonGroup variant="outlined" aria-label="outlined button group"
+                                     sx={{width: '250px', height: '40px'}}>
+                            <Button
+                                color='warning'
+                                sx={listItemStyle}
+                                onClick={() => setSearchType('filter')}
+                            >
+                                Фильтрация
+                            </Button>
+                            <Button
+                                color='warning'
+                                sx={listItemStyle}
+                                onClick={() => setSearchType('search')}
+                            >
+                                Поиск
+                            </Button>
+                        </ButtonGroup>
+
+                        {searchType === 'filter'
+                            ?
+                            <Filter filters={filters} setFilters={setFilters}/>
+                            :
+                            searchType === 'search'
+                                ?
+                                <div className='searchPosition'>
+                                    <div>
+                                        <TextField label="Поиск" type="text" margin='normal' variant="outlined"
+                                                   color="warning"
+                                                   size="small" select InputLabelProps={textFieldStyle}
+                                                   defaultValue={'latin_name'}
+                                                   sx={{width: '200px', mt: 0, mr: 2, mb: 0}}
+                                                   onChange={e => setFilteredCondition(e.target.value)}>
+                                            <MenuItem sx={textFieldStyle} value="latin_name">
+                                                <span style={listItemStyle}>ФИО (лат.)</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="russian_name">
+                                                <span style={listItemStyle}>ФИО (кир.)</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="passport_number">
+                                                <span style={listItemStyle}>Номер паспорта</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="birth_date">
+                                                <span style={listItemStyle}>Дата рождения</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="country">
+                                                <span style={listItemStyle}>Страна</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="student_email">
+                                                <span style={listItemStyle}>Почта студента</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="agent_email">
+                                                <span style={listItemStyle}>Почта агента</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="representative_email">
+                                                <span style={listItemStyle}>Почта представителя</span>
+                                            </MenuItem>
+                                        </TextField>
+
+                                    </div>
+                                    <input
+                                        className='inputStyle'
+                                        type="text"
+                                        placeholder={"Введите данные для поиска..."}
+                                        onChange={(event => setSearchingValue(event.target.value))}
+                                    />
+                                </div>
+
+                                :
+
+                                <>
+                                </>
+                        }
+                    </>
+                }
                 {loading && <CircularProgress color="warning"/>}
             </div>
             <Box sx={{width: '1500px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
@@ -358,9 +451,9 @@ export default function EnhancedTable() {
                         count={filteredValues.length}
                         onPageChange={handleChangePage}
                         page={page}
+                        rowsPerPage={rowsPerPage}
                         rowsPerPageOptions={[10, 25, 50, 100, filteredValues.length]}
                         component="div"
-                        rowsPerPage={rowsPerPage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
                         labelRowsPerPage="Строк на страницу:"
                         labelDisplayedRows={({
