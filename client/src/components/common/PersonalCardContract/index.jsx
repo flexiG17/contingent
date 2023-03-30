@@ -293,10 +293,6 @@ export default function PersonalCardContract() {
                                            name='country' margin='normal' variant="outlined" color="warning"
                                            size="small" sx={{width: "325px"}} disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Дата рождения" type="date" color="warning"
-                                           defaultValue={studentData.birth_date}
-                                           name='birth_date' required margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                                 <TextField label="Пол" defaultValue={studentData.gender} type="text"
                                            name='gender' margin='normal' variant="outlined" color="warning"
                                            required size="small" select InputLabelProps={textFieldStyle}
@@ -308,11 +304,19 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Женский</span>
                                     </MenuItem>
                                 </TextField>
+                                <TextField label="Дата рождения" type="date" color="warning"
+                                           defaultValue={studentData.birth_date}
+                                           name='birth_date' required margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                                 <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.passport_number}
                                            margin='normal' disabled={editMode}
                                            required size="small" inputProps={textFieldStyle}
                                            InputLabelProps={textFieldStyle}/>
+                                <TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
+                                           margin='normal' defaultValue={studentData.passport_issue_date}
+                                           inputProps={textFieldStyle} size="small" disabled={editMode}
+                                           InputLabelProps={dateTextFieldStyle}/>
                                 <TextField label="Срок действия паспорта" name='passport_expiration' type="date"
                                            color="warning" defaultValue={studentData.passport_expiration}
                                            margin='normal' size="small" disabled={editMode}
@@ -321,10 +325,6 @@ export default function PersonalCardContract() {
                                            color="warning" margin='normal' defaultValue={studentData.passport_issued}
                                            size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
-                                           margin='normal' defaultValue={studentData.passport_issue_date}
-                                           inputProps={textFieldStyle} size="small" disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}/>
                                 <p className="title_contract_doc"> Данные о местоположении </p>
                                 <TextField name='residence_place' label="Место проживания в РФ" type="text" variant="outlined"
                                            color="warning" margin='normal' size="small" disabled={editMode}
@@ -575,7 +575,7 @@ export default function PersonalCardContract() {
                                                            disabled={editMode} defaultValue={studentData.second_payment_contract_date}
                                                            margin='normal' size="small" inputProps={textFieldStyle}
                                                            InputLabelProps={dateTextFieldStyle}/>
-                                                <TextField label="Платеж 2 (договор)" name='second_payment_actual_date' type="date" color="warning"
+                                                <TextField label="Платеж 2 (факт)" name='second_payment_actual_date' type="date" color="warning"
                                                            sx={{width: '150px'}}
                                                            disabled={editMode} defaultValue={studentData.second_payment_actual_date}
                                                            margin='normal' size="small" inputProps={textFieldStyle}
@@ -609,7 +609,7 @@ export default function PersonalCardContract() {
                                                            margin='normal' size="small" inputProps={textFieldStyle}
                                                            InputLabelProps={dateTextFieldStyle}/>
 
-                                                <TextField label="Платеж 3 (договор)" name='third_payment_actual_date' type="date" color="warning"
+                                                <TextField label="Платеж 3 (факт)" name='third_payment_actual_date' type="date" color="warning"
                                                            sx={{width: '150px'}}
                                                            disabled={editMode} defaultValue={studentData.third_payment_actual_date}
                                                            margin='normal' size="small" inputProps={textFieldStyle}
@@ -643,7 +643,7 @@ export default function PersonalCardContract() {
                                                            margin='normal' size="small" inputProps={textFieldStyle}
                                                            InputLabelProps={dateTextFieldStyle}/>
 
-                                                <TextField label="Платеж 4 (договор)" name='fourth_payment_actual_date' type="date" color="warning"
+                                                <TextField label="Платеж 4 (факт)" name='fourth_payment_actual_date' type="date" color="warning"
                                                            sx={{width: '150px'}}
                                                            disabled={editMode} defaultValue={studentData.fourth_payment_actual_date}
                                                            margin='normal' size="small" inputProps={textFieldStyle}

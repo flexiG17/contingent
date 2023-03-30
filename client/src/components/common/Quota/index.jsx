@@ -21,8 +21,8 @@ export default function Quota() {
 
         let data = new FormData(formRef.current);
         data.append('education_type', 'Квота');
-        data.append('hours_number', '');
-        data.append('status_1c', '');
+        //data.append('hours_number', '');
+        //data.append('status_1c', '');
 
         addStudent(data, navigate);
     };
@@ -82,22 +82,10 @@ export default function Quota() {
                     </div>
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Паспортные данные </p>
-                        <TextField name='country' label="Страна" type="text" variant="outlined" color="warning"
+                        <TextField label="Страна" name='country' type="text" variant="outlined" color="warning"
                                    margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='birth_place' label="Место рождения" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
-                                   required margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='residence_place' label="Место проживания" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='citizenship' label="Гражданство" type="text" variant="outlined" color="warning"
-                                   margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='gender' label="Пол" type="text" variant="outlined" color="warning"
+                        <TextField label="Пол" name='gender' type="text" variant="outlined" color="warning"
                                    margin='normal' required size="small" select
                                    InputLabelProps={textFieldStyle} defaultValue=''>
                             <MenuItem value="Мужской">
@@ -107,17 +95,34 @@ export default function Quota() {
                                 <span style={listItemStyle}>Женский</span>
                             </MenuItem>
                         </TextField>
-                        <TextField name='passport_number' label="Номер паспорта" type="text" variant="outlined"
+                        <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
+                                   required margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                        <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                    color="warning" margin='normal' required size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='passport_expiration' label="Срок действия паспорта" type="date" color="warning"
+                        <TextField label="Дата выдачи" name='passport_issue_date' type="date"
+                                   margin='normal' size="small" color="warning"
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                        <TextField label="Срок действия паспорта" name='passport_expiration' type="date" color="warning"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='passport_issued' label="Кем выдан" type="text" variant="outlined"
+                        <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='passport_issue_date' label="Дата выдачи" type="date"
-                                   margin='normal' size="small" color="warning"
+
+                        <p className="title_contract_doc"> Данные о местоположении </p>
+                        <TextField label="Место рождения" name='birth_place' type="text" variant="outlined"
+                                   color="warning" margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField label="Место проживания в РФ" name='residence_place' type="text" variant="outlined"
+                                   color="warning" margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField label="Гражданство" name='citizenship' type="text" variant="outlined" color="warning"
+                                   margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
+                                   margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                     </div>
                 </div>
@@ -164,7 +169,7 @@ export default function Quota() {
                             </MenuItem>
                         </TextField>
                         <TextField name='comments' label="Примечания" type="text" variant="outlined" color="warning"
-                                   margin='normal' size="small" multiline rows={3}
+                                   margin='normal' size="small" multiline rows={5}
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                     </div>
                     <div className="column_style_contract">
@@ -192,13 +197,10 @@ export default function Quota() {
                 </div>
             </div>
             <div className="info_and_education_container">
-                <div className="title_quota_section">Основные даты</div>
+                <div className="title_quota_section"> Основные даты </div>
                 <div className="columns_position">
                     <div className="column_style_contract">
-                        <p className="title_contract_doc"> Даты</p>
-                        <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
-                                   margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                        <p className="title_contract_doc"> Виза </p>
                         <TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
                                    margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>

@@ -17,7 +17,7 @@ export default function Contract() {
 
     const formRef = useRef(null);
 
-    const [contractAmount, setContractAmount] = useState(0)
+    const [contractAmount, setContractAmount] = useState(136000)
     const [firstPayment, setFirstPayment] = useState(0)
     const [secondPayment, setSecondPayment] = useState(0)
     const [thirdPayment, setThirdPayment] = useState(0)
@@ -88,10 +88,7 @@ export default function Contract() {
                                    color="warning" margin='normal' size="small"
                                    sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
-                                   required margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='gender' label="Пол" type="text" variant="outlined" defaultValue=''
+                        <TextField label="Пол" name='gender' type="text" variant="outlined" defaultValue=''
                                    color="warning" margin='normal' size="small" required select
                                    InputLabelProps={textFieldStyle}>
                             <MenuItem value="Мужской">
@@ -101,23 +98,26 @@ export default function Contract() {
                                 <span style={listItemStyle}>Женский</span>
                             </MenuItem>
                         </TextField>
-                        <TextField name='passport_number' label="Номер паспорта" type="text" variant="outlined"
+                        <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
+                                   required margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                        <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small" required
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='passport_expiration' label="Срок действия паспорта" type="date"
-                                   color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField name='passport_issued' label="Кем выдан" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='passport_issue_date' label="Дата выдачи" type="date" color="warning"
+                        <TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <p className="title_contract_doc"> Данные о местоположении </p>
-                        <TextField name='residence_place' label="Место проживания в РФ" type="text" variant="outlined"
+                        <TextField label="Срок действия паспорта" name='passport_expiration' type="date"
+                                   color="warning" margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                        <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
+                        <p className="title_contract_doc"> Данные о местоположении </p>
+                        <TextField label="Место проживания в РФ" name='residence_place' type="text" variant="outlined"
+                                   color="warning" margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField label="Нахождение в РФ" name='RF_location' type="text" variant="outlined"
                                    color="warning" margin='normal' select size="small" defaultValue=''
                                    InputLabelProps={textFieldStyle}>
                             <MenuItem value="Да">
@@ -196,7 +196,7 @@ export default function Contract() {
                         </TextField>
                         <p className="title_contract_doc"> Дополнительно </p>
                         <TextField name='comments' label="Примечания" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small" multiline rows={3}
+                                   color="warning" margin='normal' size="small" multiline rows={5}
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                     </div>
                     <div className="column_style_contract">
@@ -263,7 +263,7 @@ export default function Contract() {
                             <TextField label="Cумма для оплаты" name='contract_amount' type="text"
                                        sx={{width: '150px', mr: '25px'}}
                                        onChange={(e) => {setContractAmount(e.target.value)}}
-                                       variant="outlined" defaultValue={136000}
+                                       variant="outlined" defaultValue={contractAmount}
                                        color="warning" margin='normal' size="small"
                                        inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                             <TextField label="Статус оплаты" name='payment_status' type="text"
@@ -327,7 +327,7 @@ export default function Contract() {
                                                    sx={{width: '150px', mr: '25px'}}
                                                    margin='normal' size="small" inputProps={textFieldStyle}
                                                    InputLabelProps={dateTextFieldStyle}/>
-                                        <TextField label="Платеж 2 (договор)" name='second_payment_actual_date' type="date" color="warning"
+                                        <TextField label="Платеж 2 (факт)" name='second_payment_actual_date' type="date" color="warning"
                                                    sx={{width: '150px'}}
                                                    margin='normal' size="small" inputProps={textFieldStyle}
                                                    InputLabelProps={dateTextFieldStyle}/>
@@ -358,7 +358,7 @@ export default function Contract() {
                                                    margin='normal' size="small" inputProps={textFieldStyle}
                                                    InputLabelProps={dateTextFieldStyle}/>
 
-                                        <TextField label="Платеж 3 (договор)" name='third_payment_actual_date' type="date" color="warning"
+                                        <TextField label="Платеж 3 (факт)" name='third_payment_actual_date' type="date" color="warning"
                                                    sx={{width: '150px'}}
                                                    margin='normal' size="small" inputProps={textFieldStyle}
                                                    InputLabelProps={dateTextFieldStyle}/>
@@ -389,7 +389,7 @@ export default function Contract() {
                                                    margin='normal' size="small" inputProps={textFieldStyle}
                                                    InputLabelProps={dateTextFieldStyle}/>
 
-                                        <TextField label="Платеж 4 (договор)" name='fourth_payment_actual_date' type="date" color="warning"
+                                        <TextField label="Платеж 4 (факт)" name='fourth_payment_actual_date' type="date" color="warning"
                                                    sx={{width: '150px'}}
                                                    margin='normal' size="small" inputProps={textFieldStyle}
                                                    InputLabelProps={dateTextFieldStyle}/>
