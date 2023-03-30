@@ -1,0 +1,18 @@
+.searchPosition {
+    margin-right: auto;
+    display: flex;
+}
+
+.inputStyle{
+    width: 250px;
+    padding: 5px 5px 5px 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    border: 1px solid #FA7A45;
+    border-radius: 10px;
+    height: 28px;
+}

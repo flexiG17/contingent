@@ -9,14 +9,13 @@
 }
 
 .filter_position{
-    width: 260px;
-    margin-right: auto;
+    width: 240px;
+    height: 40px;
     margin-left: 0;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-
 
 /*Кнопка добавить студента*/
 .add_student_btn {
