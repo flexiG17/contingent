@@ -54,7 +54,7 @@ export default function PersonalCardContract() {
     }
 
     const handleModal = () => {
-        if (studentData.student_email !== '')
+        if (studentData.first_student_email !== '')
             setModalActive(true)
         else
             iziToast.error({
@@ -248,9 +248,14 @@ export default function PersonalCardContract() {
                                            name='contact_phone_number' variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="E-mail студента" variant="outlined"
-                                           defaultValue={studentData.student_email}
-                                           name='student_email' color="warning" type="email"
+                                <TextField label="Первая эл. почта студента" variant="outlined"
+                                           defaultValue={studentData.first_student_email}
+                                           name='first_student_email' color="warning" type="email"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Вторая эл. почта студента" variant="outlined"
+                                           defaultValue={studentData.second_student_email}
+                                           name='second_student_email' color="warning" type="email"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <p className="title_contract_doc"> Контактные данные агента</p>
@@ -725,10 +730,10 @@ export default function PersonalCardContract() {
                               studentEmail={[{
                                   id: studentData.id,
                                   education_type: studentData.education_type,
-                                  email: studentData.student_email
+                                  email: studentData.first_student_email
                               }]}/>
                 <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
-                                       singleId={[studentId]} emails={[studentData.student_email]}/>
+                                       singleId={[studentId]} emails={[studentData.first_student_email]}/>
                 <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
             </>
     )

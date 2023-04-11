@@ -54,7 +54,10 @@ export default function Quota() {
                         <TextField name='contact_phone_number' label="Контактный телефон студента" variant="outlined"
                                    color="warning" type="tel" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='student_email' label="E-mail студента" variant="outlined" color="warning"
+                        <TextField name='first_student_email' label="Первая эл. почта студента" variant="outlined" color="warning"
+                                   type="email" margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField name='second_student_email' label="Вторая эл. почта студента" variant="outlined" color="warning"
                                    type="email" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <p className="title_contract_doc"> Учёба</p>

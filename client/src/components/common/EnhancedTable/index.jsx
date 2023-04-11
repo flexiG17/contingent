@@ -273,8 +273,11 @@ export default function EnhancedTable() {
                                             <MenuItem sx={textFieldStyle} value="country">
                                                 <span style={listItemStyle}>Страна</span>
                                             </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="student_email">
-                                                <span style={listItemStyle}>Почта студента</span>
+                                            <MenuItem sx={textFieldStyle} value="first_student_email">
+                                                <span style={listItemStyle}>Первая эл. почта студента</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="second_student_email">
+                                                <span style={listItemStyle}>Вторая эл. почта студента</span>
                                             </MenuItem>
                                             <MenuItem sx={textFieldStyle} value="agent_email">
                                                 <span style={listItemStyle}>Почта агента</span>
@@ -318,7 +321,7 @@ export default function EnhancedTable() {
                             return {
                                 id: student.id,
                                 education_type: student.education_type,
-                                email: student.student_email
+                                email: student.first_student_email
                             };
                         })}
                     />

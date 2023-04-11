@@ -40,7 +40,10 @@ module.exports = class Student {
         this.agent_phone_number = other.agent_phone_number
         this.agent_email = other.agent_email
         this.application_source = other.application_source
-        this.student_email = other.student_email
+
+        this.first_student_email = other.first_student_email
+        this.second_student_email = other.second_student_email
+
         this.hours_number = other.hours_number
         this.entry_date = new Date(other.entry_date)
         this.visa_validity = new Date(other.visa_validity)

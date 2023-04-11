@@ -49,7 +49,7 @@ export default function PersonalCardQuota() {
     }
 
     const handleModal = () => {
-        if (studentData.student_email !== '')
+        if (studentData.first_student_email !== '')
             setModalActive(true)
         else
             iziToast.error({
@@ -226,10 +226,14 @@ export default function PersonalCardQuota() {
                                            name='contact_phone_number' margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.contact_phone_number}/>
-                                <TextField label="E-mail студента" variant="outlined" color="warning" type="email"
-                                           name='student_email' margin='normal' size="small" disabled={editMode}
+                                <TextField label="Первая эл. почта студента" variant="outlined" color="warning" type="email"
+                                           name='first_student_email' margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
-                                           defaultValue={studentData.student_email}/>
+                                           defaultValue={studentData.first_student_email}/>
+                                <TextField label="Вторая эл. почта студента" variant="outlined" color="warning" type="email"
+                                           name='second_student_email' margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
+                                           defaultValue={studentData.second_student_email}/>
                                 <p className="title_contract_doc"> Учёба</p>
                                 <TextField label="Местонахождение учебного заведения" type="text" variant="outlined"
                                            name='location_educational_institution' color="warning" margin='normal'
@@ -495,10 +499,10 @@ export default function PersonalCardQuota() {
                                   studentEmail={[{
                                       id: studentData.id,
                                       education_type: studentData.education_type,
-                                      email: studentData.student_email
+                                      email: studentData.first_student_email
                                   }]}/>
                     <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
-                                           singleId={[studentId]} emails={[studentData.student_email]}/>
+                                           singleId={[studentId]} emails={[studentData.first_student_email]}/>
                     <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
             </>
     )

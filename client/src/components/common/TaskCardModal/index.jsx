@@ -74,7 +74,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                         return {
                             id: student.id,
                             latin_name: student.latin_name,
-                            student_email: student.student_email,
+                            first_student_email: student.first_student_email,
                             education_type: student.education_type
                         }
                     }));
@@ -183,7 +183,7 @@ const TaskCard = ({active, setActive, taskData}) => {
                                                             return {
                                                                 id: student.id,
                                                                 education_type: student.education_type,
-                                                                email: student.student_email
+                                                                email: student.first_student_email
                                                             }
                                                         }));
                                                         setModalMessageActive(true);
