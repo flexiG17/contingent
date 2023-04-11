@@ -79,7 +79,10 @@ export default function Contract() {
                         <TextField name='representative_phone_number' label="Телефон" type="tel" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='representative_email' label="E-mail" type="email" variant="outlined"
+                        <TextField name='first_representative_email' label="Первая эл. почта" type="email" variant="outlined"
+                                   color="warning" margin='normal' size="small"
+                                   inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField name='second_representative_email' label="Вторая эл. почта" type="email" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <p className="title_contract_doc">Куратор</p>

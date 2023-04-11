@@ -285,8 +285,11 @@ export default function EnhancedTable() {
                                             <MenuItem sx={textFieldStyle} value="second_agent_email">
                                                 <span style={listItemStyle}>Вторая эл. почта агента</span>
                                             </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="representative_email">
-                                                <span style={listItemStyle}>Почта представителя</span>
+                                            <MenuItem sx={textFieldStyle} value="first_representative_email">
+                                                <span style={listItemStyle}>Первая эл. почта представителя</span>
+                                            </MenuItem>
+                                            <MenuItem sx={textFieldStyle} value="second_representative_email">
+                                                <span style={listItemStyle}>Вторая эл. почта представителя</span>
                                             </MenuItem>
                                         </TextField>
 
