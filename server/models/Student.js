@@ -38,7 +38,10 @@ module.exports = class Student {
         this.representative_email = other.representative_email
         this.agent_name = other.agent_name
         this.agent_phone_number = other.agent_phone_number
-        this.agent_email = other.agent_email
+
+        this.first_agent_email = other.first_agent_email
+        this.second_agent_email = other.second_agent_email
+
         this.application_source = other.application_source
 
         this.first_student_email = other.first_student_email

@@ -267,8 +267,12 @@ export default function PersonalCardContract() {
                                            name='agent_phone_number' variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="E-mail" defaultValue={studentData.agent_email}
-                                           name='agent_email' type="email" variant="outlined" color="warning"
+                                <TextField label="Первая эл. почта агента" defaultValue={studentData.first_agent_email}
+                                           name='first_agent_email' type="email" variant="outlined" color="warning"
+                                           margin='normal' size="small" disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Вторая эл. почта агента" defaultValue={studentData.second_agent_email}
+                                           name='second_agent_email' type="email" variant="outlined" color="warning"
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <p className="title_contract_doc"> Контактные данные представителя</p>
