@@ -203,7 +203,7 @@ export default function EnhancedTable() {
     const [searchingValue, setSearchingValue] = useState('')
 
 
-    const [filterCondition, setFilteredCondition] = useState('russian_name');
+    const [filterCondition, setFilteredCondition] = useState('latin_name');
 
     let filteredValues = studentList.filter(row => {
         if (searchType === 'filter')
