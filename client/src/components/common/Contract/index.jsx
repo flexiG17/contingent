@@ -23,6 +23,9 @@ export default function Contract() {
     const [thirdPayment, setThirdPayment] = useState(0)
     const [fourthPayment, setFourthPayment] = useState(0)
 
+    const [studentExpelled, setStudentExpelled] = useState('')
+    const [RF_location, setRfLocation] = useState('')
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -126,9 +129,13 @@ export default function Contract() {
                         <TextField label="Место проживания в РФ" name='residence_place' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField label="Нахождение в РФ" name='RF_location' type="text" variant="outlined"
-                                   color="warning" margin='normal' select size="small" defaultValue=''
-                                   InputLabelProps={textFieldStyle}>
+                        <TextField label="Нахождение в РФ" type="text"
+                                   name='RF_location' color="warning" variant="outlined"
+                                   margin='normal' select size="small" InputLabelProps={textFieldStyle}
+                                   value={RF_location}
+                                   onChange={(e) => {
+                                       setRfLocation(e.target.value)
+                                   }}>
                             <MenuItem value="Да">
                                 <span style={listItemStyle}>Да</span>
                             </MenuItem>
@@ -210,14 +217,23 @@ export default function Contract() {
                     </div>
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Статус </p>
-                        <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small" select sx={{width: "325px"}}
-                                   InputLabelProps={textFieldStyle} defaultValue=''>
+                        <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
+                                   color="warning" value={studentExpelled}
+                                   onChange={(e) => {
+                                       if (e.target.value === 'Отчислен')
+                                           setRfLocation('Нет')
+                                       setStudentExpelled(e.target.value)
+                                   }}
+                                   margin='normal' size="small" select sx={{width: "325px"}}
+                                   InputLabelProps={textFieldStyle}>
                             <MenuItem value="Зачислен">
                                 <span style={listItemStyle}>Зачислен</span>
                             </MenuItem>
                             <MenuItem value="Не зачислен">
                                 <span style={listItemStyle}>Не зачислен</span>
+                            </MenuItem>
+                            <MenuItem value="Отчислен">
+                                <span style={listItemStyle}>Отчислен</span>
                             </MenuItem>
                         </TextField>
                         <TextField name='enrollment_order' label="Номер приказа о зачислении" type="text"

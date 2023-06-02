@@ -85,6 +85,9 @@ export default function PersonalCardContract() {
     const [thirdPayment, setThirdPayment] = useState(0)
     const [fourthPayment, setFourthPayment] = useState(0)
 
+    const [studentExpelled, setStudentExpelled] = useState('')
+    const [RF_location, setRfLocation] = useState('')
+
     const studentId = useParams().id
     useEffect(() => {
         getStudentsByIdArray([studentId])
@@ -115,6 +118,9 @@ export default function PersonalCardContract() {
                 setSecondPayment(result[0].amount_second_actual_payment)
                 setThirdPayment(result[0].amount_third_actual_payment)
                 setFourthPayment(result[0].amount_fourth_actual_payment)
+
+                setRfLocation(result[0].RF_location)
+                setStudentExpelled(result[0].enrollment)
 
                 setStudentData(result[0])
             })
@@ -348,9 +354,13 @@ export default function PersonalCardContract() {
                                            color="warning" margin='normal' size="small" disabled={editMode}
                                            defaultValue={studentData.residence_place}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Нахождение в РФ" defaultValue={studentData.RF_location} type="text"
+                                <TextField label="Нахождение в РФ" type="text"
                                            name='RF_location' color="warning" variant="outlined"
                                            margin='normal' select size="small" InputLabelProps={textFieldStyle}
+                                           value={RF_location}
+                                           onChange={(e) => {
+                                               setRfLocation(e.target.value)
+                                           }}
                                            disabled={editMode}>
                                     <MenuItem value="Да">
                                         <span style={listItemStyle}>Да</span>
@@ -451,7 +461,12 @@ export default function PersonalCardContract() {
                                     </MenuItem>
                                 </TextField>
                                 <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
-                                           color="warning" defaultValue={studentData.enrollment}
+                                           color="warning" value={studentExpelled}
+                                           onChange={(e) => {
+                                               if (e.target.value === 'Отчислен')
+                                                   setRfLocation('Нет')
+                                               setStudentExpelled(e.target.value)
+                                           }}
                                            margin='normal' size="small" select sx={{width: "325px"}}
                                            InputLabelProps={textFieldStyle} disabled={editMode}>
                                     <MenuItem value="Зачислен">
@@ -459,6 +474,9 @@ export default function PersonalCardContract() {
                                     </MenuItem>
                                     <MenuItem value="Не зачислен">
                                         <span style={listItemStyle}>Не зачислен</span>
+                                    </MenuItem>
+                                    <MenuItem value="Отчислен">
+                                        <span style={listItemStyle}>Отчислен</span>
                                     </MenuItem>
                                 </TextField>
                                 <TextField label="Номер приказа о зачислении" name='enrollment_order' type="text"

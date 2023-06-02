@@ -72,6 +72,9 @@ export default function PersonalCardQuota() {
     const [loading, setLoading] = useState(true)
     const [studentEducationType, setStudentEducationType] = useState(null)
 
+    const [studentExpelled, setStudentExpelled] = useState('')
+    const [RF_location, setRfLocation] = useState()
+
     const navigate = useNavigate()
 
     const studentId = useParams().id
@@ -87,7 +90,10 @@ export default function PersonalCardQuota() {
                     item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
                     item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
                 });
+
                 setStudentData(result[0])
+                setRfLocation(result[0].RF_location)
+                setStudentExpelled(result[0].enrollment)
             })
             .finally(() => {
                 setTimeout(() => {
@@ -209,9 +215,13 @@ export default function PersonalCardQuota() {
                                            name='russian_name' margin='normal' disabled={editMode}
                                            defaultValue={studentData.russian_name}
                                            size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Нахождение в РФ" type="text" variant="outlined" color="warning"
-                                           name='RF_location' margin='normal' select size="small"
-                                           InputLabelProps={textFieldStyle} defaultValue={studentData.RF_location}
+                                <TextField label="Нахождение в РФ" type="text"
+                                           name='RF_location' color="warning" variant="outlined"
+                                           margin='normal' select size="small" InputLabelProps={textFieldStyle}
+                                           value={RF_location}
+                                           onChange={(e) => {
+                                               setRfLocation(e.target.value)
+                                           }}
                                            disabled={editMode}>
                                     <MenuItem value="Да">
                                         <span style={listItemStyle}>Да</span>
@@ -303,8 +313,7 @@ export default function PersonalCardQuota() {
                                 <TextField label="Кем выдан" type="text" variant="outlined" color="warning"
                                            margin='normal' name='passport_issued' size="small" disabled={editMode}
                                            defaultValue={studentData.passport_issued}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <p className="title_contract_doc"> Данные о местоположении </p>
                                 <TextField label="Место рождения" type="text" variant="outlined" color="warning"
                                            name='birth_place' margin='normal' disabled={editMode}
@@ -378,15 +387,23 @@ export default function PersonalCardQuota() {
                             </div>
                             <div className="column_style_contract">
                                 <p className="title_contract_doc"> Статус </p>
-                                <TextField label="Статус зачисления" type="text" variant="outlined" color="warning"
-                                           name='enrollment' margin='normal' size="small" select sx={{width: "325px"}}
-                                           InputLabelProps={textFieldStyle} disabled={editMode}
-                                           defaultValue={studentData.enrollment}>
+                                <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
+                                           color="warning" value={studentExpelled}
+                                           onChange={(e) => {
+                                               if (e.target.value === 'Отчислен')
+                                                   setRfLocation('Нет')
+                                               setStudentExpelled(e.target.value)
+                                           }}
+                                           margin='normal' size="small" select sx={{width: "325px"}}
+                                           InputLabelProps={textFieldStyle} disabled={editMode}>
                                     <MenuItem value="Зачислен">
                                         <span style={listItemStyle}>Зачислен</span>
                                     </MenuItem>
                                     <MenuItem value="Не зачислен">
                                         <span style={listItemStyle}>Не зачислен</span>
+                                    </MenuItem>
+                                    <MenuItem value="Отчислен">
+                                        <span style={listItemStyle}>Отчислен</span>
                                     </MenuItem>
                                 </TextField>
                                 <TextField label="Тип обучения" type="text" variant="outlined" color="error"

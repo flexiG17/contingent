@@ -8,6 +8,10 @@ import "./QuotaDoc.css";
 
 export default function Quota() {
     const [active, setActive] = useState(true);
+
+    const [studentExpelled, setStudentExpelled] = useState('')
+    const [RF_location, setRfLocation] = useState('')
+
     const handleClickContract = () => {
         setActive(!active);
     }
@@ -40,9 +44,13 @@ export default function Quota() {
                         <TextField name='russian_name' label="Ф.И.О. (кир.)" variant="outlined" color="warning"
                                    type="text" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='RF_location' label="Нахождение в РФ" type="text" variant="outlined"
-                                   color="warning" margin='normal' select size="small"
-                                   InputLabelProps={textFieldStyle} defaultValue=''>
+                        <TextField label="Нахождение в РФ" name='RF_location' type="text"
+                                   color="warning" variant="outlined"
+                                   margin='normal' select size="small" InputLabelProps={textFieldStyle}
+                                   value={RF_location}
+                                   onChange={(e) => {
+                                       setRfLocation(e.target.value)
+                                   }}>
                             <MenuItem value="Да">
                                 <span style={listItemStyle}>Да</span>
                             </MenuItem>
@@ -177,14 +185,23 @@ export default function Quota() {
                     </div>
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Статус </p>
-                        <TextField name='enrollment' label="Статус зачисления" type="text" variant="outlined"
-                                   color="warning" margin='normal' size="small" select sx={{width: "325px"}}
-                                   InputLabelProps={textFieldStyle} defaultValue=''>
+                        <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
+                                   color="warning" value={studentExpelled}
+                                   onChange={(e) => {
+                                       if (e.target.value === 'Отчислен')
+                                           setRfLocation('Нет')
+                                       setStudentExpelled(e.target.value)
+                                   }}
+                                   margin='normal' size="small" select sx={{width: "325px"}}
+                                   InputLabelProps={textFieldStyle}>
                             <MenuItem value="Зачислен">
                                 <span style={listItemStyle}>Зачислен</span>
                             </MenuItem>
                             <MenuItem value="Не зачислен">
                                 <span style={listItemStyle}>Не зачислен</span>
+                            </MenuItem>
+                            <MenuItem value="Отчислен">
+                                <span style={listItemStyle}>Отчислен</span>
                             </MenuItem>
                         </TextField>
                         <TextField name='enrollment_order' label="Номер приказа о зачислении" type="text"
