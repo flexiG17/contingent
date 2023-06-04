@@ -1,4 +1,5 @@
 const fileService = require('../services/fileManagerService')
+const checkDiskSpace = require('check-disk-space').default
 
 // TODO:
 //  add rename folder/file
@@ -30,6 +31,8 @@ class FileController {
         if (sort in ['name', 'type', 'date'])
             files = files.sort(sortParam)
 
+
+        //`${((diskSpace.free) / (1024 * 1024 * 1024)).toFixed(2)} из ${(diskSpace.size / (1024 * 1024 * 1024)).toFixed(2)}`
         return res.json(files)
     }
 
