@@ -6,6 +6,9 @@ import {Accordion, AccordionDetails, AccordionSummary, MenuItem} from "@mui/mate
 import './Contract.css';
 import {listItemStyle, dateTextFieldStyle, textFieldStyle} from "../../../utils/consts/styles";
 import Typography from "@mui/material/Typography";
+import moment from "moment";
+import {getToken} from "../../../utils/token";
+import jwtDecode from "jwt-decode";
 
 export default function Contract() {
     const [active, setActive] = useState(true);
@@ -25,12 +28,13 @@ export default function Contract() {
 
     const [studentExpelled, setStudentExpelled] = useState('')
     const [RF_location, setRfLocation] = useState('')
-
     const handleSubmit = (e) => {
         e.preventDefault();
 
         let data = new FormData(formRef.current);
         data.append('education_type', 'Контракт');
+        data.append('date_creation', new Date().toDateString());
+        data.append('who_created', jwtDecode(getToken()).name);
 
         addStudent(data, navigate);
     };
@@ -146,6 +150,20 @@ export default function Contract() {
                         <TextField name='entry_date' label="Дата въезда"
                                    type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                        <p className="title_contract_doc"> Начало обучения </p>
+                        <TextField label="Приступил к обучению" name='started_learning' type="text" variant="outlined" defaultValue=''
+                                   color="warning" margin='normal' size="small" select
+                                   InputLabelProps={textFieldStyle}>
+                            <MenuItem value="Да">
+                                <span style={listItemStyle}>Да</span>
+                            </MenuItem>
+                            <MenuItem value="Нет">
+                                <span style={listItemStyle}>Нет</span>
+                            </MenuItem>
+                        </TextField>
+                        <TextField label="Дата приступления к обучению" name='date_started_learning'
+                                   type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                     </div>
                 </div>
             </div>
@@ -166,11 +184,11 @@ export default function Contract() {
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
                                    color="warning" margin='normal' size="small" select defaultValue=''
                                    InputLabelProps={textFieldStyle}>
-                            <MenuItem value="1008 (1 год)">
-                                <span style={listItemStyle}>1008 (1 год)</span>
+                            <MenuItem value="1008 (1 год 23-24)">
+                                <span style={listItemStyle}>1008 (1 год 23-24)</span>
                             </MenuItem>
-                            <MenuItem value="1008 (1.5 год)">
-                                <span style={listItemStyle}>1008 (1.5 год)</span>
+                            <MenuItem value="1008 (1.5 года 23-24)">
+                                <span style={listItemStyle}>1008 (1.5 года 23-24)</span>
                             </MenuItem>
                             <MenuItem value="868">
                                 <span style={listItemStyle}>868</span>

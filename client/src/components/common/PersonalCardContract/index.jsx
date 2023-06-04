@@ -111,6 +111,8 @@ export default function PersonalCardContract() {
                 student.transfer_to_MVD = moment(student.transfer_to_MVD).format("YYYY-MM-DD");
                 student.estimated_receipt_date = moment(student.estimated_receipt_date).format("YYYY-MM-DD");
                 student.actual_receipt_date_invitation = moment(student.actual_receipt_date_invitation).format("YYYY-MM-DD");
+                student.date_started_learning = moment(student.date_started_learning).format("YYYY-MM-DD");
+                student.date_creation = moment(student.date_creation).format("DD.MM.YYYY");
 
 
                 setContractAmount(result[0].contract_amount)
@@ -372,6 +374,23 @@ export default function PersonalCardContract() {
                                 <TextField label="Дата въезда" defaultValue={studentData.entry_date} type="date"
                                            name='entry_date' disabled={editMode} color="warning"
                                            margin='normal' size="small" sx={{width: "325px"}}
+                                           disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                <p className="title_contract_doc"> Начало обучения </p>
+                                <TextField label="Приступил к обучению" name='started_learning' type="text"
+                                           variant="outlined" defaultValue={studentData.started_learning} disabled={editMode}
+                                           color="warning" margin='normal' size="small" select
+                                           InputLabelProps={textFieldStyle}>
+                                    <MenuItem value="Да">
+                                        <span style={listItemStyle}>Да</span>
+                                    </MenuItem>
+                                    <MenuItem value="Нет">
+                                        <span style={listItemStyle}>Нет</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Дата приступления к обучению" name='date_started_learning'
+                                           defaultValue={studentData.date_started_learning} disabled={editMode}
+                                           type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
                                            inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                             </div>
                         </div>
@@ -396,11 +415,11 @@ export default function PersonalCardContract() {
                                            color="warning" defaultValue={studentData.hours_number}
                                            margin='normal' size="small" select
                                            InputLabelProps={textFieldStyle} disabled={editMode}>
-                                    <MenuItem value="1008 (1 год)">
-                                        <span style={listItemStyle}>1008 (1 год)</span>
+                                    <MenuItem value="1008 (1 год 23-24)">
+                                        <span style={listItemStyle}>1008 (1 год 23-24)</span>
                                     </MenuItem>
-                                    <MenuItem value="1008 (1.5 год)">
-                                        <span style={listItemStyle}>1008 (1.5 год)</span>
+                                    <MenuItem value="1008 (1.5 года 23-24)">
+                                        <span style={listItemStyle}>1008 (1.5 года 23-24)</span>
                                     </MenuItem>
                                     <MenuItem value="868">
                                         <span style={listItemStyle}>868</span>
@@ -445,6 +464,14 @@ export default function PersonalCardContract() {
                                 <TextField label="Примечания" name='comments' type="text" variant="outlined"
                                            color="warning" margin='normal' defaultValue={studentData.comments}
                                            size="small" multiline rows={5} disabled={editMode}
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Дата создания" name='expulsion_order' type="text"
+                                           variant="outlined" defaultValue={studentData.date_creation}
+                                           color="warning" disabled={true} margin='normal' size="small"
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Кем создан" name='expulsion_order' type="text"
+                                           variant="outlined" defaultValue={studentData.who_created}
+                                           color="warning" disabled={true} margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                             </div>
                             <div className="column_style_contract">

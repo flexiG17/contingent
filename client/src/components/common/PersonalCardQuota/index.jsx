@@ -89,6 +89,8 @@ export default function PersonalCardQuota() {
                     item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
                     item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
                     item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
+                    item.date_started_learning = moment(item.date_started_learning).format("YYYY-MM-DD");
+                    item.date_creation = moment(item.date_creation).format("DD.MM.YYYY");
                 });
 
                 setStudentData(result[0])
@@ -332,6 +334,22 @@ export default function PersonalCardQuota() {
                                            name='entry_date' margin='normal' size="small" sx={{width: "325px"}}
                                            inputProps={textFieldStyle} disabled={editMode}
                                            InputLabelProps={dateTextFieldStyle}/>
+                                <p className="title_contract_doc"> Начало обучения </p>
+                                <TextField label="Приступил к обучению" name='started_learning' type="text"
+                                           variant="outlined" defaultValue={studentData.started_learning} disabled={editMode}
+                                           color="warning" margin='normal' size="small" select
+                                           InputLabelProps={textFieldStyle}>
+                                    <MenuItem value="Да">
+                                        <span style={listItemStyle}>Да</span>
+                                    </MenuItem>
+                                    <MenuItem value="Нет">
+                                        <span style={listItemStyle}>Нет</span>
+                                    </MenuItem>
+                                </TextField>
+                                <TextField label="Дата приступления к обучению" name='date_started_learning'
+                                           defaultValue={studentData.date_started_learning} disabled={editMode}
+                                           type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                             </div>
                         </div>
                     </div>
@@ -384,6 +402,14 @@ export default function PersonalCardQuota() {
                                            name='comments' size="small" multiline rows={5} disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.comments}/>
+                                <TextField label="Дата создания" name='expulsion_order' type="text"
+                                           variant="outlined" defaultValue={studentData.date_creation}
+                                           color="warning" disabled={true} margin='normal' size="small"
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <TextField label="Кем создан" name='expulsion_order' type="text"
+                                           variant="outlined" defaultValue={studentData.who_created}
+                                           color="warning" disabled={true} margin='normal' size="small"
+                                           inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                             </div>
                             <div className="column_style_contract">
                                 <p className="title_contract_doc"> Статус </p>

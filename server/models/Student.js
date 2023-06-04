@@ -52,6 +52,10 @@ module.exports = class Student {
 
         this.hours_number = other.hours_number
         this.entry_date = new Date(other.entry_date)
+
+        this.started_learning = other.started_learning
+        this.date_started_learning = new Date(other.date_started_learning)
+
         this.visa_validity = new Date(other.visa_validity)
 
         this.payment_status = other.payment_status
@@ -78,5 +82,8 @@ module.exports = class Student {
         this.estimated_receipt_date = new Date(other.estimated_receipt_date)
         this.actual_receipt_date_invitation = new Date(other.actual_receipt_date_invitation)
         this.comments = other.comments
+
+        this.date_creation = new Date(other.date_creation)
+        this.who_created = other.who_created
     }
 }

@@ -5,6 +5,9 @@ import TextField from "@mui/material/TextField";
 import {MenuItem} from "@mui/material";
 import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles';
 import "./QuotaDoc.css";
+import moment from "moment/moment";
+import jwtDecode from "jwt-decode";
+import {getToken} from "../../../utils/token";
 
 export default function Quota() {
     const [active, setActive] = useState(true);
@@ -25,6 +28,8 @@ export default function Quota() {
 
         let data = new FormData(formRef.current);
         data.append('education_type', 'Квота');
+        data.append('date_creation', new Date().toDateString());
+        data.append('who_created', jwtDecode(getToken()).name);
         //data.append('hours_number', '');
         //data.append('status_1c', '');
 
@@ -134,6 +139,20 @@ export default function Quota() {
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
                                    margin='normal' size="small" sx={{width: "325px"}}
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                        <p className="title_contract_doc"> Начало обучения </p>
+                        <TextField label="Приступил к обучению" name='started_learning' type="text" variant="outlined" defaultValue=''
+                                   color="warning" margin='normal' size="small" select
+                                   InputLabelProps={textFieldStyle}>
+                            <MenuItem value="Да">
+                                <span style={listItemStyle}>Да</span>
+                            </MenuItem>
+                            <MenuItem value="Нет">
+                                <span style={listItemStyle}>Нет</span>
+                            </MenuItem>
+                        </TextField>
+                        <TextField label="Дата приступления к обучению" name='date_started_learning'
+                                   type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
                     </div>
                 </div>
