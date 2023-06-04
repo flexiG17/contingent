@@ -9,6 +9,12 @@ import * as React from "react";
 
 const headCells = [
     {
+        id: 'date_creation',
+        numeric: false,
+        disablePadding: true,
+        label: 'Дата создания',
+    },
+    {
         id: 'education_type',
         numeric: false,
         disablePadding: true,
@@ -60,7 +66,7 @@ const headCells = [
         id: 'enrollment_order',
         numeric: false,
         disablePadding: true,
-        label: '№ приказа о зачислении',
+        label: '№ о зачислении',
     },
     {
         id: 'enrollment',

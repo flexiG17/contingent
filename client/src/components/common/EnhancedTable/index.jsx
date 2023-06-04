@@ -26,6 +26,7 @@ import {getToken} from "../../../utils/token";
 import './TableHeader/HeaderTable.css';
 import {lineStyleInTable, listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 import TextField from "@mui/material/TextField";
+import moment from "moment";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -156,13 +157,17 @@ export default function EnhancedTable() {
                         return false;
                     break;
                 case "equals":
-                    const tmp1 = new Date(item[filter.param.value]);
+                    /*const tmp1 = new Date(item[filter.param.value]);
                     const tmp2 = new Date(filter.value);
                     if (filter.param.type === 'date' && tmp1.getTime() !== tmp2.getTime()) {
                         return false;
                     } else if (item[filter.param.value] === Number(filter.value)) {
                         return false;
                     }
+                    break;*/
+
+                    if (item[filter.param.value] !== filter.value)
+                        return (item[filter.param.value] === filter.value);
                     break;
                 case "less":
                     if (filter.param.type === 'date' && new Date(item[filter.param.value]) >= new Date(filter.value)) {
@@ -369,6 +374,13 @@ export default function EnhancedTable() {
                                                               color="primary" checked={isItemSelected}
                                                               inputProps={{'aria-labelledby': labelId,}}
                                                     />
+                                                </TableCell>
+                                                <TableCell align="left">
+                                                    <Link style={lineStyleInTable} target="_blank"
+                                                          to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
+                                                    >
+                                                        {moment(row.date_creation).format("DD.MM.YYYY")}
+                                                    </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
                                                     <Link style={lineStyleInTable} target="_blank"
