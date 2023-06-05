@@ -157,43 +157,53 @@ export default function EnhancedTable() {
                         return false;
                     break;
                 case "equals":
-                    /*const tmp1 = new Date(item[filter.param.value]);
-                    const tmp2 = new Date(filter.value);
-                    if (filter.param.type === 'date' && tmp1.getTime() !== tmp2.getTime()) {
-                        return false;
-                    } else if (item[filter.param.value] === Number(filter.value)) {
-                        return false;
-                    }
-                    break;*/
+                    const tmp1 = new Date(item[filter.param.value]).setHours(0, 0, 0);
+                    const tmp2 = new Date(filter.value).setHours(0, 0, 0);
 
-                    if (item[filter.param.value] !== filter.value)
+                    console.log(tmp1, tmp2);
+                    console.log(tmp1 !== tmp2);
+                    if (filter.param.type === 'date' && tmp1 !== tmp2) {
+                        return false;
+                    } else if (filter.param.type !== 'date' && item[filter.param.value] !== filter.value)
                         return (item[filter.param.value] === filter.value);
                     break;
-                case "less":
-                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) >= new Date(filter.value)) {
-                        return false;
-                    } else if (item[filter.param.value] >= Number(filter.value)) {
-                        return false;
-                    }
-                    break;
-                case "lessE":
-                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) > new Date(filter.value)) {
-                        return false;
-                    } else if (item[filter.param.value] > Number(filter.value)) {
-                        return false;
-                    }
-                    break;
                 case "more":
-                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) <= new Date(filter.value)) {
+                    const studentDate = new Date(item[filter.param.value]).setHours(0, 0, 0);
+                    const actualDate = new Date(filter.value).setHours(0, 0, 0);
+
+                    if (filter.param.type === 'date' && studentDate <= actualDate) {
                         return false;
                     } else if (item[filter.param.value] <= Number(filter.value)) {
                         return false;
                     }
                     break;
+                case "less":
+                    const lessStudentDate = new Date(item[filter.param.value]).setHours(0, 0, 0);
+                    const lessActualDate = new Date(filter.value).setHours(0, 0, 0);
+
+                    if (filter.param.type === 'date' && lessStudentDate >= lessActualDate) {
+                        return false;
+                    } else if (item[filter.param.value] >= Number(filter.value)) {
+                        return false;
+                    }
+                    break;
                 case "moreE":
-                    if (filter.param.type === 'date' && new Date(item[filter.param.value]) < new Date(filter.value)) {
+                    const studentDate1 = new Date(item[filter.param.value]).setHours(0, 0, 0);
+                    const actualDate1 = new Date(filter.value).setHours(0, 0, 0);
+
+                    if (filter.param.type === 'date' && studentDate1 < actualDate1) {
                         return false;
                     } else if (item[filter.param.value] < Number(filter.value)) {
+                        return false;
+                    }
+                    break;
+                case "lessE":
+                    const studentDate2 = new Date(item[filter.param.value]).setHours(0, 0, 0);
+                    const actualDate2 = new Date(filter.value).setHours(0, 0, 0);
+
+                    if (filter.param.type === 'date' && studentDate2 > actualDate2) {
+                        return false;
+                    } else if (item[filter.param.value] > Number(filter.value)) {
                         return false;
                     }
                     break;
@@ -207,13 +217,12 @@ export default function EnhancedTable() {
     const [searchType, setSearchType] = useState('')
     const [searchingValue, setSearchingValue] = useState('')
 
-
     const [filterCondition, setFilteredCondition] = useState('latin_name');
 
     let filteredValues = studentList.filter(row => {
         if (searchType === 'filter')
             return multiFilter(row);
-        else if (searchType === 'search') {
+        else if (searchType === 'search' || searchType === 'program') {
             return row[filterCondition].toLowerCase().includes(searchingValue.toLowerCase())
         }
         else
@@ -232,88 +241,142 @@ export default function EnhancedTable() {
                 {!loading &&
                     <>
                         <ButtonGroup variant="outlined" aria-label="outlined button group"
-                                     sx={{width: '250px', height: '40px'}}>
+                                     sx={{width: '350px', height: '40px', mr: 1}}>
                             <Button
                                 color='warning'
                                 sx={listItemStyle}
-                                onClick={() => setSearchType('filter')}
+                                onClick={() => {
+                                    setSearchingValue('')
+                                    setSearchType('filter')
+                                }}
                             >
                                 Фильтрация
                             </Button>
                             <Button
                                 color='warning'
                                 sx={listItemStyle}
-                                onClick={() => setSearchType('search')}
+                                onClick={() => {
+                                    setSearchingValue('')
+                                    setFilteredCondition('latin_name')
+                                    setSearchType('search')
+                                }}
                             >
                                 Поиск
                             </Button>
+                            <Button
+                                color='warning'
+                                sx={listItemStyle}
+                                onClick={() => {
+                                    setSearchingValue('')
+                                    setFilteredCondition('hours_number')
+                                    setSearchType('program')
+                                }}
+                            >
+                                Программа
+                            </Button>
                         </ButtonGroup>
 
-                        {searchType === 'filter'
-                            ?
+                        {searchType === 'filter' &&
                             <Filter filters={filters} setFilters={setFilters}/>
-                            :
-                            searchType === 'search'
-                                ?
-                                <div className='searchPosition'>
-                                    <div>
-                                        <TextField label="Поиск" type="text" margin='normal' variant="outlined"
-                                                   color="warning"
-                                                   size="small" select InputLabelProps={textFieldStyle}
-                                                   defaultValue={'latin_name'}
-                                                   sx={{width: '200px', mt: 0, mr: 2, mb: 0}}
-                                                   onChange={e => setFilteredCondition(e.target.value)}>
-                                            <MenuItem sx={textFieldStyle} value="latin_name">
-                                                <span style={listItemStyle}>ФИО (лат.)</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="russian_name">
-                                                <span style={listItemStyle}>ФИО (кир.)</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="passport_number">
-                                                <span style={listItemStyle}>Номер паспорта</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="birth_date">
-                                                <span style={listItemStyle}>Дата рождения</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="country">
-                                                <span style={listItemStyle}>Страна</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="first_student_email">
-                                                <span style={listItemStyle}>Первая эл. почта студента</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="second_student_email">
-                                                <span style={listItemStyle}>Вторая эл. почта студента</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="first_agent_email">
-                                                <span style={listItemStyle}>Первая эл. почта агента</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="second_agent_email">
-                                                <span style={listItemStyle}>Вторая эл. почта агента</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="first_representative_email">
-                                                <span style={listItemStyle}>Первая эл. почта представителя</span>
-                                            </MenuItem>
-                                            <MenuItem sx={textFieldStyle} value="second_representative_email">
-                                                <span style={listItemStyle}>Вторая эл. почта представителя</span>
-                                            </MenuItem>
-                                        </TextField>
+                        }
 
-                                    </div>
-                                    <input
-                                        className='inputStyle'
-                                        type="text"
-                                        placeholder={"Введите данные для поиска..."}
-                                        onChange={(event => setSearchingValue(event.target.value))}
-                                    />
+                        {searchType === 'search' &&
+                            <div className='searchPosition'>
+                                <div>
+                                    <TextField label="Поиск" type="text" margin='normal' variant="outlined"
+                                               color="warning"
+                                               size="small" select InputLabelProps={textFieldStyle}
+                                               defaultValue={'latin_name'}
+                                               sx={{width: '200px', mt: 0, mr: 0.5, ml: 1, mb: 0}}
+                                               onChange={e => setFilteredCondition(e.target.value)}>
+                                        <MenuItem sx={textFieldStyle} value="latin_name">
+                                            <span style={listItemStyle}>ФИО (лат.)</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="russian_name">
+                                            <span style={listItemStyle}>ФИО (кир.)</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="passport_number">
+                                            <span style={listItemStyle}>Номер паспорта</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="birth_date">
+                                            <span style={listItemStyle}>Дата рождения</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="country">
+                                            <span style={listItemStyle}>Страна</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="first_student_email">
+                                            <span style={listItemStyle}>Первая эл. почта студента</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="second_student_email">
+                                            <span style={listItemStyle}>Вторая эл. почта студента</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="first_agent_email">
+                                            <span style={listItemStyle}>Первая эл. почта агента</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="second_agent_email">
+                                            <span style={listItemStyle}>Вторая эл. почта агента</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="first_representative_email">
+                                            <span style={listItemStyle}>Первая эл. почта представителя</span>
+                                        </MenuItem>
+                                        <MenuItem sx={textFieldStyle} value="second_representative_email">
+                                            <span style={listItemStyle}>Вторая эл. почта представителя</span>
+                                        </MenuItem>
+                                    </TextField>
                                 </div>
+                                <input
+                                    className='inputStyle'
+                                    type="text"
+                                    placeholder={"Введите данные для поиска..."}
+                                    onChange={(event => setSearchingValue(event.target.value))}
+                                />
+                            </div>
+                        }
 
-                                :
-
-                                <>
-                                </>
+                        {searchType === 'program' &&
+                            <TextField label="Количество часов" name='hours_number' type="text" variant="outlined"
+                                       color="warning" margin='normal' size="small" select
+                                       sx={{width: '200px', mt: 0, mr: 0.5, ml: 1, mb: 0}}
+                                       defaultValue={''}
+                                       onChange={(event => {
+                                           setSearchingValue(event.target.value)
+                                       })}
+                                       InputLabelProps={textFieldStyle}>
+                                <MenuItem value="1008 (1 год 23-24)">
+                                    <span style={listItemStyle}>1008 (1 год 23-24)</span>
+                                </MenuItem>
+                                <MenuItem value="1008 (1.5 года 23-24)">
+                                    <span style={listItemStyle}>1008 (1.5 года 23-24)</span>
+                                </MenuItem>
+                                <MenuItem value="868">
+                                    <span style={listItemStyle}>868</span>
+                                </MenuItem>
+                                <MenuItem value="728">
+                                    <span style={listItemStyle}>728</span>
+                                </MenuItem>
+                                <MenuItem value="588">
+                                    <span style={listItemStyle}>588</span>
+                                </MenuItem>
+                                <MenuItem value="504">
+                                    <span style={listItemStyle}>504</span>
+                                </MenuItem>
+                                <MenuItem value="288">
+                                    <span style={listItemStyle}>288</span>
+                                </MenuItem>
+                                <MenuItem value="144">
+                                    <span style={listItemStyle}>144</span>
+                                </MenuItem>
+                                <MenuItem value="108">
+                                    <span style={listItemStyle}>108</span>
+                                </MenuItem>
+                                <MenuItem value="72">
+                                    <span style={listItemStyle}>72</span>
+                                </MenuItem>
+                            </TextField>
                         }
                     </>
                 }
+
                 {loading && <CircularProgress color="warning"/>}
             </div>
             <Box sx={{width: '1500px', marginLeft: 'auto', marginRight: 'auto', paddingTop: '30px'}}>
