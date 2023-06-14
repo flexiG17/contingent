@@ -4,7 +4,7 @@
 }
 
 .inputStyle{
-    width: 250px;
+    width: 210px;
     padding: 5px 5px 5px 20px;
     font-family: 'Montserrat', sans-serif;
     font-size: 13px;
@@ -15,4 +15,28 @@
     border: 1px solid #FA7A45;
     border-radius: 10px;
     height: 28px;
+}
+
+.date_picker_table {
+    z-index: 2;
+    width: 210px;
+    height: 37px;
+
+    margin-left: 2px;
+
+    font-size: 13px;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+
+    padding-left: 20px;
+    border: solid 1px #FA7A45;
+    border-radius: 10px;
+}
+
+.date_picker:hover:enabled {
+    border: solid 1px #212121;
+}
+
+.date_picker:focus:enabled {
+    border: solid 1px #ED6C02;
 }

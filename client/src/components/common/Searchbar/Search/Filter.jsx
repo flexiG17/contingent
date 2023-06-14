@@ -7,6 +7,7 @@ import AddIcon from '@mui/icons-material/Add';
 import {FilterItem} from "../../FilterItem";
 import {Badge} from "@mui/material";
 import {getColumns} from "../../../../actions/student";
+import iziToast from "izitoast";
 
 const ITEM_HEIGHT = 50;
 
@@ -80,7 +81,7 @@ export default function LongMenu({filters, setFilters}) {
                 }}
             >
                 {filterArr.map((item) => (
-                    <FilterItem key={item.id} item={item} columns={columns} setFilterArr={setFilterArr}
+                    <FilterItem item={item} columns={columns} setFilterArr={setFilterArr}
                                 changeFilterProp={changeFilterProp}/>
                 ))}
                 <div className="button_position">
@@ -106,10 +107,24 @@ export default function LongMenu({filters, setFilters}) {
                             }}>
                                 Сбросить
                             </button>
-                            <button className="add_filter_button" onClick={() => {
-                                setFilters(filterArr);
-                                handleClose();
-                            }}>
+                            <button className="add_filter_button"
+                                    onClick={() => {
+                                        for (let i = 0; i < filterArr.length; i++){
+                                            if (filterArr[i].operator === 'range' && filterArr[i].param.type !== "date") {
+                                                console.log(filterArr[i]);
+                                                iziToast.error({
+                                                    message: `Оператор "Диапозон" применим к полям типа "Дата" (${filterArr[i].param.label})`,
+                                                    position: "topRight",
+                                                    color: "#FFF2ED"
+                                                });
+                                                break
+                                            }
+                                            else if (i === filterArr.length - 1){
+                                                setFilters(filterArr);
+                                                handleClose();
+                                            }
+                                        }
+                                    }}>
                                 Применить
                             </button>
                         </>

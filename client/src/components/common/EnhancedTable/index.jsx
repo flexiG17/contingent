@@ -17,7 +17,7 @@ import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import {Button, ButtonGroup, CircularProgress, MenuItem} from "@mui/material";
-import {ADD_STUDENT_ROUTE} from "../../../utils/consts/pathRoutes";
+import {ADD_STUDENT_ROUTE, internalServerError} from "../../../utils/consts/pathRoutes";
 import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
 import TableToolbar from "./TableToolbar";
@@ -27,6 +27,9 @@ import './TableHeader/HeaderTable.css';
 import {lineStyleInTable, listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 import TextField from "@mui/material/TextField";
 import moment from "moment";
+import iziToast from "izitoast";
+import CustomSingleDatePicker from "../../datePicker/singleDatePicker";
+import DatePicker from "react-datepicker";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -74,6 +77,9 @@ export default function EnhancedTable() {
     useEffect(() => {
         getStudents()
             .then(items => {
+                /*items.map(item => {
+                    item.birth_date = moment(item.birth_date).format('DD.MM.YYYY')
+                })*/
                 setStudentList(items.reverse());
             })
             .finally(() => setLoading(false))
@@ -160,8 +166,6 @@ export default function EnhancedTable() {
                     const tmp1 = new Date(item[filter.param.value]).setHours(0, 0, 0);
                     const tmp2 = new Date(filter.value).setHours(0, 0, 0);
 
-                    console.log(tmp1, tmp2);
-                    console.log(tmp1 !== tmp2);
                     if (filter.param.type === 'date' && tmp1 !== tmp2) {
                         return false;
                     } else if (filter.param.type !== 'date' && item[filter.param.value] !== filter.value)
@@ -207,6 +211,15 @@ export default function EnhancedTable() {
                         return false;
                     }
                     break;
+                case "range":
+                    const valueToFilter = new Date(item[filter.param.value]).setHours(0, 0, 0);
+                    const startDate = new Date(filter.value[0]).setHours(0, 0, 0);
+                    const endDate = new Date(filter.value[1]).setHours(0, 0, 0);
+
+                    if (filter.param.type === 'date' && !(valueToFilter >= startDate && valueToFilter <= endDate)) {
+                        return false;
+                    }
+                    break;
                 default:
                     return false;
             }
@@ -222,10 +235,13 @@ export default function EnhancedTable() {
     let filteredValues = studentList.filter(row => {
         if (searchType === 'filter')
             return multiFilter(row);
+        /*else if (searchType === 'search' && filterCondition === "birth_date"){
+            if (searchingValue !== '' && new Date(row[filterCondition]).setHours(0, 0, 0) === new Date(searchingValue).setHours(0, 0, 0))
+                return row[filterCondition]
+        }*/
         else if (searchType === 'search' || searchType === 'program') {
             return row[filterCondition].toLowerCase().includes(searchingValue.toLowerCase())
-        }
-        else
+        } else
             return row
     });
 
@@ -288,7 +304,10 @@ export default function EnhancedTable() {
                                                size="small" select InputLabelProps={textFieldStyle}
                                                defaultValue={'latin_name'}
                                                sx={{width: '200px', mt: 0, mr: 0.5, ml: 1, mb: 0}}
-                                               onChange={e => setFilteredCondition(e.target.value)}>
+                                               onChange={e => {
+                                                   setSearchingValue('')
+                                                   setFilteredCondition(e.target.value)
+                                               }}>
                                         <MenuItem sx={textFieldStyle} value="latin_name">
                                             <span style={listItemStyle}>ФИО (лат.)</span>
                                         </MenuItem>
@@ -324,12 +343,26 @@ export default function EnhancedTable() {
                                         </MenuItem>
                                     </TextField>
                                 </div>
-                                <input
+                                {
+                                    <input
                                     className='inputStyle'
                                     type="text"
                                     placeholder={"Введите данные для поиска..."}
                                     onChange={(event => setSearchingValue(event.target.value))}
-                                />
+                                />}
+                                {/*{filterCondition === "birth_date" &&
+                                    <DatePicker
+                                        todayButton="Today"
+                                        selected={typeof(searchingValue) === 'string' ? null : new Date(searchingValue)}
+                                        onChange={(date) => {
+                                            setSearchingValue(date)
+                                        }}
+                                        showMonthDropdown
+                                        showYearDropdown
+                                        dateFormat="dd.MM.yyyy"
+                                        placeholderText={"Выберите дату для поиска..."}
+                                        className="date_picker_table"
+                                    />}*/}
                             </div>
                         }
 

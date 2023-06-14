@@ -2,6 +2,8 @@ import Select from "react-select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
+import CustomRangeDatePicker from "../../datePicker/rangeDatePicker";
+import DatePicker from "react-datepicker";
 
 export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     const operators = [
@@ -10,10 +12,18 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
         {value: 'more', label: 'Больше'},
         {value: 'less', label: 'Меньше'},
         {value: 'moreE', label: 'Больше или равно'},
-        {value: 'lessE', label: 'Меньше или равно'}
+        {value: 'lessE', label: 'Меньше или равно'},
+        {value: 'range', label: 'Диапозон'}
     ];
 
     const [inputType, setInputType] = useState(item.param.type);
+
+    const [dateRange, setDateRange] = useState(
+        [
+            typeof (item.value) === 'string' ? null : item.value[0],
+            typeof (item.value) === 'string' ? null : item.value[1]]
+    );
+    const [startDate, endDate] = dateRange;
 
     return (
         <MenuItem>
@@ -38,8 +48,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                 <select name="" id="" className="second_parameter search_filter" value={item.operator}
                         onChange={(e) => {
                             changeFilterProp(item.id, e.target.value, 'operator');
-                        }
-                        }>
+                        }}>
                     <option hidden>Выберите оператор</option>
                     {
                         operators.map((item) => {
@@ -49,10 +58,30 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                 </select>
 
                 <div className="third_parameter">
-                    <input className="search_filter" type={inputType} onChange={(e) => {
-                        changeFilterProp(item.id, e.target.value, 'value');
-                    }}
-                           value={item.value}/>
+
+                    {item.operator !== 'range' &&
+                        <input className="search_filter" type={inputType}
+                               onChange={(e) => {
+                                   changeFilterProp(item.id, e.target.value, 'value');
+                               }}
+                               value={item.value}/>}
+                    {item.operator === 'range' &&
+                        <DatePicker
+                            selectsRange={true}
+                            onChange={(update) => {
+                                changeFilterProp(item.id, update, 'value');
+                                setDateRange(update);
+                            }}
+                            startDate={startDate}
+                            endDate={endDate}
+                            showMonthDropdown
+                            showYearDropdown
+                            required
+                            placeholderText="Выберите диапозон дат"
+                            dropdownMode="select"
+                            dateFormat="dd.MM.yyyy"
+                            className="date_picker"
+                        />}
                 </div>
                 <button className="delete_filter_button"
                         onClick={() => {
