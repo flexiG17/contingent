@@ -168,7 +168,7 @@ export default function EnhancedTable() {
 
                     if (filter.param.type === 'date' && tmp1 !== tmp2) {
                         return false;
-                    } else if (filter.param.type !== 'date' && item[filter.param.value] !== filter.value)
+                    } else if (filter.param.type !== 'date' && item[filter.param.value].toLowerCase() !== filter.value.toLowerCase())
                         return (item[filter.param.value] === filter.value);
                     break;
                 case "more":
@@ -235,11 +235,12 @@ export default function EnhancedTable() {
     let filteredValues = studentList.filter(row => {
         if (searchType === 'filter')
             return multiFilter(row);
-        /*else if (searchType === 'search' && filterCondition === "birth_date"){
-            if (searchingValue !== '' && new Date(row[filterCondition]).setHours(0, 0, 0) === new Date(searchingValue).setHours(0, 0, 0))
-                return row[filterCondition]
-        }*/
-        else if (searchType === 'search' || searchType === 'program') {
+        else if (searchType === 'search' && filterCondition === "birth_date") {
+            if (searchingValue === '')
+                return row
+            else
+                return new Date(row[filterCondition]).setHours(0, 0, 0) === new Date(searchingValue).setHours(0, 0, 0)
+        } else if (searchType === 'search' || searchType === 'program') {
             return row[filterCondition].toLowerCase().includes(searchingValue.toLowerCase())
         } else
             return row
@@ -303,7 +304,7 @@ export default function EnhancedTable() {
                                                color="warning"
                                                size="small" select InputLabelProps={textFieldStyle}
                                                defaultValue={'latin_name'}
-                                               sx={{width: '200px', mt: 0, mr: 0.5, ml: 1, mb: 0}}
+                                               sx={{width: '200px', mt: 0, mr: "20px", ml: 1, mb: 0}}
                                                onChange={e => {
                                                    setSearchingValue('')
                                                    setFilteredCondition(e.target.value)
@@ -326,43 +327,34 @@ export default function EnhancedTable() {
                                         <MenuItem sx={textFieldStyle} value="first_student_email">
                                             <span style={listItemStyle}>Первая эл. почта студента</span>
                                         </MenuItem>
-                                        <MenuItem sx={textFieldStyle} value="second_student_email">
-                                            <span style={listItemStyle}>Вторая эл. почта студента</span>
-                                        </MenuItem>
                                         <MenuItem sx={textFieldStyle} value="first_agent_email">
                                             <span style={listItemStyle}>Первая эл. почта агента</span>
-                                        </MenuItem>
-                                        <MenuItem sx={textFieldStyle} value="second_agent_email">
-                                            <span style={listItemStyle}>Вторая эл. почта агента</span>
                                         </MenuItem>
                                         <MenuItem sx={textFieldStyle} value="first_representative_email">
                                             <span style={listItemStyle}>Первая эл. почта представителя</span>
                                         </MenuItem>
-                                        <MenuItem sx={textFieldStyle} value="second_representative_email">
-                                            <span style={listItemStyle}>Вторая эл. почта представителя</span>
-                                        </MenuItem>
                                     </TextField>
                                 </div>
-                                {
+                                {filterCondition !== "birth_date" &&
                                     <input
-                                    className='inputStyle'
-                                    type="text"
-                                    placeholder={"Введите данные для поиска..."}
-                                    onChange={(event => setSearchingValue(event.target.value))}
-                                />}
-                                {/*{filterCondition === "birth_date" &&
+                                        className='inputStyle'
+                                        type="text"
+                                        placeholder={"Введите данные для поиска..."}
+                                        onChange={(event => setSearchingValue(event.target.value))}
+                                    />}
+                                {filterCondition === "birth_date" &&
                                     <DatePicker
                                         todayButton="Today"
-                                        selected={typeof(searchingValue) === 'string' ? null : new Date(searchingValue)}
+                                        selected={typeof (searchingValue) === 'string' ? null : new Date(searchingValue)}
                                         onChange={(date) => {
-                                            setSearchingValue(date)
+                                            setSearchingValue(date === null ? '' : date)
                                         }}
                                         showMonthDropdown
                                         showYearDropdown
                                         dateFormat="dd.MM.yyyy"
                                         placeholderText={"Выберите дату для поиска..."}
                                         className="date_picker_table"
-                                    />}*/}
+                                    />}
                             </div>
                         }
 

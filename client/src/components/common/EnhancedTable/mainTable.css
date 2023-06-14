@@ -20,15 +20,14 @@
 .date_picker_table {
     z-index: 2;
     width: 210px;
-    height: 37px;
+    height: 28px;
 
-    margin-left: 2px;
+    padding: 5px 5px 5px 20px;
 
     font-size: 13px;
     font-weight: 400;
     font-family: 'Montserrat', sans-serif;
 
-    padding-left: 20px;
     border: solid 1px #FA7A45;
     border-radius: 10px;
 }

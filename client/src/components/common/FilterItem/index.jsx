@@ -24,6 +24,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
             typeof (item.value) === 'string' ? null : item.value[1]]
     );
     const [startDate, endDate] = dateRange;
+    const [startDateSingleRange, setStartDateSingleRange] = useState(null);
 
     return (
         <MenuItem>
@@ -58,14 +59,27 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                 </select>
 
                 <div className="third_parameter">
-
-                    {item.operator !== 'range' &&
-                        <input className="search_filter" type={inputType}
+                    {(item.operator !== 'range' && inputType !== 'date') &&
+                        <input className="search_filter" type='text'
                                onChange={(e) => {
                                    changeFilterProp(item.id, e.target.value, 'value');
                                }}
                                value={item.value}/>}
-                    {item.operator === 'range' &&
+                    {(inputType === 'date' && item.operator !== 'range') &&
+                        <DatePicker
+                            todayButton="Today"
+                            selected={startDateSingleRange}
+                            onChange={(date) => {
+                                changeFilterProp(item.id, date, 'value')
+                                setStartDateSingleRange(date)
+                            }}
+                            showMonthDropdown
+                            showYearDropdown
+                            placeholderText="Выберите дату для поиска"
+                            dateFormat="dd.MM.yyyy"
+                            className="date_picker_filter"
+                        />}
+                    {(item.operator === 'range') &&
                         <DatePicker
                             selectsRange={true}
                             onChange={(update) => {
@@ -80,7 +94,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             placeholderText="Выберите диапозон дат"
                             dropdownMode="select"
                             dateFormat="dd.MM.yyyy"
-                            className="date_picker"
+                            className="date_picker_filter"
                         />}
                 </div>
                 <button className="delete_filter_button"

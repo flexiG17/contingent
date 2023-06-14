@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 800px;
-    height: 40px;
+    width: 817px;
+    height: 50px;
     align-items: center;
     margin-left: 30px;
 }
@@ -12,7 +12,6 @@
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     width: 300px;
-
 }
 
 .second_parameter {
@@ -30,7 +29,7 @@
 }
 
 .search_filter {
-    height: 34px;
+    height: 35px;
     outline: none;
     border: 1px solid #CCCCCC;
     border-radius: 5px;
@@ -61,7 +60,6 @@
 .filter_button:hover {
     background-color: #FF4B00;
 }
-
 
 .add_filter_button {
     height: 40px;
@@ -102,7 +100,6 @@
     background-color: #FF4B00;
 }
 
-
 .button_position {
     display: flex;
     flex-direction: row;
@@ -111,4 +108,19 @@
     padding-left: 45px;
     margin-top: 20px;
     margin-bottom: 55px;
+}
+
+.date_picker_filter{
+    z-index: 2;
+    width: 185px;
+    height: 30px;
+
+
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+
+    padding-left: 15px;
+    border: solid 1px #C4C4C4;
+    border-radius: 5px;
 }
