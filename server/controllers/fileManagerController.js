@@ -31,11 +31,16 @@ class FileController {
         if (sort in ['name', 'type', 'date'])
             files = files.sort(sortParam)
 
-
-        //`${((diskSpace.free) / (1024 * 1024 * 1024)).toFixed(2)} из ${(diskSpace.size / (1024 * 1024 * 1024)).toFixed(2)}`
         return res.json(files)
     }
-
+    async getDiskData(req, res) {
+        checkDiskSpace('C:/').then(diskSpace => {
+            return res.json({
+                freeSpace: ((diskSpace.free) / (1024 * 1024 * 1024)).toFixed(2),
+                diskSize: ((diskSpace.size) / (1024 * 1024 * 1024)).toFixed(2)
+            })
+        })
+    }
     async uploadFile(req, res) {
         const files = await fileService.uploadFiles(req.files, req.body.parent_id, req.body.student_id, req.user.id)
 

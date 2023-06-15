@@ -7,3 +7,8 @@ export function downloadFile(fileId) {
         responseType: 'blob'
     });
 }
+
+export function getDiskSize() {
+    return api.get(`files/diskSize`)
+        .then(res => res.data);
+}

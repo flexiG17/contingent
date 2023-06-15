@@ -7,6 +7,7 @@ import {getCurrentDir, getDirStack, getIsLoading} from "../../../../store/slices
 import ModalDirectory from "./ModalDirectory";
 import {popDirStack, setCurrentDir} from "../../../../store/slices/ManagerData/manager-data";
 import Spinner from "../../Spinner";
+import {getDiskSize} from "../../../../actions/fileManager";
 
 const Disk = ({studentId}) => {
     const dispatch = useDispatch();
@@ -16,8 +17,18 @@ const Disk = ({studentId}) => {
 
     const [active, setActive] = useState(false);
 
+    const [diskData, setDiskData] = useState({
+        freeSpace: 0,
+        diskSize: 0
+    })
+
     useEffect(() => {
         dispatch(fetchFilesAction({studentId: studentId, parentId: currentDir}))
+
+        getDiskSize()
+            .then(data => {
+                setDiskData(data)
+            })
     }, [studentId, currentDir]);
 
     const openCreateDir = () => {
@@ -49,6 +60,10 @@ const Disk = ({studentId}) => {
                                 <label htmlFor="disk_upload_id">Выберите файл</label>
                                 <input type="file" id="disk_upload_id" style={{display: "none"}}
                                        onChange={uploadFileHandler} multiple={true}/>
+                            </div>
+
+                            <div className="disk_data_label">
+                                {`Свободно ${diskData.freeSpace} ГБ из ${diskData.diskSize} ГБ`}
                             </div>
                         </div>
                         {

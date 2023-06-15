@@ -1,8 +1,6 @@
 import React from 'react';
 import '../CreateTaskModal/Modal.css';
 import Disk from './file/Disk';
-
-
 const ModalFile = ({active,setActive, studentId}) =>{
 
     return(
@@ -13,5 +11,4 @@ const ModalFile = ({active,setActive, studentId}) =>{
         </div>
     )
 }
-
 export default ModalFile;

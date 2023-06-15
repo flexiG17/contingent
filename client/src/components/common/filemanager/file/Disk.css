@@ -1,11 +1,11 @@
-disk {
+.disk {
     padding-top: 20px;
 }
 
 .disk_btns{
     display: flex;
     flex-direction: row;
-    width: 400px;
+    width: 680px;
     justify-content: space-between;
     margin-bottom: 10px;
 }
@@ -33,4 +33,11 @@ disk {
 .disk_style_bread {
     font-size: 15px;
     color: #FF6347;
+}
+
+.disk_data_label {
+    font-weight: 450;
+    margin-top: auto;
+    margin-bottom: auto;
+    border-bottom: 1px #FF4B00 solid;
 }
