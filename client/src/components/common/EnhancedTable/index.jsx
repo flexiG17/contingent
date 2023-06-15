@@ -17,7 +17,7 @@ import {Link, NavLink} from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import '../Searchbar/Searchbar.css';
 import {Button, ButtonGroup, CircularProgress, MenuItem} from "@mui/material";
-import {ADD_STUDENT_ROUTE, internalServerError} from "../../../utils/consts/pathRoutes";
+import {ADD_STUDENT_ROUTE} from "../../../utils/consts/pathRoutes";
 import Filter from "../Searchbar/Search/Filter";
 import jwt_decode from "jwt-decode";
 import TableToolbar from "./TableToolbar";
@@ -27,8 +27,6 @@ import './TableHeader/HeaderTable.css';
 import {lineStyleInTable, listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
 import TextField from "@mui/material/TextField";
 import moment from "moment";
-import iziToast from "izitoast";
-import CustomSingleDatePicker from "../../datePicker/singleDatePicker";
 import DatePicker from "react-datepicker";
 
 function descendingComparator(a, b, orderBy) {
@@ -467,7 +465,7 @@ export default function EnhancedTable() {
                                                     <Link style={lineStyleInTable} target="_blank"
                                                           to={`/${row.education_type === "Контракт" ? 'contract' : 'quota'}/${row.id}`}
                                                     >
-                                                        {moment(row.date_creation).format("DD.MM.YYYY")}
+                                                        {row.date_creation === null ? 'Не определена' : moment(row.date_creation).format("DD.MM.YYYY")}
                                                     </Link>
                                                 </TableCell>
                                                 <TableCell align="left">
