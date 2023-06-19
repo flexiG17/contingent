@@ -2,7 +2,6 @@ import Select from "react-select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
-import CustomRangeDatePicker from "../../datePicker/rangeDatePicker";
 import DatePicker from "react-datepicker";
 
 export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
@@ -24,7 +23,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
             typeof (item.value) === 'string' ? null : item.value[1]]
     );
     const [startDate, endDate] = dateRange;
-    const [startDateSingleRange, setStartDateSingleRange] = useState(null);
+    const [startDateSingleRange, setStartDateSingleRange] = useState(item.value === '' ? null : item.value);
 
     return (
         <MenuItem>
