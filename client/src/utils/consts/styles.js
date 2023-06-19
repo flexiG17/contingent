@@ -3,7 +3,8 @@ export const textFieldStyle = {
         {
             fontSize: "14.5px",
             fontFamily: ['Montserrat'],
-            fontWeight: '450'
+            fontWeight: '450',
+            zIndex: -1
         },
 }
 
@@ -12,7 +13,8 @@ export const dateTextFieldStyle = {
         {
             fontSize: "14.5px",
             fontFamily: ['Montserrat'],
-            fontWeight: '450'
+            fontWeight: '450',
+            zIndex: -1
         },
     shrink: true
 }

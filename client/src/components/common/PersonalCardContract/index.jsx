@@ -30,6 +30,7 @@ import {getToken} from "../../../utils/token";
 import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles'
 import moment from "moment/moment";
 import Typography from "@mui/material/Typography";
+import CustomSingleDatePicker from "../../datePicker/singleDatePicker";
 
 export default function PersonalCardContract() {
 
@@ -53,17 +54,6 @@ export default function PersonalCardContract() {
         setModalFileActive(true);
     }
 
-    const handleModal = () => {
-        if (studentData.first_student_email !== '')
-            setModalActive(true)
-        else
-            iziToast.error({
-                message: 'Почта студента не выбрана',
-                position: "topRight",
-                color: "#FFF2ED"
-            })
-    }
-
     const handleModalMessage = () => {
         setModalMessageActive(true);
     }
@@ -75,9 +65,20 @@ export default function PersonalCardContract() {
     const role = jwt_decode(getToken()).role
     const READER_ACCESS = role === 'Читатель'
 
-    const [studentData, setStudentData] = useState(null)
+    const [studentData, setStudentData] = useState(undefined)
     const [loading, setLoading] = useState(true)
-    const [studentEducationType, setStudentEducationType] = useState(null)
+    const [studentEducationType, setStudentEducationType] = useState(new Date())
+
+    const handleModal = () => {
+        if (studentData.first_student_email !== '')
+            setModalActive(true)
+        else
+            iziToast.error({
+                message: 'Почта студента не выбрана',
+                position: "topRight",
+                color: "#FFF2ED"
+            })
+    }
 
     const [contractAmount, setContractAmount] = useState(0)
     const [firstPayment, setFirstPayment] = useState(0)
@@ -94,7 +95,7 @@ export default function PersonalCardContract() {
             .then(result => {
                 setStudentEducationType(result[0].education_type)
                 const student = result[0]
-                student.birth_date = moment(student.birth_date).format("YYYY-MM-DD");
+                /*student.birth_date = moment(student.birth_date).format("YYYY-MM-DD");
                 student.passport_issue_date = moment(student.passport_issue_date).format("YYYY-MM-DD");
                 student.passport_expiration = moment(student.passport_expiration).format("YYYY-MM-DD");
                 student.entry_date = moment(student.entry_date).format("YYYY-MM-DD");
@@ -112,8 +113,7 @@ export default function PersonalCardContract() {
                 student.estimated_receipt_date = moment(student.estimated_receipt_date).format("YYYY-MM-DD");
                 student.actual_receipt_date_invitation = moment(student.actual_receipt_date_invitation).format("YYYY-MM-DD");
                 student.date_started_learning = moment(student.date_started_learning).format("YYYY-MM-DD");
-                student.date_creation = moment(student.date_creation).format("DD.MM.YYYY");
-
+                student.date_creation = moment(student.date_creation).format("DD.MM.YYYY");*/
 
                 setContractAmount(result[0].contract_amount)
                 setFirstPayment(result[0].amount_first_actual_payment)
@@ -158,6 +158,7 @@ export default function PersonalCardContract() {
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
 
+        console.log(dataToSave);
         changeStudentData(dataToSave, studentId, navigate, studentEducationType)
     };
 
@@ -225,6 +226,7 @@ export default function PersonalCardContract() {
 
     const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
 
+    //console.log(formRef);
     return (
         loading
             ?
@@ -329,23 +331,47 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Женский</span>
                                     </MenuItem>
                                 </TextField>
-                                <TextField label="Дата рождения" type="date" color="warning"
+                                <CustomSingleDatePicker
+                                    name={"birth_date"}
+                                    defaultValue={studentData.birth_date}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Дата рождения'}
+                                />
+                                {/*<TextField label="Дата рождения" type="date" color="warning"
                                            defaultValue={studentData.birth_date}
                                            name='birth_date' required margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                                 <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.passport_number}
                                            margin='normal' disabled={editMode}
                                            required size="small" inputProps={textFieldStyle}
                                            InputLabelProps={textFieldStyle}/>
-                                <TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
+                                <CustomSingleDatePicker
+                                    name={"passport_issue_date"}
+                                    defaultValue={studentData.passport_issue_date}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Дата выдачи'}
+                                />
+                                {/*<TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
                                            margin='normal' defaultValue={studentData.passport_issue_date}
                                            inputProps={textFieldStyle} size="small" disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Срок действия паспорта" name='passport_expiration' type="date"
+                                           InputLabelProps={dateTextFieldStyle}/>*/}
+                                <CustomSingleDatePicker
+                                    name={"passport_expiration"}
+                                    defaultValue={studentData.passport_expiration}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Срок действия'}
+                                />
+                                {/*<TextField label="Срок действия паспорта" name='passport_expiration' type="date"
                                            color="warning" defaultValue={studentData.passport_expiration}
                                            margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                                 <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
                                            color="warning" margin='normal' defaultValue={studentData.passport_issued}
                                            size="small" disabled={editMode}
@@ -371,11 +397,19 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Нет</span>
                                     </MenuItem>
                                 </TextField>
-                                <TextField label="Дата въезда" defaultValue={studentData.entry_date} type="date"
+                                {/*<TextField label="Дата въезда" defaultValue={studentData.entry_date} type="date"
                                            name='entry_date' disabled={editMode} color="warning"
                                            margin='normal' size="small" sx={{width: "325px"}}
                                            disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
+                                <CustomSingleDatePicker
+                                    name={"entry_date"}
+                                    defaultValue={studentData.entry_date}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Дата въезда'}
+                                />
                                 <p className="title_contract_doc"> Начало обучения </p>
                                 <TextField label="Приступил к обучению" name='started_learning' type="text"
                                            variant="outlined" defaultValue={studentData.started_learning} disabled={editMode}
@@ -388,10 +422,18 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Нет</span>
                                     </MenuItem>
                                 </TextField>
-                                <TextField label="Дата приступления к обучению" name='date_started_learning'
+                                <CustomSingleDatePicker
+                                    name={"date_started_learning"}
+                                    defaultValue={studentData.date_started_learning}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Дата приступления к обучению'}
+                                />
+                                {/*<TextField label="Дата приступления к обучению" name='date_started_learning'
                                            defaultValue={studentData.date_started_learning} disabled={editMode}
                                            type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                             </div>
                         </div>
                     </div>
@@ -537,29 +579,69 @@ export default function PersonalCardContract() {
                         <div className="columns_position">
                             <div className="column_style_contract">
                                 <p className="title_contract_doc">Виза и приглашение</p>
-                                <TextField label="Срок действия визы" name='visa_validity' type="date" color="warning"
+                                {/*<TextField label="Срок действия визы" name='visa_validity' type="date" color="warning"
                                            disabled={editMode} defaultValue={studentData.visa_validity}
                                            margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>
-                                <TextField label="Дата передачи в международную службу"
+                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>*/}
+                                <CustomSingleDatePicker
+                                    name={"visa_validity"}
+                                    defaultValue={studentData.visa_validity}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Срок действия визы'}
+                                />
+                                {/*<TextField label="Дата передачи в международную службу"
                                            name='transfer_to_international_service' type="date" color="warning"
                                            margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
                                            InputLabelProps={dateTextFieldStyle}
-                                           defaultValue={studentData.transfer_to_international_service}/>
-                                <TextField label="Дата передачи в МВД" name='transfer_to_MVD' type="date"
-                                           color="warning" disabled={editMode}
-                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle}
-                                           defaultValue={studentData.transfer_to_MVD}/>
-                                <TextField label="Ориентировочная дата получения" name='estimated_receipt_date'
+                                           defaultValue={studentData.transfer_to_international_service}/>*/}
+                                <CustomSingleDatePicker
+                                    name={"transfer_to_international_service"}
+                                    defaultValue={studentData.transfer_to_international_service}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Дата передачи в международную службу'}
+                                />
+                                {/*<TextField label="Дата передачи в МВД" name='transfer_to_MVD' type="date"*/}
+                                {/*           color="warning" disabled={editMode}*/}
+                                {/*           margin='normal' size="small" inputProps={textFieldStyle}*/}
+                                {/*           InputLabelProps={dateTextFieldStyle}*/}
+                                {/*           defaultValue={studentData.transfer_to_MVD}/>*/}
+                                <CustomSingleDatePicker
+                                    name={"transfer_to_MVD"}
+                                    defaultValue={studentData.transfer_to_MVD}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Дата передачи в МВД'}
+                                />
+                                {/*<TextField label="Ориентировочная дата получения" name='estimated_receipt_date'
                                            type="date" color="warning" defaultValue={studentData.estimated_receipt_date}
                                            margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Фактическая дата получения приглашения"
+                                           InputLabelProps={dateTextFieldStyle}/>*/}
+                                <CustomSingleDatePicker
+                                    name={"estimated_receipt_date"}
+                                    defaultValue={studentData.estimated_receipt_date}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Ориентировочная дата получения'}
+                                />
+                                {/*<TextField label="Фактическая дата получения приглашения"
                                            name='actual_receipt_date_invitation' type="date" color="warning"
                                            margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
                                            InputLabelProps={dateTextFieldStyle}
-                                           defaultValue={studentData.actual_receipt_date_invitation}/>
+                                           defaultValue={studentData.actual_receipt_date_invitation}/>*/}
+                                <CustomSingleDatePicker
+                                    name={"actual_receipt_date_invitation"}
+                                    defaultValue={studentData.actual_receipt_date_invitation}
+                                    required
+                                    editMode={editMode}
+                                    ref={formRef}
+                                    label={'Фактическая дата получения приглашения'}
+                                />
                             </div>
                             <div className="column_style_contract">
                                 <p className="title_contract_doc">
