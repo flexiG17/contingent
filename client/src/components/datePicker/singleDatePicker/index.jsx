@@ -3,16 +3,17 @@ import DatePicker from "react-datepicker";
 import './datePicker.css'
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function CustomSingleDatePicker({name, label, editMode, defaultValue}){
-    const [startDate, setStartDate] = useState(defaultValue);
+const CustomSingleDatePicker = React.forwardRef(({name, label, editMode, defaultValue, zIndex}, ref) => {
+    const [startDate, setStartDate] = useState(!defaultValue ? null : new Date(defaultValue));
 
-    return(
+    return (
         <div className="date_picker_block">
             <div className="date_picker_title">
                 {label}
             </div>
-            <div style={{zIndex: 2}}>
+            <div>
                 <DatePicker
+                    name={name}
                     todayButton="Today"
                     selected={startDate}
                     onChange={(date) => setStartDate(date)}
@@ -21,8 +22,12 @@ export default function CustomSingleDatePicker({name, label, editMode, defaultVa
                     showYearDropdown
                     dateFormat="dd.MM.yyyy"
                     className="date_picker"
+                    ref={ref}
+                    placeholderText={'Не выбрано'}
                 />
             </div>
         </div>
     )
-}
+});
+
+export default CustomSingleDatePicker
