@@ -111,9 +111,32 @@ export default function LongMenu({filters, setFilters}) {
                                     onClick={() => {
                                         for (let i = 0; i < filterArr.length; i++){
                                             if (filterArr[i].operator === 'range' && filterArr[i].param.type !== "date") {
-                                                console.log(filterArr[i]);
                                                 iziToast.error({
-                                                    message: `Оператор "Диапозон" применим к полям типа "Дата" (${filterArr[i].param.label})`,
+                                                    message: `Оператор "Диапазон" применим к полям типа "Дата" (${filterArr[i].param.label})`,
+                                                    position: "topRight",
+                                                    color: "#FFF2ED"
+                                                });
+                                                break
+                                            }
+                                            else if (filterArr[i].operator === 'coincidence' && filterArr[i].param.type === "date") {
+                                                iziToast.error({
+                                                    message: `Оператор "Содержит" не применим к полям типа "Дата"`,
+                                                    position: "topRight",
+                                                    color: "#FFF2ED"
+                                                });
+                                                break
+                                            }
+                                            else if (typeof(filterArr[i].value) !== 'string' && filterArr[i].param.type !== "date") {
+                                                iziToast.error({
+                                                    message: `Некорректные введенные данные`,
+                                                    position: "topRight",
+                                                    color: "#FFF2ED"
+                                                });
+                                                break
+                                            }
+                                            else if (filterArr[i].operator.value === '') {
+                                                iziToast.error({
+                                                    message: `Оператор для фильтрации не выбран (${filterArr[i].param.label})`,
                                                     position: "topRight",
                                                     color: "#FFF2ED"
                                                 });
