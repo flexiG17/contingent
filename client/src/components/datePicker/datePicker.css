@@ -1,0 +1,75 @@
+.date_picker_title {
+    /*color: #ED6C02;*/
+    margin-left: 14px;
+    margin-top: 8px;
+    margin-bottom: -17px;
+
+    font-size: 11px;
+    font-weight: 450;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.disabled_title{
+    color: #A2A0A3;
+    font-weight: 400;
+}
+
+.undisabled_title{
+    color: #666666;
+}
+
+.extra_small_label_area {
+    clip-path: polygon(2.5% 6%, 28% 6%, 28% 0, 100% 0, 100% 100%, 0 100%, 0 0, 2.5% 0);
+}
+
+.small_label_area {
+    clip-path: polygon(2.5% 6%, 35% 6%, 35% 0, 100% 0, 100% 100%, 0 100%, 0 0, 2.5% 0);
+}
+
+.middle_label_area {
+    clip-path: polygon(2.5% 6%, 45% 6%, 45% 0, 100% 0, 100% 100%, 0 100%, 0 0, 2.5% 0);
+}
+
+.large_label_area {
+    clip-path: polygon(2.5% 6%, 68% 6%, 68% 0, 100% 0, 100% 100%, 0 100%, 0 0, 2.5% 0);
+}
+
+.extra_large_label_area {
+    clip-path: polygon(2.5% 6%, 83% 6%, 83% 0, 100% 0, 100% 100%, 0 100%, 0 0, 2.5% 0);
+}
+
+.date_picker {
+    height: 35px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+
+    font-size: 14.5px;
+    font-family: 'Montserrat', sans-serif;
+
+    padding-left: 15px;
+    font-weight: 450;
+    border: solid 1px #BDBDBD;
+    border-radius: 4px;
+}
+
+.date_picker:disabled {
+    background-color: #ffffff;
+    font-weight: 400;
+    color: #9E9E9E;
+}
+
+.date_picker:hover:enabled {
+    border: solid 1px #212121;
+}
+
+.date_picker:focus:enabled {
+    border: solid 1px #ED6C02 !important;
+}
+
+.small_input_size {
+    width: 115px;
+}
+
+.big_input_size {
+    width: 306px;
+}
