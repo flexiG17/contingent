@@ -28,9 +28,9 @@ import CreateTaskModalWindow from "../CreateTaskModal";
 import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
 import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles'
-import moment from "moment/moment";
 import Typography from "@mui/material/Typography";
-import CustomSingleDatePicker from "../../datePicker/singleDatePicker";
+import CustomSingleDatePicker from "../../datePicker";
+import moment from "moment";
 
 export default function PersonalCardContract() {
 
@@ -94,26 +94,6 @@ export default function PersonalCardContract() {
         getStudentsByIdArray([studentId])
             .then(result => {
                 setStudentEducationType(result[0].education_type)
-                const student = result[0]
-                /*student.birth_date = moment(student.birth_date).format("YYYY-MM-DD");
-                student.passport_issue_date = moment(student.passport_issue_date).format("YYYY-MM-DD");
-                student.passport_expiration = moment(student.passport_expiration).format("YYYY-MM-DD");
-                student.entry_date = moment(student.entry_date).format("YYYY-MM-DD");
-                student.visa_validity = moment(student.visa_validity).format("YYYY-MM-DD");
-                student.first_payment_contract_date = moment(student.first_payment_contract_date).format("YYYY-MM-DD");
-                student.second_payment_contract_date = moment(student.second_payment_contract_date).format("YYYY-MM-DD");
-                student.third_payment_contract_date = moment(student.third_payment_contract_date).format("YYYY-MM-DD");
-                student.fourth_payment_contract_date = moment(student.fourth_payment_contract_date).format("YYYY-MM-DD");
-                student.first_payment_actual_date = moment(student.first_payment_actual_date).format("YYYY-MM-DD");
-                student.second_payment_actual_date = moment(student.second_payment_actual_date).format("YYYY-MM-DD");
-                student.third_payment_actual_date = moment(student.third_payment_actual_date).format("YYYY-MM-DD");
-                student.fourth_payment_actual_date = moment(student.fourth_payment_actual_date).format("YYYY-MM-DD");
-                student.transfer_to_international_service = moment(student.transfer_to_international_service).format("YYYY-MM-DD");
-                student.transfer_to_MVD = moment(student.transfer_to_MVD).format("YYYY-MM-DD");
-                student.estimated_receipt_date = moment(student.estimated_receipt_date).format("YYYY-MM-DD");
-                student.actual_receipt_date_invitation = moment(student.actual_receipt_date_invitation).format("YYYY-MM-DD");
-                student.date_started_learning = moment(student.date_started_learning).format("YYYY-MM-DD");
-                student.date_creation = moment(student.date_creation).format("DD.MM.YYYY");*/
 
                 setContractAmount(result[0].contract_amount)
                 setFirstPayment(result[0].amount_first_actual_payment)
@@ -154,11 +134,31 @@ export default function PersonalCardContract() {
         setIsEditModeWasOn(false)
 
         e.preventDefault();
+
         let formData = new FormData(formRef.current)
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
+        dataToSave['date_creation'] = studentData.date_creation
 
-        console.log(dataToSave);
+        dataToSave.birth_date = dataToSave.birth_date.split('.').reverse().join('-')
+        dataToSave.passport_issue_date = dataToSave.passport_issue_date.split('.').reverse().join('-');
+        dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
+        dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
+        dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
+        dataToSave.first_payment_contract_date = dataToSave.first_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.second_payment_contract_date = dataToSave.second_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.third_payment_contract_date = dataToSave.third_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.fourth_payment_contract_date = dataToSave.fourth_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.first_payment_actual_date = dataToSave.first_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.second_payment_actual_date = dataToSave.second_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.third_payment_actual_date = dataToSave.third_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.fourth_payment_actual_date = dataToSave.fourth_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.transfer_to_international_service = dataToSave.transfer_to_international_service.split('.').reverse().join('-');
+        dataToSave.transfer_to_MVD = dataToSave.transfer_to_MVD.split('.').reverse().join('-');
+        dataToSave.estimated_receipt_date = dataToSave.estimated_receipt_date.split('.').reverse().join('-');
+        dataToSave.actual_receipt_date_invitation = dataToSave.actual_receipt_date_invitation.split('.').reverse().join('-');
+        dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
+
         changeStudentData(dataToSave, studentId, navigate, studentEducationType)
     };
 
@@ -226,7 +226,6 @@ export default function PersonalCardContract() {
 
     const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
 
-    //console.log(formRef);
     return (
         loading
             ?
@@ -236,7 +235,7 @@ export default function PersonalCardContract() {
             </Backdrop>
             :
             <>
-                <form ref={formRef} onSubmit={handleSubmit}>
+                <form ref={formRef} onSubmit={handleSubmit} id='studentForm'>
                     <p className="title_studentName">Личная карточка {studentData.latin_name}</p>
                     <div className="info_and_education_container">
                         <p className="title_contract_section"> Основные данные студента </p>
@@ -333,16 +332,13 @@ export default function PersonalCardContract() {
                                 </TextField>
                                 <CustomSingleDatePicker
                                     name={"birth_date"}
-                                    defaultValue={studentData.birth_date}
-                                    required
-                                    editMode={editMode}
-                                    ref={formRef}
                                     label={'Дата рождения'}
+                                    defaultValue={studentData.birth_date}
+                                    required={true}
+                                    form='studentForm'
+                                    editMode={editMode}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Дата рождения" type="date" color="warning"
-                                           defaultValue={studentData.birth_date}
-                                           name='birth_date' required margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                                 <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.passport_number}
                                            margin='normal' disabled={editMode}
@@ -351,27 +347,19 @@ export default function PersonalCardContract() {
                                 <CustomSingleDatePicker
                                     name={"passport_issue_date"}
                                     defaultValue={studentData.passport_issue_date}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Дата выдачи'}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
-                                           margin='normal' defaultValue={studentData.passport_issue_date}
-                                           inputProps={textFieldStyle} size="small" disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}/>*/}
                                 <CustomSingleDatePicker
                                     name={"passport_expiration"}
                                     defaultValue={studentData.passport_expiration}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Срок действия'}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Срок действия паспорта" name='passport_expiration' type="date"
-                                           color="warning" defaultValue={studentData.passport_expiration}
-                                           margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                                 <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
                                            color="warning" margin='normal' defaultValue={studentData.passport_issued}
                                            size="small" disabled={editMode}
@@ -397,22 +385,18 @@ export default function PersonalCardContract() {
                                         <span style={listItemStyle}>Нет</span>
                                     </MenuItem>
                                 </TextField>
-                                {/*<TextField label="Дата въезда" defaultValue={studentData.entry_date} type="date"
-                                           name='entry_date' disabled={editMode} color="warning"
-                                           margin='normal' size="small" sx={{width: "325px"}}
-                                           disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                                 <CustomSingleDatePicker
                                     name={"entry_date"}
                                     defaultValue={studentData.entry_date}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Дата въезда'}
+                                    size={'default'}
                                 />
                                 <p className="title_contract_doc"> Начало обучения </p>
                                 <TextField label="Приступил к обучению" name='started_learning' type="text"
-                                           variant="outlined" defaultValue={studentData.started_learning} disabled={editMode}
+                                           variant="outlined" defaultValue={studentData.started_learning}
+                                           disabled={editMode}
                                            color="warning" margin='normal' size="small" select
                                            InputLabelProps={textFieldStyle}>
                                     <MenuItem value="Да">
@@ -425,15 +409,11 @@ export default function PersonalCardContract() {
                                 <CustomSingleDatePicker
                                     name={"date_started_learning"}
                                     defaultValue={studentData.date_started_learning}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Дата приступления к обучению'}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Дата приступления к обучению" name='date_started_learning'
-                                           defaultValue={studentData.date_started_learning} disabled={editMode}
-                                           type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                             </div>
                         </div>
                     </div>
@@ -507,13 +487,14 @@ export default function PersonalCardContract() {
                                            color="warning" margin='normal' defaultValue={studentData.comments}
                                            size="small" multiline rows={5} disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Дата создания" name='expulsion_order' type="text"
-                                           variant="outlined" defaultValue={studentData.date_creation}
-                                           color="warning" disabled={true} margin='normal' size="small"
+                                <TextField label="Дата создания" name='date_creation' type="text"
+                                           variant="outlined"
+                                           defaultValue={moment(new Date(studentData.date_creation)).format('DD.MM.YYYY')}
+                                           color="warning" disabled margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Кем создан" name='expulsion_order' type="text"
                                            variant="outlined" defaultValue={studentData.who_created}
-                                           color="warning" disabled={true} margin='normal' size="small"
+                                           color="warning" disabled margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                             </div>
                             <div className="column_style_contract">
@@ -579,68 +560,45 @@ export default function PersonalCardContract() {
                         <div className="columns_position">
                             <div className="column_style_contract">
                                 <p className="title_contract_doc">Виза и приглашение</p>
-                                {/*<TextField label="Срок действия визы" name='visa_validity' type="date" color="warning"
-                                           disabled={editMode} defaultValue={studentData.visa_validity}
-                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                           InputLabelProps={dateTextFieldStyle} sx={{width: "325px"}}/>*/}
                                 <CustomSingleDatePicker
                                     name={"visa_validity"}
                                     defaultValue={studentData.visa_validity}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Срок действия визы'}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Дата передачи в международную службу"
-                                           name='transfer_to_international_service' type="date" color="warning"
-                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}
-                                           defaultValue={studentData.transfer_to_international_service}/>*/}
                                 <CustomSingleDatePicker
                                     name={"transfer_to_international_service"}
                                     defaultValue={studentData.transfer_to_international_service}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Дата передачи в международную службу'}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Дата передачи в МВД" name='transfer_to_MVD' type="date"*/}
-                                {/*           color="warning" disabled={editMode}*/}
-                                {/*           margin='normal' size="small" inputProps={textFieldStyle}*/}
-                                {/*           InputLabelProps={dateTextFieldStyle}*/}
-                                {/*           defaultValue={studentData.transfer_to_MVD}/>*/}
                                 <CustomSingleDatePicker
                                     name={"transfer_to_MVD"}
                                     defaultValue={studentData.transfer_to_MVD}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Дата передачи в МВД'}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Ориентировочная дата получения" name='estimated_receipt_date'
-                                           type="date" color="warning" defaultValue={studentData.estimated_receipt_date}
-                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}/>*/}
                                 <CustomSingleDatePicker
                                     name={"estimated_receipt_date"}
                                     defaultValue={studentData.estimated_receipt_date}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Ориентировочная дата получения'}
+                                    size={'default'}
                                 />
-                                {/*<TextField label="Фактическая дата получения приглашения"
-                                           name='actual_receipt_date_invitation' type="date" color="warning"
-                                           margin='normal' size="small" inputProps={textFieldStyle} disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}
-                                           defaultValue={studentData.actual_receipt_date_invitation}/>*/}
                                 <CustomSingleDatePicker
                                     name={"actual_receipt_date_invitation"}
                                     defaultValue={studentData.actual_receipt_date_invitation}
-                                    required
                                     editMode={editMode}
-                                    ref={formRef}
+                                    required={false}
                                     label={'Фактическая дата получения приглашения'}
+                                    size={'default'}
                                 />
                             </div>
                             <div className="column_style_contract">
@@ -689,20 +647,22 @@ export default function PersonalCardContract() {
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <div className='elements_in_row'>
-                                                <TextField label="Платеж 1 (договор)" name='first_payment_contract_date'
-                                                           type="date" color="warning"
-                                                           sx={{width: '150px', mr: '25px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.first_payment_contract_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
-                                                <TextField label="Платеж 1 (факт)" name='first_payment_actual_date'
-                                                           type="date" color="warning"
-                                                           sx={{width: '150px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.first_payment_actual_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
+                                                <CustomSingleDatePicker
+                                                    name={"first_payment_contract_date"}
+                                                    defaultValue={studentData.first_payment_contract_date}
+                                                    label={'Платеж 1 (договор)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
+                                                <CustomSingleDatePicker
+                                                    name={"first_payment_actual_date"}
+                                                    defaultValue={studentData.first_payment_actual_date}
+                                                    label={'Платеж 1 (факт)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
                                             </div>
                                             <TextField label="Сумма платежа" name='amount_first_actual_payment'
                                                        type="text" color="warning"
@@ -733,21 +693,22 @@ export default function PersonalCardContract() {
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <div className="elements_in_row">
-                                                <TextField label="Платеж 2 (договор)"
-                                                           name='second_payment_contract_date' type="date"
-                                                           color="warning"
-                                                           sx={{width: '150px', mr: '25px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.second_payment_contract_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
-                                                <TextField label="Платеж 2 (факт)" name='second_payment_actual_date'
-                                                           type="date" color="warning"
-                                                           sx={{width: '150px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.second_payment_actual_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
+                                                <CustomSingleDatePicker
+                                                    name={"second_payment_contract_date"}
+                                                    defaultValue={studentData.second_payment_contract_date}
+                                                    label={'Платеж 2 (договор)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
+                                                <CustomSingleDatePicker
+                                                    name={"second_payment_actual_date"}
+                                                    defaultValue={studentData.second_payment_actual_date}
+                                                    label={'Платеж 2 (факт)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
                                             </div>
                                             <TextField label="Сумма платежа" name='amount_second_actual_payment'
                                                        type="text" color="warning"
@@ -778,21 +739,22 @@ export default function PersonalCardContract() {
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <div className="elements_in_row">
-                                                <TextField label="Платеж 3 (договор)" name='third_payment_contract_date'
-                                                           type="date" color="warning"
-                                                           sx={{width: '150px', mr: '25px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.third_payment_contract_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
-
-                                                <TextField label="Платеж 3 (факт)" name='third_payment_actual_date'
-                                                           type="date" color="warning"
-                                                           sx={{width: '150px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.third_payment_actual_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
+                                                <CustomSingleDatePicker
+                                                    name={"third_payment_contract_date"}
+                                                    defaultValue={studentData.third_payment_contract_date}
+                                                    label={'Платеж 3 (договор)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
+                                                <CustomSingleDatePicker
+                                                    name={"third_payment_actual_date"}
+                                                    defaultValue={studentData.third_payment_actual_date}
+                                                    label={'Платеж 3 (факт)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
                                             </div>
                                             <TextField label="Сумма платежа" name='amount_third_actual_payment'
                                                        type="text" color="warning"
@@ -823,22 +785,22 @@ export default function PersonalCardContract() {
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <div className="elements_in_row">
-                                                <TextField label="Платеж 4 (договор)"
-                                                           name='fourth_payment_contract_date' type="date"
-                                                           color="warning"
-                                                           sx={{width: '150px', mr: '25px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.fourth_payment_contract_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
-
-                                                <TextField label="Платеж 4 (факт)" name='fourth_payment_actual_date'
-                                                           type="date" color="warning"
-                                                           sx={{width: '150px'}}
-                                                           disabled={editMode}
-                                                           defaultValue={studentData.fourth_payment_actual_date}
-                                                           margin='normal' size="small" inputProps={textFieldStyle}
-                                                           InputLabelProps={dateTextFieldStyle}/>
+                                                <CustomSingleDatePicker
+                                                    name={"fourth_payment_contract_date"}
+                                                    defaultValue={studentData.fourth_payment_contract_date}
+                                                    label={'Платеж 4 (договор)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
+                                                <CustomSingleDatePicker
+                                                    name={"fourth_payment_actual_date"}
+                                                    defaultValue={studentData.fourth_payment_actual_date}
+                                                    label={'Платеж 4 (факт)'}
+                                                    required={false}
+                                                    editMode={editMode}
+                                                    size={'small'}
+                                                />
                                             </div>
                                             <TextField label="Сумма платежа" name='amount_fourth_actual_payment'
                                                        type="text" color="warning"

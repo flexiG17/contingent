@@ -27,6 +27,7 @@ import {getToken} from "../../../utils/token";
 import ModalFile from "../filemanager/ModalFile";
 import {textFieldStyle, dateTextFieldStyle, listItemStyle} from "../../../utils/consts/styles";
 import moment from "moment";
+import CustomSingleDatePicker from "../../datePicker";
 
 export default function PersonalCardQuota() {
     const [active, setActive] = useState(true);
@@ -83,16 +84,6 @@ export default function PersonalCardQuota() {
             .then(result => {
                 setStudentEducationType(result[0].education_type)
 
-                result.map(item => {
-                    item.birth_date = moment(item.birth_date).format("YYYY-MM-DD");
-                    item.passport_issue_date = moment(item.passport_issue_date).format("YYYY-MM-DD");
-                    item.passport_expiration = moment(item.passport_expiration).format("YYYY-MM-DD");
-                    item.entry_date = moment(item.entry_date).format("YYYY-MM-DD");
-                    item.visa_validity = moment(item.visa_validity).format("YYYY-MM-DD");
-                    item.date_started_learning = moment(item.date_started_learning).format("YYYY-MM-DD");
-                    item.date_creation = moment(item.date_creation).format("DD.MM.YYYY");
-                });
-
                 setStudentData(result[0])
                 setRfLocation(result[0].RF_location)
                 setStudentExpelled(result[0].enrollment)
@@ -122,10 +113,20 @@ export default function PersonalCardQuota() {
     const formRef = useRef(null);
     const handleSubmit = (e) => {
         setIsEditModeWasOn(false)
+
         e.preventDefault();
+
         let formData = new FormData(formRef.current)
         const dataToSave = {};
         formData.forEach((value, key) => (dataToSave[key] = value))
+        dataToSave['date_creation'] = studentData.date_creation
+
+        dataToSave.birth_date = dataToSave.birth_date.split('.').reverse().join('-')
+        dataToSave.passport_issue_date = dataToSave.passport_issue_date.split('.').reverse().join('-');
+        dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
+        dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
+        dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
+        dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
 
         changeStudentData(dataToSave, studentId, navigate, studentEducationType)
     };
@@ -201,7 +202,7 @@ export default function PersonalCardQuota() {
             </Backdrop>
             :
             <>
-                <form ref={formRef} onSubmit={handleSubmit}>
+                <form ref={formRef} onSubmit={handleSubmit} id='studentForm'>
                     <p className="title_studentName">Личная карточка {studentData.latin_name}</p>
                     <div className="info_and_education_container">
                         <p className="title_contract_section"> Основные данные студента </p>
@@ -296,22 +297,35 @@ export default function PersonalCardQuota() {
                                         <span style={listItemStyle}>Женский</span>
                                     </MenuItem>
                                 </TextField>
-                                <TextField label="Дата рождения" type="date" color="warning"
-                                           name='birth_date' required margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}
-                                           defaultValue={studentData.birth_date}/>
+                                <CustomSingleDatePicker
+                                    name={"birth_date"}
+                                    label={'Дата рождения'}
+                                    defaultValue={studentData.birth_date}
+                                    required={true}
+                                    editMode={editMode}
+                                    size={'default'}
+                                    form='studentForm'
+                                />
                                 <TextField label="Номер паспорта" type="text" variant="outlined" color="warning"
                                            name='passport_number' margin='normal' disabled={editMode}
                                            defaultValue={studentData.passport_number} sx={{width: "325px"}}
                                            required size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Дата выдачи" type="date" color="warning" margin='normal' size="small"
-                                           name='passport_issue_date' disabled={editMode}
-                                           defaultValue={studentData.passport_issue_date}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                                <TextField label="Срок действия паспорта" type="date" color="warning"
-                                           defaultValue={studentData.passport_expiration}
-                                           name='passport_expiration' margin='normal' size="small" disabled={editMode}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"passport_issue_date"}
+                                    label={'Дата выдачи'}
+                                    defaultValue={studentData.passport_issue_date}
+                                    required={false}
+                                    editMode={editMode}
+                                    size={'default'}
+                                />
+                                <CustomSingleDatePicker
+                                    name={"passport_expiration"}
+                                    label={'Срок действия'}
+                                    defaultValue={studentData.passport_expiration}
+                                    required={false}
+                                    editMode={editMode}
+                                    size={'default'}
+                                />
                                 <TextField label="Кем выдан" type="text" variant="outlined" color="warning"
                                            margin='normal' name='passport_issued' size="small" disabled={editMode}
                                            defaultValue={studentData.passport_issued}
@@ -329,11 +343,14 @@ export default function PersonalCardQuota() {
                                            name='citizenship' margin='normal' disabled={editMode} size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.citizenship}/>
-                                <TextField label="Дата въезда" type="date" color="warning"
-                                           defaultValue={studentData.entry_date}
-                                           name='entry_date' margin='normal' size="small" sx={{width: "325px"}}
-                                           inputProps={textFieldStyle} disabled={editMode}
-                                           InputLabelProps={dateTextFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"entry_date"}
+                                    label={'Дата въезда'}
+                                    defaultValue={studentData.entry_date}
+                                    required={false}
+                                    editMode={editMode}
+                                    size={'default'}
+                                />
                                 <p className="title_contract_doc"> Начало обучения </p>
                                 <TextField label="Приступил к обучению" name='started_learning' type="text"
                                            variant="outlined" defaultValue={studentData.started_learning} disabled={editMode}
@@ -346,10 +363,14 @@ export default function PersonalCardQuota() {
                                         <span style={listItemStyle}>Нет</span>
                                     </MenuItem>
                                 </TextField>
-                                <TextField label="Дата приступления к обучению" name='date_started_learning'
-                                           defaultValue={studentData.date_started_learning} disabled={editMode}
-                                           type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"date_started_learning"}
+                                    label={'Дата приступления к обучению'}
+                                    defaultValue={studentData.date_started_learning}
+                                    required={false}
+                                    editMode={editMode}
+                                    size={'default'}
+                                />
                             </div>
                         </div>
                     </div>
@@ -402,8 +423,9 @@ export default function PersonalCardQuota() {
                                            name='comments' size="small" multiline rows={5} disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.comments}/>
-                                <TextField label="Дата создания" name='expulsion_order' type="text"
-                                           variant="outlined" defaultValue={studentData.date_creation}
+                                <TextField label="Дата создания" name='date_creation' type="text"
+                                           variant="outlined"
+                                           defaultValue={moment(new Date(studentData.date_creation)).format('DD.MM.YYYY')}
                                            color="warning" disabled={true} margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Кем создан" name='expulsion_order' type="text"
@@ -466,11 +488,14 @@ export default function PersonalCardQuota() {
                         <div className="columns_position">
                             <div className="column_style_contract">
                                 <p className="title_contract_doc">Виза </p>
-                                <TextField label="Срок действия визы" type="date" color="warning"
-                                           defaultValue={studentData.visa_validity}
-                                           name='visa_validity' margin='normal' size="small" sx={{width: "325px"}}
-                                           inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}
-                                           disabled={editMode}/>
+                                <CustomSingleDatePicker
+                                    name={"visa_validity"}
+                                    label={'Срок действия визы'}
+                                    defaultValue={studentData.visa_validity}
+                                    required={false}
+                                    editMode={editMode}
+                                    size={'default'}
+                                />
                             </div>
                             <div className="column_style_contract">
                             </div>
