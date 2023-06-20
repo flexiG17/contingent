@@ -33,14 +33,23 @@ class FileController {
 
         return res.json(files)
     }
+
     async getDiskData(req, res) {
-        checkDiskSpace('C:/').then(diskSpace => {
-            return res.json({
-                freeSpace: ((diskSpace.free) / (1024 * 1024 * 1024)).toFixed(2),
-                diskSize: ((diskSpace.size) / (1024 * 1024 * 1024)).toFixed(2)
+        try {
+            checkDiskSpace('C:/').then(diskSpace => {
+                return res.json({
+                    freeSpace: ((diskSpace.free) / (1024 * 1024 * 1024)).toFixed(2),
+                    diskSize: ((diskSpace.size) / (1024 * 1024 * 1024)).toFixed(2)
+                })
             })
-        })
+        } catch (err) {
+            return res.status(500).json({message: 'Ошибка сервера. ' +
+                    'Не удалось получить свободное место на диске. '})
+
+            throw new Error(err.message)
+        }
     }
+
     async uploadFile(req, res) {
         const files = await fileService.uploadFiles(req.files, req.body.parent_id, req.body.student_id, req.user.id)
 
