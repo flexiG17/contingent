@@ -166,7 +166,9 @@ export default function EnhancedTable() {
 
                     if (filter.param.type === 'date' && tmp1 !== tmp2) {
                         return false;
-                    } else if (filter.param.type !== 'date' && item[filter.param.value].toLowerCase() !== filter.value.toLowerCase())
+                    } else if (item[filter.param.value] === null)
+                        return false
+                    else if (filter.param.type !== 'date' && item[filter.param.value].toLowerCase() !== filter.value.toLowerCase())
                         return (item[filter.param.value] === filter.value);
                     break;
                 case "more":
@@ -239,7 +241,9 @@ export default function EnhancedTable() {
             else
                 return new Date(row[filterCondition]).setHours(0, 0, 0) === new Date(searchingValue).setHours(0, 0, 0)
         } else if (searchType === 'search' || searchType === 'program') {
-            return row[filterCondition].toLowerCase().includes(searchingValue.toLowerCase())
+            if (row[filterCondition] === null || row[filterCondition] === '')
+                return
+            else return row[filterCondition].toLowerCase().includes(searchingValue.toLowerCase())
         } else
             return row
     });
@@ -249,8 +253,8 @@ export default function EnhancedTable() {
             <div className="nav">
                 <div className="filter_position">
                     {!READER_ACCESS &&
-                        <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn"> Добавить
-                            студента <AddIcon/>
+                        <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn">
+                            Добавить студента <AddIcon/>
                         </NavLink>}
                 </div>
                 {!loading &&
@@ -323,13 +327,13 @@ export default function EnhancedTable() {
                                             <span style={listItemStyle}>Страна</span>
                                         </MenuItem>
                                         <MenuItem sx={textFieldStyle} value="first_student_email">
-                                            <span style={listItemStyle}>Первая эл. почта студента</span>
+                                            <span style={listItemStyle}>Эл. почта студента (первая)</span>
                                         </MenuItem>
                                         <MenuItem sx={textFieldStyle} value="first_agent_email">
-                                            <span style={listItemStyle}>Первая эл. почта агента</span>
+                                            <span style={listItemStyle}>Эл. почта агента (первая)</span>
                                         </MenuItem>
                                         <MenuItem sx={textFieldStyle} value="first_representative_email">
-                                            <span style={listItemStyle}>Первая эл. почта представителя</span>
+                                            <span style={listItemStyle}>Эл. почта представителя (первая)</span>
                                         </MenuItem>
                                     </TextField>
                                 </div>
@@ -338,6 +342,7 @@ export default function EnhancedTable() {
                                         className='inputStyle'
                                         type="text"
                                         placeholder={"Введите данные для поиска..."}
+                                        value={searchingValue}
                                         onChange={(event => setSearchingValue(event.target.value))}
                                     />}
                                 {filterCondition === "birth_date" &&
