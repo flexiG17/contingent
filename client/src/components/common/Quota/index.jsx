@@ -8,6 +8,7 @@ import "./QuotaDoc.css";
 import moment from "moment/moment";
 import jwtDecode from "jwt-decode";
 import {getToken} from "../../../utils/token";
+import CustomSingleDatePicker from "../../datePicker";
 
 export default function Quota() {
     const [active, setActive] = useState(true);
@@ -26,18 +27,26 @@ export default function Quota() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        let data = new FormData(formRef.current);
-        data.append('education_type', 'Квота');
-        data.append('date_creation', new Date().toDateString());
-        data.append('who_created', jwtDecode(getToken()).name);
-        //data.append('hours_number', '');
-        //data.append('status_1c', '');
+        let dataToSave = new FormData(formRef.current);
+        const objectData = {};
+        dataToSave.forEach((value, key) => (objectData[key] = value))
 
-        addStudent(data, navigate);
+        dataToSave.set('education_type', 'Квота')
+        dataToSave.set('date_creation', new Date().toDateString())
+        dataToSave.set('who_created', jwtDecode(getToken()).name)
+
+        dataToSave.set('birth_date', objectData.birth_date.split('.').reverse().join('-'))
+        dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
+        dataToSave.set('passport_expiration', objectData.passport_expiration.split('.').reverse().join('-'))
+        dataToSave.set('entry_date', objectData.entry_date.split('.').reverse().join('-'))
+        dataToSave.set('visa_validity', objectData.visa_validity.split('.').reverse().join('-'))
+        dataToSave.set('date_started_learning', objectData.date_started_learning.split('.').reverse().join('-'))
+
+        addStudent(dataToSave, navigate);
     };
 
     return (
-        <form ref={formRef} onSubmit={handleSubmit}>
+        <form ref={formRef} onSubmit={handleSubmit} id="studentForm">
             <div className="info_and_education_container">
                 <div className="title_quota_section">Основные данные студента</div>
                 <div className="columns_position">
@@ -111,18 +120,37 @@ export default function Quota() {
                                 <span style={listItemStyle}>Женский</span>
                             </MenuItem>
                         </TextField>
-                        <TextField label="Дата рождения" name='birth_date' type="date" color="warning"
+                        {/*<TextField label="Дата рождения" name='birth_date' type="date" color="warning"
                                    required margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
+                        <CustomSingleDatePicker
+                            name="birth_date"
+                            label='Дата рождения'
+                            required={true}
+                            form='studentForm'
+                            size='default'
+                        />
                         <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                    color="warning" margin='normal' required size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField label="Дата выдачи" name='passport_issue_date' type="date"
+                        {/*<TextField label="Дата выдачи" name='passport_issue_date' type="date"
                                    margin='normal' size="small" color="warning"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
-                        <TextField label="Срок действия паспорта" name='passport_expiration' type="date" color="warning"
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
+                        <CustomSingleDatePicker
+                            name={"passport_issue_date"}
+                            label={'Дата выдачи'}
+                            required={false}
+                            size={'default'}
+                        />
+                        {/*<TextField label="Срок действия паспорта" name='passport_expiration' type="date" color="warning"
                                    margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
+                        <CustomSingleDatePicker
+                            name={"passport_expiration"}
+                            label={'Срок действия'}
+                            required={false}
+                            size={'default'}
+                        />
                         <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
@@ -137,9 +165,15 @@ export default function Quota() {
                         <TextField label="Гражданство" name='citizenship' type="text" variant="outlined" color="warning"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='entry_date' label="Дата въезда" type="date" color="warning"
+                        {/*<TextField name='entry_date' label="Дата въезда" type="date" color="warning"
                                    margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
+                        <CustomSingleDatePicker
+                            name={"entry_date"}
+                            label={'Дата въезда'}
+                            required={false}
+                            size={'default'}
+                        />
                         <p className="title_contract_doc"> Начало обучения </p>
                         <TextField label="Приступил к обучению" name='started_learning' type="text" variant="outlined" defaultValue=''
                                    color="warning" margin='normal' size="small" select
@@ -151,9 +185,15 @@ export default function Quota() {
                                 <span style={listItemStyle}>Нет</span>
                             </MenuItem>
                         </TextField>
-                        <TextField label="Дата приступления к обучению" name='date_started_learning'
+                        {/*<TextField label="Дата приступления к обучению" name='date_started_learning'
                                    type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
+                        <CustomSingleDatePicker
+                            name={"date_started_learning"}
+                            label={'Дата приступления к обучению'}
+                            required={false}
+                            size={'default'}
+                        />
                     </div>
                 </div>
             </div>
@@ -240,9 +280,15 @@ export default function Quota() {
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Виза </p>
-                        <TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
+                        {/*<TextField name='visa_validity' label="Срок действия визы" type="date" color="warning"
                                    margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>
+                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
+                        <CustomSingleDatePicker
+                            name={"visa_validity"}
+                            label={'Срок действия визы'}
+                            required={false}
+                            size={'default'}
+                        />
                     </div>
                 </div>
             </div>
