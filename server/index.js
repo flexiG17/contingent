@@ -68,9 +68,11 @@ const broadcastConnection = (ws, msg) => {
         }
     })
 }*/
+const server = http.createServer(app)
+
+/*
 const WebSocket = require("ws")
 const {v4: uuidv4} = require('uuid')
-const server = http.createServer(app)
 const wss = new WebSocket.Server({server})
 
 wss.on('connection', ws => {
@@ -115,6 +117,7 @@ wss.on('connection', ws => {
 
     ws.send(ws.id)
 })
+*/
 
 server.listen(port, (err) => {
     if (err) throw err;
