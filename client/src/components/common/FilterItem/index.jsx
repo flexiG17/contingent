@@ -3,6 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
 import DatePicker from "react-datepicker";
+import iziToast from "izitoast";
 
 export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     const operators = [
@@ -12,7 +13,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
         {value: 'less', label: 'Меньше'},
         {value: 'moreE', label: 'Больше или равно'},
         {value: 'lessE', label: 'Меньше или равно'},
-        {value: 'range', label: 'Диапозон'}
+        {value: 'range', label: 'Диапазон'}
     ];
 
     const [inputType, setInputType] = useState(item.param.type);
@@ -23,7 +24,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
             typeof (item.value) === 'string' ? null : item.value[1]]
     );
     const [startDate, endDate] = dateRange;
-    const [startDateSingleRange, setStartDateSingleRange] = useState(item.value === '' ? null : item.value);
+    const [startDateSingleRange, setStartDateSingleRange] = useState(isNaN(new Date(item.value).getDate()) ? null : item.value);
 
     return (
         <MenuItem>
@@ -90,7 +91,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             showMonthDropdown
                             showYearDropdown
                             required
-                            placeholderText="Выберите диапозон дат"
+                            placeholderText="Выберите диапазон дат"
                             dropdownMode="select"
                             dateFormat="dd.MM.yyyy"
                             className="date_picker_filter"
