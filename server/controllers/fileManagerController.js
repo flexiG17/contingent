@@ -36,7 +36,7 @@ class FileController {
 
     async getDiskData(req, res) {
         try {
-            checkDiskSpace('C:/').then(diskSpace => {
+            checkDiskSpace('/').then(diskSpace => {
                 return res.json({
                     freeSpace: ((diskSpace.free) / (1024 * 1024 * 1024)).toFixed(2),
                     diskSize: ((diskSpace.size) / (1024 * 1024 * 1024)).toFixed(2)
