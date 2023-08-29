@@ -21,6 +21,7 @@ import Box from "@mui/material/Box";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
 import {lineStyleInTable, textFieldStyle} from "../../../utils/consts/styles";
 import {Link} from "react-router-dom";
+import ContactMailOutlinedIcon from '@mui/icons-material/ContactMailOutlined';
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
     let options = []
@@ -56,17 +57,18 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                        onChange={e => setSender(e.target.value)}
                                        size="small" sx={{width: "530px", marginTop: "25px"}}
                             />
-
+                            <div className={'template_in_row_with_icon'}>
                             <Box
                                 sx={{
                                     bgcolor: openEmailList ? '#FFB953' : '#FFAA2D',
                                     borderRadius: '5px',
                                     maxHeight: 170,
-                                    maxWidth: 300,
+                                    minWidth: 300,
                                     overflowY: openEmailList ? 'scroll' : 'visible',
                                     marginTop: "8px"
                                 }}
                             >
+
                                 <ListItemButton
                                     alignItems="flex-start"
                                     onClick={() => setOpenEmailList(!openEmailList)}
@@ -94,13 +96,31 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                                 pb: '5px'
                                             }}
                                         >
-                                            <Link to={`/${item.education_type === "Контракт" ? 'contract' : 'quota'}/${item.id}`}
-                                                  target="_blank" style={lineStyleInTable}>
+                                            <Link
+                                                to={`/${item.education_type === "Контракт" ? 'contract' : 'quota'}/${item.id}`}
+                                                target="_blank" style={lineStyleInTable}>
                                                 {item.email}
                                             </Link>
                                         </ListItemButton>
                                     ))}
                             </Box>
+                            <Tooltip title="Скопировать список почт">
+                                <ContactMailOutlinedIcon sx={{position: 'relative', top: '15px', left: '15px'}}
+                                                         onClick={() => {
+                                                             const arrayStudentEmails = studentEmail
+                                                                 .filter(object => object.email !== null)
+                                                                 .map(object => object.email)
+
+                                                             navigator.clipboard.writeText(arrayStudentEmails)
+                                                                 .then(() =>
+                                                                     iziToast.success({
+                                                                         message: 'Список почт скопирован',
+                                                                         position: 'topRight'
+                                                                     })
+                                                                 )
+                                                         }}/>
+                            </Tooltip>
+                            </div>
                             <div className={'template_in_row_with_icon'}>
                                 <Select className="message_type" placeholder="Шаблоны письма" options={options}
                                         onChange={handleTypeSelect}
@@ -167,12 +187,15 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 <DialogTitle id="alert-dialog-title">Отправка письма</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        Вы уверены, что хотите отправить сообщение?
+                        {`На данный момент таким способом сообщение отправить нельзя. 
+                        Сделайте это через Outlook, скопировав список почт (нужно нажать на значок человека).
+                        
+                        Если у студента почта не указана, то её не будет в скопированном списке.`}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => {
-                        studentEmail.map(n => {
+                        /*studentEmail.map(n => {
                             dataToSave.append('to', n.email)
                         })
                         dataToSave.append('from', sender)
@@ -184,13 +207,14 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                             })
                         sendMessage(dataToSave)
                             .then(() => setActive(false))
+                         */
                         setOpenDialog(false)
                     }
-                    }>Да</Button>
-                    <Button onClick={() => {
+                    }>Ок</Button>
+                    {/*<Button onClick={() => {
                         setOpenDialog(false)
                     }
-                    }>Нет</Button>
+                    }>Нет</Button>*/}
                 </DialogActions>
             </Dialog>
         </>
