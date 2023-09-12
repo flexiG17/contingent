@@ -4,6 +4,7 @@ import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
 import DatePicker from "react-datepicker";
 import iziToast from "izitoast";
+import {Answers} from "../../../utils/consts/answers";
 
 export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     const operators = [
@@ -59,7 +60,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                 </select>
 
                 <div className="third_parameter">
-                    {(item.operator !== 'range' && inputType !== 'date') &&
+                    {(!Answers[item.param.value] && item.operator !== 'range' && inputType !== 'date') &&
                         <input className="search_filter" type='text'
                                onChange={(e) => {
                                    changeFilterProp(item.id, e.target.value, 'value');
@@ -96,6 +97,22 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             dateFormat="dd.MM.yyyy"
                             className="date_picker_filter"
                         />}
+                    {Answers[item.param.value] &&
+                        <select className="search_filter" value={item.value}
+                                style={{width: '205px'}}
+                                onChange={(e) => {
+                                    console.log(e.target.value);
+                                    changeFilterProp(item.id, e.target.value, 'value');
+                                }}>
+                            <option hidden>Выберите значение</option>
+                            {
+                                Answers[item.param.value].answers.map((item) => {
+                                    return <option value={item}>{item}</option>
+                                })
+                            }>
+
+                        </select>
+                    }
                 </div>
                 <button className="delete_filter_button"
                         onClick={() => {
