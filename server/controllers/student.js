@@ -29,13 +29,20 @@ module.exports.getAll = async function (req, res) {
 
 module.exports.create = async function (req, res) {
     const model = new Student(req.body)
-
     let student_id = 0
+
+    let isExist = false
+    if (req.body.isSkipPassport === 'false')
+        isExist = await db.students.where({passport_number: model.passport_number}).first()
+
+    if (isExist) {
+        return res.status(409).json({message: `С номером паспорта ${model.passport_number} уже существует студент ${isExist.latin_name}`})
+    }
     try {
         student_id = await db.students.insert(model)
     } catch (err) {
-        if (err.code === 'ER_DUP_ENTRY')
-            return res.status(409).json({message: `Студент ${model.latin_name} с номером паспорта ${model.passport_number} уже существует`})
+        /*if (err.code === 'ER_DUP_ENTRY')
+            return res.status(409).json({message: `Студент ${model.latin_name} с номером паспорта ${model.passport_number} уже существует`})*/
 
         throw new Error(err.message)
     }
@@ -126,8 +133,9 @@ module.exports.importXlsxData = async function (req, res) {
     for (const model of data) {
         const isExist = await db.students.where({passport_number: model.passport_number}).first()
 
-        if (isExist)
+        if (isExist) {
             return res.status(409).json({message: `Студент ${model.latin_name} с номером паспорта ${model.passport_number} уже существует`})
+        }
     }
 
     await db.students.insert(data)

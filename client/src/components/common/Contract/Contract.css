@@ -105,6 +105,12 @@
     justify-content: center;
 }
 
+.checkbox_style_passport_number {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    max-width: 325px;
+}
+
 .title_contract_info {
     font-size: 17px;
     color: #FA7A45;

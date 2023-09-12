@@ -13,15 +13,20 @@ import CustomSingleDatePicker from "../../datePicker";
 
 export default function Contract() {
     const [active, setActive] = useState(true);
+    const [isSkipPassport, setSkipPassport] = useState(false);
     const handleClickContract = () => {
         setActive(!active);
+    };
+
+    const handleClickSkipPassport = () => {
+        setSkipPassport(!isSkipPassport)
     };
 
     const navigate = useNavigate();
 
     const formRef = useRef(null);
 
-    const [contractAmount, setContractAmount] = useState(136000)
+    const [contractAmount, setContractAmount] = useState(140000)
     const [firstPayment, setFirstPayment] = useState(0)
     const [secondPayment, setSecondPayment] = useState(0)
     const [thirdPayment, setThirdPayment] = useState(0)
@@ -39,6 +44,8 @@ export default function Contract() {
         dataToSave.set('education_type', 'Контракт')
         dataToSave.set('date_creation', new Date().toDateString())
         dataToSave.set('who_created', jwtDecode(getToken()).name)
+
+        dataToSave.set('isSkipPassport', isSkipPassport)
 
         dataToSave.set('birth_date', objectData.birth_date.split('.').reverse().join('-'))
         dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
@@ -150,6 +157,11 @@ export default function Contract() {
                         <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small" required
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+
+                        <label className="checkbox_style_passport_number">
+                            <input type="checkbox" onClick={handleClickSkipPassport}/>
+                            {`Отключить проверку идентичности паспорта`}
+                        </label>
                         {/*<TextField label="Дата выдачи" name='passport_issue_date' type="date" color="warning"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}

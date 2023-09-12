@@ -5,13 +5,13 @@ import TextField from "@mui/material/TextField";
 import {MenuItem} from "@mui/material";
 import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles';
 import "./QuotaDoc.css";
-import moment from "moment/moment";
 import jwtDecode from "jwt-decode";
 import {getToken} from "../../../utils/token";
 import CustomSingleDatePicker from "../../datePicker";
 
 export default function Quota() {
     const [active, setActive] = useState(true);
+    const [isSkipPassport, setSkipPassport] = useState(false);
 
     const [studentExpelled, setStudentExpelled] = useState('')
     const [RF_location, setRfLocation] = useState('')
@@ -19,6 +19,10 @@ export default function Quota() {
     const handleClickContract = () => {
         setActive(!active);
     }
+
+    const handleClickSkipPassport = () => {
+        setSkipPassport(!isSkipPassport)
+    };
 
     const navigate = useNavigate();
 
@@ -34,6 +38,8 @@ export default function Quota() {
         dataToSave.set('education_type', 'Квота')
         dataToSave.set('date_creation', new Date().toDateString())
         dataToSave.set('who_created', jwtDecode(getToken()).name)
+
+        dataToSave.set('isSkipPassport', isSkipPassport)
 
         dataToSave.set('birth_date', objectData.birth_date.split('.').reverse().join('-'))
         dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
@@ -133,6 +139,11 @@ export default function Quota() {
                         <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                    color="warning" margin='normal' required size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+
+                        <label className="checkbox_style_passport_number">
+                            <input type="checkbox" onClick={handleClickSkipPassport}/>
+                            {`Отключить проверку идентичности паспорта`}
+                        </label>
                         {/*<TextField label="Дата выдачи" name='passport_issue_date' type="date"
                                    margin='normal' size="small" color="warning"
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
