@@ -12,7 +12,7 @@ export default function Header() {
         <section className="header">
             <section className="header-top">
                 <section className="header-top__logo">
-                    <Link to={HOME_ROUTE} className="header-logo"><img src={Logo} width="150px" height="108,7px" alt=""/></Link>
+                    <a href={HOME_ROUTE} className="header-logo"><img src={Logo} width="150px" height="108,7px" alt=""/></a>
                 </section>
                 <section className="header-top__navigation">
                     <Navbar/>
