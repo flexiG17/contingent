@@ -3,7 +3,6 @@ import {Navbar} from '../../common';
 import './Header.css';
 import Logo from '../Header/full_logo.png';
 import {HOME_ROUTE} from "../../../utils/consts/pathRoutes";
-import {Link} from "react-router-dom";
 
 
 export default function Header() {
