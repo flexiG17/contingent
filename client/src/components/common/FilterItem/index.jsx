@@ -1,9 +1,7 @@
-import Select from "react-select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
 import DatePicker from "react-datepicker";
-import iziToast from "izitoast";
 import {Answers} from "../../../utils/consts/answers";
 
 export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
