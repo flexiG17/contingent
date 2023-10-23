@@ -8,6 +8,8 @@ const os = require('os')
 const path = require('path')
 
 const db = require('../db')
+const knex = require("knex");
+const {update} = require("./notification");
 
 
 function getStudent(id) {
@@ -162,4 +164,24 @@ module.exports.downloadXlsx = async function (req, res) {
     XLSX.writeFile(workBook, filePath)
 
     res.download(filePath)
+}
+
+module.exports.updateListOfStudents = async (req, res) => {
+    let students = req.body
+
+    try {
+        for (let i = 0; i < students.id.length; i++){
+            await db.students.where({id: students.id[i]}).update(students.newData)
+        }
+    } catch (err) {
+
+        res.status(500).json({
+            message: `Ошибка сервера: ${res.message}`
+        })
+        //throw new Error(err)
+    }
+
+    res.status(200).json({
+        message: 'Массовое редактирование успешно окончено'
+    })
 }

@@ -19,14 +19,19 @@ import CreateTaskModalWindow from "../../CreateTaskModal";
 import {useState} from "react";
 import TaskIcon from '@mui/icons-material/Task';
 import EmailIcon from '@mui/icons-material/Email';
+import EditIcon from '@mui/icons-material/Edit';
 import ModalMessage from "../../MessageModal";
 import {useNavigate} from "react-router-dom";
 import './toolbar.css'
+import EditStudentDataModal from "../../EditStudentDataModal";
 
-export default function TableToolbar({numSelected, selectedRows, selectedEmails}) {
+export default function TableToolbar({numSelected, selectedRows, selectedStudents, selectedEmails}) {
     const [file, setFile] = useState(undefined);
     const [modalActive, setModalActive] = useState(false)
     const [modalMessageActive, setModalMessageActive] = useState(false);
+
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const handleIsEditModalOpen= () => setIsEditModalOpen(!isEditModalOpen);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -62,6 +67,14 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                 )}
 
                 {numSelected > 0 ? (<>
+                        {!READER_ACCESS && <Tooltip title={`Отредактировать данные (${selectedRows.length} студ.)`}>
+                            <IconButton onClick={() => {
+                                setIsEditModalOpen(true)
+                            }}>
+                                <EditIcon sx={{cursor: 'pointer'}}
+                                />
+                            </IconButton>
+                        </Tooltip>}
                         {!READER_ACCESS && <Tooltip title={`Рассылка ${selectedEmails.length} указанным студентам`}>
                             <IconButton onClick={() => {
                                 setModalMessageActive(true)
@@ -140,8 +153,11 @@ export default function TableToolbar({numSelected, selectedRows, selectedEmails}
                     </>
                 )}
             </Toolbar>
-            <CreateTaskModalWindow active={modalActive} setActive={setModalActive} idArray={selectedRows} emails={selectedEmails}/>
+            <CreateTaskModalWindow active={modalActive} setActive={setModalActive} idArray={selectedRows}
+                                   emails={selectedEmails}/>
             <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={selectedEmails}/>
+            <EditStudentDataModal active={isEditModalOpen} setActive={handleIsEditModalOpen} studentsList={selectedStudents}/>
+
 
             <Dialog
                 open={open}
