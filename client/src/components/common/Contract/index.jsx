@@ -89,10 +89,12 @@ export default function Contract() {
                         <TextField name='contact_phone_number' label="Контактный телефон студента" variant="outlined"
                                    color="warning" type="tel" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='first_student_email' label="Первая эл. почта студента" variant="outlined" color="warning"
+                        <TextField name='first_student_email' label="Первая эл. почта студента" variant="outlined"
+                                   color="warning"
                                    type="email" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='second_student_email' label="Вторая эл. почта студента" variant="outlined" color="warning"
+                        <TextField name='second_student_email' label="Вторая эл. почта студента" variant="outlined"
+                                   color="warning"
                                    type="email" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <p className="title_contract_doc"> Контактные данные агента</p>
@@ -102,10 +104,12 @@ export default function Contract() {
                         <TextField name='agent_phone_number' label="Телефон" variant="outlined" color="warning"
                                    type="tel" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='first_agent_email' label="Первая эл. почта" variant="outlined" color="warning" type="email"
+                        <TextField name='first_agent_email' label="Первая эл. почта" variant="outlined" color="warning"
+                                   type="email"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='second_agent_email' label="Вторая эл. почта" variant="outlined" color="warning" type="email"
+                        <TextField name='second_agent_email' label="Вторая эл. почта" variant="outlined" color="warning"
+                                   type="email"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <p className="title_contract_doc"> Контактные данные представителя</p>
@@ -115,10 +119,12 @@ export default function Contract() {
                         <TextField name='representative_phone_number' label="Телефон" type="tel" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='first_representative_email' label="Первая эл. почта" type="email" variant="outlined"
+                        <TextField name='first_representative_email' label="Первая эл. почта" type="email"
+                                   variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField name='second_representative_email' label="Вторая эл. почта" type="email" variant="outlined"
+                        <TextField name='second_representative_email' label="Вторая эл. почта" type="email"
+                                   variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                         <p className="title_contract_doc">Куратор</p>
@@ -210,7 +216,8 @@ export default function Contract() {
                             size={'default'}
                         />
                         <p className="title_contract_doc"> Начало обучения </p>
-                        <TextField label="Приступил к обучению" name='started_learning' type="text" variant="outlined" defaultValue=''
+                        <TextField label="Приступил к обучению" name='started_learning' type="text" variant="outlined"
+                                   defaultValue=''
                                    color="warning" margin='normal' size="small" select
                                    InputLabelProps={textFieldStyle}>
                             <MenuItem value="Да">
@@ -249,35 +256,39 @@ export default function Contract() {
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
                                    color="warning" margin='normal' size="small" select defaultValue=''
                                    InputLabelProps={textFieldStyle}>
-                            <MenuItem value="1008 (1 год 23-24)">
-                                <span style={listItemStyle}>1008 (1 год 23-24)</span>
+
+                            <MenuItem value="1008 (1.5 года 24-25 г.)">
+                                <span style={listItemStyle}>1008 (1.5 года 24-25 г.)</span>
                             </MenuItem>
-                            <MenuItem value="1008 (1.5 года 23-24)">
-                                <span style={listItemStyle}>1008 (1.5 года 23-24)</span>
+                            <MenuItem value="1008 (1 год 23-24 г.)">
+                                <span style={listItemStyle}>1008 (1 год 23-24 г.)</span>
                             </MenuItem>
-                            <MenuItem value="868">
-                                <span style={listItemStyle}>868</span>
+                            <MenuItem value="1008 (1.5 года 23-24 г.)">
+                                <span style={listItemStyle}>1008 (1.5 года 23-24 г.)</span>
                             </MenuItem>
-                            <MenuItem value="728">
-                                <span style={listItemStyle}>728</span>
+                            <MenuItem value="868 (23-24 уч.г.)">
+                                <span style={listItemStyle}>868 (23-24 уч.г.)</span>
                             </MenuItem>
-                            <MenuItem value="588">
-                                <span style={listItemStyle}>588</span>
+                            <MenuItem value="728 (23-24 уч.г.)">
+                                <span style={listItemStyle}>728 (23-24 уч.г.)</span>
                             </MenuItem>
-                            <MenuItem value="504">
-                                <span style={listItemStyle}>504</span>
+                            <MenuItem value="588 (23-24 уч.г.)">
+                                <span style={listItemStyle}>588 (23-24 уч.г.)</span>
                             </MenuItem>
-                            <MenuItem value="288">
-                                <span style={listItemStyle}>288</span>
+                            <MenuItem value="504 (23-24 уч.г.)">
+                                <span style={listItemStyle}>504 (23-24 уч.г.)</span>
                             </MenuItem>
-                            <MenuItem value="144">
-                                <span style={listItemStyle}>144</span>
+                            <MenuItem value="288 (23-24 уч.г.)">
+                                <span style={listItemStyle}>288 (23-24 уч.г.)</span>
                             </MenuItem>
-                            <MenuItem value="108">
-                                <span style={listItemStyle}>108</span>
+                            <MenuItem value="144 (23-24 уч.г.)">
+                                <span style={listItemStyle}>144 (23-24 уч.г.)</span>
                             </MenuItem>
-                            <MenuItem value="72">
-                                <span style={listItemStyle}>72</span>
+                            <MenuItem value="108 (23-24 уч.г.)">
+                                <span style={listItemStyle}>108 (23-24 уч.г.)</span>
+                            </MenuItem>
+                            <MenuItem value="72 (23-24 уч.г.)">
+                                <span style={listItemStyle}>72 (23-24 уч.г.)</span>
                             </MenuItem>
                         </TextField>
                         <TextField name='form_study' label="Форма обучения" type="text" variant="outlined"
@@ -400,7 +411,9 @@ export default function Contract() {
                         <div className='elements_in_row'>
                             <TextField label="Cумма для оплаты" name='contract_amount' type="text"
                                        sx={{width: '150px', mr: '25px'}}
-                                       onChange={(e) => {setContractAmount(e.target.value)}}
+                                       onChange={(e) => {
+                                           setContractAmount(e.target.value)
+                                       }}
                                        variant="outlined" defaultValue={contractAmount}
                                        color="warning" margin='normal' size="small"
                                        inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
@@ -424,7 +437,12 @@ export default function Contract() {
                                 <AccordionSummary>
                                     <Typography
                                         variant="body2"
-                                        sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                        sx={{
+                                            fontSize: '15px',
+                                            color: "#FA7A45",
+                                            fontWeight: 500,
+                                            fontFamily: 'Montserrat'
+                                        }}
                                     >
                                         Первый платеж
                                     </Typography>
@@ -452,7 +470,8 @@ export default function Contract() {
                                             size={'small'}
                                         />
                                     </div>
-                                    <TextField label="Сумма платежа" name='amount_first_actual_payment' type="text" color="warning"
+                                    <TextField label="Сумма платежа" name='amount_first_actual_payment' type="text"
+                                               color="warning"
                                                onChange={(e) => setFirstPayment(e.target.value)}
                                                sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
                                                size="small" inputProps={textFieldStyle}
@@ -466,7 +485,12 @@ export default function Contract() {
                                 >
                                     <Typography
                                         variant="body2"
-                                        sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                        sx={{
+                                            fontSize: '15px',
+                                            color: "#FA7A45",
+                                            fontWeight: 500,
+                                            fontFamily: 'Montserrat'
+                                        }}
                                     >
                                         Второй платеж
                                     </Typography>
@@ -494,7 +518,8 @@ export default function Contract() {
                                             size={'small'}
                                         />
                                     </div>
-                                    <TextField label="Сумма платежа" name='amount_second_actual_payment' type="text" color="warning"
+                                    <TextField label="Сумма платежа" name='amount_second_actual_payment' type="text"
+                                               color="warning"
                                                onChange={(e) => setSecondPayment(e.target.value)}
                                                sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
                                                size="small" inputProps={textFieldStyle}
@@ -508,7 +533,12 @@ export default function Contract() {
                                 >
                                     <Typography
                                         variant="body2"
-                                        sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                        sx={{
+                                            fontSize: '15px',
+                                            color: "#FA7A45",
+                                            fontWeight: 500,
+                                            fontFamily: 'Montserrat'
+                                        }}
                                     >
                                         Третий платеж
                                     </Typography>
@@ -537,7 +567,8 @@ export default function Contract() {
                                             size={'small'}
                                         />
                                     </div>
-                                    <TextField label="Сумма платежа" name='amount_third_actual_payment' type="text" color="warning"
+                                    <TextField label="Сумма платежа" name='amount_third_actual_payment' type="text"
+                                               color="warning"
                                                onChange={(e) => setThirdPayment(e.target.value)}
                                                sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
                                                size="small" inputProps={textFieldStyle}
@@ -551,7 +582,12 @@ export default function Contract() {
                                 >
                                     <Typography
                                         variant="body2"
-                                        sx={{fontSize: '15px', color: "#FA7A45", fontWeight: 500, fontFamily: 'Montserrat'}}
+                                        sx={{
+                                            fontSize: '15px',
+                                            color: "#FA7A45",
+                                            fontWeight: 500,
+                                            fontFamily: 'Montserrat'
+                                        }}
                                     >
                                         Четвертый платеж
                                     </Typography>
@@ -580,7 +616,8 @@ export default function Contract() {
                                             size={'small'}
                                         />
                                     </div>
-                                    <TextField label="Сумма платежа" name='amount_fourth_actual_payment' type="text" color="warning"
+                                    <TextField label="Сумма платежа" name='amount_fourth_actual_payment' type="text"
+                                               color="warning"
                                                onChange={(e) => setFourthPayment(e.target.value)}
                                                sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
                                                size="small" inputProps={textFieldStyle}

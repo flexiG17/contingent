@@ -370,35 +370,38 @@ export default function EnhancedTable() {
                                            setSearchingValue(event.target.value)
                                        })}
                                        InputLabelProps={textFieldStyle}>
-                                <MenuItem value="1008 (1 год 23-24)">
-                                    <span style={listItemStyle}>1008 (1 год 23-24)</span>
+                                <MenuItem value="1008 (1.5 года 24-25 г.)">
+                                    <span style={listItemStyle}>1008 (1.5 года 24-25 г.)</span>
                                 </MenuItem>
-                                <MenuItem value="1008 (1.5 года 23-24)">
-                                    <span style={listItemStyle}>1008 (1.5 года 23-24)</span>
+                                <MenuItem value="1008 (1 год 23-24 г.)">
+                                    <span style={listItemStyle}>1008 (1 год 23-24 г.)</span>
                                 </MenuItem>
-                                <MenuItem value="868">
-                                    <span style={listItemStyle}>868</span>
+                                <MenuItem value="1008 (1.5 года 23-24 г.)">
+                                    <span style={listItemStyle}>1008 (1.5 года 23-24 г.)</span>
                                 </MenuItem>
-                                <MenuItem value="728">
-                                    <span style={listItemStyle}>728</span>
+                                <MenuItem value="868 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>868 (23-24 уч.г.)</span>
                                 </MenuItem>
-                                <MenuItem value="588">
-                                    <span style={listItemStyle}>588</span>
+                                <MenuItem value="728 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>728 (23-24 уч.г.)</span>
                                 </MenuItem>
-                                <MenuItem value="504">
-                                    <span style={listItemStyle}>504</span>
+                                <MenuItem value="588 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>588 (23-24 уч.г.)</span>
                                 </MenuItem>
-                                <MenuItem value="288">
-                                    <span style={listItemStyle}>288</span>
+                                <MenuItem value="504 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>504 (23-24 уч.г.)</span>
                                 </MenuItem>
-                                <MenuItem value="144">
-                                    <span style={listItemStyle}>144</span>
+                                <MenuItem value="288 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>288 (23-24 уч.г.)</span>
                                 </MenuItem>
-                                <MenuItem value="108">
-                                    <span style={listItemStyle}>108</span>
+                                <MenuItem value="144 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>144 (23-24 уч.г.)</span>
                                 </MenuItem>
-                                <MenuItem value="72">
-                                    <span style={listItemStyle}>72</span>
+                                <MenuItem value="108 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>108 (23-24 уч.г.)</span>
+                                </MenuItem>
+                                <MenuItem value="72 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>72 (23-24 уч.г.)</span>
                                 </MenuItem>
                             </TextField>
                         }
@@ -419,6 +422,7 @@ export default function EnhancedTable() {
                     <TableToolbar
                         numSelected={selected.length}
                         selectedRows={selected.map(student => student.id)}
+                        selectedStudents={selected}
                         selectedEmails={selected.map(student => {
                             return {
                                 id: student.id,
