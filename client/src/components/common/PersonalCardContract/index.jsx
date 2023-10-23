@@ -27,7 +27,7 @@ import ModalMessage from "../MessageModal";
 import CreateTaskModalWindow from "../CreateTaskModal";
 import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
-import {listItemStyle, dateTextFieldStyle, textFieldStyle} from '../../../utils/consts/styles'
+import {listItemStyle, textFieldStyle} from '../../../utils/consts/styles'
 import Typography from "@mui/material/Typography";
 import CustomSingleDatePicker from "../../datePicker";
 import moment from "moment";

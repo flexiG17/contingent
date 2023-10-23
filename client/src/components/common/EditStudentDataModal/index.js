@@ -15,11 +15,9 @@ import {
 } from "@mui/material";
 import CustomSingleDatePicker from "../../datePicker";
 import Box from "@mui/material/Box";
-import {changeStudentData} from "../../../actions/student";
-import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {getToken} from "../../../utils/token";
-import {internalServerError, URL_PATH} from "../../../utils/consts/pathRoutes";
+import {URL_PATH} from "../../../utils/consts/pathRoutes";
 import iziToast from "izitoast";
 
 const style = {

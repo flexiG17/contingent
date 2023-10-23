@@ -8,8 +8,6 @@ const os = require('os')
 const path = require('path')
 
 const db = require('../db')
-const knex = require("knex");
-const {update} = require("./notification");
 
 
 function getStudent(id) {
