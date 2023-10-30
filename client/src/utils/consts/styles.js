@@ -1,3 +1,5 @@
+import {createTheme} from "@mui/material";
+
 export const textFieldStyle = {
     style:
         {
@@ -31,3 +33,11 @@ export const lineStyleInTable = {
     fontFamily: ['Montserrat'],
     fontWeight: '400'
 }
+
+export const systemColor = createTheme({
+    palette: {
+        primary: {
+            main: "#FA7A45"
+        }
+    },
+});

@@ -251,12 +251,12 @@ export default function EnhancedTable() {
     return (
         <div>
             <div className="nav">
+                {!READER_ACCESS &&
                 <div className="filter_position">
-                    {!READER_ACCESS &&
                         <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn">
                             Добавить студента <AddIcon/>
-                        </NavLink>}
-                </div>
+                        </NavLink>
+                </div>}
                 {!loading &&
                     <>
                         <ButtonGroup variant="outlined" aria-label="outlined button group"

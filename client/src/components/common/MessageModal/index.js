@@ -184,9 +184,9 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Отправка письма</DialogTitle>
+                <DialogTitle id="alert-dialog-title" sx={{fontFamily: 'Montserrat'}}>Отправка письма</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
+                    <DialogContentText id="alert-dialog-description" sx={{fontFamily: 'Montserrat'}}>
                         {`На данный момент таким способом сообщение отправить нельзя. 
                         Сделайте это через Outlook, скопировав список почт (нужно нажать на значок человека).
                         
@@ -194,7 +194,9 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => {
+                    <Button
+                        sx={{fontFamily: 'Montserrat', color: "#000"}}
+                        onClick={() => {
                         /*studentEmail.map(n => {
                             dataToSave.append('to', n.email)
                         })

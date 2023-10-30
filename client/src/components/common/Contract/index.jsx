@@ -2,9 +2,9 @@ import React, {useState, useRef} from 'react';
 import {addStudent} from '../../../actions/student';
 import {useNavigate} from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import {Accordion, AccordionDetails, AccordionSummary, MenuItem} from "@mui/material";
+import {Accordion, AccordionDetails, AccordionSummary, LinearProgress, MenuItem, ThemeProvider} from "@mui/material";
 import './Contract.css';
-import {listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
+import {listItemStyle, systemColor, textFieldStyle} from "../../../utils/consts/styles";
 import Typography from "@mui/material/Typography";
 import {getToken} from "../../../utils/token";
 import jwtDecode from "jwt-decode";
@@ -13,6 +13,7 @@ import CustomSingleDatePicker from "../../datePicker";
 export default function Contract() {
     const [active, setActive] = useState(true);
     const [isSkipPassport, setSkipPassport] = useState(false);
+    const [loading, setLoading] = useState(false)
     const handleClickContract = () => {
         setActive(!active);
     };
@@ -35,6 +36,7 @@ export default function Contract() {
     const [RF_location, setRfLocation] = useState('')
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true)
 
         let dataToSave = new FormData(formRef.current);
         const objectData = {};
@@ -65,7 +67,7 @@ export default function Contract() {
         dataToSave.set('actual_receipt_date_invitation', objectData.actual_receipt_date_invitation.split('.').reverse().join('-'))
         dataToSave.set('date_started_learning', objectData.date_started_learning.split('.').reverse().join('-'))
 
-        addStudent(dataToSave, navigate);
+        addStudent(dataToSave, navigate, setLoading)
     };
 
     const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
@@ -632,7 +634,23 @@ export default function Contract() {
                 <input type="checkbox" onClick={handleClickContract}/> Вы уверены, что хотите добавить студента?
             </label>
             <div className="button_position_contract_doc">
-                <button type="submit" className="button_style_contract_doc" disabled={active}>Добавить</button>
+
+                {!loading
+                    ?
+                    <button type="submit" className="button_style_contract_doc" disabled={active}>
+                        Добавить
+                    </button>
+                    :
+                    <ThemeProvider theme={systemColor}>
+                        <LinearProgress color="primary"
+                                        sx={{
+                                            width: '120px',
+                                            height: '25px',
+                                            mt: "10px",
+                                            mb: "10px",
+                                            borderRadius: '7px'
+                                        }}/>
+                    </ThemeProvider>}
             </div>
         </form>
     );

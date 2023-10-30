@@ -31,7 +31,7 @@ export default function TableToolbar({numSelected, selectedRows, selectedStudent
     const [modalMessageActive, setModalMessageActive] = useState(false);
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const handleIsEditModalOpen= () => setIsEditModalOpen(!isEditModalOpen);
+    const handleIsEditModalOpen = () => setIsEditModalOpen(!isEditModalOpen);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => {
@@ -156,10 +156,39 @@ export default function TableToolbar({numSelected, selectedRows, selectedStudent
             <CreateTaskModalWindow active={modalActive} setActive={setModalActive} idArray={selectedRows}
                                    emails={selectedEmails}/>
             <ModalMessage active={modalMessageActive} setActive={setModalMessageActive} studentEmail={selectedEmails}/>
-            <EditStudentDataModal active={isEditModalOpen} setActive={handleIsEditModalOpen} studentsList={selectedStudents}/>
+            <EditStudentDataModal active={isEditModalOpen} setActive={handleIsEditModalOpen}
+                                  studentsList={selectedStudents}/>
 
 
             <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title"
+                             sx={{fontFamily: 'Montserrat'}}
+                >
+                    Удаление студента
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description"
+                                       sx={{fontFamily: 'Montserrat'}}
+                    >
+                        В данный момент массовое удаление студентов отключено во избежании случайной потери данных.
+                        В личной карточке каждого студента доступно единичное удаление.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        sx={{fontFamily: 'Montserrat', color: "#000"}}
+                        onClick={() => {
+                        setOpen(false);
+                    }
+                    }>Ок</Button>
+                </DialogActions>
+            </Dialog>
+            {/*<Dialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
@@ -182,7 +211,7 @@ export default function TableToolbar({numSelected, selectedRows, selectedStudent
                     }
                     }>Нет</Button>
                 </DialogActions>
-            </Dialog>
+            </Dialog>*/}
         </>
     );
 }
