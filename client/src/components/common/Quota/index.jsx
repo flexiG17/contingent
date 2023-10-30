@@ -2,8 +2,8 @@ import React, {useState, useRef} from "react";
 import {addStudent} from "../../../actions/student";
 import {useNavigate} from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import {MenuItem} from "@mui/material";
-import {listItemStyle, textFieldStyle} from '../../../utils/consts/styles';
+import {LinearProgress, MenuItem, ThemeProvider} from "@mui/material";
+import {listItemStyle, systemColor, textFieldStyle} from '../../../utils/consts/styles';
 import "./QuotaDoc.css";
 import jwtDecode from "jwt-decode";
 import {getToken} from "../../../utils/token";
@@ -15,6 +15,8 @@ export default function Quota() {
 
     const [studentExpelled, setStudentExpelled] = useState('')
     const [RF_location, setRfLocation] = useState('')
+
+    const [loading, setLoading] = useState(false)
 
     const handleClickContract = () => {
         setActive(!active);
@@ -29,6 +31,7 @@ export default function Quota() {
     const formRef = useRef(null);
 
     const handleSubmit = (e) => {
+        setLoading(true)
         e.preventDefault();
 
         let dataToSave = new FormData(formRef.current);
@@ -48,7 +51,7 @@ export default function Quota() {
         dataToSave.set('visa_validity', objectData.visa_validity.split('.').reverse().join('-'))
         dataToSave.set('date_started_learning', objectData.date_started_learning.split('.').reverse().join('-'))
 
-        addStudent(dataToSave, navigate);
+        addStudent(dataToSave, navigate, setLoading);
     };
 
     return (
@@ -307,7 +310,23 @@ export default function Quota() {
                 <input type="checkbox" onClick={handleClickContract}/> Вы уверены, что хотите добавить студента?
             </label>
             <div className="button_position_contract_doc">
-                <button type="submit" className="button_style_contract_doc" disabled={active}>Добавить</button>
+
+                {!loading
+                    ?
+                    <button type="submit" className="button_style_contract_doc" disabled={active}>
+                        Добавить
+                    </button>
+                    :
+                    <ThemeProvider theme={systemColor}>
+                        <LinearProgress color="primary"
+                                        sx={{
+                                            width: '120px',
+                                            height: '25px',
+                                            mt: "10px",
+                                            mb: "10px",
+                                            borderRadius: '7px'
+                                        }}/>
+                    </ThemeProvider>}
             </div>
         </form>
     );

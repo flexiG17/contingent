@@ -11,9 +11,9 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    DialogTitle, LinearProgress,
     MenuItem,
-    SpeedDial, SpeedDialAction, SpeedDialIcon
+    SpeedDial, SpeedDialAction, SpeedDialIcon, ThemeProvider
 } from "@mui/material";
 import '../Contract/Contract.css';
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
@@ -25,7 +25,7 @@ import ModalMessage from '../MessageModal/index'
 import CreateTaskModalWindow from "../CreateTaskModal";
 import {getToken} from "../../../utils/token";
 import ModalFile from "../filemanager/ModalFile";
-import {textFieldStyle, dateTextFieldStyle, listItemStyle} from "../../../utils/consts/styles";
+import {textFieldStyle, dateTextFieldStyle, listItemStyle, systemColor} from "../../../utils/consts/styles";
 import moment from "moment";
 import CustomSingleDatePicker from "../../datePicker";
 
@@ -73,6 +73,7 @@ export default function PersonalCardQuota() {
     const [loading, setLoading] = useState(true)
     const [studentEducationType, setStudentEducationType] = useState(null)
 
+    const [loadingRequest, setLoadingRequest] = useState(false)
     const [studentExpelled, setStudentExpelled] = useState('')
     const [RF_location, setRfLocation] = useState()
 
@@ -113,6 +114,7 @@ export default function PersonalCardQuota() {
     const formRef = useRef(null);
     const handleSubmit = (e) => {
         setIsEditModeWasOn(false)
+        setLoadingRequest(true)
 
         e.preventDefault();
 
@@ -128,7 +130,7 @@ export default function PersonalCardQuota() {
         dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
         dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
 
-        changeStudentData(dataToSave, studentId, navigate, studentEducationType)
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest)
     };
 
     const actions = !READER_ACCESS ?
@@ -507,8 +509,21 @@ export default function PersonalCardQuota() {
                             данные?
                         </label>
                         <div className="button_position_contract_doc">
-                            <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить
-                            </button>
+                            {!loadingRequest
+                                ?
+                                <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить
+                                </button>
+                                :
+                                <ThemeProvider theme={systemColor}>
+                                    <LinearProgress color="primary"
+                                                    sx={{
+                                                        width: '120px',
+                                                        height: '25px',
+                                                        mt: "10px",
+                                                        mb: '10px',
+                                                        borderRadius: '7px'
+                                                    }}/>
+                                </ThemeProvider>}
                         </div>
                     </div>}
                 </form>

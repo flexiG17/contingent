@@ -11,11 +11,11 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
+    DialogTitle, LinearProgress,
     MenuItem,
     SpeedDial,
     SpeedDialAction,
-    SpeedDialIcon
+    SpeedDialIcon, ThemeProvider
 } from "@mui/material";
 import '../Contract/Contract.css';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
@@ -27,7 +27,7 @@ import ModalMessage from "../MessageModal";
 import CreateTaskModalWindow from "../CreateTaskModal";
 import ModalFile from "../filemanager/ModalFile";
 import {getToken} from "../../../utils/token";
-import {listItemStyle, textFieldStyle} from '../../../utils/consts/styles'
+import {listItemStyle, systemColor, textFieldStyle} from '../../../utils/consts/styles'
 import Typography from "@mui/material/Typography";
 import CustomSingleDatePicker from "../../datePicker";
 import moment from "moment";
@@ -66,7 +66,8 @@ export default function PersonalCardContract() {
     const READER_ACCESS = role === 'Читатель'
 
     const [studentData, setStudentData] = useState(undefined)
-    const [loading, setLoading] = useState(true)
+    const [loadingStudentData, setLoadingStudentData] = useState(true)
+    const [loadingRequest, setLoadingRequest] = useState(false)
     const [studentEducationType, setStudentEducationType] = useState(new Date())
 
     const handleModal = () => {
@@ -108,10 +109,10 @@ export default function PersonalCardContract() {
             })
             .finally(() => {
                 setTimeout(() => {
-                    setLoading(false)
+                    setLoadingStudentData(false)
                 }, 250)
             })
-    }, [loading, studentId])
+    }, [loadingStudentData, studentId])
 
     useEffect(() => {
         const handleTabClose = event => {
@@ -131,9 +132,10 @@ export default function PersonalCardContract() {
     const formRef = useRef(null);
     const navigate = useNavigate()
     const handleSubmit = (e) => {
-        setIsEditModeWasOn(false)
-
         e.preventDefault();
+
+        setIsEditModeWasOn(false)
+        setLoadingRequest(true)
 
         let formData = new FormData(formRef.current)
         const dataToSave = {};
@@ -159,7 +161,7 @@ export default function PersonalCardContract() {
         dataToSave.actual_receipt_date_invitation = dataToSave.actual_receipt_date_invitation.split('.').reverse().join('-');
         dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
 
-        changeStudentData(dataToSave, studentId, navigate, studentEducationType)
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest)
     };
 
     const actions = !READER_ACCESS ?
@@ -227,7 +229,7 @@ export default function PersonalCardContract() {
     const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
 
     return (
-        loading
+        loadingStudentData
             ?
             <Backdrop sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}
                       open={true} invisible={true}>
@@ -824,10 +826,26 @@ export default function PersonalCardContract() {
                             <input type="checkbox" onClick={handleClickContract}/>Вы уверены, что хотите изменить
                             данные?
                         </label>
+
+
                         <div className="button_position_contract_doc">
-                            <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить
-                            </button>
+                            {!loadingRequest
+                                ?
+                                <button type="submit" className="button_style_contract_doc" disabled={active}>Изменить
+                                </button>
+                                :
+                                <ThemeProvider theme={systemColor}>
+                                    <LinearProgress color="primary"
+                                                    sx={{
+                                                        width: '120px',
+                                                        height: '25px',
+                                                        mt: "10px",
+                                                        mb: '10px',
+                                                        borderRadius: '7px'
+                                                    }}/>
+                                </ThemeProvider>}
                         </div>
+
                     </div>}
                 </form>
                 <Dialog
