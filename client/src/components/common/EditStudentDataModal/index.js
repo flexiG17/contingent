@@ -4,7 +4,7 @@ import TextField from "@mui/material/TextField";
 import {listItemStyle, systemColor, textFieldStyle} from "../../../utils/consts/styles";
 import {
     Button,
-    createTheme, Dialog, DialogActions,
+    Dialog, DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
@@ -106,7 +106,6 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
 
         <>
             <Modal
-                open={active}
                 open={active}
                 onClose={setActive}
                 aria-labelledby="modal-modal-title"

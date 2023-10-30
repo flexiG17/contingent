@@ -2,7 +2,6 @@ import React, {useState} from "react"
 import '../CreateTaskModal/Modal.css'
 import '../../../Pages/Account/Account.css';
 import TextField from "@mui/material/TextField";
-import {sendMessage} from "../../../actions/student";
 import {
     Button,
     Dialog,

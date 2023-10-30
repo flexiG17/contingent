@@ -5,7 +5,7 @@ import {alpha} from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
-import {createXlsx, importXlsx, removeArrayOfStudents} from "../../../../actions/student";
+import {createXlsx, importXlsx} from "../../../../actions/student";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import DeleteIcon from "@mui/icons-material/Delete";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
