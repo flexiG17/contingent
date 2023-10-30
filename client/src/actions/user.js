@@ -58,8 +58,32 @@ export function getUsers() {
     }).then(resp => resp.data)
 }
 
-export function changeUserData(data, id, isCurrentUserChanged) {
+export function changeUserData(data, id) {
     return axios.put(`${URL_PATH}/api/user/change/${id}`, data, {
+        headers: {
+            'Authorization': getToken(),
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    })
+        .then(({data}) => {
+            iziToast.success({
+                message: data.message,
+                position: 'topRight'
+            })
+            setTimeout(() => {
+                window.location.reload()
+            }, 1500)
+        }).catch((e) => {
+            iziToast.error({
+                message: internalServerError(e),
+                position: "topRight",
+                color: "#FFF2ED"
+            });
+        })
+}
+
+export function changeYourself(data) {
+    return axios.put(`${URL_PATH}/api/user/change`, data, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'

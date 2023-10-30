@@ -14,7 +14,7 @@ import {
     DialogTitle, List, ListItem, ListItemAvatar,
     ListItemText, MenuItem
 } from "@mui/material";
-import {changeUserData, getUsers, removeUserById} from "../../actions/user";
+import {changeUserData, changeYourself, getUsers, removeUserById} from "../../actions/user";
 import PersonRemoveOutlinedIcon from '@mui/icons-material/PersonRemoveOutlined';
 import AddIcon from '@mui/icons-material/Add';
 import ModalRegistration from "../../components/common/ModalRegistration";
@@ -47,6 +47,7 @@ function Index() {
             .then(users => setUserList(users))
     }, [])
     const currentUser = decodedToken.userId === userId
+
     return (
         <>
             <Header/>
@@ -66,7 +67,8 @@ function Index() {
                                     setOpenDialog(true)
                                 }}/>
                             </Tooltip>}
-                        <TextField label="Ф.И.О." variant="outlined" color="warning" type="text" inputProps={textFieldStyle}
+                        <TextField label="Ф.И.О." variant="outlined" color="warning" type="text"
+                                   inputProps={textFieldStyle}
                                    margin='normal' InputLabelProps={textFieldStyle} value={userName}
                                    size="small" sx={{width: "400px", marginTop: "30px"}} disabled={editMode}
                                    onChange={event => setUserName(event.target.value)}
@@ -150,9 +152,9 @@ function Index() {
                             })}
                         </div>}
                 </div>
-                    <div className="container_table_notification">
-                        <div className="title_container_information">Список задач</div>
-                        <div className="table_notification"><CollapsibleTable/></div>
+                <div className="container_table_notification">
+                    <div className="title_container_information">Список задач</div>
+                    <div className="table_notification"><CollapsibleTable/></div>
                 </div>
             </div>
 
@@ -161,27 +163,37 @@ function Index() {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{titleDialog}</DialogTitle>
+                <DialogTitle id="alert-dialog-title" sx={{fontFamily: 'Montserrat'}}>{titleDialog}</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">{textDialog}</DialogContentText>
+                    <DialogContentText id="alert-dialog-description" sx={{fontFamily: 'Montserrat'}}>{textDialog}</DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => {
-                        if (actionDialog === 'update')
-                            changeUserData({
+                    <Button
+                        sx={{fontFamily: 'Montserrat', color: "#000"}}
+                        onClick={() => {
+                        if (actionDialog === 'update') {
+                            const dataToSave = {
                                 name: userName,
                                 email: userEmail,
                                 password: userPassword,
                                 role: userRole,
                                 isCurrentUserChanged: isCurrentUserChanged
-                            }, userId)
-                        else if (actionDialog === 'delete')
+                            }
+
+                            if (isCurrentUserChanged)
+                                changeYourself(dataToSave)
+                            else
+                                changeUserData(dataToSave, userId)
+
+                        } else if (actionDialog === 'delete')
                             removeUserById(userId)
 
                         setOpenDialog(false)
                     }
                     }>Да</Button>
-                    <Button onClick={() => {
+                    <Button
+                        sx={{fontFamily: 'Montserrat', color: "#000"}}
+                        onClick={() => {
                         setOpenDialog(false)
                     }
                     }>Нет</Button>

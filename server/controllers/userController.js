@@ -43,7 +43,7 @@ module.exports.changeSelf = async function (req, res) {
     await user.update(model)
 
     const token = jwt.sign({
-        id: req.params.id,
+        userId: req.user.id,
         email: email,
         name: name,
         role: role

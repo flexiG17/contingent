@@ -56,31 +56,35 @@ export function removeArrayOfStudents(data) {
     })
 }
 
-export function changeStudentData(item, id, navigate, startEducationType) {
+export function changeStudentData(item, id, navigate, startEducationType, setLoadingRequest) {
     return axios.put(
         `${URL_PATH}/api/student/update/${id}`, item, {
             headers: {
                 'Authorization': getToken(),
                 'Content-Type': 'application/json;charset=utf-8'
             }
-        }).then(({data}) => {
-
-        setTimeout(() => {
-            item.education_type === startEducationType
-                ? window.location.reload()
-                : navigate(`/${item.education_type === 'Контракт' ? `contract` : `quota`}/${id}`)
-        }, 1500)
-        iziToast.success({
-            message: data.message,
-            position: 'topRight'
         })
-    }).catch((e) => {
-        iziToast.error({
-            message: internalServerError(e),
-            position: "topRight",
-            color: "#FFF2ED"
-        });
-    })
+        .then(({data}) => {
+            setTimeout(() => {
+                setLoadingRequest(false)
+                item.education_type === startEducationType
+                    ? window.location.reload()
+                    : navigate(`/${item.education_type === 'Контракт' ? `contract` : `quota`}/${id}`)
+            }, 1500)
+            iziToast.success({
+                message: data.message,
+                position: 'topRight'
+            })
+        }).catch((e) => {
+            setTimeout(() => {
+                setLoadingRequest(false)
+                iziToast.error({
+                    message: internalServerError(e),
+                    position: "topRight",
+                    color: "#FFF2ED"
+                });
+            }, 500)
+        })
 }
 
 export function getStudentsByIdArray(idArray) {
@@ -91,26 +95,30 @@ export function getStudentsByIdArray(idArray) {
     }).then(resp => resp.data)
 }
 
-export function addStudent(item, navigate) {
+export function addStudent(item, navigate, setLoading) {
     return axios.post(`${URL_PATH}/api/student/create`, item, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'multipart/form-data;'
         },
     }).then(({data}) => {
-        setTimeout(() => {
-            navigate(HOME_ROUTE)
-        }, 1500)
         iziToast.success({
             message: data.message,
             position: 'topRight'
         })
+        setLoading(false)
+        setTimeout(() => {
+            navigate(HOME_ROUTE)
+        }, 1500)
     }).catch((e) => {
-        iziToast.error({
-            message: internalServerError(e),
-            position: "topRight",
-            color: "#FFF2ED"
-        });
+        setTimeout(() => {
+            setLoading(false)
+            iziToast.error({
+                message: internalServerError(e),
+                position: "topRight",
+                color: "#FFF2ED"
+            });
+        }, 500)
     })
 }
 
