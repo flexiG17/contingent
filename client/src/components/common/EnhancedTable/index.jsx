@@ -391,6 +391,9 @@ export default function EnhancedTable() {
                                 <MenuItem value="504 (23-24 уч.г.)">
                                     <span style={listItemStyle}>504 (23-24 уч.г.)</span>
                                 </MenuItem>
+                                <MenuItem value="352 (23-24 уч.г.)">
+                                    <span style={listItemStyle}>352 (23-24 уч.г.)</span>
+                                </MenuItem>
                                 <MenuItem value="288 (23-24 уч.г.)">
                                     <span style={listItemStyle}>288 (23-24 уч.г.)</span>
                                 </MenuItem>
