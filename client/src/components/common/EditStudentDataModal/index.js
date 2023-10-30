@@ -1,7 +1,7 @@
 import React, {useRef, useState} from "react"
 import './editModal.css'
 import TextField from "@mui/material/TextField";
-import {listItemStyle, textFieldStyle} from "../../../utils/consts/styles";
+import {listItemStyle, systemColor, textFieldStyle} from "../../../utils/consts/styles";
 import {
     Button,
     createTheme, Dialog, DialogActions,
@@ -46,6 +46,7 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
 
         setOpenDialog(false)
         setLoading(true)
+
         let formData = new FormData(formRef.current)
         const formDataToJson = {};
         formData.forEach((value, key, id) => (formDataToJson[key] = value))
@@ -65,6 +66,7 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
             id: studentsId,
             newData: arrayToJson
         };
+
         axios.put(`${URL_PATH}/api/student/editListOfStudents/`, dataToSave, {
             headers: {
                 'Authorization': getToken(),
@@ -100,25 +102,21 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
             })
     };
 
-    const theme = createTheme({
-        palette: {
-            primary: {
-                main: "#FA7A45"
-            }
-        },
-    });
-
     return (
 
         <>
             <Modal
+                open={active}
                 open={active}
                 onClose={setActive}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <form ref={formRef} onSubmit={handleSubmit}>
+                    <form ref={formRef} onSubmit={(e) => {
+                        e.preventDefault()
+                        setOpenDialog(true)
+                    }}>
                         <p className="title_main_text">Массовое редактирование</p>
                         <div className="grid">
                             <div className="left_column">
@@ -284,27 +282,28 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                 />
                             </div>
                         </div>
+
+                        {!loading
+                            ?
+                            <button
+                                type='submit'
+                                className="submit_button_style"
+                            >
+                                Изменить
+                            </button>
+                            :
+                            <ThemeProvider theme={systemColor}>
+                                <LinearProgress
+                                    color="primary"
+                                    sx={{
+                                        width: '120px',
+                                        height: '25px',
+                                        mt: "40px",
+                                        mb: "15px",
+                                        borderRadius: '7px'
+                                    }}/>
+                            </ThemeProvider>}
                     </form>
-
-
-                    {!loading
-                        ?
-                        <button className="submit_button_style" onClick={() => {
-                            setOpenDialog(true)
-                        }}>
-                            Изменить
-                        </button>
-                        :
-                        <ThemeProvider theme={theme}>
-                            <LinearProgress color="primary"
-                                            sx={{
-                                                width: '120px',
-                                                height: '25px',
-                                                mt: "40px",
-                                                mb: "15px",
-                                                borderRadius: '7px'
-                                            }}/>
-                        </ThemeProvider>}
                 </Box>
             </Modal>
 
