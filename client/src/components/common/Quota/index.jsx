@@ -48,6 +48,7 @@ export default function Quota() {
         dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
         dataToSave.set('passport_expiration', objectData.passport_expiration.split('.').reverse().join('-'))
         dataToSave.set('entry_date', objectData.entry_date.split('.').reverse().join('-'))
+        dataToSave.set('departure_date', objectData.departure_date.split('.').reverse().join('-'))
         dataToSave.set('visa_validity', objectData.visa_validity.split('.').reverse().join('-'))
         dataToSave.set('date_started_learning', objectData.date_started_learning.split('.').reverse().join('-'))
 
@@ -188,6 +189,12 @@ export default function Quota() {
                         <CustomSingleDatePicker
                             name={"entry_date"}
                             label={'Дата въезда'}
+                            required={false}
+                            size={'default'}
+                        />
+                        <CustomSingleDatePicker
+                            name={"departure_date"}
+                            label={'Дата отъезда'}
                             required={false}
                             size={'default'}
                         />

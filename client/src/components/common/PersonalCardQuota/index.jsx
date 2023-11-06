@@ -127,6 +127,7 @@ export default function PersonalCardQuota() {
         dataToSave.passport_issue_date = dataToSave.passport_issue_date.split('.').reverse().join('-');
         dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
         dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
+        dataToSave.departure_date = dataToSave.departure_date.split('.').reverse().join('-');
         dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
         dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
 
@@ -354,6 +355,14 @@ export default function PersonalCardQuota() {
                                     defaultValue={studentData.entry_date}
                                     required={false}
                                     editMode={editMode}
+                                    size={'default'}
+                                />
+                                <CustomSingleDatePicker
+                                    name={"departure_date"}
+                                    defaultValue={studentData.departure_date}
+                                    editMode={editMode}
+                                    required={false}
+                                    label={'Дата отъезда'}
                                     size={'default'}
                                 />
                                 <p className="title_contract_doc"> Начало обучения </p>

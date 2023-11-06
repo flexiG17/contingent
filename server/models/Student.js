@@ -52,6 +52,7 @@ module.exports = class Student {
 
         this.hours_number = other.hours_number
         this.entry_date = new Date(other.entry_date)
+        this.departure_date = new Date(other.departure_date)
 
         this.started_learning = other.started_learning
         this.date_started_learning = new Date(other.date_started_learning)

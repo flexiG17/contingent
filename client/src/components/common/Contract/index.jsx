@@ -52,6 +52,7 @@ export default function Contract() {
         dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
         dataToSave.set('passport_expiration', objectData.passport_expiration.split('.').reverse().join('-'))
         dataToSave.set('entry_date', objectData.entry_date.split('.').reverse().join('-'))
+        dataToSave.set('departure_date', objectData.departure_date.split('.').reverse().join('-'))
         dataToSave.set('visa_validity', objectData.visa_validity.split('.').reverse().join('-'))
         dataToSave.set('first_payment_contract_date', objectData.first_payment_contract_date.split('.').reverse().join('-'))
         dataToSave.set('second_payment_contract_date', objectData.second_payment_contract_date.split('.').reverse().join('-'))
@@ -217,6 +218,12 @@ export default function Contract() {
                         <CustomSingleDatePicker
                             name={"entry_date"}
                             label={'Дата въезда'}
+                            required={false}
+                            size={'default'}
+                        />
+                        <CustomSingleDatePicker
+                            name={"departure_date"}
+                            label={'Дата отъезда'}
                             required={false}
                             size={'default'}
                         />

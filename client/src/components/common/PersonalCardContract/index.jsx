@@ -146,6 +146,7 @@ export default function PersonalCardContract() {
         dataToSave.passport_issue_date = dataToSave.passport_issue_date.split('.').reverse().join('-');
         dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
         dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
+        dataToSave.departure_date = dataToSave.departure_date.split('.').reverse().join('-');
         dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
         dataToSave.first_payment_contract_date = dataToSave.first_payment_contract_date.split('.').reverse().join('-');
         dataToSave.second_payment_contract_date = dataToSave.second_payment_contract_date.split('.').reverse().join('-');
@@ -396,6 +397,14 @@ export default function PersonalCardContract() {
                                     editMode={editMode}
                                     required={false}
                                     label={'Дата въезда'}
+                                    size={'default'}
+                                />
+                                <CustomSingleDatePicker
+                                    name={"departure_date"}
+                                    defaultValue={studentData.departure_date}
+                                    editMode={editMode}
+                                    required={false}
+                                    label={'Дата отъезда'}
                                     size={'default'}
                                 />
                                 <p className="title_contract_doc"> Начало обучения </p>
