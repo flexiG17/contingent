@@ -47,19 +47,23 @@ function Row(props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Удаление задачи</DialogTitle>
+                <DialogTitle id="alert-dialog-title" sx={{fontFamily: 'Montserrat'}}>Удаление задачи</DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
+                    <DialogContentText id="alert-dialog-description" sx={{fontFamily: 'Montserrat'}}>
                         Изменить статус задачи на "Выполнено" и удалить её?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => {
+                    <Button
+                        sx={{fontFamily: 'Montserrat', color: "#000"}}
+                        onClick={() => {
                         removeNotification([row.id])
                         setOpen(false)
                     }
                     }>Да</Button>
-                    <Button onClick={() => {
+                    <Button
+                        sx={{fontFamily: 'Montserrat', color: "#000"}}
+                        onClick={() => {
                         setOpen(false)
                     }
                     }>Нет</Button>

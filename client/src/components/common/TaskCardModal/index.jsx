@@ -242,20 +242,24 @@ const TaskCard = ({active, setActive, taskData}) => {
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                     >
-                        <DialogTitle id="alert-dialog-title">Редактирование списка</DialogTitle>
+                        <DialogTitle id="alert-dialog-title" sx={{fontFamily: 'Montserrat'}}>Редактирование списка</DialogTitle>
                         <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
+                            <DialogContentText id="alert-dialog-description" sx={{fontFamily: 'Montserrat'}}>
                                 Вы уверены, что хотите убрать выбранного студента из списка задачи?
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={() => {
+                            <Button
+                                sx={{fontFamily: 'Montserrat', color: "#000"}}
+                                onClick={() => {
                                 const index = studentsToSave.map(std => std.id).indexOf(currentStudent.id)
                                 studentsToSave.splice(index, 1)
                                 setOpen(false)
                             }
                             }>Да</Button>
-                            <Button onClick={() => {
+                            <Button
+                                sx={{fontFamily: 'Montserrat', color: "#000"}}
+                                onClick={() => {
                                 setOpen(false)
                             }
                             }>Нет</Button>

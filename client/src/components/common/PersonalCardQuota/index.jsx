@@ -25,7 +25,7 @@ import ModalMessage from '../MessageModal/index'
 import CreateTaskModalWindow from "../CreateTaskModal";
 import {getToken} from "../../../utils/token";
 import ModalFile from "../filemanager/ModalFile";
-import {textFieldStyle, dateTextFieldStyle, listItemStyle, systemColor} from "../../../utils/consts/styles";
+import {textFieldStyle, listItemStyle, systemColor} from "../../../utils/consts/styles";
 import moment from "moment";
 import CustomSingleDatePicker from "../../datePicker";
 
@@ -564,20 +564,25 @@ export default function PersonalCardQuota() {
                     onClose={handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
+                    sx={{fontFamily: 'Montserrat'}}
                 >
-                    <DialogTitle id="alert-dialog-title">Удаление студента</DialogTitle>
+                    <DialogTitle id="alert-dialog-title" sx={{fontFamily: 'Montserrat'}}>Удаление студента</DialogTitle>
                     <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
+                        <DialogContentText id="alert-dialog-description" sx={{fontFamily: 'Montserrat'}}>
                             Вы уверены, что хотите удалить выбранного студента?
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={() => {
+                        <Button
+                            sx={{fontFamily: 'Montserrat', color: "#000"}}
+                            onClick={() => {
                             removeStudent(studentId, navigate)
                             setOpen(false)
                         }
                         }>Да</Button>
-                        <Button onClick={() => {
+                        <Button
+                            sx={{fontFamily: 'Montserrat', color: "#000"}}
+                            onClick={() => {
                             setOpen(false)
                         }
                         }>Нет</Button>

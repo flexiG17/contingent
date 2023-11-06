@@ -58,6 +58,6 @@ function CustomSingleDatePicker ({name, label, editMode, defaultValue, form, req
             </div>
         </div>
     )
-};
+}
 
 export default CustomSingleDatePicker
