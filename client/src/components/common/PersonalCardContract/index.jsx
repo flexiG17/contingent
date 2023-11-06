@@ -340,6 +340,7 @@ export default function PersonalCardContract() {
                                     form='studentForm'
                                     editMode={editMode}
                                     size={'default'}
+                                    isOpenCalendar={false}
                                 />
                                 <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.passport_number}
@@ -353,6 +354,7 @@ export default function PersonalCardContract() {
                                     required={false}
                                     label={'Дата выдачи'}
                                     size={'default'}
+                                    isOpenCalendar={false}
                                 />
                                 <CustomSingleDatePicker
                                     name={"passport_expiration"}
@@ -361,6 +363,7 @@ export default function PersonalCardContract() {
                                     required={false}
                                     label={'Срок действия'}
                                     size={'default'}
+                                    isOpenCalendar={false}
                                 />
                                 <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
                                            color="warning" margin='normal' defaultValue={studentData.passport_issued}

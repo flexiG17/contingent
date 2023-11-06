@@ -28,6 +28,7 @@ import {lineStyleInTable, listItemStyle, textFieldStyle} from "../../../utils/co
 import TextField from "@mui/material/TextField";
 import moment from "moment";
 import DatePicker from "react-datepicker";
+import MaskedInput from "react-text-mask";
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -347,6 +348,7 @@ export default function EnhancedTable() {
                                     />}
                                 {filterCondition === "birth_date" &&
                                     <DatePicker
+                                        open={false}
                                         todayButton="Today"
                                         selected={typeof (searchingValue) === 'string' ? null : new Date(searchingValue)}
                                         onChange={(date) => {
@@ -355,8 +357,17 @@ export default function EnhancedTable() {
                                         showMonthDropdown
                                         showYearDropdown
                                         dateFormat="dd.MM.yyyy"
-                                        placeholderText={"Выберите дату для поиска..."}
+                                        placeholderText={"дд.мм.гггг"}
                                         className="date_picker_table"
+
+                                        isClearable
+
+                                        customInput={
+                                            <MaskedInput
+                                                type="text"
+                                                mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /[1-2]/, /\d/,/\d/, /\d/]}
+                                            />
+                                        }
                                     />}
                             </div>
                         }

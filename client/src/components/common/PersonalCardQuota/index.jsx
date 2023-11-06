@@ -307,6 +307,7 @@ export default function PersonalCardQuota() {
                                     editMode={editMode}
                                     size={'default'}
                                     form='studentForm'
+                                    isOpenCalendar={false}
                                 />
                                 <TextField label="Номер паспорта" type="text" variant="outlined" color="warning"
                                            name='passport_number' margin='normal' disabled={editMode}
@@ -319,6 +320,7 @@ export default function PersonalCardQuota() {
                                     required={false}
                                     editMode={editMode}
                                     size={'default'}
+                                    isOpenCalendar={false}
                                 />
                                 <CustomSingleDatePicker
                                     name={"passport_expiration"}
@@ -327,6 +329,7 @@ export default function PersonalCardQuota() {
                                     required={false}
                                     editMode={editMode}
                                     size={'default'}
+                                    isOpenCalendar={false}
                                 />
                                 <TextField label="Кем выдан" type="text" variant="outlined" color="warning"
                                            margin='normal' name='passport_issued' size="small" disabled={editMode}

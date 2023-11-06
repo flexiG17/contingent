@@ -160,6 +160,7 @@ export default function Contract() {
                             required={true}
                             size={'default'}
                             form='studentForm'
+                            isOpenCalendar={false}
                         />
                         <TextField label="Номер паспорта" name='passport_number' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small" required
@@ -177,6 +178,7 @@ export default function Contract() {
                             label={'Дата выдачи'}
                             required={false}
                             size={'default'}
+                            isOpenCalendar={false}
                         />
                         {/*<TextField label="Срок действия паспорта" name='passport_expiration' type="date"
                                    color="warning" margin='normal' size="small"
@@ -186,6 +188,7 @@ export default function Contract() {
                             label={'Срок действия'}
                             required={false}
                             size={'default'}
+                            isOpenCalendar={false}
                         />
                         <TextField label="Кем выдан" name='passport_issued' type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"

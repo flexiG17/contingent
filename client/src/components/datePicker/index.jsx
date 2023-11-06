@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import DatePicker from "react-datepicker";
 import './datePicker.css'
 import "react-datepicker/dist/react-datepicker.css";
+import MaskedInput from 'react-text-mask'
 
-function CustomSingleDatePicker ({name, label, editMode, defaultValue, form, required, size}) {
+function CustomSingleDatePicker ({name, label, editMode, defaultValue, form, required, size, isOpenCalendar}) {
     const [startDate, setStartDate] = useState(!defaultValue ? null : new Date(defaultValue));
 
     let sizeLabelArea = ''
@@ -23,12 +24,13 @@ function CustomSingleDatePicker ({name, label, editMode, defaultValue, form, req
         sizeLabelArea = 'extra_large_label_area'
 
     return (
-        <div className="date_picker_block">
+        <div>
             <div className={`date_picker_title ${editMode ? 'disabled_title' : 'undisabled_title'}`}>
                 {`${label}${required ? ' *' : ''}`}
             </div>
             <div>
                 <DatePicker
+                    open={isOpenCalendar}
                     name={name}
                     autoComplete='off'
                     todayButton="Today"
@@ -41,7 +43,17 @@ function CustomSingleDatePicker ({name, label, editMode, defaultValue, form, req
                     dateFormat="dd.MM.yyyy"
                     className={`date_picker ${sizeLabelArea} ${size === 'small' ? 'small_input_size' : 'big_input_size'}`}
                     required={required}
-                    placeholderText={'Не выбрано'}
+                    placeholderText={'дд.мм.гггг'}
+
+                    isClearable={!editMode}
+                    clearButtonClassName="clear_button"
+
+                    customInput={
+                        <MaskedInput
+                            type="text"
+                            mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /[1-2]/, /\d/,/\d/, /\d/]}
+                        />
+                    }
                 />
             </div>
         </div>

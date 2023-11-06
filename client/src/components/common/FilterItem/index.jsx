@@ -3,6 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import React, {useState} from "react";
 import DatePicker from "react-datepicker";
 import {Answers} from "../../../utils/consts/answers";
+import MaskedInput from "react-text-mask";
 
 export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     const operators = [
@@ -24,6 +25,11 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     );
     const [startDate, endDate] = dateRange;
     const [startDateSingleRange, setStartDateSingleRange] = useState(isNaN(new Date(item.value).getDate()) ? null : item.value);
+
+    const isDateWithCalendar =
+        item.param.value === 'birth_date'
+        || item.param.value === 'passport_issue_date'
+        || item.param.value === 'passport_expiration'
 
     return (
         <MenuItem>
@@ -66,17 +72,34 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                                value={item.value}/>}
                     {(inputType === 'date' && item.operator !== 'range') &&
                         <DatePicker
+                            /*open={!isDateWithCalendar}*/
                             todayButton="Today"
                             selected={startDateSingleRange}
                             onChange={(date) => {
-                                changeFilterProp(item.id, date, 'value')
-                                setStartDateSingleRange(date)
+                                if (date !== null) {
+                                    changeFilterProp(item.id, date, 'value')
+                                    setStartDateSingleRange(date)
+                                }
+                                else {
+                                    changeFilterProp(item.id, '', 'value')
+                                    setStartDateSingleRange(null)
+                                }
                             }}
+
                             showMonthDropdown
                             showYearDropdown
                             placeholderText="Выберите дату для поиска"
                             dateFormat="dd.MM.yyyy"
                             className="date_picker_filter"
+
+                            isClearable
+
+                            customInput={
+                                <MaskedInput
+                                    type="text"
+                                    mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /\d/, /\d/,/\d/, /\d/]}
+                                />
+                            }
                         />}
                     {(item.operator === 'range') &&
                         <DatePicker
@@ -94,6 +117,8 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             dropdownMode="select"
                             dateFormat="dd.MM.yyyy"
                             className="date_picker_filter"
+
+                            isClearable
                         />}
                     {Answers[item.param.value] &&
                         <select className="search_filter" value={item.value}
