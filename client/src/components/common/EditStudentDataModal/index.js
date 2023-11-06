@@ -54,6 +54,10 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
         formDataToJson.visa_validity = formDataToJson.visa_validity.split('.').reverse().join('-');
         formDataToJson.date_started_learning = formDataToJson.date_started_learning.split('.').reverse().join('-');
         formDataToJson.transfer_to_international_service = formDataToJson.transfer_to_international_service.split('.').reverse().join('-');
+
+        formDataToJson.enrollment_date = formDataToJson.enrollment_date.split('.').reverse().join('-');
+        formDataToJson.expulsion_date = formDataToJson.expulsion_date.split('.').reverse().join('-');
+
         formDataToJson.transfer_to_MVD = formDataToJson.transfer_to_MVD.split('.').reverse().join('-');
         formDataToJson.estimated_receipt_date = formDataToJson.estimated_receipt_date.split('.').reverse().join('-');
         formDataToJson.actual_receipt_date_invitation = formDataToJson.actual_receipt_date_invitation.split('.').reverse().join('-');
@@ -224,11 +228,23 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                            sx={{width: '325px'}}
                                            margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"enrollment_date"}
+                                    label={'Дата зачисления'}
+                                    required={false}
+                                    size={'default'}
+                                />
                                 <TextField label="Номер приказа об отчислении" name='expulsion_order' type="text"
                                            variant="outlined"
                                            sx={{width: '325px'}}
                                            color="warning" margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"expulsion_date"}
+                                    label={'Дата отчисления'}
+                                    required={false}
+                                    size={'default'}
+                                />
                                 <TextField label="Статус 1C" name='status_1c' type="text"
                                            defaultValue=''
                                            variant="outlined"

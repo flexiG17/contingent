@@ -11,9 +11,9 @@ function CustomSingleDatePicker ({name, label, editMode, defaultValue, form, req
     if (size === 'default'){
         if (label.length <= 11 )
             sizeLabelArea = 'extra_small_label_area'
-        else if (label.length > 11 && label.length <= 14)
+        else if (label.length > 11 && label.length <= 15)
             sizeLabelArea = 'small_label_area'
-        else if (label.length > 14 && label.length <= 19)
+        else if (label.length > 15 && label.length <= 19)
             sizeLabelArea = 'middle_label_area'
         else if (label.length > 18 && label.length <= 30)
             sizeLabelArea = 'large_label_area'

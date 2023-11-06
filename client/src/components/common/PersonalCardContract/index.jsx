@@ -147,6 +147,10 @@ export default function PersonalCardContract() {
         dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
         dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
         dataToSave.departure_date = dataToSave.departure_date.split('.').reverse().join('-');
+
+        dataToSave.enrollment_date = dataToSave.enrollment_date.split('.').reverse().join('-');
+        dataToSave.expulsion_date = dataToSave.expulsion_date.split('.').reverse().join('-');
+
         dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
         dataToSave.first_payment_contract_date = dataToSave.first_payment_contract_date.split('.').reverse().join('-');
         dataToSave.second_payment_contract_date = dataToSave.second_payment_contract_date.split('.').reverse().join('-');
@@ -554,10 +558,26 @@ export default function PersonalCardContract() {
                                            defaultValue={studentData.enrollment_order}
                                            margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"enrollment_date"}
+                                    defaultValue={studentData.enrollment_date}
+                                    editMode={editMode}
+                                    required={false}
+                                    label={'Дата зачисления'}
+                                    size={'default'}
+                                />
                                 <TextField label="Номер приказа об отчислении" name='expulsion_order' type="text"
                                            variant="outlined" defaultValue={studentData.expulsion_order}
                                            color="warning" disabled={editMode} margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"expulsion_date"}
+                                    defaultValue={studentData.expulsion_date}
+                                    editMode={editMode}
+                                    required={false}
+                                    label={'Дата отчисления'}
+                                    size={'default'}
+                                />
                                 <TextField label="Номер договора" name='contract_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.contract_number}
                                            margin='normal' disabled={editMode}

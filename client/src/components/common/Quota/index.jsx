@@ -48,6 +48,10 @@ export default function Quota() {
         dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
         dataToSave.set('passport_expiration', objectData.passport_expiration.split('.').reverse().join('-'))
         dataToSave.set('entry_date', objectData.entry_date.split('.').reverse().join('-'))
+
+        dataToSave.set('enrollment_date', objectData.enrollment_date.split('.').reverse().join('-'))
+        dataToSave.set('expulsion_date', objectData.expulsion_date.split('.').reverse().join('-'))
+
         dataToSave.set('departure_date', objectData.departure_date.split('.').reverse().join('-'))
         dataToSave.set('visa_validity', objectData.visa_validity.split('.').reverse().join('-'))
         dataToSave.set('date_started_learning', objectData.date_started_learning.split('.').reverse().join('-'))
@@ -68,20 +72,6 @@ export default function Quota() {
                         <TextField name='russian_name' label="Ф.И.О. (кир.)" variant="outlined" color="warning"
                                    type="text" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                        <TextField label="Нахождение в РФ" name='RF_location' type="text"
-                                   color="warning" variant="outlined"
-                                   margin='normal' select size="small" InputLabelProps={textFieldStyle}
-                                   value={RF_location}
-                                   onChange={(e) => {
-                                       setRfLocation(e.target.value)
-                                   }}>
-                            <MenuItem value="Да">
-                                <span style={listItemStyle}>Да</span>
-                            </MenuItem>
-                            <MenuItem value="Нет">
-                                <span style={listItemStyle}>Нет</span>
-                            </MenuItem>
-                        </TextField>
                         <p className="title_contract_doc"> Контактные данные</p>
                         <TextField name='contact_phone_number' label="Контактный телефон студента" variant="outlined"
                                    color="warning" type="tel" margin='normal' size="small"
@@ -183,6 +173,20 @@ export default function Quota() {
                         <TextField label="Гражданство" name='citizenship' type="text" variant="outlined" color="warning"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <TextField label="Нахождение в РФ" name='RF_location' type="text"
+                                   color="warning" variant="outlined"
+                                   margin='normal' select size="small" InputLabelProps={textFieldStyle}
+                                   value={RF_location}
+                                   onChange={(e) => {
+                                       setRfLocation(e.target.value)
+                                   }}>
+                            <MenuItem value="Да">
+                                <span style={listItemStyle}>Да</span>
+                            </MenuItem>
+                            <MenuItem value="Нет">
+                                <span style={listItemStyle}>Нет</span>
+                            </MenuItem>
+                        </TextField>
                         {/*<TextField name='entry_date' label="Дата въезда" type="date" color="warning"
                                    margin='normal' size="small" sx={{width: "325px"}}
                                    inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
@@ -290,9 +294,21 @@ export default function Quota() {
                         <TextField name='enrollment_order' label="Номер приказа о зачислении" type="text"
                                    variant="outlined" color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <CustomSingleDatePicker
+                            name={"enrollment_date"}
+                            label={'Дата зачисления'}
+                            required={false}
+                            size={'default'}
+                        />
                         <TextField name='expulsion_order' label="Номер приказа об отчислении" type="text"
                                    variant="outlined" color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <CustomSingleDatePicker
+                            name={"expulsion_date"}
+                            label={'Дата отчисления'}
+                            required={false}
+                            size={'default'}
+                        />
                         <TextField name='tutor_name' label="Куратор" type="text" variant="outlined" color="warning"
                                    margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>

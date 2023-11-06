@@ -97,7 +97,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             customInput={
                                 <MaskedInput
                                     type="text"
-                                    mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /\d/, /\d/,/\d/, /\d/]}
+                                    mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /[1-2]/, /\d/,/\d/, /\d/]}
                                 />
                             }
                         />}

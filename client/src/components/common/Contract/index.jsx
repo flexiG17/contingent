@@ -52,7 +52,10 @@ export default function Contract() {
         dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
         dataToSave.set('passport_expiration', objectData.passport_expiration.split('.').reverse().join('-'))
         dataToSave.set('entry_date', objectData.entry_date.split('.').reverse().join('-'))
-        dataToSave.set('departure_date', objectData.departure_date.split('.').reverse().join('-'))
+
+        dataToSave.set('enrollment_date', objectData.enrollment_date.split('.').reverse().join('-'))
+        dataToSave.set('expulsion_date', objectData.expulsion_date.split('.').reverse().join('-'))
+
         dataToSave.set('visa_validity', objectData.visa_validity.split('.').reverse().join('-'))
         dataToSave.set('first_payment_contract_date', objectData.first_payment_contract_date.split('.').reverse().join('-'))
         dataToSave.set('second_payment_contract_date', objectData.second_payment_contract_date.split('.').reverse().join('-'))
@@ -348,9 +351,21 @@ export default function Contract() {
                         <TextField name='enrollment_order' label="Номер приказа о зачислении" type="text"
                                    variant="outlined" color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <CustomSingleDatePicker
+                            name={"enrollment_date"}
+                            label={'Дата зачисления'}
+                            required={false}
+                            size={'default'}
+                        />
                         <TextField name='expulsion_order' label="Номер приказа об отчислении" type="text"
                                    variant="outlined" color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        <CustomSingleDatePicker
+                            name={"expulsion_date"}
+                            label={'Дата отчисления'}
+                            required={false}
+                            size={'default'}
+                        />
                         <TextField name='contract_number' label="Номер договора" type="text" variant="outlined"
                                    color="warning" margin='normal' size="small"
                                    inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>

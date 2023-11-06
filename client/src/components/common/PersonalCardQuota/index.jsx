@@ -128,6 +128,10 @@ export default function PersonalCardQuota() {
         dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
         dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
         dataToSave.departure_date = dataToSave.departure_date.split('.').reverse().join('-');
+
+        dataToSave.enrollment_date = dataToSave.enrollment_date.split('.').reverse().join('-');
+        dataToSave.expulsion_date = dataToSave.expulsion_date.split('.').reverse().join('-');
+
         dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
         dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
 
@@ -221,21 +225,6 @@ export default function PersonalCardQuota() {
                                            name='russian_name' margin='normal' disabled={editMode}
                                            defaultValue={studentData.russian_name}
                                            size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                <TextField label="Нахождение в РФ" type="text"
-                                           name='RF_location' color="warning" variant="outlined"
-                                           margin='normal' select size="small" InputLabelProps={textFieldStyle}
-                                           value={RF_location}
-                                           onChange={(e) => {
-                                               setRfLocation(e.target.value)
-                                           }}
-                                           disabled={editMode}>
-                                    <MenuItem value="Да">
-                                        <span style={listItemStyle}>Да</span>
-                                    </MenuItem>
-                                    <MenuItem value="Нет">
-                                        <span style={listItemStyle}>Нет</span>
-                                    </MenuItem>
-                                </TextField>
                                 <p className="title_contract_doc"> Контактные данные</p>
                                 <TextField label="Контактный телефон студента" variant="outlined" color="warning"
                                            type="tel"
@@ -349,6 +338,21 @@ export default function PersonalCardQuota() {
                                            name='citizenship' margin='normal' disabled={editMode} size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.citizenship}/>
+                                <TextField label="Нахождение в РФ" type="text"
+                                           name='RF_location' color="warning" variant="outlined"
+                                           margin='normal' select size="small" InputLabelProps={textFieldStyle}
+                                           value={RF_location}
+                                           onChange={(e) => {
+                                               setRfLocation(e.target.value)
+                                           }}
+                                           disabled={editMode}>
+                                    <MenuItem value="Да">
+                                        <span style={listItemStyle}>Да</span>
+                                    </MenuItem>
+                                    <MenuItem value="Нет">
+                                        <span style={listItemStyle}>Нет</span>
+                                    </MenuItem>
+                                </TextField>
                                 <CustomSingleDatePicker
                                     name={"entry_date"}
                                     label={'Дата въезда'}
@@ -485,10 +489,26 @@ export default function PersonalCardQuota() {
                                            name='enrollment_order' margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.enrollment_order}/>
+                                <CustomSingleDatePicker
+                                    name={"enrollment_date"}
+                                    defaultValue={studentData.enrollment_date}
+                                    editMode={editMode}
+                                    required={false}
+                                    label={'Дата зачисления'}
+                                    size={'default'}
+                                />
                                 <TextField label="Номер приказа об отчислении" type="text" variant="outlined"
                                            name='expulsion_order' color="warning" disabled={editMode} margin='normal'
                                            size="small" defaultValue={studentData.expulsion_order}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                <CustomSingleDatePicker
+                                    name={"expulsion_date"}
+                                    defaultValue={studentData.expulsion_date}
+                                    editMode={editMode}
+                                    required={false}
+                                    label={'Дата отчисления'}
+                                    size={'default'}
+                                />
                                 <TextField label="Куратор" type="text" variant="outlined" color="warning"
                                            margin='normal'
                                            name='tutor_name' size="small" disabled={editMode}
