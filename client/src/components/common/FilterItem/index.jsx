@@ -41,13 +41,14 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             let tmp = columns.filter((item) => e.target.value === item.value);
                             setInputType(tmp[0].type);
                             changeFilterProp(item.id, tmp[0], 'param');
-                        }
-                        }>
+                        }}>
                     <option hidden>Выберите поле</option>
                     {
-                        columns.filter(item => item.value !== 'id').map((item) => {
-                            return <option value={item.value}>{item.label}</option>
-                        })
+                        columns
+                            .filter(item => item.value !== 'id')
+                            .map((item) => {
+                                return <option value={item.value} key={item.value}>{item.label}</option>
+                            })
                     }
                 </select>
 
@@ -58,7 +59,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                     <option hidden>Выберите оператор</option>
                     {
                         operators.map((item) => {
-                            return <option value={item.value}>{item.label}</option>
+                            return <option value={item.value} key={item.value}>{item.label}</option>
                         })
                     }
                 </select>
@@ -79,8 +80,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                                 if (date !== null) {
                                     changeFilterProp(item.id, date, 'value')
                                     setStartDateSingleRange(date)
-                                }
-                                else {
+                                } else {
                                     changeFilterProp(item.id, '', 'value')
                                     setStartDateSingleRange(null)
                                 }
@@ -97,7 +97,7 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                             customInput={
                                 <MaskedInput
                                     type="text"
-                                    mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /[1-2]/, /\d/,/\d/, /\d/]}
+                                    mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /[1-2]/, /\d/, /\d/, /\d/]}
                                 />
                             }
                         />}
@@ -124,15 +124,13 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
                         <select className="search_filter" value={item.value}
                                 style={{width: '205px'}}
                                 onChange={(e) => {
-                                    console.log(e.target.value);
                                     changeFilterProp(item.id, e.target.value, 'value');
                                 }}>
                             <option hidden>Выберите значение</option>
                             {
-                                Answers[item.param.value].answers.map((item) => {
-                                    return <option value={item}>{item}</option>
-                                })
-                            }>
+                                Answers[item.param.value]['answers']
+                                    .map(({id, value}) => <option key={id} value={value}>{value}</option>)
+                            }
 
                         </select>
                     }

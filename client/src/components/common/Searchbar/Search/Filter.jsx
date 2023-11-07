@@ -8,8 +8,25 @@ import {FilterItem} from "../../FilterItem";
 import {Badge} from "@mui/material";
 import {getColumns} from "../../../../actions/student";
 import iziToast from "izitoast";
+import {priorities} from "../../../../utils/consts/filedPriority";
 
 const ITEM_HEIGHT = 50;
+
+const SortColumns = (columns) => {
+    const sortedColumns = [...columns]
+
+    sortedColumns.map(column => {
+        priorities.map(priority => {
+            if (column.value === priority.label)
+                column['rating'] = priority.rating
+            else if (!column['rating'])
+                column['rating'] = priorities.length + 1
+        })
+    })
+        .sort((a, b) => a.rating - b.rating)
+
+    return sortedColumns.sort((a, b) => a.rating - b.rating)
+}
 
 export default function LongMenu({filters, setFilters}) {
     const [anchorEl, setAnchorEl] = useState();
@@ -81,7 +98,7 @@ export default function LongMenu({filters, setFilters}) {
                 }}
             >
                 {filterArr.map((item) => (
-                    <FilterItem item={item} columns={columns} setFilterArr={setFilterArr}
+                    <FilterItem key={item.id} item={item} columns={SortColumns(columns)} setFilterArr={setFilterArr}
                                 changeFilterProp={changeFilterProp}/>
                 ))}
                 <div className="button_position">
