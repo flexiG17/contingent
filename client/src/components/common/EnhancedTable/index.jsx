@@ -29,6 +29,7 @@ import TextField from "@mui/material/TextField";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import MaskedInput from "react-text-mask";
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -253,11 +254,11 @@ export default function EnhancedTable() {
         <div>
             <div className="nav">
                 {!READER_ACCESS &&
-                <div className="filter_position">
+                    <div className="filter_position">
                         <NavLink to={ADD_STUDENT_ROUTE} className="add_student_btn">
                             Добавить студента <AddIcon/>
                         </NavLink>
-                </div>}
+                    </div>}
                 {!loading &&
                     <>
                         <ButtonGroup variant="outlined" aria-label="outlined button group"
@@ -306,7 +307,7 @@ export default function EnhancedTable() {
                                     <TextField label="Поиск" type="text" margin='normal' variant="outlined"
                                                color="warning"
                                                size="small" select InputLabelProps={textFieldStyle}
-                                               defaultValue={'latin_name'}
+                                               value={filterCondition}
                                                sx={{width: '200px', mt: 0, mr: "20px", ml: 1, mb: 0}}
                                                onChange={e => {
                                                    setSearchingValue('')
@@ -365,59 +366,74 @@ export default function EnhancedTable() {
                                         customInput={
                                             <MaskedInput
                                                 type="text"
-                                                mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /[1-2]/, /\d/,/\d/, /\d/]}
+                                                mask={[/[0-3]/, /\d/, ".", /[0-1]/, /[0-9]/, ".", /[1-2]/, /\d/, /\d/, /\d/]}
                                             />
                                         }
                                     />}
+                                {searchingValue !== '' && <CloseOutlinedIcon
+                                    sx={{color: "#ED6C02", cursor: 'pointer', mt: 'auto', mb: 'auto', ml: 1}}
+                                    onClick={() => {
+                                        setSearchingValue('')
+                                        setFilteredCondition('latin_name')
+                                    }}
+                                />}
                             </div>
                         }
 
                         {searchType === 'program' &&
-                            <TextField label="Количество часов" name='hours_number' type="text" variant="outlined"
-                                       color="warning" margin='normal' size="small" select
-                                       sx={{width: '200px', mt: 0, mr: 0.5, ml: 1, mb: 0}}
-                                       defaultValue={''}
-                                       onChange={(event => {
-                                           setSearchingValue(event.target.value)
-                                       })}
-                                       InputLabelProps={textFieldStyle}>
-                                <MenuItem value="1008 (1.5 года 24-25 г.)">
-                                    <span style={listItemStyle}>1008 (1.5 года 24-25 г.)</span>
-                                </MenuItem>
-                                <MenuItem value="1008 (1 год 23-24 г.)">
-                                    <span style={listItemStyle}>1008 (1 год 23-24 г.)</span>
-                                </MenuItem>
-                                <MenuItem value="1008 (1.5 года 23-24 г.)">
-                                    <span style={listItemStyle}>1008 (1.5 года 23-24 г.)</span>
-                                </MenuItem>
-                                <MenuItem value="868 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>868 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="728 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>728 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="588 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>588 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="504 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>504 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="352 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>352 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="288 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>288 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="144 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>144 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="108 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>108 (23-24 уч.г.)</span>
-                                </MenuItem>
-                                <MenuItem value="72 (23-24 уч.г.)">
-                                    <span style={listItemStyle}>72 (23-24 уч.г.)</span>
-                                </MenuItem>
-                            </TextField>
+                            <>
+                                <TextField label="Количество часов" name='hours_number' type="text" variant="outlined"
+                                           color="warning" margin='normal' size="small" select
+                                           sx={{width: '200px', mt: 0, mr: 0.5, ml: 1, mb: 0}}
+                                           value={searchingValue}
+                                           onChange={(event => {
+                                               setSearchingValue(event.target.value)
+                                           })}
+                                           InputLabelProps={textFieldStyle}>
+                                    <MenuItem value="1008 (1.5 года 24-25 г.)">
+                                        <span style={listItemStyle}>1008 (1.5 года 24-25 г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="1008 (1 год 23-24 г.)">
+                                        <span style={listItemStyle}>1008 (1 год 23-24 г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="1008 (1.5 года 23-24 г.)">
+                                        <span style={listItemStyle}>1008 (1.5 года 23-24 г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="868 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>868 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="728 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>728 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="588 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>588 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="504 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>504 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="352 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>352 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="288 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>288 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="144 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>144 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="108 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>108 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                    <MenuItem value="72 (23-24 уч.г.)">
+                                        <span style={listItemStyle}>72 (23-24 уч.г.)</span>
+                                    </MenuItem>
+                                </TextField>
+                                {searchingValue !== '' && <CloseOutlinedIcon
+                                    sx={{color: "#ED6C02", cursor: 'pointer', mt: 'auto', mb: 'auto', ml: 1}}
+                                    onClick={() => {
+                                        setSearchingValue('')
+                                    }}
+                                />}
+                            </>
                         }
                     </>
                 }
