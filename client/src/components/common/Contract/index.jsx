@@ -32,8 +32,6 @@ export default function Contract() {
     const [thirdPayment, setThirdPayment] = useState(0)
     const [fourthPayment, setFourthPayment] = useState(0)
 
-    const [paymentStatus, setPaymentStatus] = useState('Не оплачено')
-
     const [studentExpelled, setStudentExpelled] = useState('')
     const [RF_location, setRfLocation] = useState('')
 
@@ -447,7 +445,7 @@ export default function Contract() {
                     </div>
                     <div className="column_style_contract">
                         <div className='elements_in_row'>
-                            <TextField label="Cумма для оплаты" name='contract_amount' type="text"
+                            <TextField label="Сумма для оплаты" name='contract_amount' type="text"
                                        sx={{width: '150px'}}
                                        onChange={(e) => {
                                            setContractAmount(e.target.value)
