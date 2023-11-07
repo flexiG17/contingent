@@ -26,11 +26,6 @@ export function FilterItem({item, columns, setFilterArr, changeFilterProp}) {
     const [startDate, endDate] = dateRange;
     const [startDateSingleRange, setStartDateSingleRange] = useState(isNaN(new Date(item.value).getDate()) ? null : item.value);
 
-    const isDateWithCalendar =
-        item.param.value === 'birth_date'
-        || item.param.value === 'passport_issue_date'
-        || item.param.value === 'passport_expiration'
-
     return (
         <MenuItem>
             <div className="filter_container">
