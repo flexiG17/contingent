@@ -10,7 +10,6 @@ import {getToken} from "../../../utils/token";
 import jwtDecode from "jwt-decode";
 import CustomSingleDatePicker from "../../datePicker";
 import {prices} from "../../../utils/consts/hoursNumber";
-import {number} from "prop-types";
 
 export default function Contract() {
     const [active, setActive] = useState(true);
@@ -47,6 +46,19 @@ export default function Contract() {
         })
     }
 
+    const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
+    const percentPayment = ((contractAmount - paymentBalance) * 100 / contractAmount).toFixed(2)
+
+    const GetPaymentStatus = () => {
+        if (+paymentBalance === +contractAmount) {
+            return 'Не оплачено'
+        } else if (paymentBalance === 0) {
+            return 'Оплачено'
+        } else if (+paymentBalance < +contractAmount) {
+            return 'Оплачено частично'
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true)
@@ -60,6 +72,8 @@ export default function Contract() {
         dataToSave.set('who_created', jwtDecode(getToken()).name)
 
         dataToSave.set('isSkipPassport', isSkipPassport)
+
+        dataToSave.set('payment_status', GetPaymentStatus())
 
         dataToSave.set('birth_date', objectData.birth_date.split('.').reverse().join('-'))
         dataToSave.set('passport_issue_date', objectData.passport_issue_date.split('.').reverse().join('-'))
@@ -86,19 +100,6 @@ export default function Contract() {
 
         addStudent(dataToSave, navigate, setLoading)
     };
-
-    const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
-    const percentPayment = ((contractAmount - paymentBalance) * 100 / contractAmount).toFixed(2)
-
-    const GetPaymentStatus = () => {
-        if (+paymentBalance === +contractAmount) {
-            return 'Не оплачено'
-        } else if (paymentBalance === 0) {
-            return 'Оплачено'
-        } else if (+paymentBalance < +contractAmount) {
-            return 'Оплачено частично'
-        }
-    }
 
     return (
         <form ref={formRef} onSubmit={handleSubmit} id='studentForm'>
@@ -445,6 +446,16 @@ export default function Contract() {
                         />
                     </div>
                     <div className="column_style_contract">
+                        <div className='elements_in_row'>
+                            <TextField label="Cумма для оплаты" name='contract_amount' type="text"
+                                       sx={{width: '150px'}}
+                                       onChange={(e) => {
+                                           setContractAmount(e.target.value)
+                                       }}
+                                       value={contractAmount} variant="outlined"
+                                       color="warning" margin='normal' size="small"
+                                       inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                        </div>
                         <p className="title_contract_doc">
                             Оплата / остаток: <b>{paymentBalance}</b> руб.
                         </p>
@@ -454,34 +465,6 @@ export default function Contract() {
                         <p className="title_contract_doc">
                             Статус оплаты: <b>{GetPaymentStatus()}</b>
                         </p>
-                        <div className='elements_in_row'>
-                            <TextField label="Cумма для оплаты" name='contract_amount' type="text"
-                                       sx={{width: '150px', mr: '25px'}}
-                                       onChange={(e) => {
-                                           setContractAmount(e.target.value)
-                                       }}
-                                       value={contractAmount} variant="outlined"
-                                       color="warning" margin='normal' size="small"
-                                       inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                            <TextField label="Статус оплаты" name='payment_status' type="text"
-                                       sx={{width: '150px'}} variant="outlined"
-                                       value={GetPaymentStatus()}
-                                       onChange={(event) => {
-                                           setPaymentStatus(event.target.value)
-                                       }}
-                                       color="warning" margin='normal' size="small"
-                                       inputProps={textFieldStyle} InputLabelProps={textFieldStyle} select>
-                                <MenuItem value="Оплачено">
-                                    <span style={listItemStyle}>Оплачено</span>
-                                </MenuItem>
-                                <MenuItem value="Не оплачено">
-                                    <span style={listItemStyle}>Не оплачено</span>
-                                </MenuItem>
-                                <MenuItem value="Оплачено частично">
-                                    <span style={listItemStyle}>Оплачено частично</span>
-                                </MenuItem>
-                            </TextField>
-                        </div>
                         <div style={{width: '325px'}}>
                             <Accordion sx={{borderRadius: '5px', mb: '15px', mt: '10px'}}>
                                 <AccordionSummary>

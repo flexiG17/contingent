@@ -139,46 +139,6 @@ export default function PersonalCardContract() {
         }
     }, [isEditModeWasOn])
 
-    const formRef = useRef(null);
-    const navigate = useNavigate()
-    const handleSubmit = (e) => {
-        e.preventDefault();
-
-        setIsEditModeWasOn(false)
-        setLoadingRequest(true)
-
-        let formData = new FormData(formRef.current)
-        const dataToSave = {};
-        formData.forEach((value, key) => (dataToSave[key] = value))
-        dataToSave['date_creation'] = studentData.date_creation
-
-        dataToSave.birth_date = dataToSave.birth_date.split('.').reverse().join('-')
-        dataToSave.passport_issue_date = dataToSave.passport_issue_date.split('.').reverse().join('-');
-        dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
-        dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
-        dataToSave.departure_date = dataToSave.departure_date.split('.').reverse().join('-');
-
-        dataToSave.enrollment_date = dataToSave.enrollment_date.split('.').reverse().join('-');
-        dataToSave.expulsion_date = dataToSave.expulsion_date.split('.').reverse().join('-');
-
-        dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
-        dataToSave.first_payment_contract_date = dataToSave.first_payment_contract_date.split('.').reverse().join('-');
-        dataToSave.second_payment_contract_date = dataToSave.second_payment_contract_date.split('.').reverse().join('-');
-        dataToSave.third_payment_contract_date = dataToSave.third_payment_contract_date.split('.').reverse().join('-');
-        dataToSave.fourth_payment_contract_date = dataToSave.fourth_payment_contract_date.split('.').reverse().join('-');
-        dataToSave.first_payment_actual_date = dataToSave.first_payment_actual_date.split('.').reverse().join('-');
-        dataToSave.second_payment_actual_date = dataToSave.second_payment_actual_date.split('.').reverse().join('-');
-        dataToSave.third_payment_actual_date = dataToSave.third_payment_actual_date.split('.').reverse().join('-');
-        dataToSave.fourth_payment_actual_date = dataToSave.fourth_payment_actual_date.split('.').reverse().join('-');
-        dataToSave.transfer_to_international_service = dataToSave.transfer_to_international_service.split('.').reverse().join('-');
-        dataToSave.transfer_to_MVD = dataToSave.transfer_to_MVD.split('.').reverse().join('-');
-        dataToSave.estimated_receipt_date = dataToSave.estimated_receipt_date.split('.').reverse().join('-');
-        dataToSave.actual_receipt_date_invitation = dataToSave.actual_receipt_date_invitation.split('.').reverse().join('-');
-        dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
-
-        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest)
-    };
-
     const actions = !READER_ACCESS ?
         [
             {
@@ -253,6 +213,47 @@ export default function PersonalCardContract() {
             return 'Оплачено частично'
         }
     }
+
+    const formRef = useRef(null);
+    const navigate = useNavigate()
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        setIsEditModeWasOn(false)
+        setLoadingRequest(true)
+
+        let formData = new FormData(formRef.current)
+        const dataToSave = {};
+        formData.forEach((value, key) => (dataToSave[key] = value))
+        dataToSave['date_creation'] = studentData.date_creation
+        dataToSave['payment_status'] = GetPaymentStatus()
+
+        dataToSave.birth_date = dataToSave.birth_date.split('.').reverse().join('-')
+        dataToSave.passport_issue_date = dataToSave.passport_issue_date.split('.').reverse().join('-');
+        dataToSave.passport_expiration = dataToSave.passport_expiration.split('.').reverse().join('-');
+        dataToSave.entry_date = dataToSave.entry_date.split('.').reverse().join('-');
+        dataToSave.departure_date = dataToSave.departure_date.split('.').reverse().join('-');
+
+        dataToSave.enrollment_date = dataToSave.enrollment_date.split('.').reverse().join('-');
+        dataToSave.expulsion_date = dataToSave.expulsion_date.split('.').reverse().join('-');
+
+        dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
+        dataToSave.first_payment_contract_date = dataToSave.first_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.second_payment_contract_date = dataToSave.second_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.third_payment_contract_date = dataToSave.third_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.fourth_payment_contract_date = dataToSave.fourth_payment_contract_date.split('.').reverse().join('-');
+        dataToSave.first_payment_actual_date = dataToSave.first_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.second_payment_actual_date = dataToSave.second_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.third_payment_actual_date = dataToSave.third_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.fourth_payment_actual_date = dataToSave.fourth_payment_actual_date.split('.').reverse().join('-');
+        dataToSave.transfer_to_international_service = dataToSave.transfer_to_international_service.split('.').reverse().join('-');
+        dataToSave.transfer_to_MVD = dataToSave.transfer_to_MVD.split('.').reverse().join('-');
+        dataToSave.estimated_receipt_date = dataToSave.estimated_receipt_date.split('.').reverse().join('-');
+        dataToSave.actual_receipt_date_invitation = dataToSave.actual_receipt_date_invitation.split('.').reverse().join('-');
+        dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
+
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest)
+    };
 
     return (
         loadingStudentData
@@ -664,6 +665,17 @@ export default function PersonalCardContract() {
                                 />
                             </div>
                             <div className="column_style_contract">
+                                <div className='elements_in_row'>
+                                    <TextField label="Сумма для оплаты" name='contract_amount' type="text"
+                                               sx={{width: '150px'}}
+                                               onChange={(e) => {
+                                                   setContractAmount(e.target.value)
+                                               }}
+                                               variant="outlined"
+                                               value={contractAmount}
+                                               color="warning" disabled={editMode} margin='normal' size="small"
+                                               inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                </div>
                                 <p className="title_contract_doc">
                                     {`Оплата / остаток: `} <b>{paymentBalance}</b>
                                 </p>
@@ -673,33 +685,6 @@ export default function PersonalCardContract() {
                                 <p className="title_contract_doc">
                                     Статус оплаты: <b>{GetPaymentStatus()}</b>
                                 </p>
-                                <div className='elements_in_row'>
-                                    <TextField label="Сумма для оплаты" name='contract_amount' type="text"
-                                               sx={{width: '150px', mr: '25px'}}
-                                               onChange={(e) => {
-                                                   setContractAmount(e.target.value)
-                                               }}
-                                               variant="outlined"
-                                               value={contractAmount}
-                                               color="warning" disabled={editMode} margin='normal' size="small"
-                                               inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
-                                    <TextField label="Статус оплаты" name='payment_status' type="text"
-                                               sx={{width: '150px'}} variant="outlined"
-                                               defaultValue={studentData.payment_status}
-                                               value={GetPaymentStatus()}
-                                               color="warning" disabled={editMode} margin='normal' size="small"
-                                               inputProps={textFieldStyle} InputLabelProps={textFieldStyle} select>
-                                        <MenuItem value="Оплачено">
-                                            <span style={listItemStyle}>Оплачено</span>
-                                        </MenuItem>
-                                        <MenuItem value="Не оплачено">
-                                            <span style={listItemStyle}>Не оплачено</span>
-                                        </MenuItem>
-                                        <MenuItem value="Оплачено частично">
-                                            <span style={listItemStyle}>Оплачено частично</span>
-                                        </MenuItem>
-                                    </TextField>
-                                </div>
                                 <div style={{width: '325px'}}>
                                     <Accordion sx={{borderRadius: '5px', mb: '15px', mt: '10px'}}>
                                         <AccordionSummary>

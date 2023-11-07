@@ -65,12 +65,12 @@ export function changeStudentData(item, id, navigate, startEducationType, setLoa
             }
         })
         .then(({data}) => {
+            setLoadingRequest(false)
             setTimeout(() => {
-                setLoadingRequest(false)
                 item.education_type === startEducationType
                     ? window.location.reload()
                     : navigate(`/${item.education_type === 'Контракт' ? `contract` : `quota`}/${id}`)
-            }, 1500)
+            }, 1000)
             iziToast.success({
                 message: data.message,
                 position: 'topRight'
@@ -109,7 +109,7 @@ export function addStudent(item, navigate, setLoading) {
         setLoading(false)
         setTimeout(() => {
             navigate(HOME_ROUTE)
-        }, 1500)
+        }, 1000)
     }).catch((e) => {
         setTimeout(() => {
             setLoading(false)
