@@ -31,6 +31,7 @@ import {listItemStyle, systemColor, textFieldStyle} from '../../../utils/consts/
 import Typography from "@mui/material/Typography";
 import CustomSingleDatePicker from "../../datePicker";
 import moment from "moment";
+import {prices} from "../../../utils/consts/hoursNumber";
 
 export default function PersonalCardContract() {
 
@@ -89,6 +90,15 @@ export default function PersonalCardContract() {
 
     const [studentExpelled, setStudentExpelled] = useState('')
     const [RF_location, setRfLocation] = useState('')
+
+    const ChangeContractAmountWithHoursNumber = (event) => {
+        const selectedHoursNumber = event.target.value.split(' ')[0]
+
+        prices.map(({hour, cost}) => {
+            if (selectedHoursNumber === hour)
+                setContractAmount(cost)
+        })
+    }
 
     const studentId = useParams().id
     useEffect(() => {
@@ -232,6 +242,17 @@ export default function PersonalCardContract() {
         ]
 
     const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
+    const percentPayment = ((contractAmount - paymentBalance) * 100 / contractAmount).toFixed(2)
+
+    const GetPaymentStatus = () => {
+        if (+paymentBalance === +contractAmount) {
+            return 'Не оплачено'
+        } else if (paymentBalance === 0) {
+            return 'Оплачено'
+        } else if (+paymentBalance < +contractAmount) {
+            return 'Оплачено частично'
+        }
+    }
 
     return (
         loadingStudentData
@@ -454,6 +475,7 @@ export default function PersonalCardContract() {
                                 <TextField label="Количество часов" name='hours_number' type="text" variant="outlined"
                                            color="warning" defaultValue={studentData.hours_number}
                                            margin='normal' size="small" select
+                                           onChange={ChangeContractAmountWithHoursNumber}
                                            InputLabelProps={textFieldStyle} disabled={editMode}>
                                     <MenuItem value="1008 (1.5 года 24-25 г.)">
                                         <span style={listItemStyle}>1008 (1.5 года 24-25 г.)</span>
@@ -645,18 +667,26 @@ export default function PersonalCardContract() {
                                 <p className="title_contract_doc">
                                     {`Оплата / остаток: `} <b>{paymentBalance}</b>
                                 </p>
+                                <p className="title_contract_doc">
+                                    Процент оплаченной суммы: <b>{percentPayment}</b> %
+                                </p>
+                                <p className="title_contract_doc">
+                                    Статус оплаты: <b>{GetPaymentStatus()}</b>
+                                </p>
                                 <div className='elements_in_row'>
-                                    <TextField label="Cумма для оплаты" name='contract_amount' type="text"
+                                    <TextField label="Сумма для оплаты" name='contract_amount' type="text"
                                                sx={{width: '150px', mr: '25px'}}
                                                onChange={(e) => {
                                                    setContractAmount(e.target.value)
                                                }}
-                                               variant="outlined" defaultValue={studentData.contract_amount}
+                                               variant="outlined"
+                                               value={contractAmount}
                                                color="warning" disabled={editMode} margin='normal' size="small"
                                                inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                     <TextField label="Статус оплаты" name='payment_status' type="text"
                                                sx={{width: '150px'}} variant="outlined"
                                                defaultValue={studentData.payment_status}
+                                               value={GetPaymentStatus()}
                                                color="warning" disabled={editMode} margin='normal' size="small"
                                                inputProps={textFieldStyle} InputLabelProps={textFieldStyle} select>
                                         <MenuItem value="Оплачено">

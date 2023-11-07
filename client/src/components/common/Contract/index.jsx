@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import {getToken} from "../../../utils/token";
 import jwtDecode from "jwt-decode";
 import CustomSingleDatePicker from "../../datePicker";
+import {prices} from "../../../utils/consts/hoursNumber";
+import {number} from "prop-types";
 
 export default function Contract() {
     const [active, setActive] = useState(true);
@@ -21,7 +23,6 @@ export default function Contract() {
     const handleClickSkipPassport = () => {
         setSkipPassport(!isSkipPassport)
     };
-
     const navigate = useNavigate();
 
     const formRef = useRef(null);
@@ -32,8 +33,20 @@ export default function Contract() {
     const [thirdPayment, setThirdPayment] = useState(0)
     const [fourthPayment, setFourthPayment] = useState(0)
 
+    const [paymentStatus, setPaymentStatus] = useState('Не оплачено')
+
     const [studentExpelled, setStudentExpelled] = useState('')
     const [RF_location, setRfLocation] = useState('')
+
+    const ChangeContractAmountWithHoursNumber = (event) => {
+        const selectedHoursNumber = event.target.value.split(' ')[0]
+
+        prices.map(({hour, cost}) => {
+            if (selectedHoursNumber === hour)
+                setContractAmount(cost)
+        })
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true)
@@ -75,6 +88,17 @@ export default function Contract() {
     };
 
     const paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
+    const percentPayment = ((contractAmount - paymentBalance) * 100 / contractAmount).toFixed(2)
+
+    const GetPaymentStatus = () => {
+        if (+paymentBalance === +contractAmount) {
+            return 'Не оплачено'
+        } else if (paymentBalance === 0) {
+            return 'Оплачено'
+        } else if (+paymentBalance < +contractAmount) {
+            return 'Оплачено частично'
+        }
+    }
 
     return (
         <form ref={formRef} onSubmit={handleSubmit} id='studentForm'>
@@ -270,8 +294,9 @@ export default function Contract() {
                         <p className="title_contract_doc"> Нынешнее образование </p>
                         <TextField name='hours_number' label="Количество часов" type="text" variant="outlined"
                                    color="warning" margin='normal' size="small" select defaultValue=''
-                                   InputLabelProps={textFieldStyle}>
-
+                                   InputLabelProps={textFieldStyle}
+                                   onChange={ChangeContractAmountWithHoursNumber}
+                        >
                             <MenuItem value="1008 (1.5 года 24-25 г.)">
                                 <span style={listItemStyle}>1008 (1.5 года 24-25 г.)</span>
                             </MenuItem>
@@ -388,45 +413,30 @@ export default function Contract() {
                 <div className="columns_position">
                     <div className="column_style_contract">
                         <p className="title_contract_doc"> Виза и приглашение </p>
-                        {/*<TextField name='visa_validity' label="Срок действия визы"
-                                   type="date" color="warning" margin='normal' size="small" sx={{width: "325px"}}
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                         <CustomSingleDatePicker
                             name={"visa_validity"}
                             label={'Срок действия визы'}
                             required={false}
                             size={'default'}
                         />
-                        {/*<TextField name='transfer_to_international_service' label="Дата передачи в международную службу"
-                                   type="date" color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                         <CustomSingleDatePicker
                             name={"transfer_to_international_service"}
                             label={'Дата передачи в международную службу'}
                             required={false}
                             size={'default'}
                         />
-                        {/*<TextField name='transfer_to_MVD' label="Дата передачи в МВД"
-                                   type="date" color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                         <CustomSingleDatePicker
                             name={"transfer_to_MVD"}
                             label={'Дата передачи в МВД'}
                             required={false}
                             size={'default'}
                         />
-                        {/*<TextField name='estimated_receipt_date' label="Ориентировочная дата получения"
-                                   type="date" color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                         <CustomSingleDatePicker
                             name={"estimated_receipt_date"}
                             label={'Ориентировочная дата получения'}
                             required={false}
                             size={'default'}
                         />
-                        {/*<TextField name='actual_receipt_date_invitation' label="Фактическая дата получения приглашения"
-                                   type="date" color="warning" margin='normal' size="small"
-                                   inputProps={textFieldStyle} InputLabelProps={dateTextFieldStyle}/>*/}
                         <CustomSingleDatePicker
                             name={"actual_receipt_date_invitation"}
                             label={'Фактическая дата получения приглашения'}
@@ -436,7 +446,13 @@ export default function Contract() {
                     </div>
                     <div className="column_style_contract">
                         <p className="title_contract_doc">
-                            {`Оплата / остаток: `} <b>{paymentBalance}</b>
+                            Оплата / остаток: <b>{paymentBalance}</b> руб.
+                        </p>
+                        <p className="title_contract_doc">
+                            Процент оплаченной суммы: <b>{percentPayment}</b> %
+                        </p>
+                        <p className="title_contract_doc">
+                            Статус оплаты: <b>{GetPaymentStatus()}</b>
                         </p>
                         <div className='elements_in_row'>
                             <TextField label="Cумма для оплаты" name='contract_amount' type="text"
@@ -444,11 +460,15 @@ export default function Contract() {
                                        onChange={(e) => {
                                            setContractAmount(e.target.value)
                                        }}
-                                       variant="outlined" defaultValue={contractAmount}
+                                       value={contractAmount} variant="outlined"
                                        color="warning" margin='normal' size="small"
                                        inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                             <TextField label="Статус оплаты" name='payment_status' type="text"
-                                       sx={{width: '150px'}} variant="outlined" defaultValue={'Не оплачено'}
+                                       sx={{width: '150px'}} variant="outlined"
+                                       value={GetPaymentStatus()}
+                                       onChange={(event) => {
+                                           setPaymentStatus(event.target.value)
+                                       }}
                                        color="warning" margin='normal' size="small"
                                        inputProps={textFieldStyle} InputLabelProps={textFieldStyle} select>
                                 <MenuItem value="Оплачено">
@@ -479,20 +499,12 @@ export default function Contract() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <div className='elements_in_row'>
-                                        {/*<TextField label="Платеж 1 (договор)" name='first_payment_contract_date' type="date" color="warning"
-                                                   sx={{width: '150px', mr: '25px'}}
-                                                   margin='normal' size="small" inputProps={textFieldStyle}
-                                                   InputLabelProps={dateTextFieldStyle}/>*/}
                                         <CustomSingleDatePicker
                                             name={"first_payment_contract_date"}
                                             label={'Платеж 1 (договор)'}
                                             required={false}
                                             size={'small'}
                                         />
-                                        {/*<TextField label="Платеж 1 (факт)" name='first_payment_actual_date' type="date" color="warning"
-                                                   sx={{width: '150px'}}
-                                                   margin='normal' size="small" inputProps={textFieldStyle}
-                                                   InputLabelProps={dateTextFieldStyle}/>*/}
                                         <CustomSingleDatePicker
                                             name={"first_payment_actual_date"}
                                             label={'Платеж 1 (факт)'}
@@ -502,7 +514,9 @@ export default function Contract() {
                                     </div>
                                     <TextField label="Сумма платежа" name='amount_first_actual_payment' type="text"
                                                color="warning"
-                                               onChange={(e) => setFirstPayment(e.target.value)}
+                                               onChange={(e) => {
+                                                   setFirstPayment(e.target.value)
+                                               }}
                                                sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
                                                size="small" inputProps={textFieldStyle}
                                                InputLabelProps={textFieldStyle}/>
@@ -527,20 +541,12 @@ export default function Contract() {
                                 </AccordionSummary>
                                 <AccordionDetails>
                                     <div className="elements_in_row">
-                                        {/*<TextField label="Платеж 2 (договор)" name='second_payment_contract_date' type="date" color="warning"
-                                                   sx={{width: '150px', mr: '25px'}}
-                                                   margin='normal' size="small" inputProps={textFieldStyle}
-                                                   InputLabelProps={dateTextFieldStyle}/>*/}
                                         <CustomSingleDatePicker
                                             name={"second_payment_contract_date"}
                                             label={'Платеж 2 (договор)'}
                                             required={false}
                                             size={'small'}
                                         />
-                                        {/*<TextField label="Платеж 2 (факт)" name='second_payment_actual_date' type="date" color="warning"
-                                                   sx={{width: '150px'}}
-                                                   margin='normal' size="small" inputProps={textFieldStyle}
-                                                   InputLabelProps={dateTextFieldStyle}/>*/}
                                         <CustomSingleDatePicker
                                             name={"second_payment_actual_date"}
                                             label={'Платеж 2 (факт)'}
@@ -550,7 +556,9 @@ export default function Contract() {
                                     </div>
                                     <TextField label="Сумма платежа" name='amount_second_actual_payment' type="text"
                                                color="warning"
-                                               onChange={(e) => setSecondPayment(e.target.value)}
+                                               onChange={(e) => {
+                                                   setSecondPayment(e.target.value)
+                                               }}
                                                sx={{ml: '50px', mt: '10px', mb: '10px', width: '200px'}}
                                                size="small" inputProps={textFieldStyle}
                                                InputLabelProps={textFieldStyle}/>
