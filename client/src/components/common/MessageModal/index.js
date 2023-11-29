@@ -107,8 +107,9 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                 <ContactMailOutlinedIcon sx={{position: 'relative', top: '15px', left: '15px'}}
                                                          onClick={() => {
                                                              const arrayStudentEmails = studentEmail
-                                                                 .filter(object => object.email !== null)
+                                                                 .filter(object => object.email !== null && object.email !== '')
                                                                  .map(object => object.email)
+                                                                 .join(';')
 
                                                              navigator.clipboard.writeText(arrayStudentEmails)
                                                                  .then(() =>
