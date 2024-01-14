@@ -8,8 +8,8 @@ import {
     DialogActions,
     DialogContent,
     DialogContentText,
-    DialogTitle,
-    ListItemButton, ListItemText
+    DialogTitle, LinearProgress,
+    ListItemButton, ListItemText, ThemeProvider
 } from "@mui/material";
 import Select from 'react-select';
 import {LetterTemplates} from "../../../utils/consts/letterTemplates";
@@ -18,9 +18,10 @@ import Tooltip from "@mui/material/Tooltip";
 import iziToast from "izitoast";
 import Box from "@mui/material/Box";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import {lineStyleInTable, textFieldStyle} from "../../../utils/consts/styles";
+import {lineStyleInTable, systemColor, textFieldStyle} from "../../../utils/consts/styles";
 import {Link} from "react-router-dom";
 import ContactMailOutlinedIcon from '@mui/icons-material/ContactMailOutlined';
+import {sendMessage} from "../../../actions/student";
 
 const ModalMessage = ({active, setActive, studentEmail}) => {
     let options = []
@@ -34,6 +35,7 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
     const [template, setTemplate] = useState()
     const [filesToSend, setFilesToSend] = useState(null);
     const [sender, setSender] = useState('Подготовительное отделение для иностранных учащихся УрФУ')
+    const [loadingRequest, setLoadingRequest] = useState(false)
 
     const dataToSave = new FormData()
 
@@ -57,69 +59,69 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                                        size="small" sx={{width: "530px", marginTop: "25px"}}
                             />
                             <div className={'template_in_row_with_icon'}>
-                            <Box
-                                sx={{
-                                    bgcolor: openEmailList ? '#FFB953' : '#FFAA2D',
-                                    borderRadius: '5px',
-                                    maxHeight: 170,
-                                    minWidth: 300,
-                                    overflowY: openEmailList ? 'scroll' : 'visible',
-                                    marginTop: "8px"
-                                }}
-                            >
-
-                                <ListItemButton
-                                    alignItems="flex-start"
-                                    onClick={() => setOpenEmailList(!openEmailList)}
+                                <Box
                                     sx={{
-                                        px: 1,
-                                        pl: -10,
-                                        pb: openEmailList ? 0 : 2.5,
-                                        '&:hover, &:focus': {'& svg': {opacity: openEmailList ? 1 : 0}},
-                                        height: '40px',
+                                        bgcolor: openEmailList ? '#FFB953' : '#FFAA2D',
+                                        borderRadius: '5px',
+                                        maxHeight: 170,
+                                        minWidth: 300,
+                                        overflowY: openEmailList ? 'scroll' : 'visible',
+                                        marginTop: "8px"
                                     }}
                                 >
-                                    <ListItemText
-                                        primary={`Список почт при рассылке (${studentEmail.length})`}
-                                        primaryTypographyProps={textFieldStyle}
-                                        sx={{my: 0, mt: 0.3}}
-                                    />
-                                </ListItemButton>
-                                {openEmailList &&
-                                    studentEmail.map((item) => (
-                                        <ListItemButton
-                                            key={item.id}
-                                            sx={{
-                                                background: '#FFD89D',
-                                                pt: '5px',
-                                                pb: '5px'
-                                            }}
-                                        >
-                                            <Link
-                                                to={`/${item.education_type === "Контракт" ? 'contract' : 'quota'}/${item.id}`}
-                                                target="_blank" style={lineStyleInTable}>
-                                                {item.email}
-                                            </Link>
-                                        </ListItemButton>
-                                    ))}
-                            </Box>
-                            <Tooltip title="Скопировать список почт">
-                                <ContactMailOutlinedIcon sx={{position: 'relative', top: '15px', left: '15px'}}
-                                                         onClick={() => {
-                                                             const arrayStudentEmails = studentEmail
-                                                                 .filter(object => object.email !== null && object.email !== '')
-                                                                 .map(object => object.email)
-                                                                 .join(';')
 
-                                                             navigator.clipboard.writeText(arrayStudentEmails)
-                                                                 .then(() =>
-                                                                     iziToast.success({
-                                                                         message: 'Список почт скопирован',
-                                                                         position: 'topRight'
-                                                                     })
-                                                                 )
-                                                         }}/>
-                            </Tooltip>
+                                    <ListItemButton
+                                        alignItems="flex-start"
+                                        onClick={() => setOpenEmailList(!openEmailList)}
+                                        sx={{
+                                            px: 1,
+                                            pl: -10,
+                                            pb: openEmailList ? 0 : 2.5,
+                                            '&:hover, &:focus': {'& svg': {opacity: openEmailList ? 1 : 0}},
+                                            height: '40px',
+                                        }}
+                                    >
+                                        <ListItemText
+                                            primary={`Список почт при рассылке (${studentEmail.length})`}
+                                            primaryTypographyProps={textFieldStyle}
+                                            sx={{my: 0, mt: 0.3}}
+                                        />
+                                    </ListItemButton>
+                                    {openEmailList &&
+                                        studentEmail.map((item) => (
+                                            <ListItemButton
+                                                key={item.id}
+                                                sx={{
+                                                    background: '#FFD89D',
+                                                    pt: '5px',
+                                                    pb: '5px'
+                                                }}
+                                            >
+                                                <Link
+                                                    to={`/${item.education_type === "Контракт" ? 'contract' : 'quota'}/${item.id}`}
+                                                    target="_blank" style={lineStyleInTable}>
+                                                    {item.email}
+                                                </Link>
+                                            </ListItemButton>
+                                        ))}
+                                </Box>
+                                <Tooltip title="Скопировать список почт">
+                                    <ContactMailOutlinedIcon sx={{position: 'relative', top: '15px', left: '15px'}}
+                                                             onClick={() => {
+                                                                 const arrayStudentEmails = studentEmail
+                                                                     .filter(object => object.email !== null && object.email !== '')
+                                                                     .map(object => object.email)
+                                                                     .join(';')
+
+                                                                 navigator.clipboard.writeText(arrayStudentEmails)
+                                                                     .then(() =>
+                                                                         iziToast.success({
+                                                                             message: 'Список почт скопирован',
+                                                                             position: 'topRight'
+                                                                         })
+                                                                     )
+                                                             }}/>
+                                </Tooltip>
                             </div>
                             <div className={'template_in_row_with_icon'}>
                                 <Select className="message_type" placeholder="Шаблоны письма" options={options}
@@ -174,8 +176,22 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                             <InsertDriveFileIcon sx={{ml: 1, fontSize: 15}}/>
                         </label>
 
-                        <button className="send_message" onClick={() => setOpenDialog(true)}> Отправить сообщение
-                        </button>
+                        {loadingRequest
+                            ?
+                            <ThemeProvider theme={systemColor}>
+                                <LinearProgress color="primary"
+                                                sx={{
+                                                    width: '200px',
+                                                    height: '30px',
+                                                    mt: "25px",
+                                                    mb: "10px",
+                                                    borderRadius: '7px'
+                                                }}/>
+                            </ThemeProvider>
+                            :
+                            <button className="send_message" onClick={() => setOpenDialog(true)}>
+                                Отправить сообщение
+                            </button>}
                     </div>
                 </div>
             </div>
@@ -187,36 +203,42 @@ const ModalMessage = ({active, setActive, studentEmail}) => {
                 <DialogTitle id="alert-dialog-title" sx={{fontFamily: 'Montserrat'}}>Отправка письма</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description" sx={{fontFamily: 'Montserrat'}}>
-                        {`На данный момент таким способом сообщение отправить нельзя. 
+                        {/*{`На данный момент таким способом сообщение отправить нельзя.
                         Сделайте это через Outlook, скопировав список почт (нужно нажать на значок человека).
                         
-                        Если у студента почта не указана, то её не будет в скопированном списке.`}
+                        Если у студента почта не указана, то её не будет в скопированном списке.`}*/}
+                        Вы уверены, что хотите отправить сообщение?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button
                         sx={{fontFamily: 'Montserrat', color: "#000"}}
                         onClick={() => {
-                        /*studentEmail.map(n => {
-                            dataToSave.append('to', n.email)
-                        })
-                        dataToSave.append('from', sender)
-                        dataToSave.append('subject', subject)
-                        dataToSave.append('text', text)
-                        if (filesToSend)
-                            Object.values(filesToSend).map(file => {
-                                dataToSave.append('files', file)
+                            setLoadingRequest(true)
+                            setOpenDialog(false)
+                            studentEmail.map(n => {
+                                dataToSave.append('to', n.email)
                             })
-                        sendMessage(dataToSave)
-                            .then(() => setActive(false))
-                         */
-                        setOpenDialog(false)
-                    }
-                    }>Ок</Button>
-                    {/*<Button onClick={() => {
-                        setOpenDialog(false)
-                    }
-                    }>Нет</Button>*/}
+                            dataToSave.append('from', sender)
+                            dataToSave.append('subject', subject)
+                            dataToSave.append('text', text)
+                            if (filesToSend)
+                                Object.values(filesToSend).map(file => {
+                                    dataToSave.append('files', file)
+                                })
+                            sendMessage(dataToSave, setLoadingRequest)
+                                .then(() => {
+                                    setLoadingRequest(false)
+                                    //setActive(false)
+                                })
+                        }
+                        }>Да</Button>
+                    <Button
+                        sx={{fontFamily: 'Montserrat', color: "#000"}}
+                        onClick={() => {
+                            setOpenDialog(false)
+                        }
+                        }>Нет</Button>
                 </DialogActions>
             </Dialog>
         </>
