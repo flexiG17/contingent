@@ -28,7 +28,6 @@ import ModalFile from "../filemanager/ModalFile";
 import {textFieldStyle, listItemStyle, systemColor} from "../../../utils/consts/styles";
 import moment from "moment";
 import CustomSingleDatePicker from "../../datePicker";
-import {sendNotificationToVisaDepartment} from "../../../utils/sendAutomaticallyEmail";
 
 export default function PersonalCardQuota() {
     const [active, setActive] = useState(true);
@@ -113,15 +112,6 @@ export default function PersonalCardQuota() {
     }, [isEditModeWasOn])
 
     const formRef = useRef(null);
-
-    const redirect = (dataToSave) => {
-        setLoadingRequest(false)
-        setTimeout(() => {
-            dataToSave.education_type === studentEducationType
-                ? window.location.reload()
-                : navigate(`/${dataToSave.education_type === 'Контракт' ? `contract` : `quota`}/${studentId}`)
-        }, 1500)
-    }
     const handleSubmit = (e) => {
         setIsEditModeWasOn(false)
         setLoadingRequest(true)

@@ -36,7 +36,6 @@ import Typography from "@mui/material/Typography";
 import CustomSingleDatePicker from "../../datePicker";
 import moment from "moment";
 import {prices} from "../../../utils/consts/hoursNumber";
-import {sendNotificationToVisaDepartment} from "../../../utils/sendAutomaticallyEmail";
 
 export default function PersonalCardContract() {
 
