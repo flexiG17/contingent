@@ -2,6 +2,7 @@ import axios from "axios";
 import iziToast from "izitoast";
 import {HOME_ROUTE, internalServerError, URL_PATH} from '../utils/consts/pathRoutes'
 import {getToken} from "../utils/token";
+import {sendNotificationToVisaDepartment} from "../utils/sendAutomaticallyEmail";
 
 export function getStudents() {
     return axios.get(`${URL_PATH}/api/student/`, {
@@ -56,25 +57,38 @@ export function removeArrayOfStudents(data) {
     })
 }
 
-export function changeStudentData(item, id, navigate, startEducationType, setLoadingRequest) {
+export function changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest, studentData) {
     return axios.put(
-        `${URL_PATH}/api/student/update/${id}`, item, {
+        `${URL_PATH}/api/student/update/${studentId}`, dataToSave, {
             headers: {
                 'Authorization': getToken(),
                 'Content-Type': 'application/json;charset=utf-8'
             }
         })
         .then(({data}) => {
-            setLoadingRequest(false)
-            setTimeout(() => {
-                item.education_type === startEducationType
-                    ? window.location.reload()
-                    : navigate(`/${item.education_type === 'Контракт' ? `contract` : `quota`}/${id}`)
-            }, 1000)
             iziToast.success({
                 message: data.message,
                 position: 'topRight'
             })
+
+            if (dataToSave.enrollment !== studentData.enrollment && dataToSave.enrollment === 'Отчислен') {
+                iziToast.info({
+                    message: `Происходит отправка письма в Визовый отдел`,
+                    position: 'topRight',
+                    timeout: '7000'
+                });
+                sendNotificationToVisaDepartment([{
+                    id: studentData.id,
+                    latin_name: studentData.latin_name
+                }], setLoadingRequest)
+            } else {
+                setLoadingRequest(false)
+                setTimeout(() => {
+                    dataToSave.education_type === studentEducationType
+                        ? window.location.reload()
+                        : navigate(`/${dataToSave.education_type === 'Контракт' ? `contract` : `quota`}/${studentId}`)
+                }, 1500)
+            }
         }).catch((e) => {
             setTimeout(() => {
                 setLoadingRequest(false)
@@ -155,8 +169,33 @@ export function importXlsx(data) {
     })
 }
 
-export function sendMessage(data) {
-    return axios.post(`${URL_PATH}/api/mail/send`, data, {
+export function sendMessage(data, setLoadingRequest) {
+    return axios.post(`${URL_PATH}/api/mail/sendStudent`, data, {
+        headers: {
+            'Authorization': getToken(),
+            'Content-Type': 'multipart/form-data'
+        },
+    }).then(({data}) => {
+        setLoadingRequest(false)
+        iziToast.success({
+            message: data.message,
+            position: 'topRight'
+        })
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500)
+    }).catch((e) => {
+        setLoadingRequest(false)
+        iziToast.error({
+            message: internalServerError(e),
+            position: "topRight",
+            color: "#FFF2ED"
+        });
+    })
+}
+
+export function sendAutomatically(data, setLoading) {
+    return axios.post(`${URL_PATH}/api/mail/sendAutomatically`, data, {
         headers: {
             'Authorization': getToken(),
             'Content-Type': 'multipart/form-data'
@@ -166,9 +205,10 @@ export function sendMessage(data) {
             message: data.message,
             position: 'topRight'
         })
+        setLoading(false)
         setTimeout(() => {
             window.location.reload()
-        }, 1500)
+        }, 2000)
     }).catch((e) => {
         iziToast.error({
             message: internalServerError(e),
@@ -184,5 +224,49 @@ export function getColumns() {
             'Authorization': getToken(),
             'Content-Type': 'application/json;charset=utf-8'
         }
+    })
+}
+
+export const changeStudentsData = (dataToSave, setLoading, studentsDataForEmail) => {
+    return axios.put(`${URL_PATH}/api/student/editListOfStudents/`, dataToSave, {
+        headers: {
+            'Authorization': getToken(),
+            'Content-Type': 'application/json;charset=utf-8'
+        }
+    }).then((result) => {
+        iziToast.success({
+            message: result.data.message,
+            position: 'topRight'
+        });
+
+        if (dataToSave.newData.enrollment === 'Отчислен') {
+            iziToast.info({
+                message: `Происходит отправка письма в Визовый отдел`,
+                position: 'topRight',
+                timeout: '7000'
+            });
+            sendNotificationToVisaDepartment(studentsDataForEmail, setLoading)
+        }
+        else {
+            setLoading(false)
+            setTimeout(() => {
+                window.location.reload()
+            }, 1500)
+        }
+    }).catch(res => {
+        if (res.code === 'ERR_NETWORK')
+            iziToast.error({
+                message: 'Ошибка сервера. Попробуйте снова.',
+                position: "topRight",
+                color: "#FFF2ED"
+            });
+        else {
+            iziToast.error({
+                message: res.message,
+                position: "topRight",
+                color: "#FFF2ED"
+            });
+        }
+        setLoading(false)
     })
 }
