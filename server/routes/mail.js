@@ -10,6 +10,7 @@ const router = express.Router()
 router.use(passport.authenticate('jwt', {session: false}, null))
 router.use(access(roles.editor))
 
-router.post('/send', upload.any(), controller.send)
+router.post('/sendStudent', upload.any(), controller.sendStudent)
+router.post('/sendAutomatically', upload.any(), controller.sendAutomatically)
 
 module.exports = router

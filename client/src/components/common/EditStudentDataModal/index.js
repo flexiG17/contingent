@@ -15,10 +15,8 @@ import {
 } from "@mui/material";
 import CustomSingleDatePicker from "../../datePicker";
 import Box from "@mui/material/Box";
-import axios from "axios";
-import {getToken} from "../../../utils/token";
-import {URL_PATH} from "../../../utils/consts/pathRoutes";
 import iziToast from "izitoast";
+import {changeStudentsData} from "../../../actions/student";
 
 const style = {
     position: 'absolute',
@@ -38,6 +36,14 @@ const style = {
 const EditStudentDataModal = ({active, setActive, studentsList}) => {
     const formRef = useRef(null);
     const studentsId = studentsList.map(student => student.id)
+    const studentsDataForEmail =
+        studentsList
+            .map(student => {
+                return {
+                    id: student.id,
+                    latin_name: student.latin_name
+                }
+            })
     const [loading, setLoading] = useState(false)
     const [openDialog, setOpenDialog] = useState(false)
 
@@ -71,43 +77,10 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
             newData: arrayToJson
         };
 
-        axios.put(`${URL_PATH}/api/student/editListOfStudents/`, dataToSave, {
-            headers: {
-                'Authorization': getToken(),
-                'Content-Type': 'application/json;charset=utf-8'
-            }
-        })
-            .then((result) => {
-                iziToast.success({
-                    message: result.data.message,
-                    position: 'topRight'
-                });
-                console.log(result, 'then');
-                setLoading(false)
-
-                setTimeout(() => {
-                    window.location.reload()
-                }, 2000)
-            })
-            .catch(res => {
-                if (res.code === 'ERR_NETWORK')
-                    iziToast.error({
-                        message: 'Ошибка сервера. Попробуйте снова.',
-                        position: "topRight",
-                        color: "#FFF2ED"
-                    });
-                else
-                    iziToast.error({
-                        message: res.data.message,
-                        position: "topRight",
-                        color: "#FFF2ED"
-                    });
-                setLoading(false)
-            })
+        changeStudentsData(dataToSave, setLoading, studentsDataForEmail)
     };
 
     return (
-
         <>
             <Modal
                 open={active}
@@ -138,7 +111,6 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                            margin='normal' size="small" sx={{width: '325px'}}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Вторая эл. почта агента"
-                                    // defaultValue={studentData.second_agent_email}
                                            name='second_agent_email' type="email" variant="outlined" color="warning"
                                            margin='normal' size="small" sx={{width: '325px'}}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
@@ -154,14 +126,12 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                            margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Первая эл. почта представителя"
-                                    // defaultValue={studentData.first_representative_email}
                                            name='first_representative_email' variant="outlined"
                                            type="email" color="warning"
                                            sx={{width: '325px'}}
                                            margin='normal' size="small"
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
                                 <TextField label="Вторая эл. почта представителя"
-                                    // defaultValue={studentData.second_representative_email}
                                            name='second_representative_email'
                                            sx={{width: '325px'}}
                                            variant="outlined" type="email" color="warning"
@@ -210,6 +180,16 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                 <p className="title_text"> Статус</p>
                                 <TextField label="Статус зачисления" name='enrollment' type="text"
                                            defaultValue=''
+                                           onChange={(event) => {
+                                               if (event.target.value === 'Отчислен')
+                                                   iziToast.info({
+                                                       message: `В результате смены <b>Cтатуса зачисления</b> на <b>"Отчислен"</b><br>
+                            произойдет автоматическая отправка письма в Визовый отдел<br>
+                            по всем студентам <i>(${studentsList.length} чел.)</i>`,
+                                                       position: 'topRight',
+                                                       timeout: '10000'
+                                                   });
+                                           }}
                                            variant="outlined" color="warning"
                                            margin='normal' size="small" select sx={{width: "325px"}}
                                            InputLabelProps={textFieldStyle}>
@@ -262,35 +242,30 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                 <p className="title_text">Виза и приглашение</p>
                                 <CustomSingleDatePicker
                                     name={"visa_validity"}
-                                    //defaultValue={studentData.visa_validity}
                                     required={false}
                                     label={'Срок действия визы'}
                                     size={'default'}
                                 />
                                 <CustomSingleDatePicker
                                     name={"transfer_to_international_service"}
-                                    //defaultValue={studentData.transfer_to_international_service}
                                     required={false}
                                     label={'Дата передачи в международную службу'}
                                     size={'default'}
                                 />
                                 <CustomSingleDatePicker
                                     name={"transfer_to_MVD"}
-                                    //defaultValue={studentData.transfer_to_MVD}
                                     required={false}
                                     label={'Дата передачи в МВД'}
                                     size={'default'}
                                 />
                                 <CustomSingleDatePicker
                                     name={"estimated_receipt_date"}
-                                    //defaultValue={studentData.estimated_receipt_date}
                                     required={false}
                                     label={'Ориентировочная дата получения'}
                                     size={'default'}
                                 />
                                 <CustomSingleDatePicker
                                     name={"actual_receipt_date_invitation"}
-                                    //defaultValue={studentData.actual_receipt_date_invitation}
                                     required={false}
                                     label={'Фактическая дата получения приглашения'}
                                     size={'default'}

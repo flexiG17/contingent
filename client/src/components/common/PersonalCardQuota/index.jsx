@@ -28,6 +28,7 @@ import ModalFile from "../filemanager/ModalFile";
 import {textFieldStyle, listItemStyle, systemColor} from "../../../utils/consts/styles";
 import moment from "moment";
 import CustomSingleDatePicker from "../../datePicker";
+import {sendNotificationToVisaDepartment} from "../../../utils/sendAutomaticallyEmail";
 
 export default function PersonalCardQuota() {
     const [active, setActive] = useState(true);
@@ -75,7 +76,7 @@ export default function PersonalCardQuota() {
 
     const [loadingRequest, setLoadingRequest] = useState(false)
     const [studentExpelled, setStudentExpelled] = useState('')
-    const [RF_location, setRfLocation] = useState()
+    const [RF_location, setRfLocation] = useState('')
 
     const navigate = useNavigate()
 
@@ -102,7 +103,7 @@ export default function PersonalCardQuota() {
             return (event.returnValue = 'Вы уверены, что хотите выйти? Изменения не сохранятся');
         };
 
-        if(isEditModeWasOn){
+        if (isEditModeWasOn) {
             window.addEventListener('beforeunload', handleTabClose);
 
             return () => {
@@ -112,6 +113,15 @@ export default function PersonalCardQuota() {
     }, [isEditModeWasOn])
 
     const formRef = useRef(null);
+
+    const redirect = (dataToSave) => {
+        setLoadingRequest(false)
+        setTimeout(() => {
+            dataToSave.education_type === studentEducationType
+                ? window.location.reload()
+                : navigate(`/${dataToSave.education_type === 'Контракт' ? `contract` : `quota`}/${studentId}`)
+        }, 1500)
+    }
     const handleSubmit = (e) => {
         setIsEditModeWasOn(false)
         setLoadingRequest(true)
@@ -135,7 +145,7 @@ export default function PersonalCardQuota() {
         dataToSave.visa_validity = dataToSave.visa_validity.split('.').reverse().join('-');
         dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
 
-        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest)
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest, studentData)
     };
 
     const actions = !READER_ACCESS ?
@@ -231,11 +241,13 @@ export default function PersonalCardQuota() {
                                            name='contact_phone_number' margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.contact_phone_number}/>
-                                <TextField label="Первая эл. почта студента" variant="outlined" color="warning" type="email"
+                                <TextField label="Первая эл. почта студента" variant="outlined" color="warning"
+                                           type="email"
                                            name='first_student_email' margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.first_student_email}/>
-                                <TextField label="Вторая эл. почта студента" variant="outlined" color="warning" type="email"
+                                <TextField label="Вторая эл. почта студента" variant="outlined" color="warning"
+                                           type="email"
                                            name='second_student_email' margin='normal' size="small" disabled={editMode}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}
                                            defaultValue={studentData.second_student_email}/>
@@ -302,7 +314,8 @@ export default function PersonalCardQuota() {
                                 <TextField label="Номер паспорта" type="text" variant="outlined" color="warning"
                                            name='passport_number' margin='normal' disabled={editMode}
                                            defaultValue={studentData.passport_number} sx={{width: "325px"}}
-                                           required size="small" inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                           required size="small" inputProps={textFieldStyle}
+                                           InputLabelProps={textFieldStyle}/>
                                 <CustomSingleDatePicker
                                     name={"passport_issue_date"}
                                     label={'Дата выдачи'}
@@ -371,7 +384,8 @@ export default function PersonalCardQuota() {
                                 />
                                 <p className="title_contract_doc"> Начало обучения </p>
                                 <TextField label="Приступил к обучению" name='started_learning' type="text"
-                                           variant="outlined" defaultValue={studentData.started_learning} disabled={editMode}
+                                           variant="outlined" defaultValue={studentData.started_learning}
+                                           disabled={editMode}
                                            color="warning" margin='normal' size="small" select
                                            InputLabelProps={textFieldStyle}>
                                     <MenuItem value="Да">
@@ -456,8 +470,15 @@ export default function PersonalCardQuota() {
                                 <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
                                            color="warning" value={studentExpelled}
                                            onChange={(e) => {
-                                               if (e.target.value === 'Отчислен')
+                                               if (e.target.value === 'Отчислен') {
                                                    setRfLocation('Нет')
+                                                   iziToast.info({
+                                                       message: `В результате смены <b>Cтатуса зачисления</b> на <b>"Отчислен"</b><br>
+                        произойдет автоматическая отправка письма в Визовый отдел`,
+                                                       position: 'topRight',
+                                                       timeout: '7000'
+                                                   });
+                                               }
                                                setStudentExpelled(e.target.value)
                                            }}
                                            margin='normal' size="small" select sx={{width: "325px"}}
@@ -576,54 +597,54 @@ export default function PersonalCardQuota() {
                         <Button
                             sx={{fontFamily: 'Montserrat', color: "#000"}}
                             onClick={() => {
-                            removeStudent(studentId, navigate)
-                            setOpen(false)
-                        }
-                        }>Да</Button>
+                                removeStudent(studentId, navigate)
+                                setOpen(false)
+                            }
+                            }>Да</Button>
                         <Button
                             sx={{fontFamily: 'Montserrat', color: "#000"}}
                             onClick={() => {
-                            setOpen(false)
-                        }
-                        }>Нет</Button>
+                                setOpen(false)
+                            }
+                            }>Нет</Button>
                     </DialogActions>
                 </Dialog>
-                    {modalActive || modalMessageActive || modalFileActive ||
-                        <SpeedDial
-                            ariaLabel="SpeedDial openIcon example"
-                            sx={{position: 'fixed', bottom: 20, right: 20}}
-                            icon={<SpeedDialIcon/>}
+                {modalActive || modalMessageActive || modalFileActive ||
+                    <SpeedDial
+                        ariaLabel="SpeedDial openIcon example"
+                        sx={{position: 'fixed', bottom: 20, right: 20}}
+                        icon={<SpeedDialIcon/>}
 
-                            FabProps={{
-                                sx: {
+                        FabProps={{
+                            sx: {
+                                bgcolor: '#FA7A45',
+                                '&:hover': {
                                     bgcolor: '#FA7A45',
-                                    '&:hover': {
-                                        bgcolor: '#FA7A45',
-                                    }
                                 }
-                            }}
-                        >
-                            {actions.map((action) => (
-                                <SpeedDialAction
-                                    key={action.name}
-                                    icon={action.icon}
-                                    tooltipTitle={action.name}
-                                    onClick={() => {
-                                        action.runFunction()
-                                    }}
+                            }
+                        }}
+                    >
+                        {actions.map((action) => (
+                            <SpeedDialAction
+                                key={action.name}
+                                icon={action.icon}
+                                tooltipTitle={action.name}
+                                onClick={() => {
+                                    action.runFunction()
+                                }}
 
-                                />
-                            ))}
-                        </SpeedDial>}
-                    <ModalMessage active={modalActive} setActive={setModalActive}
-                                  studentEmail={[{
-                                      id: studentData.id,
-                                      education_type: studentData.education_type,
-                                      email: studentData.first_student_email
-                                  }]}/>
-                    <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
-                                           singleId={[studentId]} emails={[studentData.first_student_email]}/>
-                    <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
+                            />
+                        ))}
+                    </SpeedDial>}
+                <ModalMessage active={modalActive} setActive={setModalActive}
+                              studentEmail={[{
+                                  id: studentData.id,
+                                  education_type: studentData.education_type,
+                                  email: studentData.first_student_email
+                              }]}/>
+                <CreateTaskModalWindow active={modalMessageActive} setActive={setModalMessageActive}
+                                       singleId={[studentId]} emails={[studentData.first_student_email]}/>
+                <ModalFile active={modalFileActive} setActive={setModalFileActive} studentId={studentId}/>
             </>
     )
 }

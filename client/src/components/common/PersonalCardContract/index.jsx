@@ -1,6 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined';
-import {changeStudentData, getStudentsByIdArray, removeStudent} from '../../../actions/student'
+import {
+    changeStudentData,
+    getStudentsByIdArray,
+    removeStudent
+} from '../../../actions/student'
 import {useNavigate, useParams} from 'react-router-dom';
 import iziToast from "izitoast";
 import TextField from "@mui/material/TextField";
@@ -32,6 +36,7 @@ import Typography from "@mui/material/Typography";
 import CustomSingleDatePicker from "../../datePicker";
 import moment from "moment";
 import {prices} from "../../../utils/consts/hoursNumber";
+import {sendNotificationToVisaDepartment} from "../../../utils/sendAutomaticallyEmail";
 
 export default function PersonalCardContract() {
 
@@ -216,6 +221,7 @@ export default function PersonalCardContract() {
 
     const formRef = useRef(null);
     const navigate = useNavigate()
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -252,7 +258,7 @@ export default function PersonalCardContract() {
         dataToSave.actual_receipt_date_invitation = dataToSave.actual_receipt_date_invitation.split('.').reverse().join('-');
         dataToSave.date_started_learning = dataToSave.date_started_learning.split('.').reverse().join('-');
 
-        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest)
+        changeStudentData(dataToSave, studentId, navigate, studentEducationType, setLoadingRequest, studentData)
     };
 
     return (
@@ -560,8 +566,15 @@ export default function PersonalCardContract() {
                                 <TextField label="Статус зачисления" name='enrollment' type="text" variant="outlined"
                                            color="warning" value={studentExpelled}
                                            onChange={(e) => {
-                                               if (e.target.value === 'Отчислен')
+                                               if (e.target.value === 'Отчислен') {
                                                    setRfLocation('Нет')
+                                                   iziToast.info({
+                                                       message: `В результате смены <b>Cтатуса зачисления</b> на <b>"Отчислен"</b><br>
+                        произойдет автоматическая отправка письма в Визовый отдел`,
+                                                       position: 'topRight',
+                                                       timeout: '7000'
+                                                   });
+                                               }
                                                setStudentExpelled(e.target.value)
                                            }}
                                            margin='normal' size="small" select sx={{width: "325px"}}
@@ -914,16 +927,16 @@ export default function PersonalCardContract() {
                         <Button
                             sx={{fontFamily: 'Montserrat', color: "#000"}}
                             onClick={() => {
-                            removeStudent(studentId, navigate)
-                            setOpen(false)
-                        }
-                        }>Да</Button>
+                                removeStudent(studentId, navigate)
+                                setOpen(false)
+                            }
+                            }>Да</Button>
                         <Button
                             sx={{fontFamily: 'Montserrat', color: "#000"}}
                             onClick={() => {
-                            setOpen(false)
-                        }
-                        }>Нет</Button>
+                                setOpen(false)
+                            }
+                            }>Нет</Button>
                     </DialogActions>
                 </Dialog>
                 {modalActive || modalMessageActive || modalFileActive ||
