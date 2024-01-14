@@ -141,10 +141,10 @@
 }
 
 .file_input_message{
+    width: fit-content;
     height: 18px;
     justify-content: space-between;
     align-items: center;
-    width: 170px;
     background-color: #FA7A45;
     border-radius: 5px;
     padding: 6px 12px;
