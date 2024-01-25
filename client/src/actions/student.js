@@ -79,6 +79,7 @@ export function changeStudentData(dataToSave, studentId, navigate, studentEducat
                 });
                 sendNotificationToVisaDepartment([{
                     id: studentData.id,
+                    russian_name: studentData.russian_name,
                     latin_name: studentData.latin_name
                 }], setLoadingRequest)
             } else {

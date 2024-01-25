@@ -41,7 +41,8 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
             .map(student => {
                 return {
                     id: student.id,
-                    latin_name: student.latin_name
+                    latin_name: student.latin_name,
+                    russian_name: student.russian_name
                 }
             })
     const [loading, setLoading] = useState(false)
