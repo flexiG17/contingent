@@ -36,11 +36,14 @@ export default function Contract() {
     const [RF_location, setRfLocation] = useState('')
 
     const ChangeContractAmountWithHoursNumber = (event) => {
-        const selectedHoursNumber = event.target.value.split(' ')[0]
+        const selectedHoursNumber = event.target.value
 
         prices.map(({hour, cost}) => {
-            if (selectedHoursNumber === hour)
+            if (selectedHoursNumber === hour) {
+                console.log(selectedHoursNumber);
+                console.log(hour);
                 setContractAmount(cost)
+            }
         })
     }
 

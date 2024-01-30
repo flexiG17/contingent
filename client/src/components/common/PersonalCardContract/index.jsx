@@ -96,11 +96,12 @@ export default function PersonalCardContract() {
     const [RF_location, setRfLocation] = useState('')
 
     const ChangeContractAmountWithHoursNumber = (event) => {
-        const selectedHoursNumber = event.target.value.split(' ')[0]
+        const selectedHoursNumber = event.target.value
 
         prices.map(({hour, cost}) => {
-            if (selectedHoursNumber === hour)
+            if (selectedHoursNumber === hour) {
                 setContractAmount(cost)
+            }
         })
     }
 
@@ -209,6 +210,7 @@ export default function PersonalCardContract() {
     const percentPayment = ((contractAmount - paymentBalance) * 100 / contractAmount).toFixed(2)
 
     const GetPaymentStatus = () => {
+
         if (+paymentBalance === +contractAmount) {
             return 'Не оплачено'
         } else if (paymentBalance === 0) {
