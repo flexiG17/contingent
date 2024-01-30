@@ -3,6 +3,7 @@ import './editModal.css'
 import TextField from "@mui/material/TextField";
 import {listItemStyle, systemColor, textFieldStyle} from "../../../utils/consts/styles";
 import {
+    Accordion, AccordionDetails, AccordionSummary,
     Button,
     Dialog, DialogActions,
     DialogContent,
@@ -17,6 +18,7 @@ import CustomSingleDatePicker from "../../datePicker";
 import Box from "@mui/material/Box";
 import iziToast from "izitoast";
 import {changeStudentsData} from "../../../actions/student";
+import Typography from "@mui/material/Typography";
 
 const style = {
     position: 'absolute',
@@ -68,9 +70,24 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
         formDataToJson.estimated_receipt_date = formDataToJson.estimated_receipt_date.split('.').reverse().join('-');
         formDataToJson.actual_receipt_date_invitation = formDataToJson.actual_receipt_date_invitation.split('.').reverse().join('-');
 
+        formDataToJson.first_payment_actual_date = formDataToJson.first_payment_actual_date.split('.').reverse().join('-');
+        formDataToJson.second_payment_actual_date = formDataToJson.second_payment_actual_date.split('.').reverse().join('-');
+        formDataToJson.third_payment_actual_date = formDataToJson.third_payment_actual_date.split('.').reverse().join('-');
+        formDataToJson.fourth_payment_actual_date = formDataToJson.fourth_payment_actual_date.split('.').reverse().join('-');
+
+        formDataToJson['payment_status'] = GetPaymentStatus()
+
         const jsonToArray = Object.entries(formDataToJson);
         const filteredJson = jsonToArray.filter(([key, value]) => value !== '');
         const arrayToJson = Object.fromEntries(filteredJson);
+
+        if (+arrayToJson.contract_amount === 0) {
+            delete arrayToJson.contract_amount
+        }
+
+        if (arrayToJson.payment_status === 'Не оплачено' || !arrayToJson.contract_amount) {
+            delete arrayToJson.payment_status
+        }
 
         const dataToSave = {
             id: studentsId,
@@ -80,6 +97,29 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
         changeStudentsData(dataToSave, setLoading, studentsDataForEmail)
     };
 
+
+    const [contractAmount, setContractAmount] = useState(0)
+    const [firstPayment, setFirstPayment] = useState(0)
+    const [secondPayment, setSecondPayment] = useState(0)
+    const [thirdPayment, setThirdPayment] = useState(0)
+    const [fourthPayment, setFourthPayment] = useState(0)
+
+    const GetPaymentStatus = () => {
+        if (+paymentBalance === +contractAmount) {
+            return 'Не оплачено'
+        } else if (+paymentBalance <= 0) {
+            return 'Оплачено'
+        } else if (+paymentBalance < +contractAmount) {
+            return 'Оплачено частично'
+        }
+    }
+
+    let paymentBalance = 0
+
+    if (+contractAmount === 0 && GetPaymentStatus() === 'Не оплачено')
+        paymentBalance = 0
+    else
+        paymentBalance = paymentBalance = +contractAmount - +firstPayment - +secondPayment - +thirdPayment - +fourthPayment
     return (
         <>
             <Modal
@@ -152,10 +192,42 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                            sx={{width: '325px'}}
                                            size="small" multiline rows={5}
                                            inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+
+
+                                <p className="title_text">Виза и приглашение</p>
+                                <CustomSingleDatePicker
+                                    name={"visa_validity"}
+                                    required={false}
+                                    label={'Срок действия визы'}
+                                    size={'default'}
+                                />
+                                <CustomSingleDatePicker
+                                    name={"transfer_to_international_service"}
+                                    required={false}
+                                    label={'Дата передачи в международную службу'}
+                                    size={'default'}
+                                />
+                                <CustomSingleDatePicker
+                                    name={"transfer_to_MVD"}
+                                    required={false}
+                                    label={'Дата передачи в МВД'}
+                                    size={'default'}
+                                />
+                                <CustomSingleDatePicker
+                                    name={"estimated_receipt_date"}
+                                    required={false}
+                                    label={'Ориентировочная дата получения'}
+                                    size={'default'}
+                                />
+                                <CustomSingleDatePicker
+                                    name={"actual_receipt_date_invitation"}
+                                    required={false}
+                                    label={'Фактическая дата получения приглашения'}
+                                    size={'default'}
+                                />
                             </div>
 
                             <div className="left_column">
-
                                 <p className="title_text"> Начало обучения </p>
                                 <TextField label="Приступил к обучению" name='started_learning' type="text"
                                            defaultValue=''
@@ -239,37 +311,158 @@ const EditStudentDataModal = ({active, setActive, studentsList}) => {
                                     </MenuItem>
                                 </TextField>
 
-                                <p className="title_text">Виза и приглашение</p>
-                                <CustomSingleDatePicker
-                                    name={"visa_validity"}
-                                    required={false}
-                                    label={'Срок действия визы'}
-                                    size={'default'}
-                                />
-                                <CustomSingleDatePicker
-                                    name={"transfer_to_international_service"}
-                                    required={false}
-                                    label={'Дата передачи в международную службу'}
-                                    size={'default'}
-                                />
-                                <CustomSingleDatePicker
-                                    name={"transfer_to_MVD"}
-                                    required={false}
-                                    label={'Дата передачи в МВД'}
-                                    size={'default'}
-                                />
-                                <CustomSingleDatePicker
-                                    name={"estimated_receipt_date"}
-                                    required={false}
-                                    label={'Ориентировочная дата получения'}
-                                    size={'default'}
-                                />
-                                <CustomSingleDatePicker
-                                    name={"actual_receipt_date_invitation"}
-                                    required={false}
-                                    label={'Фактическая дата получения приглашения'}
-                                    size={'default'}
-                                />
+                                <div className='elements_in_row'>
+                                    <TextField label="Сумма для оплаты" name='contract_amount' type="text"
+                                               sx={{width: '150px'}}
+                                               onChange={(e) => {
+                                                   setContractAmount(e.target.value)
+                                               }}
+                                               variant="outlined"
+                                               value={contractAmount}
+                                               color="warning" margin='normal' size="small"
+                                               inputProps={textFieldStyle} InputLabelProps={textFieldStyle}/>
+                                </div>
+                                <p className="title_contract_doc">
+                                    {`Оплата / остаток: `} <b>{paymentBalance}</b>
+                                </p>
+                                <p className="title_contract_doc">
+                                    Статус оплаты: <b>{GetPaymentStatus()}</b>
+                                </p>
+                                <div style={{width: '325px'}}>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px', mt: '10px'}}>
+                                        <AccordionSummary>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontSize: '15px',
+                                                    color: "#FA7A45",
+                                                    fontWeight: 500,
+                                                    fontFamily: 'Montserrat'
+                                                }}
+                                            >
+                                                Первый платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className='elements_in_row'>
+                                                <CustomSingleDatePicker
+                                                    name={"first_payment_actual_date"}
+                                                    label={'Платеж 1 (факт)'}
+                                                    required={false}
+                                                    size={'small'}
+                                                />
+                                                <TextField label="Сумма платежа" name='amount_first_actual_payment'
+                                                           type="text" color="warning"
+                                                           onChange={(e) => setFirstPayment(e.target.value)}
+                                                           sx={{ml: '20px', mt: '20px', width: '140px'}}
+                                                           size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={textFieldStyle}/>
+                                            </div>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px'}}>
+                                        <AccordionSummary
+                                            aria-controls="panel2a-content"
+                                            id="panel2a-header"
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontSize: '15px',
+                                                    color: "#FA7A45",
+                                                    fontWeight: 500,
+                                                    fontFamily: 'Montserrat'
+                                                }}
+                                            >
+                                                Второй платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="elements_in_row">
+                                                <CustomSingleDatePicker
+                                                    name={"second_payment_actual_date"}
+                                                    label={'Платеж 2 (факт)'}
+                                                    required={false}
+                                                    size={'small'}
+                                                />
+                                                <TextField label="Сумма платежа" name='amount_second_actual_payment'
+                                                           type="text" color="warning"
+                                                           onChange={(e) => setSecondPayment(e.target.value)}
+                                                           sx={{ml: '20px', mt: '20px', width: '140px'}}
+                                                           size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={textFieldStyle}/>
+                                            </div>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px'}}>
+                                        <AccordionSummary
+                                            aria-controls="panel2a-content"
+                                            id="panel2a-header"
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontSize: '15px',
+                                                    color: "#FA7A45",
+                                                    fontWeight: 500,
+                                                    fontFamily: 'Montserrat'
+                                                }}
+                                            >
+                                                Третий платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="elements_in_row">
+                                                <CustomSingleDatePicker
+                                                    name={"third_payment_actual_date"}
+                                                    label={'Платеж 3 (факт)'}
+                                                    required={false}
+                                                    size={'small'}
+                                                />
+                                                <TextField label="Сумма платежа" name='amount_third_actual_payment'
+                                                           type="text" color="warning"
+                                                           onChange={(e) => setThirdPayment(e.target.value)}
+                                                           sx={{ml: '20px', mt: '20px', width: '140px'}}
+                                                           size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={textFieldStyle}/>
+                                            </div>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    <Accordion sx={{borderRadius: '5px', mb: '15px'}}>
+                                        <AccordionSummary
+                                            aria-controls="panel2a-content"
+                                            id="panel2a-header"
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    fontSize: '15px',
+                                                    color: "#FA7A45",
+                                                    fontWeight: 500,
+                                                    fontFamily: 'Montserrat'
+                                                }}
+                                            >
+                                                Четвертый платеж
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="elements_in_row">
+                                                <CustomSingleDatePicker
+                                                    name={"fourth_payment_actual_date"}
+                                                    label={'Платеж 4 (факт)'}
+                                                    required={false}
+                                                    size={'small'}
+                                                />
+                                                <TextField label="Сумма платежа" name='amount_fourth_actual_payment'
+                                                           type="text" color="warning"
+                                                           onChange={(e) => setFourthPayment(e.target.value)}
+                                                           sx={{ml: '20px', mt: '20px', width: '140px'}}
+                                                           size="small" inputProps={textFieldStyle}
+                                                           InputLabelProps={textFieldStyle}/>
+                                            </div>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </div>
                             </div>
                         </div>
 
