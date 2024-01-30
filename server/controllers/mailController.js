@@ -21,10 +21,15 @@ module.exports.sendAutomatically = async (req, res) => {
     let studentDataToHtml = []
     studentsData
         .map((student) => {
-            studentDataToHtml.push(`<span style="font-size: 16px">${student.latin_name}</span></p>`)
-            //studentDataToHtml.push(`<p><b>Имя</b>: <span style="font-size: 16px">${student.latin_name}</span></p>`)
+            const latin_name = Boolean(student.latin_name) ? student.latin_name : 'не указано'
+            const russian_name = Boolean(student.russian_name) ? student.russian_name : 'не указано'
+            /*studentDataToHtml.push(`<span style="font-size: 16px">${student.latin_name}</span></p>`)*/
+            studentDataToHtml
+                .push(`<p><b>Ф.И.О. (лат.)</b>: <span style="font-size: 16px">${latin_name}</span></p>`)
+            studentDataToHtml
+                .push(`<p><b>Ф.И.О. (кир.)</b>: <span style="font-size: 16px">${russian_name}</span></p>`)
             //studentDataToHtml.push(`<p><b>id</b>:<span style="font-size: 16px">${student.id}</span></p>`)
-            //studentDataToHtml.push(`<br>`)
+            studentDataToHtml.push(`<br>`)
         })
 
     const dataToSend = {
