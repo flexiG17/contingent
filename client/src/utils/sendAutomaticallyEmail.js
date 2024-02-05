@@ -5,6 +5,7 @@ export const sendNotificationToVisaDepartment = (studentsDataForEmail, setLoadin
     //formDataToSendMessage.append('to', 'senya.kozhevnikov.00@mail.ru')
     formDataToSendMessage.append('to', 'visa@urfu.ru')
     formDataToSendMessage.append('to', 'e.a.syskova@urfu.ru')
+    formDataToSendMessage.append('to', 'm.v.varzina@urfu.ru')
     formDataToSendMessage.append('to', 'rfl@urfu.ru')
     formDataToSendMessage.append('from', 'urfucontingent')
     formDataToSendMessage.append('subject', 'Информационная система URFUCONTINGENT')
