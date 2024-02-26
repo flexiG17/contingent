@@ -180,7 +180,7 @@ Please, check the list above. Write to us if you have any other questions about 
 И просим вас предоставить причины ваших пропусков в ответном письме.
 Если вы не предоставите уважительные причины пропусков и не приступите ближайшее время после получения этого письма к обучению на регулярной основе, то вы будете отчислены с Подготовительного отделения, так как непосещение занятий является нарушением условий заключенного договора.
  
-И если у вас есть вопросы, пожалуйста, пишите нам (rfl@urfu.ru) или приходите по адресу Мира, 19, офис  И 528,  либо Чапаева, 20, офис 207 в рабочие часы с 9.00 до 17.00.
+И если у вас есть вопросы, пожалуйста, пишите нам (rfl@urfu.ru) или приходите по адресу Мира, 19, офис И 528 в рабочие часы с 9.00 до 17.00.
  
 С наилучшими пожеланиями,
 Команда Подготовительного отделения для иностранных учащихся
@@ -193,7 +193,7 @@ Please note that attending classes is a prerequisite and a mandatory condition f
 You should provide the reason for your absence in the response letter to rfl@urfu.ru 
 If you do not provide a valid reason for your absence and do not start regularly attend the classes within the next week after receiving this letter, then you will be expelled from the Preparatory Department, since not attending classes is a violation of the terms of the concluded agreement and your visa will be cancelled.
  
-If you have any questions, please write to us (rfl@urfu.ru) or come to Mira, 19, office I 528, or Chapaeva, 20, office 207 during business hours from 9.00 to 17.00.
+If you have any questions, please write to us (rfl@urfu.ru) or come to Mira, 19, office I 528 during business hours from 9.00 to 17.00.
  
 Best wishes,
 Team of the Preparatory Department for Foreign Students
